@@ -1,46 +1,30 @@
-name: Next.js CI/CD to EC2 Nginx
+name: Deploy Next.js to EC2
 
 on:
-  #   push:
+  # push:
+  #   branches: [main]
   pull_request:
     branches: [main]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build Next.js for static export
-        run: npm run build
-
-      - name: Deploy to EC2 Nginx
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          source: "out/*"
-          target: "/var/www/html/reconsile-ai-fe"
-          strip_components: 1
-          overwrite: true
-
-      # Restart Nginx
-      - name: Restart Nginx
+      - name: Deploy and start application
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
+            cd /var/www/html/reconsile-ai-fe
+
+            git pull origin main
+
+            npm install
+
+            npm run build
+
+            # Restart Nginx
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
