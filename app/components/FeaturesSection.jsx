@@ -26,7 +26,7 @@ const FeaturesSection = () => {
           Gain deeper insights with interactive reports. Filter, drill down, and
           export reconciliation summaries with ease.
         </p>
-        <ul className="list-style-none">
+        <ul className="list-style-none ml-[16px]">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center mb-[20px]">
               <CheckCircle2Icon className="text-[#297B65] mr-3 w-6 h-6" />
