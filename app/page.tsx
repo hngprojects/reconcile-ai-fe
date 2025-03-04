@@ -1,3 +1,4 @@
+import Image from "next/image";
 import HomePage from "./(guest)/home";
 import { Metadata } from "next";
 
