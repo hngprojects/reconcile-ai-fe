@@ -37,7 +37,7 @@ Reconcile AI is an easy-to-use reconciliation platform (web app) for comparing a
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- Package manager: **npm** or **yarn**
+- Package manager: **npm**
 
 ### Installation
 
@@ -57,16 +57,12 @@ cd [project-directory]
 
 ```bash
 npm install
-# or
-yarn install
 ```
 
 4. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
