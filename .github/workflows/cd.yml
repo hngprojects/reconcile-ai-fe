@@ -1,7 +1,8 @@
 name: Next.js CI/CD to EC2 Nginx
 
 on:
-  push:
+  #   push:
+  pull_request:
     branches: [main]
 
 jobs:
