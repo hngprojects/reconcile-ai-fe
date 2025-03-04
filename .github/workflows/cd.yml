@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-            cd /var/www/html/reconsile-ai-fe
+            cd /var/www/html/reconcile-ai-fe
 
             git pull origin main
 
