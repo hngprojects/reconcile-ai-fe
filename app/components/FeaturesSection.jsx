@@ -10,7 +10,7 @@ const FeaturesSection = () => {
 
   return (
     <div className="flex items-center justify-between w-full pl-[80px]">
-      <div className="w-1/2 flex flex-col">
+      <div className="w-1/2 flex flex-col pr-[96px]">
         <div className="flex items-center justify-center w-[48px] h-[48px] bg-[#AEEACA] rounded-full mb-[12px]">
           <Image
             src="./assets/images/feature-icon.svg"
@@ -35,14 +35,16 @@ const FeaturesSection = () => {
           ))}
         </ul>
       </div>
-      <div className="w-1/2 pl-[96px]">
-        <Image
-          src="/assets/images/Features-3-image.png"
-          width={768}
-          height={512}
-          alt="Reconciliation dashboard"
-          className="border-[4px] border-[#101828] rounded-[10px] object-cover object-left"
-        />
+      <div className="w-1/2 overflow-hidden relative" style={{ marginLeft: '-96px' }}>
+        <div className="relative" style={{ width: '768px', height: '512px' }}>
+          <Image
+            src="/assets/images/Features-3-image.png"
+            fill
+            alt="Reconciliation dashboard"
+            className="border-[4px] border-[#101828] rounded-[10px] object-cover object-left"
+            style={{ objectPosition: 'left' }}
+          />
+        </div>
       </div>
     </div>
   );
