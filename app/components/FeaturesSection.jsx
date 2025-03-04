@@ -20,8 +20,7 @@ const FeaturesSection = () => {
           />
         </div>
         <h3 className="text-[30px] font-semibold mb-[16px] text-[#101828]">
-          Real-Time Insights & Reporting
-        </h3>
+          Real-Time Insights & Reporting</h3>
         <p className="text-[18px] text-[#475467] mb-[32px]">
           Gain deeper insights with interactive reports. Filter, drill down, and
           export reconciliation summaries with ease.
