@@ -18,13 +18,23 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
+            # Set Git to use the directory as safe 
+            git config --global --add safe.directory /var/www/html/reconcile-ai-fe
+
             cd /var/www/html/reconcile-ai-fe
 
             git pull origin main
 
+            # Fix npm permissions using sudo
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R $USER:$USER /var/www/html/reconcile-ai-fe
+
+
             npm install
 
             npm run build
+
+             # Reset ownership for web server
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R www-data:www-data /var/www/html/reconcile-ai-fe
 
             # Restart Nginx
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
