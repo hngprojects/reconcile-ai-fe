@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
+import FeaturesSection from "@/components/FeaturesSection";
 
 export default function HomePage() {
   return (
@@ -30,6 +31,7 @@ export default function HomePage() {
           className="mt-10"
         />
       </div>
+      <FeaturesSection />
     </main>
   );
 }
