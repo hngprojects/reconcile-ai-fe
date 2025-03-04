@@ -24,16 +24,7 @@ jobs:
       - name: Build Next.js for static export
         run: npm run build
 
-      - name: Create directory structure
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          script: |
-            mkdir -p /var/www/html/reconsile-ai-fe
-
-      - name: Deploy to EC2 Nginx directory
+      - name: Deploy to EC2 Nginx
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -44,13 +35,12 @@ jobs:
           strip_components: 1
           overwrite: true
 
-      - name: Set permissions and restart Nginx
+      # Restart Nginx
+      - name: Restart Nginx
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-            sudo chown -R www-data:www-data /var/www/html/reconsile-ai-fe
-            sudo chmod -R 755 /var/www/html/reconsile-ai-fe
-            sudo systemctl restart nginx
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
