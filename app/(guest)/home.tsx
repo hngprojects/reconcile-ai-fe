@@ -1,10 +1,11 @@
+import Feature2 from "@/components/Feature2";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
 
 export default function HomePage() {
   return (
-    <main className="md:py-16 md:px-32 bg-[#F9FAFB] h">
+    <main className="md:py-16 bg-[#F9FAFB] h">
       <div className="flex flex-col  items-center text-center m-5">
         <h1 className="font-bold text-[48px] flex-wrap lg:leading-[3.5rem]">
           AI-Powered Financial Reconciliation <br /> in Minutes, Not Hours
@@ -30,6 +31,7 @@ export default function HomePage() {
           className="mt-10"
         />
       </div>
+      <Feature2 />
     </main>
   );
 }
