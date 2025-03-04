@@ -28,21 +28,21 @@ jobs:
 
       - name: Deploy to EC2
         uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: ".next/,public/,package.json,package-lock.json,next.config.js"
-          target: "/home/${{ secrets.EC2_USERNAME }}/nextjs-app"
+        # with:
+        #   host: ${{ secrets.EC2_HOST }}
+        #   username: ${{ secrets.EC2_USERNAME }}
+        #   key: ${{ secrets.EC2_SSH_KEY }}
+        #   source: ".next/,public/,package.json,package-lock.json,next.config.js"
+        #   target: "/home/${{ secrets.EC2_USERNAME }}/nextjs-app"
 
-      - name: Start application
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            cd /home/${{ secrets.EC2_USERNAME }}/nextjs-app
-            npm install --production
-            pm2 stop nextjs-app || true
-            pm2 start npm --name "nextjs-app" -- start
+      # - name: Start application
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USERNAME }}
+      #     key: ${{ secrets.EC2_SSH_KEY }}
+      #     script: |
+      #       cd /home/${{ secrets.EC2_USERNAME }}/nextjs-app
+      #       npm install --production
+      #       pm2 stop nextjs-app || true
+      #       pm2 start npm --name "nextjs-app" -- start
