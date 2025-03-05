@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
         {/* Logo */}
         <div className="flex justify-center mb-6 sm:mb-10">
           <Image 
-            src="/Logo.svg" 
+            src="/AuthLogo.svg" 
             alt="Logo" 
             width={64} 
             height={64} 

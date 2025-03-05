@@ -8,7 +8,7 @@ const page = () => {
         <div className='flex flex-col items-center w-full'>
        <div className='mb-3'>
        <Image 
-            src="/checkmark.svg" 
+            src="/AuthLogo.svg" 
             alt="Logo" 
             width={56} 
             height={56} 
