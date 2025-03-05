@@ -26,12 +26,11 @@ jobs:
             # Install dependencies
             npm install
 
-            # Install PM2 globally if not already installed
+            # Install PM2 locally if not already installed
             npm install pm2 --save-dev
 
             # Stop the previous instance if it exists
-            npx stop reconcile-fe || true
-            npx delete reconcile-fe || true
+            npx pm2 delete reconcile-fe
 
             # Start the application with PM2 
             npx pm2 start npm --name "reconcile-fe" -- run dev
