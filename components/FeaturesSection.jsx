@@ -9,7 +9,7 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-between w-full px-4 lg:pr-0 lg:pl-[80px] py-8 lg:py-0">
+    <div className="flex flex-col lg:flex-row items-center justify-between w-full px-8 lg:px-0 lg:pl-[80px] py-8 lg:py-0">
       <div className="w-full lg:w-1/2 flex flex-col lg:pr-[96px] mb-8 lg:mb-0">
         <div className="flex items-center justify-center w-[48px] h-[48px] bg-[#AEEACA] rounded-full mb-3 lg:mb-[12px]">
           <Image
