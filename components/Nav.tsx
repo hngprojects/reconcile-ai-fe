@@ -1,7 +1,15 @@
+"use client";
 import { Button } from "./ui/button";
 import { Logo } from "../app/coming-soon/components/Icons";
+import { useState } from "react";
+import { MenuIcon } from "lucide-react";
 
 const Nav = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <nav className="flex justify-between items-center py-6 px-10 border-b-[0.5px] border-[#0000001A]">
       <Logo />
@@ -12,24 +20,22 @@ const Nav = () => {
         <Button className="bg-[#2E604A] text-white hidden md:block">
           Sign Up
         </Button>
-        <Button className="md:hidden">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
-          </svg>
-        </Button>
+        <button onClick={toggleMenu} className="md:hidden">
+          <MenuIcon size={24} />
+        </button>
       </div>
+      {isOpen && (
+        <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 flex flex-col gap-2 md:hidde w-[70%]">
+          <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white">
+            Login
+          </Button>
+          <Button className="bg-[#2E604A] text-white">Sign Up</Button>
+        </div>
+      )}
     </nav>
+
+    // </div>
+    // </nav>
   );
 };
 
