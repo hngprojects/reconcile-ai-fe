@@ -1,8 +1,6 @@
 name: Deploy Next.js to EC2
 
 on:
-  # push:
-  #   branches: [main]
   pull_request:
     branches: [main]
 
@@ -18,24 +16,22 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S su - << 'EOF'
-
-            git config --global --add safe.directory /var/www/html/reconcile-ai-fe
-
+            # Navigate to the project directory
             cd /var/www/html/reconcile-ai-fe
 
+            sudo git config --global --add safe.directory /var/www/html/reconcile-ai-fe
 
-            git pull origin main
+            # Pull latest changes
+            sudo git pull origin main
 
+            # Install dependencies
+            sudo npm install
 
+            # Build Next.js application
+            sudo npm run build
 
-            npm install
-
-            npm run build
-
-             # Reset ownership for web server
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R www-data:www-data /var/www/html/reconcile-ai-fe
+            # Reset ownership for Nginx
+            sudo chown -R www-data:www-data /var/www/html/reconcile-ai-fe
 
             # Restart Nginx
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
+            sudo systemctl restart nginx
