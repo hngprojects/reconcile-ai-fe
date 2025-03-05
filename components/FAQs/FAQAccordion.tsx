@@ -12,8 +12,8 @@ const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className=" overflow-hidden border-green-500">
-      <ul className="divide-y divide-[#E6E8EB] ">
+    <div className="  overflow-hidden border-green-500">
+      <ul className=" min-w-[100%] divide-y divide-[#E6E8EB] ">
         {faqs.map((faq, index) => (
           <AccordionItem
             key={index}
@@ -43,7 +43,7 @@ const AccordionItem = ({ faq, selected, setSelected, index }: AccordionItemProps
   };
 
   return (
-    <li className="max-w-[768px] w-full">
+    <li className=" w-full">
   <button
     className="flex justify-between items-center w-full p-4 bg-white hover:bg-[#F9FAFB]"
     onClick={handleClick}
