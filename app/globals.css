@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-baloo: "Baloo Paaji 2", sans-serif;
+  --font-inter: "Inter", sans-serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -119,8 +121,27 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: "Inter", sans-serif;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .input {
+    @apply py-[10px] px-[14px] bg-white text-black rounded-[8px] outline-none border-none;
+  }
+  .footer {
+    @apply bg-[#214435] py-16 w-screen text-white flex flex-col gap-8 justify-center items-center;
+  }
+  .social-icon {
+    @apply bg-[#2a5743] h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer transition hover:bg-white hover:text-black;
+  }
+  .nav {
+    @apply flex flex-row gap-4 md:gap-[32px] text-[16px] list-none;
+  }
+  .transition {
+    @apply transition-all duration-500 ease-in-out;
   }
 }

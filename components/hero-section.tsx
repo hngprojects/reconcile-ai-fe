@@ -9,7 +9,7 @@ export default function HeroSection() {
         <h1 className="font-bold text-4xl flex-wrap lg:leading-[3.5rem] lg:text-[3rem]">
           AI-Powered Financial Reconciliation <br /> in Minutes, Not Hours
         </h1>
-        <p className="text-sm text-[#475467] my-2 lg:text-[1.2rem] mt-4 lg:w-[48rem]">
+        <p className="text-sm text-[#1a212b] my-2 lg:text-[1.2rem] mt-4 lg:w-[48rem]">
           Automate, compare, and reconcile transactions effortlessly with AI. No
           more manual matching—get accurate results in seconds.
         </p>
