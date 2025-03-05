@@ -28,7 +28,6 @@ jobs:
             npm install
 
 
-            tmux kill-session -t 0 || true
+            tmux kill-session -t 12 || true
 
-            tmux new-session -d -s 0 'PORT=3000 npm run dev'
-
+            tmux new-session -d -s 12 'PORT=3000 npm run dev'
