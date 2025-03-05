@@ -12,7 +12,7 @@ const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
   const [selected, setSelected] = useState<number | null>(null);
 
   return (
-    <div className=" overflow-hidden">
+    <div className=" overflow-hidden border-green-500">
       <ul className="divide-y divide-[#E6E8EB] ">
         {faqs.map((faq, index) => (
           <AccordionItem
