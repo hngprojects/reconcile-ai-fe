@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Container from "./components/Container";
 import Header from "./components/Header";
-import Image from "next/image";
-import videoImg from "./video/video-img.png";
 import bgImg from "./img/bg.png";
 import Footer from "./components/Footer";
 import { Gradient1, Gradient2 } from "./components/Icons";
@@ -34,8 +32,8 @@ const ComingSoonPage = () => {
       }}
     >
       <Header />
-      <div className="w-full h-full flex-1 flex items-center justify-center">
-        <Container className="h-full w-full relative flex items-center justify-center py-6 sm:py-8 ">
+      <div className="w-full h-full relative flex-1 flex items-center justify-center">
+        <Container className="h-full w-full  flex items-center justify-center py-6 sm:py-8 ">
           <Gradient1 />
           <Gradient2 />
           <div className="w-9/10 flex flex-col-reverse gap-8 sm:flex-row text-center sm:text-left justify-between items-center">
@@ -54,12 +52,17 @@ const ComingSoonPage = () => {
               </div>
             </div>
             <div>
-              <Image
-                alt="video of product"
-                src={videoImg}
-                width={405}
-                height={430}
-              />
+              <div className="w-full max-w-[450px]">
+                <video
+                  loop
+                  controls
+                  playsInline
+                  className="w-full h-full rounded-lg shadow-xl"
+                >
+                  <source src="/video.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </div>
           </div>
         </Container>
