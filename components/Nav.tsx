@@ -4,7 +4,8 @@ import { Button } from "./ui/button";
 import { Logo } from "../app/coming-soon/components/Icons";
 import { useState } from "react";
 import { MenuIcon } from "lucide-react";
-import Link from "next/link"
+import Link from "next/link";
+
 
 
 const Nav = () => {
@@ -23,7 +24,7 @@ const Nav = () => {
           </Link>
         </Button>
         <Button className="bg-[#2E604A] text-white hidden md:block">
-          <Link href='https://reconxi.com/'>
+          <Link href="/sign-up">
             Sign Up
           </Link>
         </Button>
@@ -39,7 +40,7 @@ const Nav = () => {
           </Link>
           </Button>
           <Button className="bg-[#2E604A] text-white">
-           <Link href='https://reconxi.com/'>
+           <Link href="/sign-up">
             Sign Up
           </Link>
           </Button>
