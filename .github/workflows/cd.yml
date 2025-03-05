@@ -28,9 +28,6 @@ jobs:
             npm install
 
 
-            tmux send-keys -t 0 C-c
-            tmux attach -t 0
+            tmux kill-session -t reconcile-fe || true
 
-            # chmod -R 755 /var/www/html/reconcile-ai-fe/.next
-
-            PORT=3000 npm run dev
+            tmux new-session -d -s reconcile-fe 'PORT=3000 npm run dev'
