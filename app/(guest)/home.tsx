@@ -1,12 +1,13 @@
 import React from "react";
-import Feature2 from "@/components/Feature2";
+
 import HeroSection from "@/components/hero-section";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import FeaturesSection from "@/components/FeaturesSection";
+
 import FAQSection from "@/components/FAQs/FAQSection";
 import Features1 from "@/components/features1";
 import CTASection from "@/components/CTASection"
+import Features from "@/components/Features";
 
 export default function HomePage() {
   return (
@@ -14,8 +15,7 @@ export default function HomePage() {
       <Nav />
       <HeroSection />
       <Features1/>
-      <Feature2 />
-      <FeaturesSection />
+      <Features/>
       <FAQSection />
       <CTASection />
       <Footer />
