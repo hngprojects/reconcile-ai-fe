@@ -4,8 +4,8 @@ import HeroSection from "@/components/hero-section";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import FeaturesSection from "@/components/FeaturesSection";
-import Features1 from "@/components/features1";
-import CTASection from "@/components/CTASection";
+import Features1 from "@/components/features1";d
+import CTASection from "@/components/CTASection";d
 
 export default function HomePage() {
   return (
