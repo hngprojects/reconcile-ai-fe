@@ -18,18 +18,19 @@ jobs:
           script: |
             cd /var/www/html/reconcile-ai-fe
 
-            # Reset any local changes
             git reset --hard HEAD
             git clean -fd
             git pull origin main --force
 
-            # Install dependencies
-            npm install -g pnpm  # Ensure pnpm is installed
+
+            git pull origin main
+
             npm install
 
-            # Kill any running process on port 3000
-            sudo fuser -k 3000/tcp || true
 
-            # Restart tmux session
-            tmux kill-session -t reconcile-fe || true
-            tmux new-session -d -s reconcile-fe 'PORT=3000 npm run dev'
+            tmux send-keys -t 0 C-c
+            tmux attach -t 0
+
+            # chmod -R 755 /var/www/html/reconcile-ai-fe/.next
+
+            PORT=3000 npm run dev
