@@ -17,18 +17,18 @@ const Form = () => {
   return (
     <form onSubmit={(e) => handleSubmit(e)} className="flex flex-col gap-4">
       <p className="text-[16px]">Stay up to date</p>
-      <div className="flex gap-4">
+      <div className="flex md:flex-row flex-col gap-4">
         <input
           required
           type="email"
           placeholder="Enter your email"
-          className="input w-[315px]"
+          className="input md:w-[315px]"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Button
           variant="outline"
-          className={`border-primary h-12 w-[115px] ${
+          className={`border-primary h-12 md:w-[115px] ${
             subscribed ? "text-destructive" : "text-primary"
           } `}
         >

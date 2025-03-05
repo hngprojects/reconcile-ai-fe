@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Instagram, Linkedin, Facebook, Twitter } from "lucide-react";
-// import Form from "./Form";
+import Form from "./Form";
 
 const Footer = () => {
   return (
@@ -39,7 +39,7 @@ const Footer = () => {
             </Link>
           </nav>
         </div>
-        {/* <Form /> */}
+        <Form />
       </section>
       <p className="text-[16px] ">© 2025 ReconXi Ltd. All rights reserved.</p>
     </footer>
