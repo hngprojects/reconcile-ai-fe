@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Features1() {
   return (
-    <main className="max-w-[100rem] mx-auto my-[6rem] overflow-x-hidden relative lg:h-[512px]">
+    <main className="pl-24 mx-auto my-[6rem] relative lg:h-[512px]">
       <div className="flex flex-col lg:flex-row overflow-y-hidden items-center gap-10 lg:gap-24 h-full pr-0 lg:pr-0 relative">
         {/* Left Text Section */}
         <div className="flex flex-col items-start gap-[32px] flex-[1_0_0]">

@@ -20,8 +20,8 @@ const Features = () => {
   ];
 
   return (
-    <div className="max-w-[90rem] mx-auto px-4 my-[6rem] overflow-x-hidden">
-      <div className="flex items-center mx-auto max-w-[768px] flex-col mb-16">
+    <div className="px-4 my-[6rem]">
+      <div className="flex items-center flex-col mb-16">
         <p className="text-[#2A5743] mb-[12px] font-semibold">How it Works</p>
         <h3 className="text-[28px] sm:text-[32px] md:text-[36px] font-semibold mb-[20px] leading-[36px] text-[#101828] sm:leading-[40px] md:leading-[44px] tracking-[-0.02em] text-center ">
           Analytics that feels like it&apos;s from the future
