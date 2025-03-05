@@ -18,17 +18,21 @@ jobs:
           script: |
             cd /var/www/html/reconcile-ai-fe
 
+            # Reset and clean Git repository
             git reset --hard HEAD
             git clean -fd
-            git pull origin main --force
-
-
             git pull origin main
 
+            # Install dependencies
             npm install
 
+            # Install PM2 locally if not already installed
+            npm install pm2 --save-dev
 
-            tmux kill-session -t 12 || true
+            # Stop the previous instance if it exists
+            npx pm2 delete reconcile-fe
 
-            tmux new-session -d -s 12 'npm run dev'
+            # Start the application with PM2 
+            npx pm2 start npm --name "reconcile-fe" -- run dev
 
+            npx pm2 save
