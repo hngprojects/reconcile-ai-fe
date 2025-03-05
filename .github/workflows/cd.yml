@@ -1,7 +1,7 @@
 name: Deploy Next.js to EC2
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
@@ -18,17 +18,22 @@ jobs:
           script: |
             cd /var/www/html/reconcile-ai-fe
 
+            # Reset and clean Git repository
             git reset --hard HEAD
             git clean -fd
-            git pull origin main --force
-
-
             git pull origin main
 
+            # Install dependencies
             npm install
 
+            # Install PM2 globally if not already installed
+            npm install -g pm2 || true
 
-            tmux kill-session -t 12 || true
+            # Stop the previous instance if it exists
+            pm2 stop reconcile-fe || true
+            pm2 delete reconcile-fe || true
 
-            tmux new-session -d -s 12 'npm run dev'
+            # Start the application with PM2 
+            pm2 start npm --name "reconcile-fe" -- run dev
 
+            pm2 save
