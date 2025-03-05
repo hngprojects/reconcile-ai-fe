@@ -1,5 +1,7 @@
+
 import Image from "next/image";
 import HomePage from "./(guest)/home";
+import ComingSoon from "./(guest)/ComingSoon";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
