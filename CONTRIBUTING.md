@@ -81,7 +81,7 @@ Our repository uses two primary branches:
 
 1. **Open a PR:**
    - Navigate to your fork on GitHub.
-   - Open a pull request (PR) from your `feature/<feature-name>` branch to the team repository’s `feature` branch.
+   - Open a pull request (PR) from your `feature/<feature-name>` branch to the team repository’s `dev` branch.
    - template
 
     # What does the PR do?
@@ -103,8 +103,8 @@ Our repository uses two primary branches:
 
 2. **Review and Merge:**
    - The PR will undergo code review and automated checks.
-   - Once approved, a maintainer will merge your PR into `feature`.
-   - After sufficient testing and validation on `feature`, changes will be promoted to the `dev` branch by maintainers.
+   - Once approved, a maintainer will merge your PR into `dev`.
+   - After sufficient testing and validation on `dev`, changes will be promoted to the `main` branch by maintainers.
 
 **Note:** Direct pushes to the team repository are disabled by branch protection rules.
 
