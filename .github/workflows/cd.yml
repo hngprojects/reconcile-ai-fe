@@ -1,11 +1,11 @@
 name: Deploy Next.js to EC2
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
-  pull_request:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
