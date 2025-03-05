@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  deploy:
+  pull_request:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,6 +34,11 @@ jobs:
             # Fix permissions for .next directory
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R www-data:www-data /var/www/html/reconcile-ai-fe/.next
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chmod -R 755 /var/www/html/reconcile-ai-fe/.next
+
+            # Kill existing tmux session (if any)
+            tmux send-keys -t 0 C-c
+
+            tmux attach -t 0
 
             # Restart Nginx
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
