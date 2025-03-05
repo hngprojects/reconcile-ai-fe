@@ -121,7 +121,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    font-family: "Baloo Paaji 2", sans-serif;
+    font-family: "Inter", sans-serif;
   }
   body {
     @apply bg-background text-foreground;
