@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,7 +12,7 @@ export default function SigninPage() {
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-//   const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({
     email: '',
     password: ''
@@ -168,11 +168,11 @@ export default function SigninPage() {
           {/* Remember Me and Forgot Password */}
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-2">
-              {/* <Checkbox 
+               <Checkbox 
                 id="remember-me"
                 checked={rememberMe}
                 onCheckedChange={() => setRememberMe(!rememberMe)}
-              /> */}
+              /> 
               <label
                 htmlFor="remember-me"
                 className="text-[14px] sm:text-[16px] font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
