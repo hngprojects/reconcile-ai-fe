@@ -34,7 +34,7 @@ const faqItems: FAQ[] = [
 
 const FAQSection = () => {
   return (
-    <section className="px-5 sm:px-[50px] md:px-[150px] lg:px-[270px] py-[96px]">
+    <section className="px-5 sm:px-[30px] md:px-[100px] lg:px-[250px] xl:px-[350px] py-[96px]">
       <div className="w-full">
         <div className="flex flex-col gap-[20px] text-center">
           <h1 className="font-inter text-[#101828] font-semibold text-[36px] leading-[44px] text-gray-900 my-0">
