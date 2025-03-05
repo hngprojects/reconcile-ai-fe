@@ -1,39 +1,44 @@
 import React from "react";
-import { Button } from "./ui/button";
 import Image from "next/image";
-import Link from "next/link"
+import Link from "next/link";
+import Container from "./Container";
 
 export default function HeroSection() {
   return (
-    <div className="md:py-16 md:px-32 bg-[#F9FAFB]">
-      <div className="flex flex-col  items-center text-center m-5">
-        <h1 className="font-bold text-4xl flex-wrap lg:leading-[3.5rem] lg:text-[3rem]">
-          AI-Powered Financial Reconciliation <br /> in Minutes, Not Hours
-        </h1>
-        <p className="text-sm text-[#1a212b] my-2 lg:text-[1.2rem] mt-4 lg:w-[48rem]">
-          Automate, compare, and reconcile transactions effortlessly with AI. No
-          more manual matching—get accurate results in seconds.
-        </p>
-        <div className="flex flex-col items-center gap-6 my-5 md:flex-row">
-          <Link href="/">
-            <Button
-              variant="outline"
-              className="border-primary text-primary h-12 w-[13.875rem]"
+    <section className="sm:bg-[#F9FAFB]">
+      <Container className="py-4 sm:py-10">
+        <div className="flex flex-col items-center text-center">
+          <h1 className="font-semibold text-[28px] sm:text-5xl text-[#101828] max-w-[1024px] flex-wrap lg:leading-[3.5rem] lg:text-[3rem]">
+            AI-Powered Financial Reconciliation in Minutes, Not Hours
+          </h1>
+          <p className="text-[#475467] sm:text-xl max-w-[768px] mt-4">
+            Automate, compare, and reconcile transactions effortlessly with AI.
+            No more manual matching—get accurate results in seconds.
+          </p>
+          <div className="flex flex-col items-center justify-center w-full gap-6 my-6 sm:flex-row">
+            <Link
+              className="bg-white py-2 px-4 rounded-md font-semibold justify-center items-center w-full sm:w-56 border border-primary h-12 text-sm text-primary hover:text-white hover:bg-primary flex"
+              href="/"
             >
-              Start Reconcilation
-            </Button>
-          </Link>
-          <Link href="/"><Button className="h-12 w-[13.875rem]">Sign Up</Button></Link>
+              Start Reconciliation
+            </Link>
+            <Link
+              className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-56 text-sm text-white hover:bg-primary/90 flex"
+              href="/"
+            >
+              Sign Up
+            </Link>
+          </div>
+          <Image
+            src="/assets/images/macbook_mockup.svg"
+            alt="macbook mockup"
+            width={621}
+            height={387}
+            className="mt-6 mb-2"
+            quality={100}
+          />
         </div>
-        <Image
-          src="/assets/images/macbook_mockup.svg"
-          alt="macbook mockup"
-          width={621}
-          height={387}
-          className="mt-10"
-          quality={100}
-        />
-      </div>
-    </div>
+      </Container>
+    </section>
   );
 }
