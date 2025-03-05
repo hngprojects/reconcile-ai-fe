@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -14,13 +15,15 @@ export default function HeroSection() {
           more manual matching—get accurate results in seconds.
         </p>
         <div className="flex flex-col items-center gap-6 my-5 md:flex-row">
-          <Button
-            variant="outline"
-            className="border-primary text-primary h-12 w-[13.875rem]"
-          >
-            Start Reconcilation
-          </Button>
-          <Button className="h-12 w-[13.875rem]">Sign Up</Button>
+          <Link href="/">
+            <Button
+              variant="outline"
+              className="border-primary text-primary h-12 w-[13.875rem]"
+            >
+              Start Reconcilation
+            </Button>
+          </Link>
+          <Link href="/"><Button className="h-12 w-[13.875rem]">Sign Up</Button></Link>
         </div>
         <Image
           src="/assets/images/macbook_mockup.svg"
