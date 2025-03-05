@@ -1,3 +1,4 @@
+
 import HomePage from "./(guest)/home";
 import ComingSoon from "./(guest)/ComingSoon";
 import { Metadata } from "next";
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
     "AI-Powered Financial Reconciliation in Minutes, Not Hours. Automate, compare, and reconcile transactions effortlessly with AI. No more manual matching—get accurate results in seconds.",
 };
 export default function Home() {
-  return <ComingSoon />;
+  return <HomePage />;
 }
