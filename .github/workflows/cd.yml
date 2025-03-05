@@ -18,6 +18,10 @@ jobs:
           script: |
             cd /var/www/html/reconcile-ai-fe
 
+            git reset --hard HEAD
+            git clean -fd
+            git pull origin main --force
+
             git pull origin main
 
             npm install
