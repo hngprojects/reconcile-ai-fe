@@ -16,11 +16,11 @@ const faqItems: FAQ[] = [
   },
   {
     question: "What types of files can I upload to ReconXi?",
-    answer: "You can upload CSV files for both your bank statements and company ledger. Reconcile AI will automatically match transactions based on the data from these files, making the reconciliation process fast and easy."
+    answer: "You can upload CSV files for both your bank statements and company ledger. ReconXi will automatically match transactions based on the data from these files, making the reconciliation process fast and easy."
   },
   {
     question: "Is my data secure with ReconXi?",
-    answer: "Absolutely! ReconXi AI is designed to handle both personal and business financial reconciliation needs."
+    answer: "Absolutely! ReconXi is designed to handle both personal and business financial reconciliation needs."
   },
   {
     question: "Can I use ReconXi for personal finances?",
@@ -34,7 +34,7 @@ const faqItems: FAQ[] = [
 
 const FAQSection = () => {
   return (
-    <section className="flex justify-center py-[96px]">
+    <section className="min-w-[100%] p-[30px] sm:px-[50px] md:px-[100px] lg:px-[200px] xl:px-[350px] justify-center py-[96px]">
       <div className="gap-[8px]">
         <div className="flex flex-col gap-[20px] text-center">
           <h1 className="font-inter text-[#101828] font-semibold text-[36px] leading-[44px] text-gray-900 my-0">

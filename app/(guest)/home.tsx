@@ -7,7 +7,7 @@ import Nav from "@/components/Nav";
 import FAQSection from "@/components/FAQs/FAQSection";
 import Features1 from "@/components/features1";
 import CTASection from "@/components/CTASection"
-import Features from "@/components/Features";
+import Featurex from "@/components/Featurex";
 
 export default function HomePage() {
   return (
@@ -15,7 +15,8 @@ export default function HomePage() {
       <Nav />
       <HeroSection />
       <Features1/>
-      <Features/>
+      <Featurex/>
+      <Featurex/>
       <FAQSection />
       <CTASection />
       <Footer />
