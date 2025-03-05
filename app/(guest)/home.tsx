@@ -17,6 +17,7 @@ export default function HomePage() {
       <Features1/>
       <Featurex/>
       <Featurex/>
+      <Featurex/>
       <FAQSection />
       <CTASection />
       <Footer />
