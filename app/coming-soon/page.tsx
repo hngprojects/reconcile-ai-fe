@@ -26,7 +26,7 @@ const Page = () => {
 
   return (
     <div
-      className="flex flex-col min-h-screen bg-center overflow-hidden"
+      className="flex flex-col font-inter min-h-screen bg-center overflow-hidden"
       style={{
         backgroundImage: showBg ? `url(${bgImg.src})` : "none",
         backgroundSize: "contain",
@@ -40,10 +40,10 @@ const Page = () => {
         <div className="w-9/10 flex flex-col-reverse gap-6 sm:flex-row text-center sm:text-left justify-between items-center">
           <div className="flex flex-col gap-6 sm:gap-12 max-w-[500px]">
             <div className="space-y-3">
-              <h3 className="text-3xl  sm:text-5xl font-medium">
+              <h3 className="text-3xl  sm:text-5xl font-inter text-black font-medium">
                 We are creating something amazing
               </h3>
-              <p>
+              <p className="font-inter text-black">
                 We will launch our website soon! Be the first to be notified
                 when we go live!
               </p>

@@ -57,7 +57,7 @@ const EmailSubscribeForm = () => {
                   />
                   <Button
                     type="submit"
-                    className="absolute right-0 top-1/2 transform -translate-y-1/2 h-full bg-[#2E604A]"
+                    className="absolute right-0 top-1/2 transform !px-4 -translate-y-1/2 h-full bg-[#2E604A]"
                   >
                     Notify Me <Send className="ml-2" />
                   </Button>
