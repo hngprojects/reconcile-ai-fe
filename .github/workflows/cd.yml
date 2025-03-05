@@ -33,6 +33,6 @@ jobs:
             npx pm2 delete reconcile-fe
 
             # Start the application with PM2 
-            npx pm2 start npm --name "reconcile-fe" -- run dev
+            PORT=3005 npx pm2 start npm --name "reconcile-fe" -- run dev
 
             npx pm2 save
