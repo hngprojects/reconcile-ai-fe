@@ -1,7 +1,7 @@
 name: Deploy Next.js to EC2
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -19,20 +19,16 @@ jobs:
             # Allow Git to work inside the directory
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git config --global --add safe.directory /var/www/html/reconcile-ai-fe
 
-            # Navigate to the project directory
             cd /var/www/html/reconcile-ai-fe
 
-            # Pull latest changes
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git pull origin main
 
             # Set correct permissions for deployment
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R $USER:$USER /var/www/html/reconcile-ai-fe
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chmod -R 775 /var/www/html/reconcile-ai-fe
 
-            # Install dependencies
             npm install
 
-            # Build Next.js application
             npm run build
 
             # Fix permissions for .next directory
