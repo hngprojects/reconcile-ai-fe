@@ -1,7 +1,7 @@
 name: Deploy Next.js to EC2
 
 on:
-  push:
+  pull_request:
     branches: [main]
 
 jobs:
@@ -21,7 +21,9 @@ jobs:
 
             cd /var/www/html/reconcile-ai-fe
 
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git pull origin main
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git reset --hard HEAD
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git clean -fd
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git pull origin main --force
 
             # Set correct permissions for deployment
             echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R $USER:$USER /var/www/html/reconcile-ai-fe
