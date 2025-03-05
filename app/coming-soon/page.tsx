@@ -34,7 +34,7 @@ const Page = () => {
       }}
     >
       <Header />
-      <Container className="flex items-center w-full justify-center relative h-full flex-1">
+      <Container className="flex items-center w-full justify-center relative h-full py-6 sm:py-8 flex-1">
         <Gradient1 />
         <Gradient2 />
         <div className="w-9/10 flex flex-col-reverse gap-6 sm:flex-row text-center sm:text-left justify-between items-center">
