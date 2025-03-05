@@ -1,7 +1,7 @@
 name: Deploy Next.js to EC2
 
 on:
-  pull_request:
+  push:
     branches: [main]
 
 jobs:
@@ -16,31 +16,16 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-            # Allow Git to work inside the directory
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git config --global --add safe.directory /var/www/html/reconcile-ai-fe
-
             cd /var/www/html/reconcile-ai-fe
 
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git reset --hard HEAD
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git clean -fd
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git pull origin main --force
-
-            # Set correct permissions for deployment
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R $USER:$USER /var/www/html/reconcile-ai-fe
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chmod -R 775 /var/www/html/reconcile-ai-fe
+            git pull origin main
 
             npm install
 
-            npm run build
 
-            # Fix permissions for .next directory
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R www-data:www-data /var/www/html/reconcile-ai-fe/.next
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chmod -R 755 /var/www/html/reconcile-ai-fe/.next
-
-            # Kill existing tmux session (if any)
             tmux send-keys -t 0 C-c
-
             tmux attach -t 0
 
-            # Restart Nginx
-            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
+            # chmod -R 755 /var/www/html/reconcile-ai-fe/.next
+
+            PORT=3000 npm run dev
