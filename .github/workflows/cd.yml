@@ -30,4 +30,4 @@ jobs:
 
             tmux kill-session -t reconcile-fe || true
 
-            tmux new-session -d -s reconcile-fe 'PORT=3000 npm run dev'
+            tmux new-session -d -s 0 'PORT=3000 npm run dev'
