@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Instagram, Linkedin, Facebook, Twitter } from "lucide-react";
 import Form from "./Form";
+import Image from "next/image";
 
 const Footer = () => {
   return (
@@ -9,7 +10,8 @@ const Footer = () => {
       <section className="flex max-w-[1280px] w-[80%] max-lg:flex-col max-lg:gap-8">
         <div className="flex-1 flex flex-col gap-4 ">
           <div className="flex flex-col gap-2">
-            <Link href="/">
+            <Link href="/" className="flex gap-2 items-center">
+              <Image src={"/Vector.png"} alt="logo" height={25} width={25} />
               <h2 className="font-extrabold text-[36px] font-baloo">ReconXi</h2>
             </Link>
             <div className="flex gap-4">
