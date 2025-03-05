@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "./ui/button";
+import Link from "next/link"
 
 const CTASection = () => {
   return (
@@ -15,9 +16,11 @@ const CTASection = () => {
           </p>
         </div>
 
-        <Button className="font-semibold bg-[#2E604A] hover:bg-[#2E604A]/90">
-          Get Started
-        </Button>
+        <Link href="/">
+          <Button className="font-semibold bg-[#2E604A] hover:bg-[#2E604A]/90">
+            Get Started
+          </Button>
+        </Link>
       </div>
     </div>
   );

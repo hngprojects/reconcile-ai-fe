@@ -7,28 +7,28 @@ interface FAQ {
 
 const faqItems: FAQ[] = [
   {
-    question: "What is Reconxi?",
-    answer: "Reconxi AI is an AI-powered financial reconciliation tool designed to help businesses automate the process of matching transactions between their bank statements and company ledgers. By using advanced algorithms, the tool saves time, reduces human error, and ensures your financial records are accurate and up-to-date."
+    question: "What is ReconXi?",
+    answer: "ReconXi is an AI-powered financial reconciliation tool designed to help businesses automate the process of matching transactions between their bank statements and company ledgers. By using advanced algorithms, the tool saves time, reduces human error, and ensures your financial records are accurate and up-to-date."
   },
   {
-    question: "Is Reconxi really free to use??",
-    answer: "Yes! For now, Reconxi is completely free as part of our MVP release. You can sign up and start using the tool without any cost. We want you to experience the simplicity and efficiency it offers while we continue to improve it. This free access will be available for a limited time, so sign up now!"
+    question: "Is ReconXi really free to use??",
+    answer: "Yes! For now, ReconXi is completely free as part of our MVP release. You can sign up and start using the tool without any cost. We want you to experience the simplicity and efficiency it offers while we continue to improve it. This free access will be available for a limited time, so sign up now!"
   },
   {
-    question: "What types of files can I upload to Reconcile AI?",
+    question: "What types of files can I upload to ReconXi?",
     answer: "You can upload CSV files for both your bank statements and company ledger. Reconcile AI will automatically match transactions based on the data from these files, making the reconciliation process fast and easy."
   },
   {
-    question: "Is my data secure with Reconcile AI?",
+    question: "Is my data secure with ReconXi?",
     answer: "Absolutely! ReconXi AI is designed to handle both personal and business financial reconciliation needs."
   },
   {
-    question: "Can I use Reconxi for personal finances?",
+    question: "Can I use ReconXi for personal finances?",
     answer: "Absolutely! Your privacy and security are our top priorities. All data uploaded to Reconxi is encrypted and securely processed using industry-standard encryption protocols. We do not share your data with third parties and comply with strict data protection standards."
   },
   {
-    question: "Will Reconxi integrate with other financial software (e.g., QuickBooks, Xero)?",
-    answer: "Currently, Reconxi supports manual file uploads (CSV) for reconciliation. As we move forward, we plan to add integrations with popular financial software like QuickBooks and Xero to streamline your workflow even further. Stay tuned for future updates as we continue to improve the tool!"
+    question: "Will ReconXi integrate with other financial software (e.g., QuickBooks, Xero)?",
+    answer: "Currently, ReconXi supports manual file uploads (CSV) for reconciliation. As we move forward, we plan to add integrations with popular financial software like QuickBooks and Xero to streamline your workflow even further. Stay tuned for future updates as we continue to improve the tool!"
   }
 ];
 
