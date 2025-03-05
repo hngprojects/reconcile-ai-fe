@@ -16,24 +16,30 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
+            # Allow Git to work inside the directory
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git config --global --add safe.directory /var/www/html/reconcile-ai-fe
+
             # Navigate to the project directory
             cd /var/www/html/reconcile-ai-fe
 
-            sudo git config --global --add safe.directory /var/www/html/reconcile-ai-fe
-
             # Pull latest changes
-            sudo git pull origin main
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S git pull origin main
+
+            # Set correct permissions for deployment
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R $USER:$USER /var/www/html/reconcile-ai-fe
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chmod -R 775 /var/www/html/reconcile-ai-fe
 
             # Install dependencies
-            sudo npm install
+            npm install
 
-            # # Build Next.js application
-            # sudo npm run build
+            # Build Next.js application
+            # npm run build
 
-            # # Reset ownership for Nginx
-            # sudo chown -R www-data:www-data /var/www/html/reconcile-ai-fe
-
-            # Restart Nginx
-            sudo systemctl restart nginx
+            # Set correct permissions for Next.js `.next` folder
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chown -R www-data:www-data /var/www/html/reconcile-ai-fe
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S chmod -R 755 /var/www/html/reconcile-ai-fe
 
             npm run dev
+
+            # Restart Nginx
+            echo "${{ secrets.EC2_PASSWORD }}" | sudo -S systemctl restart nginx
