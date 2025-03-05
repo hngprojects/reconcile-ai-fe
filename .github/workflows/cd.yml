@@ -25,6 +25,9 @@ jobs:
 
             git pull origin main
 
+            pkill -f "next" || true
+
+
             npm install
 
 
