@@ -1,48 +1,38 @@
-# name: Deploy to EC2
+name: Deploy Next.js to EC2
 
-# on:
-#   push:
-#     branches: [main]
+on:
+  push:
+    branches: [main]
 
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - uses: actions/checkout@v3
+    steps:
+      - name: Deploy and start application
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          script: |
+            cd /var/www/html/reconcile-ai-fe
 
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "18"
-#           cache: "npm"
+            # Reset and clean Git repository
+            git reset --hard HEAD
+            git clean -fd
+            git pull origin main
 
-#       - name: Install dependencies
-#         run: npm ci
+            # Install dependencies
+            npm install
 
-#       - name: Run tests
-#         run: npm test
+            # Install PM2 locally if not already installed
+            npm install pm2 --save-dev
 
-#       - name: Build
-#         run: npm run build
+            # Stop the previous instance if it exists
+            npx pm2 delete reconcile-fe
 
-#       - name: Deploy to EC2
-#         uses: appleboy/scp-action@master
-#         # with:
-#         #   host: ${{ secrets.EC2_HOST }}
-#         #   username: ${{ secrets.EC2_USERNAME }}
-#         #   key: ${{ secrets.EC2_SSH_KEY }}
-#         #   source: ".next/,public/,package.json,package-lock.json,next.config.js"
-#         #   target: "/home/${{ secrets.EC2_USERNAME }}/nextjs-app"
+            # Start the application with PM2 
+            PORT=3005 npx pm2 start npm --name "reconcile-fe" -- run dev
 
-#       # - name: Start application
-#       #   uses: appleboy/ssh-action@master
-#       #   with:
-#       #     host: ${{ secrets.EC2_HOST }}
-#       #     username: ${{ secrets.EC2_USERNAME }}
-#       #     key: ${{ secrets.EC2_SSH_KEY }}
-#       #     script: |
-#       #       cd /home/${{ secrets.EC2_USERNAME }}/nextjs-app
-#       #       npm install --production
-#       #       pm2 stop nextjs-app || true
-#       #       pm2 start npm --name "nextjs-app" -- start
+            npx pm2 save
