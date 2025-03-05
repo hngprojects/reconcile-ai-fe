@@ -4,14 +4,18 @@ import HeroSection from "@/components/hero-section";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 import FeaturesSection from "@/components/FeaturesSection";
+import Features1 from "@/components/features1";
+import CTASection from "@/components/CTASection"
 
 export default function HomePage() {
   return (
     <main>
       <Nav />
       <HeroSection />
+      <Features1/>
       <Feature2 />
       <FeaturesSection />
+      <CTASection />
       <Footer />
     </main> 
   );

@@ -19,14 +19,14 @@ const FeaturesSection = () => {
             alt="Feature Icon"
           />
         </div>
-        <h3 className="text-2xl lg:text-[30px] font-semibold mb-4 lg:mb-[16px] text-[#101828]">
+        <h3 className="text-2xl text-center lg:text-left lg:text-[30px] font-semibold mb-4 lg:mb-[16px] text-[#101828]">
           Real-Time Insights & Reporting
         </h3>
-        <p className="text-base lg:text-[18px] text-[#475467] mb-6 lg:mb-[32px]">
+        <p className="text-base text-center lg:text-left lg:text-[18px] text-[#475467] mb-6 lg:mb-[32px]">
           Gain deeper insights with interactive reports. Filter, drill down, and
           export reconciliation summaries with ease.
         </p>
-        <ul className="list-none ml-0 lg:ml-[16px]">
+        <ul className="list-none flex flex-col items-center lg:items-start ml-1 lg:ml-[16px]">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center mb-4 lg:mb-[20px]">
               <CheckCircle2Icon className="text-[#297B65] mr-3 w-6 h-6" />
