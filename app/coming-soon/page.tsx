@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 import { Gradient1, Gradient2 } from "./components/Icons";
 import EmailSubscribeForm from "./components/form/EmailSubscribeForm";
 
-const Page = () => {
+const ComingSoonPage = () => {
   const [showBg, setShowBg] = useState(false);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const Page = () => {
       <Container className="flex items-center w-full justify-center relative h-full py-6 sm:py-8 flex-1">
         <Gradient1 />
         <Gradient2 />
-        <div className="w-9/10 flex flex-col-reverse gap-6 sm:flex-row text-center sm:text-left justify-between items-center">
+        <div className="w-9/10 flex flex-col-reverse gap-8 sm:flex-row text-center sm:text-left justify-between items-center">
           <div className="flex flex-col gap-6 sm:gap-12 max-w-[500px]">
             <div className="space-y-3">
               <h3 className="text-3xl  sm:text-5xl font-inter text-black font-medium">
@@ -67,4 +67,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default ComingSoonPage;
