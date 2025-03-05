@@ -13,13 +13,13 @@ const Footer = () => {
               <h2 className="font-extrabold text-[36px] font-baloo">ReconXi</h2>
             </Link>
             <div className="flex gap-4">
-              <Link href="" className="social-icon">
+              <Link href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#" className="social-icon">
                 <Instagram />
               </Link>
               <Link href="" className="social-icon">
                 <Facebook />
               </Link>
-              <Link href="" className="social-icon">
+              <Link href="https://www.linkedin.com/in/recon-xi-b06835354" className="social-icon">
                 <Linkedin />
               </Link>
               <Link href="" className="social-icon">
