@@ -15,14 +15,16 @@ const Nav = () => {
   };
   return (
     <nav className="flex justify-between items-center py-6 px-10 border-b-[0.5px] border-[#0000001A]">
-      <Logo />
+      <Link href='https://reconxi.com/home'>
+        <Logo />
+      </Link>
       <div className="flex gap-2">
-        <Link href='https://reconxi.com/'>
+        <Link href='https://reconxi.com/home'>
           <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block">
             Login
           </Button>
         </Link>        
-        <Link href='https://reconxi.com/'>
+        <Link href='https://reconxi.com/home'>
           <Button className="bg-[#2E604A] text-white hidden md:block">
             Sign Up
           </Button>
@@ -33,12 +35,12 @@ const Nav = () => {
       </div>
       {isOpen && (
         <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 flex flex-col gap-2 md:hidde w-[70%]">
-          <Link href='https://reconxi.com/'>
+          <Link href='https://reconxi.com/home'>
             <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block">
               Login
             </Button>
           </Link> 
-          <Link href='https://reconxi.com/'>
+          <Link href='https://reconxi.com/home'>
             <Button className="bg-[#2E604A] text-white hidden md:block">
               Sign Up
             </Button>
