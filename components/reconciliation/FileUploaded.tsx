@@ -1,24 +1,19 @@
 import React from "react";
 import Image from "next/image";
 
-const FileUploaded = ({ width }: { width: string }) => {
+const FileUploaded = ({ document }: { document: string }) => {
   return (
-    <div className="w-full h-[220px] py-[40px] px-[20px] text-[#333] flex flex-col justify-center items-center gap-[20px] border-1 border-[#333] rounded-[12px]">
-      <Image src="/csv-icon.svg" width={30} height={40} alt="+" />
-      <div className="w-full flex gap-2">
-        <div className="flex-1 ">
-          <p className="text-[16px] mb-2">Bank Statement.csv</p>
-          <div className="w-full h-[8px] bg- rounded-full">
-            <div
-              style={{ width: `${width}` }}
-              className={`bg-[#2e604a] h-full rounded-full`}
-            ></div>
-          </div>
-        </div>
-        <div className="flex justify-center items-center flex-col">
-          <Image src="/delete-icon.svg" width={17} height={17} alt="x" />
-          <small>{width}</small>
-        </div>
+    <div className="w-full max-md:w-full md:h-[220px] h-[124px] py-[40px] px-[20px] text-[#333] flex flex-col justify-center items-center gap-[20px] border-1 border-[#333] rounded-[12px] relative">
+      <Image
+        className="w-[16px] h-[24px] md:h-[40px] md:w-[30px]"
+        src="/csv-icon.svg"
+        width={30}
+        height={40}
+        alt="+"
+      />
+      <div>{document}</div>
+      <div className="absolute top-4 right-4 cursor-pointer">
+        <Image src="/red-delete.svg" width={15} height={16.67} alt="x" />
       </div>
     </div>
   );
