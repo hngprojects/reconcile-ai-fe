@@ -2,7 +2,7 @@
 import { Button } from "./ui/button";
 import { Logo } from "../app/coming-soon/components/Icons";
 import { useState } from "react";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 
 const Nav = () => {
@@ -11,36 +11,46 @@ const Nav = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <nav className="flex justify-between items-center py-6 px-10 border-b-[0.5px] border-[#0000001A]">
-      <Link href="/home">
+      <Link href="https://reconxi.com/home">
         <Logo />
       </Link>
+          
       <div className="flex gap-2">
-        <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block">
-          <Link href="/sign-in">Login</Link>
-        </Button>
-        <Button className="bg-[#2E604A] text-white hidden md:block">
-          <Link href="/sign-up">Sign Up</Link>
-        </Button>
-        <button onClick={toggleMenu} className="md:hidden">
+        <Link href="https://reconxi.com/login">
+          <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block cursor-pointer">
+            Login
+          </Button>
+        </Link>
+        <Link href="https://reconxi.com/signup">
+          <Button className="bg-[#2E604A] text-white hidden md:block cursor-pointer">
+            Sign Up
+          </Button>
+        </Link>
+        <button onClick={toggleMenu} className="md:hidden cursor-pointer" aria-label="Toggle menu">
           <MenuIcon size={24} />
         </button>
       </div>
-      {isOpen && (
-        <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 flex flex-col gap-2 md:hidde w-[70%]">
-          <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white">
-            <Link href="https://reconxi.com/">Login</Link>
+      
+      <div className={`fixed inset-0 bg-[#2E604A] flex flex-col items-center gap-4 md:hidden z-10 transition-transform duration-300 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-70'}`}>
+        <button onClick={toggleMenu} className="absolute top-6 right-6 text-white cursor-pointer" aria-label="Close menu">
+          <XIcon size={32} />
+        </button>
+        <Link href="https://reconxi.com/login" className="w-[80%]">
+          <Button className="bg-transparent border-2 border-white text-white w-full text-lg mt-[100px] cursor-pointer">
+            Login
           </Button>
-          <Button className="bg-[#2E604A] text-white">
-            <Link href="/sign-up">Sign Up</Link>
-          </Button>
-        </div>
-      )}
-    </nav>
+        </Link>
 
-    // </div>
-    // </nav>
+        <Link href="https://reconxi.com/signup" className="w-[80%]">
+          <Button className="bg-white text-[#2E604A] w-full text-lg cursor-pointer hover:bg-transparent hover:text-white hover:border-2 hover:border-white">
+            Sign Up
+          </Button>
+        </Link>
+      </div>
+    </nav>
   );
 };
 
