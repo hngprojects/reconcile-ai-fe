@@ -97,7 +97,10 @@ const Footer = () => {
 
             <div className="sm:w-1/2 w-full">
               <nav className="hidden sm:flex items-center gap-8">
-                <Link href="/" className="hover:underline underline-offset-2">
+                <Link
+                  href="/contact"
+                  className="hover:underline underline-offset-2"
+                >
                   Contact Us
                 </Link>
                 <Link
