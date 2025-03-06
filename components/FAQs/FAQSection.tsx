@@ -53,7 +53,7 @@ const FAQSection = () => {
               Everything you need to know about ReconXi.
             </p>
           </div>
-          <div className="my-12">
+          <div className="mt-12">
             <FAQAccordion faqs={faqItems} />
           </div>
         </div>
