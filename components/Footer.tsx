@@ -63,7 +63,7 @@ const Footer = () => {
             <Link href="/terms-conditions" className="cursor-pointer">
               Term of Service
             </Link>
-            <Link href="/" className="cursor-pointer">
+            <Link href="/privacy" className="cursor-pointer">
               Privacy Policy
             </Link>
           </nav>
