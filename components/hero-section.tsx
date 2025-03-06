@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -9,18 +10,20 @@ export default function HeroSection() {
         <h1 className="font-bold text-4xl flex-wrap lg:leading-[3.5rem] lg:text-[3rem]">
           AI-Powered Financial Reconciliation <br /> in Minutes, Not Hours
         </h1>
-        <p className="text-sm text-[#475467] my-2 lg:text-[1.2rem] mt-4 lg:w-[48rem]">
+        <p className="text-sm text-[#1a212b] my-2 lg:text-[1.2rem] mt-4 lg:w-[48rem]">
           Automate, compare, and reconcile transactions effortlessly with AI. No
           more manual matching—get accurate results in seconds.
         </p>
         <div className="flex flex-col items-center gap-6 my-5 md:flex-row">
-          <Button
-            variant="outline"
-            className="border-primary text-primary h-12 w-[13.875rem]"
-          >
-            Start Reconcilation
-          </Button>
-          <Button className="h-12 w-[13.875rem]">Sign Up</Button>
+          <Link href="/">
+            <Button
+              variant="outline"
+              className="border-primary text-primary h-12 w-[13.875rem]"
+            >
+              Start Reconcilation
+            </Button>
+          </Link>
+          <Link href="/sign-up"><Button className="h-12 w-[13.875rem]">Sign Up</Button></Link>
         </div>
         <Image
           src="/assets/images/macbook_mockup.svg"
