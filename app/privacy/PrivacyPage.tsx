@@ -15,7 +15,7 @@ const PrivacyPage = () => {
 
                     <p className="text-[#009A49] bg-[#E6FFF2] px-3 py-1 text-sm rounded-2xl inline-block w-fit mb-6 mx-auto">Privacy</p>
 
-                    <h1 className="md:text-[60px] text-4xl font-semibold mb-6">How We Protect Your Information</h1>
+                    <h1 className="md:text-[60px] text-4xl font-semibold mb-6">How We <span className="text-[#2E604A]">Protect</span> Your Information</h1>
 
                     <p className="text-md text-[#525252]">Find advice and answers from our support team</p>
                 </div>

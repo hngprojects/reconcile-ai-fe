@@ -1,4 +1,4 @@
-name: Next.js CI/CD
+name: Next.js CI
 
 on:
   pull_request:
@@ -6,18 +6,20 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: hng12interns
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Lint
+      - name: Run Linting
         run: npm run lint

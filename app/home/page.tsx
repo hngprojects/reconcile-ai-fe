@@ -1,5 +1,5 @@
 import HomePage from "./../(guest)/home";
 
-export default function LadningPage() {
-    return <HomePage />;
-  }
+export default function LandingPage() {
+  return <HomePage />;
+}
