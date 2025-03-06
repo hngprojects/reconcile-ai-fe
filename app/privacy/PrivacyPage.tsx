@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Button } from "@/components/ui/button";
+
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -13,18 +15,19 @@ const PrivacyPage = () => {
 
                     <p className="text-[#009A49] bg-[#E6FFF2] px-3 py-1 text-sm rounded-2xl inline-block w-fit mb-6 mx-auto">Privacy</p>
 
-                    <h1 className="md:text-[60px] text-[28px] font-semibold mb-6">How We Protect Your Information</h1>
+                    <h1 className="md:text-[60px] text-4xl font-semibold mb-6">How We Protect Your Information</h1>
 
-                    <p className="text-md">Find advice and answers from our support team</p>
+                    <p className="text-md text-[#525252]">Find advice and answers from our support team</p>
                 </div>
             </header>
 
+            {/* table of content section */}
             <section className="py-12 px-6 bg-[#F9FAFB]">
                 <div className="flex justify-center">
-                    <div className="max-w-[1120px] w-full flex lg:flex-row flex-col lg:gap-22">
+                    <div className="max-w-[1120px] w-full flex lg:flex-row flex-col lg:gap-22 gap-8">
 
                         <div className="max-w-[306px] w-full">
-                            <h2 className="md:text-4xl text-2xl mb-2 font-semibold">Table of Content</h2>
+                            <h2 className="md:text-4xl text-3xl mb-2 font-semibold">Table of Content</h2>
 
                             <ul className="list-disc pl-5">
                                 <li className="font-semibold text-[16px] mb-2">Introductions</li>
@@ -40,13 +43,13 @@ const PrivacyPage = () => {
 
                         <div>
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Introduction</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Introduction</h3>
 
                                 <p className="font-normal text-[16px] text-[#475467] ">At ReconXi, we value your privacy and are committed to safeguarding your personal information. This Privacy Policy explains what data we collect, how we use it, and the steps we take to ensure its security. By using our services, you agree to the terms outlined in this policy.</p>
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Information We Collect</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Information We Collect</h3>
 
                                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">We collect information to deliver and improve our reconciliation services, including:</p>
 
@@ -60,7 +63,7 @@ const PrivacyPage = () => {
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">How We Use Your Information</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">How We Use Your Information</h3>
 
                                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">We collect information to deliver and improve our reconciliation services, including:</p>
 
@@ -74,7 +77,7 @@ const PrivacyPage = () => {
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Data Sharing and Security</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Data Sharing and Security</h3>
 
                                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">We do not sell your personal information to third parties. </p>
 
@@ -82,33 +85,33 @@ const PrivacyPage = () => {
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Your Choices and Right</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Your Choices and Right</h3>
 
                                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">You have certain rights regarding your personal information, including: </p>
 
                                 <p className="font-normal text-[16px] text-[#475467] ">
-                                    Access & Correct Your Data: Update or modify your account details anytime. <br/>
-                                    Delete Your Data: Request data deletion, subject to compliance with legal obligations. <br/>
+                                    Access & Correct Your Data: Update or modify your account details anytime. <br />
+                                    Delete Your Data: Request data deletion, subject to compliance with legal obligations. <br />
                                     Manage Cookies & Tracking: Adjust settings in your browser to control cookies and tracking mechanisms.
                                 </p>
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Policy Updates</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Policy Updates</h3>
 
                                 <p className="font-normal text-[16px] text-[#475467] ">Policy Updates We may revise this Privacy Policy periodically. Any updates will be posted on our platform, and significant changes will be communicated to you.
                                 </p>
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Contact Us</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Contact Us</h3>
 
                                 <p className="font-normal text-[16px] text-[#475467] ">For any privacy-related concerns, reach out to us at info@ReconXi.com.
                                 </p>
                             </div>
 
                             <div className="mb-6">
-                                <h3 className="mb-[10px] md:text-2xl text-[22px] font-semibold ">Last Updated</h3>
+                                <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">Last Updated</h3>
 
                                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">This Privacy Policy was last updated on 05/03/2025.</p>
 
@@ -119,6 +122,28 @@ const PrivacyPage = () => {
 
                 </div>
             </section>
+
+            {/* try it for free */}
+            <section className="md:pt-12 md:pb-24 py-5">
+
+                <div className="max-w-[1280px] mx-auto py-16 md:px-16 px-8 bg-[#F5FAF8]">
+                    <div className="flex lg:flex-row flex-col md:gap-10 gap-4 justify-between items-start">
+                        <div className="max-w-[768px] w-fu;;">
+                            <h2 className="md:text-4xl text-3xl mb-4 font-semibold">Try it for Free</h2>
+
+                            <p className="text-xl text-[#475467] ">We are offering it completely free for a limited time Get access to all features while we continue to improve.</p>
+                        </div>
+
+                        <div>
+                            <Button className="bg-[#2E604A] text-white font-semibold px-5 py-3 text-[16px]">
+                                Sign Up
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+                
+            </section>
+
             <Footer />
         </div>
     )
