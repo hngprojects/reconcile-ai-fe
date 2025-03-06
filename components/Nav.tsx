@@ -3,6 +3,7 @@
 import { Logo } from "../app/coming-soon/components/Icons";
 import { useState } from "react";
 import { MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import Container from "./Container";
 
@@ -12,6 +13,7 @@ const Nav = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
   return (
     <nav className="border-b-[0.5px] border-[#0000001A]">
       <Container className="flex py-4 justify-between w-full items-center">
