@@ -20,7 +20,7 @@ const UploadFile = () => {
                     </div>
                 </div>
             </div>
-            <div className='h-full border border-[#dddddd] lg:px-[47px] py-[20px] md:px-[28px] rounded-[18.22px] px-[25px]'>
+            <div className='h-full border border-[#dddddd] lg:px-[47px] py-[20px] md:px-[28px] rounded-[18.22px] px-[16px]'>
                 <div className='h-full flex flex-col justify-between'>
                     <h1 className='text-[#333333] font-semibold md:text-2xl  md:leading-[33.6px] text-[16px] leading-[22.4px]'>Upload Company's Ledger</h1>
                     <div>
