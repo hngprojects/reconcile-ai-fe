@@ -13,7 +13,7 @@ const balooPaaji2 = Baloo_Paaji_2({
 });
 
 export const metadata: Metadata = {
-  title: "AI-Powered Financial Reconciliation System",
+  title: "ReconXi",
   description:
     "AI-Powered Financial Reconciliation in Minutes, Not Hours. Automate, compare, and reconcile transactions effortlessly with AI. No more manual matching—get accurate results in seconds.",
 };
