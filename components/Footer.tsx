@@ -89,7 +89,7 @@ const Footer = () => {
 
             <div className="sm:w-1/2 w-full">
               <nav className="nav">
-                <Link href="/" className="cursor-pointer">
+                <Link href="/contact" className="cursor-pointer">
                   Contact Us
                 </Link>
                 <Link href="/terms-conditions" className="cursor-pointer">
