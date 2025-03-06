@@ -21,13 +21,13 @@ const Nav = () => {
         <div className="flex gap-2">
           <Link
             className="bg-white py-2 px-4 rounded-md font-semibold justify-center items-center border-2 border-primary h-9 text-sm text-primary hover:text-white hover:bg-primary hidden sm:flex"
-            href="/"
+            href="/sign-in"
           >
             Login
           </Link>
           <Link
             className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-9 text-sm text-white hover:bg-primary/90 hidden sm:flex"
-            href="/"
+            href="/sign-up"
           >
             Sign Up
           </Link>
@@ -39,13 +39,13 @@ const Nav = () => {
           <div className="absolute top-16 right-10 bg-white shadow-md rounded-md p-4 flex flex-col gap-2 sm:hidde w-[70%]">
             <Link
               className="bg-white py-2 px-4 rounded-md font-semibold justify-center items-center border-2 border-primary h-9 text-sm text-primary hover:text-white hover:bg-primary flex"
-              href="/"
+              href="/sign-in"
             >
               Login
             </Link>
             <Link
               className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-9 text-sm text-white hover:bg-primary/90 flex"
-              href="/"
+              href="/sign-up"
             >
               Sign Up
             </Link>

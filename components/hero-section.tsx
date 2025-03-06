@@ -24,7 +24,7 @@ export default function HeroSection() {
             </Link>
             <Link
               className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-56 text-sm text-white hover:bg-primary/90 flex"
-              href="/"
+              href="/sign-up"
             >
               Sign Up
             </Link>
