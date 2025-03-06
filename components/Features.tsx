@@ -1,7 +1,11 @@
+"use client";
 import Image from "next/image";
 import { CheckCircle2Icon } from "lucide-react";
+import SadFaceModal from "./SadFaceModal";
+import React, { useState } from "react";
 
 const Features = () => {
+ 
   const firstFeature = [
     "Leverage automation to move fast",
     "Always give customers a human to chat to",
@@ -154,7 +158,10 @@ const Features = () => {
           />
         </div>
       </div>
+
     </div>
+
+ 
   );
 };
 
