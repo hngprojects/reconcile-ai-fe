@@ -1,8 +1,7 @@
 "use client";
 import Image from "next/image";
 import { CheckCircle2Icon } from "lucide-react";
-import SadFaceModal from "./SadFaceModal";
-import React, { useState } from "react";
+import React from "react";
 
 const Features = () => {
  

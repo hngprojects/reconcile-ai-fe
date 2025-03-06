@@ -1,7 +1,12 @@
 import React from 'react'
 import Image from "next/image";
 
-const SadFaceModal = ({ isOpen, onClose }: any) => {
+type SadFaceModalProps = {
+    isOpen: boolean; // "isOpen" should be a boolean
+    onClose: () => void; // "onClose" should be a function that returns nothing
+  };
+
+  const SadFaceModal = ({ isOpen, onClose }: SadFaceModalProps) => {
 
     if (!isOpen) return null;
     
