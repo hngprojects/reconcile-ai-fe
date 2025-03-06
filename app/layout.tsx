@@ -28,10 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
-        <Nav />
-
         {children}
-        <Footer />
       </body>
     </html>
   );

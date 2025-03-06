@@ -2,6 +2,8 @@ import React from "react";
 import HeadBanner from "@/components/HeadBanner";
 import CTASection from "@/components/CTASection";
 import TermsAndPolicy from "@/components/TermsAndPolicy";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 const page = () => {
   const data = {
@@ -14,9 +16,11 @@ const page = () => {
 
   return (
     <section className="flex flex-col">
+      <Nav />
       <HeadBanner data={data} />
       <TermsAndPolicy />
       <CTASection />
+      <Footer />
     </section>
   );
 };
