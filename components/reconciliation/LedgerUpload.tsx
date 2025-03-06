@@ -1,9 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import FileComponent from "./FileComponent";
 import FileUploaded from "./FileUploaded";
-import FileUploading from "./FileUploading";
 
 const LedgerUpload = ({
   title,

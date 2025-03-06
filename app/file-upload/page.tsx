@@ -7,7 +7,9 @@ import LedgerUpload from "@/components/reconciliation/LedgerUpload";
 import DeleteMsg from "@/components/reconciliation/DeleteMsg";
 
 const UploadFile = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [statement, setStatement] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ledger, setLedger] = useState(false);
   const [deleted, setDeleted] = useState(false);
 
