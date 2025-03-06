@@ -1,9 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { Instagram, Linkedin, Facebook, Twitter } from "lucide-react";
 import Container from "./Container";
 import FooterEmailForm from "./form/FooterEmail";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  LogoIcon,
+  TwitterIcon,
+} from "./Icon/Icons";
 
 const Footer = () => {
   return (
@@ -14,46 +19,49 @@ const Footer = () => {
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
               <div className="flex flex-col w-full sm:w-1/2 gap-4">
                 <div className="flex flex-col gap-2 ">
-                  <Link href="/" className="mb-6">
-                    <Image
-                      src="/assets/images/Logo-white.png"
-                      alt="ReconXi"
-                      width={159}
-                      height={50}
-                      className=" "
-                    />
-                    <span className="sr-only">ReconXi</span>
+                  <Link href="/home" className="w-fit">
+                    <div className="flex items-center justify-start gap-2">
+                      <LogoIcon
+                        color="white"
+                        className="sm:hidden"
+                        width={24}
+                        height={24}
+                      />
+                      <span className="font-extrabold text-lg sm:text-4xl font-baloo text-white">
+                        ReconXi
+                      </span>
+                    </div>
                   </Link>
                   <div className="hidden sm:flex gap-4">
                     <Link
                       href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                     >
-                      <Instagram />
+                      <InstagramIcon className="fill-inherit" />
                     </Link>
                     <Link
                       href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                     >
-                      <Facebook />
+                      <FacebookIcon className="fill-inherit" />
                     </Link>
                     <Link
                       href="https://www.linkedin.com/in/recon-xi-b06835354"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                     >
-                      <Linkedin />
+                      <LinkedinIcon className="fill-inherit" />
                     </Link>
                     <Link
                       href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                     >
-                      <Twitter />
+                      <TwitterIcon className="fill-inherit" />
                     </Link>
                   </div>
                 </div>
               </div>
 
-              <div className="w-full sm:w-1/2 pb-4 sm:pb-0 border-b sm:border-0 border-white">
+              <div className="w-full sm:w-1/2 pb-6 sm:pb-0 border-b sm:border-0 border-white">
                 <FooterEmailForm />
               </div>
 
@@ -61,47 +69,75 @@ const Footer = () => {
                 <div className="flex gap-4">
                   <Link
                     href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                   >
-                    <Instagram />
+                    <InstagramIcon className="fill-inherit" />
                   </Link>
                   <Link
                     href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                   >
-                    <Facebook />
+                    <FacebookIcon className="fill-inherit" />
                   </Link>
                   <Link
                     href="https://www.linkedin.com/in/recon-xi-b06835354"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                   >
-                    <Linkedin />
+                    <LinkedinIcon className="fill-inherit" />
                   </Link>
                   <Link
                     href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
                   >
-                    <Twitter />
+                    <TwitterIcon className="fill-inherit" />
                   </Link>
                 </div>
               </div>
             </div>
 
             <div className="sm:w-1/2 w-full">
-              <nav className="nav">
-                <Link href="/contact" className="cursor-pointer">
+              <nav className="hidden sm:flex items-center gap-8">
+                <Link
+                  href="/contact"
+                  className="hover:underline underline-offset-2"
+                >
                   Contact Us
                 </Link>
-                <Link href="/terms-conditions" className="cursor-pointer">
+                <Link
+                  href="/terms-conditions"
+                  className="hover:underline underline-offset-2"
+                >
                   Term of Service
                 </Link>
-                <Link href="/privacy" className="cursor-pointer">
+                <Link
+                  href="/privacy"
+                  className="hover:underline underline-offset-2"
+                >
                   Privacy Policy
+                </Link>
+              </nav>
+              <nav className="flex sm:hidden items-center gap-8">
+                <Link
+                  href="/terms-conditions"
+                  className="hover:underline underline-offset-2"
+                >
+                  Terms
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="hover:underline underline-offset-2"
+                >
+                  Privacy
+                </Link>
+                <Link href="/" className="hover:underline underline-offset-2">
+                  Contact Us
                 </Link>
               </nav>
             </div>
           </div>
-          <small className="">© 2025 ReconXi Ltd. All rights reserved.</small>
+          <span className="w-full mt-1 sm:text-center">
+            © 2025 ReconXi Ltd. All rights reserved.
+          </span>
         </div>
       </Container>
     </footer>
