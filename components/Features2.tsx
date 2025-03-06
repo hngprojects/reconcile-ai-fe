@@ -51,7 +51,7 @@ const Features = () => {
 
             <p className="sm:text-lg max-w-[560px] text-[#475467] mb-6">
               Effortlessly upload financial statements and customer records in
-              just a few clicks. Supported file formats: PDF, XLS, CSV.
+              just a few clicks. Supported file formats: CSV.
             </p>
 
             <ul className="list-none flex flex-col gap-3 items-start">

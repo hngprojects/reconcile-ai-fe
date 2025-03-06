@@ -54,7 +54,9 @@ const Footer = () => {
               </div>
 
               <div className="w-full sm:w-1/2 pb-4 sm:pb-0 border-b sm:border-0 border-white">
-                <FooterEmailForm />
+                <div className=" w-fit ml-auto">
+                  <FooterEmailForm />
+                </div>
               </div>
 
               <div className="flex sm:hidden w-full items-start flex-col gap-2 ">

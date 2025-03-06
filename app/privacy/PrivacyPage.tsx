@@ -127,7 +127,7 @@ const PrivacyPage = () => {
             <section className="md:pt-12 md:pb-24 py-5">
 
                 <div className="max-w-[1280px] mx-auto py-16 md:px-16 px-8 bg-[#F5FAF8]">
-                    <div className="flex lg:flex-row flex-col md:gap-10 gap-4 justify-between items-start">
+                    <div className="flex lg:flex-row flex-col md:gap-10 gap-4 justify-between items-center">
                         <div className="max-w-[768px] w-fu;;">
                             <h2 className="md:text-4xl text-3xl mb-4 font-semibold">Try it for Free</h2>
 
