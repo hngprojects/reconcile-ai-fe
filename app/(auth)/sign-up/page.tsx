@@ -1,19 +1,19 @@
-"use client"
-import React, { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+"use client";
+import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from 'next/image';
+import Image from "next/image";
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: ''
+    name: "",
+    email: "",
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const validateEmail = (email: string): boolean => {
@@ -23,33 +23,35 @@ export default function SignupPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     // Email validation
-    if (name === 'email') {
+    if (name === "email") {
       if (value && !validateEmail(value)) {
-        setErrors(prev => ({
+        setErrors((prev) => ({
           ...prev,
-          email: 'Please enter a valid email'
+          email: "Please enter a valid email",
         }));
       } else {
-        setErrors(prev => ({
+        setErrors((prev) => ({
           ...prev,
-          email: ''
+          email: "",
         }));
       }
     }
   };
 
   const isFormValid = () => {
-    return formData.name.trim() !== '' && 
-           formData.email.trim() !== '' && 
-           formData.password.trim() !== '' &&
-           validateEmail(formData.email) &&
-           !errors.email;
+    return (
+      formData.name.trim() !== "" &&
+      formData.email.trim() !== "" &&
+      formData.password.trim() !== "" &&
+      validateEmail(formData.email) &&
+      !errors.email
+    );
   };
 
   return (
@@ -57,17 +59,19 @@ export default function SignupPage() {
       <div className="w-full max-w-md sm:max-w-lg">
         {/* Logo */}
         <div className="flex justify-center mb-6 sm:mb-10">
-          <Image 
-            src="/Logo.svg" 
-            alt="Logo" 
-            width={64} 
-            height={64} 
+          <Image
+            src="/Logo.svg"
+            alt="Logo"
+            width={64}
+            height={64}
             className="w-16 h-16 sm:w-20 sm:h-20"
           />
         </div>
 
         {/* Create Account Text */}
-        <h2 className="text-center text-xl sm:text-2xl font-bold mb-6">Create Account</h2>
+        <h2 className="text-center text-xl sm:text-2xl font-bold mb-6">
+          Create Account
+        </h2>
 
         {/* Social Signup Buttons */}
         <div className="mb-6 flex flex-col sm:flex-row items-center gap-4">
@@ -75,27 +79,31 @@ export default function SignupPage() {
             variant="outline"
             className="w-full sm:w-1/2 border-[1px] border-[#CBD5E1] text-primary h-14 sm:h-16 cursor-pointer"
           >
-            <Image 
-              src="/GoogleIcon.svg" 
-              alt="Google" 
-              width={24} 
-              height={24} 
+            <Image
+              src="/GoogleIcon.svg"
+              alt="Google"
+              width={24}
+              height={24}
               className="mr-2"
             />
-            <span className='text-[#0A0A0A] text-[16px]'>Sign up with Google</span>
+            <span className="text-[#0A0A0A] text-[16px]">
+              Sign up with Google
+            </span>
           </Button>
           <Button
             variant="outline"
             className="w-full sm:w-1/2 border-[1px] border-[#CBD5E1] text-primary h-14 sm:h-16 cursor-pointer"
           >
-            <Image 
-              src="/FacebookIcon.svg" 
-              alt="Facebook" 
-              width={24} 
-              height={24} 
+            <Image
+              src="/FacebookIcon.svg"
+              alt="Facebook"
+              width={24}
+              height={24}
               className="mr-2"
             />
-            <span className='text-[#0A0A0A] text-[16px]'>Sign up with Facebook</span>
+            <span className="text-[#0A0A0A] text-[16px]">
+              Sign up with Facebook
+            </span>
           </Button>
         </div>
 
@@ -110,8 +118,8 @@ export default function SignupPage() {
         <form className="space-y-4 sm:space-y-6">
           {/* Name Input */}
           <div>
-            <label 
-              htmlFor="name" 
+            <label
+              htmlFor="name"
               className="block text-base sm:text-lg font-medium text-[#1E1E1E] mb-1"
             >
               Name
@@ -124,15 +132,15 @@ export default function SignupPage() {
               value={formData.name}
               onChange={handleInputChange}
               className={`w-full px-3 py-3 sm:px-4 sm:py-4 border-[1px] rounded-lg text-[#333333] text-[14px] sm:text-[16px] font-[400] 
-                ${formData.name ? 'border-green-500' : 'border-[#A1A1A1]'}
+                ${formData.name ? "border-green-500" : "border-[#A1A1A1]"}
                 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
 
           {/* Email Input */}
           <div>
-            <label 
-              htmlFor="email" 
+            <label
+              htmlFor="email"
               className="block text-base sm:text-lg font-medium text-[#1E1E1E] mb-1"
             >
               Email
@@ -145,19 +153,26 @@ export default function SignupPage() {
               value={formData.email}
               onChange={handleInputChange}
               className={`w-full px-3 py-3 sm:px-4 sm:py-4 border-[1px] rounded-lg text-[#333333] text-[14px] sm:text-[16px] font-[400]
-                ${errors.email ? 'border-red-500' : 
-                  (formData.email ? 'border-green-500' : 'border-[#A1A1A1]')}
+                ${
+                  errors.email
+                    ? "border-red-500"
+                    : formData.email
+                    ? "border-green-500"
+                    : "border-[#A1A1A1]"
+                }
                 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
             {errors.email && (
-              <p className="text-red-500 text-xs sm:text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 text-xs sm:text-sm mt-1">
+                {errors.email}
+              </p>
             )}
           </div>
 
           {/* Password Input */}
           <div>
-            <label 
-              htmlFor="password" 
+            <label
+              htmlFor="password"
               className="block text-base sm:text-lg font-medium text-[#1E1E1E] mb-1"
             >
               Password
@@ -171,13 +186,21 @@ export default function SignupPage() {
                 value={formData.password}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-3 sm:px-4 sm:py-4 border-[1px] rounded-lg pr-10 text-[#333333] text-[14px] sm:text-[16px] font-[400]
-                  ${formData.password ? 'border-green-500' : 'border-[#A1A1A1]'}
+                  ${formData.password ? "border-green-500" : "border-[#A1A1A1]"}
                   focus:outline-none focus:ring-2 focus:ring-blue-500`}
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                // onClick={() => setShowPassword(!showPassword)}
+                // sustaining focus onclick of the eye icon
+                onClick={(e) => {
+                  setShowPassword((prev) => !prev);
+                  (
+                    e.currentTarget.previousElementSibling as HTMLInputElement
+                  ).focus();
+                }}
                 className="absolute inset-y-0 right-0 px-3 flex items-center"
+                aria-label={showPassword ? "Hide password" : "Show password"}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -189,9 +212,11 @@ export default function SignupPage() {
             type="submit"
             disabled={!isFormValid()}
             className={`w-full py-4 sm:py-8 mt-4 rounded-lg cursor-pointer text-white font-semibold text-[14px] sm:text-[16px]
-              ${isFormValid() 
-                ? 'bg-[#2E604A] hover:bg-[#2E604A]/90' 
-                : 'bg-gray-400 cursor-not-allowed'}`}
+              ${
+                isFormValid()
+                  ? "bg-[#2E604A] hover:bg-[#2E604A]/90"
+                  : "bg-gray-400 cursor-not-allowed"
+              }`}
           >
             Create Account
           </Button>
@@ -200,8 +225,13 @@ export default function SignupPage() {
         {/* Login Link */}
         <div className="text-center mt-4">
           <p className="text-[12px] sm:text-[13px]">
-            <span className='font-[600] text-[#525252]'>Already Have an Account?</span>{' '}
-            <a href="/login" className="text-[#2E604A] font-[700] hover:underline">
+            <span className="font-[600] text-[#525252]">
+              Already Have an Account?
+            </span>{" "}
+            <a
+              href="/sign-in"
+              className="text-[#2E604A] font-[700] hover:underline"
+            >
               Login
             </a>
           </p>
