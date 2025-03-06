@@ -3,7 +3,6 @@
 import { Logo } from "../app/coming-soon/components/Icons";
 import { useState } from "react";
 import { MenuIcon, XIcon } from "lucide-react";
-import { MenuIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import Container from "./Container";
 
