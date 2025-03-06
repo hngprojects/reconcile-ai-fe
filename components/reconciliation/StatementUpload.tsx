@@ -6,7 +6,7 @@ import FileUploaded from "./FileUploaded";
 const StatementUpload = ({ title }: { title: string }) => {
   const [ledgerIsLoading, setLedgerIsLoading] = useState(false);
   const [statementIsLoading, setStatementIsLoading] = useState(false);
-  const [statement, setStatement] = useState(true);
+  const [statement, setStatement] = useState(false);
 
   return (
     <div className="w-[620px] rounded-xl py-[16px] md:py-[10px] px-[24px] flex flex-col gap-[24px] justify-center max-w-[450px] border-[1.2px] border-[#333]">
