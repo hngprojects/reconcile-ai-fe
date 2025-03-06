@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Baloo_Paaji_2 } from "next/font/google";
 import "./globals.css";
-import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,7 +26,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
-        <NextTopLoader color="#2E604A" showSpinner={false} />
         {children}
       </body>
     </html>
