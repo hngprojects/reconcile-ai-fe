@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: hng12interns
+    runs-on: reconcile
     timeout-minutes: 10
 
     steps:
