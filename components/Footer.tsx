@@ -89,13 +89,13 @@ const Footer = () => {
 
             <div className="sm:w-1/2 w-full">
               <nav className="nav">
-                <Link href="/" className="cursor-pointer">
+                <Link href="/" className="cursor-pointer inline-block max-sm:mb-2 pr-4">
                   Contact Us
                 </Link>
-                <Link href="/terms-conditions" className="cursor-pointer">
+                <Link href="/terms-conditions" className="cursor-pointer inline-block max-sm:mb-2 pr-4">
                   Term of Service
                 </Link>
-                <Link href="/privacy" className="cursor-pointer">
+                <Link href="/privacy" className="cursor-pointer inline-block max-sm:mb-2 pr-4">
                   Privacy Policy
                 </Link>
               </nav>
