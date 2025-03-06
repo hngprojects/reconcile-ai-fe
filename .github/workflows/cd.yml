@@ -1,13 +1,14 @@
-name: Next.js Production CD
+name: Next.js CD
 
 on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
   deploy:
-    runs-on: reconcile
+    runs-on: hng12interns
     timeout-minutes: 10
 
     steps:
@@ -18,10 +19,17 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-            FE_PATH="/var/www/html/reconcile-ai-fe"
-            PORT=3005
-            PM2_NAME="reconcile-fe"
-            URL="https://reconxi.com"
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              FE_PATH="/var/www/html/reconcile-ai-fe"
+              PORT=3005
+              PM2_NAME="reconcile-fe"
+              URL="https://reconxi.com"
+            else
+              FE_PATH="/var/www/html/reconcile-ai-fe-dev"
+              PORT=3006
+              PM2_NAME="reconcile-fe-dev"
+              URL="https://dev.reconxi.com"
+            fi
 
             echo "Deploying to $FE_PATH on port $PORT ($URL)"
 
@@ -30,10 +38,13 @@ jobs:
             # Reset and clean Git repository
             git reset --hard HEAD
             git clean -fd
-            git pull origin main
+            git pull origin $(basename $GITHUB_REF)
 
             # Install dependencies
             npm install
+
+            # Build the project for production
+            npm run build
 
             # Install PM2 locally if not installed
             npm install pm2 --save-dev
@@ -42,7 +53,7 @@ jobs:
             if npx pm2 list | grep -q "$PM2_NAME"; then
               npx pm2 restart "$PM2_NAME"
             else
-              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run dev
+              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
             fi
 
             # Save PM2 process list
@@ -51,4 +62,4 @@ jobs:
             # Restart NGINX to apply changes
             sudo systemctl restart nginx
 
-            echo "Production deployment completed successfully!"
+            echo "Deployment completed successfully!"
