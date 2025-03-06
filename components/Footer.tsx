@@ -23,16 +23,28 @@ const Footer = () => {
               </h2>
             </Link>
             <div className="flex gap-4">
-              <Link href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#" className="social-icon">
+              <Link
+                href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
+                className="social-icon"
+              >
                 <Instagram />
               </Link>
-              <Link href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v" className="social-icon">
+              <Link
+                href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
+                className="social-icon"
+              >
                 <Facebook />
               </Link>
-              <Link href="https://www.linkedin.com/in/recon-xi-b06835354" className="social-icon">
+              <Link
+                href="https://www.linkedin.com/in/recon-xi-b06835354"
+                className="social-icon"
+              >
                 <Linkedin />
               </Link>
-              <Link href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw" className="social-icon">
+              <Link
+                href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
+                className="social-icon"
+              >
                 <Twitter />
               </Link>
             </div>
@@ -48,10 +60,10 @@ const Footer = () => {
             <Link href="/" className="cursor-pointer">
               Contact Us
             </Link>
-            <Link href="/" className="cursor-pointer">
+            <Link href="/terms-conditions" className="cursor-pointer">
               Term of Service
             </Link>
-            <Link href="/" className="cursor-pointer">
+            <Link href="/privacy" className="cursor-pointer">
               Privacy Policy
             </Link>
           </nav>
