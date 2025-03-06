@@ -61,9 +61,10 @@ const Footer = () => {
               Contact Us
             </Link>
             <Link href="/terms-of-service" className="cursor-pointer">
+
               Term of Service
             </Link>
-            <Link href="/" className="cursor-pointer">
+            <Link href="/privacy" className="cursor-pointer">
               Privacy Policy
             </Link>
           </nav>
