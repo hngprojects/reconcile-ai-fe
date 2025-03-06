@@ -133,7 +133,7 @@
     @apply py-[10px] px-[14px] bg-white text-black rounded-[8px] outline-none border-none;
   }
   .footer {
-    @apply bg-[#214435] py-16 w-screen text-white flex flex-col gap-8 justify-center items-center;
+    @apply bg-[#214435] py-16 w-full text-white flex flex-col gap-8 justify-center items-center;
   }
   .social-icon {
     @apply bg-[#2a5743] h-[40px] w-[40px] rounded-full flex justify-center items-center cursor-pointer transition hover:bg-white hover:text-black;

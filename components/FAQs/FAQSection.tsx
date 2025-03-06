@@ -16,15 +16,15 @@ const faqItems: FAQ[] = [
   },
   {
     question: "What types of files can I upload to ReconXi?",
-    answer: "You can upload CSV files for both your bank statements and company ledger. Reconcile AI will automatically match transactions based on the data from these files, making the reconciliation process fast and easy."
+    answer: "You can upload CSV files for both your bank statements and company ledger. ReconXi will automatically match transactions based on the data from these files, making the reconciliation process fast and easy."
   },
   {
     question: "Is my data secure with ReconXi?",
-    answer: "Absolutely! ReconXi AI is designed to handle both personal and business financial reconciliation needs."
+    answer: "Absolutely! ReconXi is designed to handle both personal and business financial reconciliation needs."
   },
   {
     question: "Can I use ReconXi for personal finances?",
-    answer: "Absolutely! Your privacy and security are our top priorities. All data uploaded to Reconxi is encrypted and securely processed using industry-standard encryption protocols. We do not share your data with third parties and comply with strict data protection standards."
+    answer: "Absolutely! Your privacy and security are our top priorities. All data uploaded to ReconXi is encrypted and securely processed using industry-standard encryption protocols. We do not share your data with third parties and comply with strict data protection standards."
   },
   {
     question: "Will ReconXi integrate with other financial software (e.g., QuickBooks, Xero)?",
@@ -34,8 +34,8 @@ const faqItems: FAQ[] = [
 
 const FAQSection = () => {
   return (
-    <section className="flex justify-center py-[96px]">
-      <div className="gap-[8px]">
+    <section className="px-5 sm:px-[30px] md:px-[100px] lg:px-[250px] xl:px-[350px] py-[96px]">
+      <div className="w-full">
         <div className="flex flex-col gap-[20px] text-center">
           <h1 className="font-inter text-[#101828] font-semibold text-[36px] leading-[44px] text-gray-900 my-0">
             Frequently Asked Questions
@@ -45,13 +45,11 @@ const FAQSection = () => {
           </p>
         </div>
         <div className="my-[64]">
-        <FAQAccordion  faqs={faqItems} />
-
+          <FAQAccordion faqs={faqItems} />
         </div>
       </div>
     </section>
   );
 };
-
 
 export default FAQSection;

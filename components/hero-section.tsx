@@ -23,7 +23,7 @@ export default function HeroSection() {
               Start Reconcilation
             </Button>
           </Link>
-          <Link href="/"><Button className="h-12 w-[13.875rem]">Sign Up</Button></Link>
+          <Link href="/sign-up"><Button className="h-12 w-[13.875rem]">Sign Up</Button></Link>
         </div>
         <Image
           src="/assets/images/macbook_mockup.svg"
