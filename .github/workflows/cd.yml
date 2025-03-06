@@ -1,38 +1,58 @@
-name: Deploy Next.js to EC2
+name: Next.js CD
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - dev
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy and start application
+      - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-            cd /var/www/html/reconcile-ai-fe
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              FE_PATH="/var/www/html/reconcile-ai-fe"
+              PORT=3005
+              URL="https://reconxi.com"
+            else
+              FE_PATH="/var/www/html/reconcile-ai-fe-dev"
+              PORT=3006
+              URL="https://dev.reconxi.com"
+            fi
+
+            echo "Deploying to $FE_PATH on port $PORT ($URL)"
+
+            cd $FE_PATH
 
             # Reset and clean Git repository
             git reset --hard HEAD
             git clean -fd
-            git pull origin main
+            git pull origin $(basename $GITHUB_REF)
 
             # Install dependencies
             npm install
 
-            # Install PM2 locally if not already installed
+            # Install PM2 locally if not installed
             npm install pm2 --save-dev
 
             # Stop the previous instance if it exists
-            npx pm2 delete reconcile-fe
+            npx pm2 delete reconcile-fe || true
 
-            # Start the application with PM2 
-            PORT=3005 npx pm2 start npm --name "reconcile-fe" -- run dev
+            # Start the application with PM2
+            PORT=$PORT npx pm2 start npm --name "reconcile-fe" -- run start
 
+            # Save PM2 process list
             npx pm2 save
+
+            # Restart NGINX to apply changes
+            sudo systemctl restart nginx
+
+            echo "Deployment completed successfully!"
