@@ -14,17 +14,17 @@ const Nav = () => {
 
   return (
     <nav className="flex justify-between items-center py-6 px-10 border-b-[0.5px] border-[#0000001A]">
-      <Link href="https://reconxi.com/home">
+      <Link href="/home">
         <Logo />
       </Link>
           
       <div className="flex gap-2">
-        <Link href="https://reconxi.com/login">
+        <Link href="/login">
           <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block cursor-pointer">
             Login
           </Button>
         </Link>
-        <Link href="https://reconxi.com/signup">
+        <Link href="/signup">
           <Button className="bg-[#2E604A] text-white hidden md:block cursor-pointer">
             Sign Up
           </Button>
@@ -38,13 +38,13 @@ const Nav = () => {
         <button onClick={toggleMenu} className="absolute top-6 right-6 text-white cursor-pointer" aria-label="Close menu">
           <XIcon size={32} />
         </button>
-        <Link href="https://reconxi.com/login" className="w-[80%]">
+        <Link href="/login" className="w-[80%]">
           <Button className="bg-transparent border-2 border-white text-white w-full text-lg mt-[100px] cursor-pointer">
             Login
           </Button>
         </Link>
 
-        <Link href="https://reconxi.com/signup" className="w-[80%]">
+        <Link href="/signup" className="w-[80%]">
           <Button className="bg-white text-[#2E604A] w-full text-lg cursor-pointer hover:bg-transparent hover:text-white hover:border-2 hover:border-white">
             Sign Up
           </Button>
