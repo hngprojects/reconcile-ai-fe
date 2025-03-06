@@ -59,7 +59,6 @@ jobs:
             # Save PM2 process list
             npx pm2 save
 
-            # Restart NGINX to apply changes
-            sudo systemctl restart nginx
+
 
             echo "Deployment completed successfully!"
