@@ -1,14 +1,13 @@
-name: Next.js CD
+name: Next.js Production CD
 
 on:
   push:
     branches:
       - main
-      - dev
 
 jobs:
   deploy:
-    runs-on: hng12interns
+    runs-on: reconcile
     timeout-minutes: 10
 
     steps:
@@ -19,17 +18,10 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           password: ${{ secrets.EC2_PASSWORD }}
           script: |
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              FE_PATH="/var/www/html/reconcile-ai-fe"
-              PORT=3005
-              PM2_NAME="reconcile-fe"
-              URL="https://reconxi.com"
-            else
-              FE_PATH="/var/www/html/reconcile-ai-fe-dev"
-              PORT=3006
-              PM2_NAME="reconcile-fe-dev"
-              URL="https://dev.reconxi.com"
-            fi
+            FE_PATH="/var/www/html/reconcile-ai-fe"
+            PORT=3005
+            PM2_NAME="reconcile-fe"
+            URL="https://reconxi.com"
 
             echo "Deploying to $FE_PATH on port $PORT ($URL)"
 
@@ -38,14 +30,13 @@ jobs:
             # Reset and clean Git repository
             git reset --hard HEAD
             git clean -fd
-            git pull origin $(basename $GITHUB_REF)
+            git pull origin main
 
             # Install dependencies
             npm install
 
             # Install PM2 locally if not installed
             npm install pm2 --save-dev
-
 
             # Restart or start PM2 process
             if npx pm2 list | grep -q "$PM2_NAME"; then
@@ -60,4 +51,4 @@ jobs:
             # Restart NGINX to apply changes
             sudo systemctl restart nginx
 
-            echo "Deployment completed successfully!"
+            echo "Production deployment completed successfully!"
