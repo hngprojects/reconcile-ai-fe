@@ -18,10 +18,10 @@ const Nav = () => {
       </Link>
       <div className="flex gap-2">
         <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block">
-          <Link href="https://reconxi.com/">Login</Link>
+          <Link href="/sign-in">Login</Link>
         </Button>
         <Button className="bg-[#2E604A] text-white hidden md:block">
-          <Link href="https://reconxi.com/">Sign Up</Link>
+          <Link href="/sign-up">Sign Up</Link>
         </Button>
         <button onClick={toggleMenu} className="md:hidden">
           <MenuIcon size={24} />
@@ -33,7 +33,7 @@ const Nav = () => {
             <Link href="https://reconxi.com/">Login</Link>
           </Button>
           <Button className="bg-[#2E604A] text-white">
-            <Link href="https://reconxi.com/">Sign Up</Link>
+            <Link href="/sign-up">Sign Up</Link>
           </Button>
         </div>
       )}
