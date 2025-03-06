@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
 
 import FAQSection from "@/components/FAQs/FAQSection";
-import Features1 from "@/components/features1";
+import Features1 from "@/components/Feature";
 import CTASection from "@/components/CTASection";
 import Features2 from "@/components/Features2";
 
