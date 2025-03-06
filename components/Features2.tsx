@@ -24,9 +24,7 @@ const Features = () => {
     <section>
       <Container className="py-12">
         <div className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12">
-          <p className="hidden sm:block text-primary mb-[12px] font-semibold">
-            How it Works
-          </p>
+          <p className="text-primary mb-[12px] font-semibold">How it Works</p>
           <h3 className="text-3xl sm:text-4xl font-semibold mb-2 sm:mb-4 text-[#101828] ">
             Analytics that feels like it&apos;s from the future
           </h3>

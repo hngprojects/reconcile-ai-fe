@@ -16,17 +16,17 @@ export default function HeroSection() {
             No more manual matching—get accurate results in seconds.
           </p>
           <div className="flex flex-col items-center justify-center w-full gap-6 my-6 sm:flex-row">
-            <Link
+            {/* <Link
               className="bg-white py-2 px-4 rounded-md font-semibold justify-center items-center w-full sm:w-56 border border-primary h-12 text-sm text-primary hover:text-white hover:bg-primary flex"
               href="/"
             >
               Start Reconciliation
-            </Link>
+            </Link> */}
             <Link
-              className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-56 text-sm text-white hover:bg-primary/90 flex"
+              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
               href="/sign-up"
             >
-              Sign Up
+              Start Reconciliation
             </Link>
           </div>
           <Image

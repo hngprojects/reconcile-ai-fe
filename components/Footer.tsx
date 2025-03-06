@@ -18,12 +18,18 @@ const Footer = () => {
           <div className="w-full flex flex-col gap-8 items-start">
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
               <div className="flex flex-col w-full sm:w-1/2 gap-4">
-                <div className="flex flex-col gap-2 ">
+                <div className="flex flex-col gap-4">
                   <Link href="/home" className="w-fit">
                     <div className="flex items-center justify-start gap-2">
                       <LogoIcon
                         color="white"
-                        className="sm:hidden"
+                        className="hidden sm:block"
+                        width={48}
+                        height={48}
+                      />
+                      <LogoIcon
+                        color="white"
+                        className="block sm:hidden"
                         width={24}
                         height={24}
                       />
@@ -129,7 +135,10 @@ const Footer = () => {
                 >
                   Privacy
                 </Link>
-                <Link href="/" className="hover:underline underline-offset-2">
+                <Link
+                  href="/contact"
+                  className="hover:underline underline-offset-2"
+                >
                   Contact Us
                 </Link>
               </nav>
