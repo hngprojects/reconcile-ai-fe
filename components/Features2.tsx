@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CheckCircle2Icon } from "lucide-react";
 import Container from "./Container";
+import { FileIcon, ReportIcon, SpeedIcon } from "./Icon/Icons";
 
 const Features = () => {
   const firstFeature = [
@@ -23,9 +24,7 @@ const Features = () => {
     <section>
       <Container className="py-12">
         <div className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12">
-          <p className="hidden sm:block text-primary mb-[12px] font-semibold">
-            How it Works
-          </p>
+          <p className="text-primary mb-[12px] font-semibold">How it Works</p>
           <h3 className="text-3xl sm:text-4xl font-semibold mb-2 sm:mb-4 text-[#101828] ">
             Analytics that feels like it&apos;s from the future
           </h3>
@@ -36,13 +35,8 @@ const Features = () => {
         </div>
         <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-16">
           <div className="w-full text-center sm:mt-9 sm:text-left flex flex-col">
-            <div className="flex items-center justify-center w-12 h-12 bg-[#AEEACA] rounded-full mb-3 ">
-              <Image
-                src="./assets/images/upload-icon.svg"
-                width={19}
-                height={19}
-                alt="Feature Icon"
-              />
+            <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
+              <FileIcon />
             </div>
 
             <h3 className="text-3xl font-semibold mb-4 text-[#101828]">
@@ -83,13 +77,8 @@ const Features = () => {
             />
           </div>
           <div className="w-full text-center sm:mt-9 sm:text-left flex flex-col">
-            <div className="flex items-center justify-center w-12 h-12 bg-[#AEEACA] rounded-full mb-3 ">
-              <Image
-                src="./assets/images/zap-icon.svg"
-                width={19}
-                height={19}
-                alt="Feature Icon"
-              />
+            <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
+              <SpeedIcon />
             </div>
 
             <h3 className="text-3xl font-semibold mb-4 text-[#101828]">
@@ -114,13 +103,8 @@ const Features = () => {
 
         <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-16">
           <div className="w-full text-center sm:mt-9 sm:text-left flex flex-col">
-            <div className="flex items-center justify-center w-12 h-12 bg-[#AEEACA] rounded-full mb-3 ">
-              <Image
-                src="./assets/images/feature-icon.svg"
-                width={19}
-                height={19}
-                alt="Feature Icon"
-              />
+            <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
+              <ReportIcon />
             </div>
 
             <h3 className="text-3xl font-semibold mb-4 text-[#101828]">
