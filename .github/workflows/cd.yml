@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: hng12interns
 
     steps:
       - name: Deploy and Start Application
