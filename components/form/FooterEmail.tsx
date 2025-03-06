@@ -1,8 +1,8 @@
 "use client";
 import React, { FormEvent } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
-const Form = () => {
+const FooterEmail = () => {
   const [email, setEmail] = React.useState("");
   const [subscribed, setSubscribed] = React.useState(false);
   const handleSubmit = (e: FormEvent) => {
@@ -22,13 +22,13 @@ const Form = () => {
           required
           type="email"
           placeholder="Enter your email"
-          className="input md:w-[315px]"
+          className="py-2.5 px-3.5 bg-white text-black rounded-lg outline-none border-none w-full sm:w-[315px]"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <Button
           variant="outline"
-          className={`border-primary h-12 md:w-[115px] ${
+          className={`border-primary font-semibold cursor-pointer h-12 md:w-[115px] ${
             subscribed ? "text-destructive" : "text-primary"
           } `}
         >
@@ -39,4 +39,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FooterEmail;

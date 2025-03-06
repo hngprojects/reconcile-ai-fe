@@ -1,55 +1,68 @@
 "use client";
-import { Button } from "./ui/button";
-import { Logo } from "../app/coming-soon/components/Icons";
-import { useState } from "react";
-import { MenuIcon, XIcon } from "lucide-react";
+
+import { MenuIcon } from "lucide-react";
 import Link from "next/link";
+import Container from "./Container";
+import { LogoIcon } from "./Icon/Icons";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 
 const Nav = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <nav className="flex justify-between items-center py-6 px-10 border-b-[0.5px] border-[#0000001A]">
-      <Link href="/home">
-        <Logo />
-      </Link>
-          
-      <div className="flex gap-2">
-        <Link href="/login">
-          <Button className="bg-white border-2 border-[#2E604A] text-[#2E604A] hover:text-white hidden md:block cursor-pointer">
+    <nav className="border-b-[0.5px] border-[#0000001A]">
+      <Container className="flex py-4 justify-between w-full items-center">
+        <Link href="/home">
+          <div className="flex items-center justify-center gap-2">
+            <LogoIcon width={48} height={48} />
+            <span className="font-extrabold text-3xl font-baloo text-primary">
+              ReconXi
+            </span>
+          </div>
+        </Link>
+        <div className="flex gap-2">
+          <Link
+            className="bg-white py-2 px-4 rounded-md font-semibold justify-center items-center border-2 border-primary h-9 text-sm text-primary hover:text-white hover:bg-primary hidden sm:flex"
+            href="/sign-in"
+          >
             Login
-          </Button>
-        </Link>
-        <Link href="/signup">
-          <Button className="bg-[#2E604A] text-white hidden md:block cursor-pointer">
+          </Link>
+          <Link
+            className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-9 text-sm text-white hover:bg-primary/90 hidden sm:flex"
+            href="/sign-up"
+          >
             Sign Up
-          </Button>
-        </Link>
-        <button onClick={toggleMenu} className="md:hidden cursor-pointer" aria-label="Toggle menu">
-          <MenuIcon size={24} />
-        </button>
-      </div>
-      
-      <div className={`fixed inset-0 bg-[#2E604A] flex flex-col items-center gap-4 md:hidden z-10 transition-transform duration-300 ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-70'}`}>
-        <button onClick={toggleMenu} className="absolute top-6 right-6 text-white cursor-pointer" aria-label="Close menu">
-          <XIcon size={32} />
-        </button>
-        <Link href="/login" className="w-[80%]">
-          <Button className="bg-transparent border-2 border-white text-white w-full text-lg mt-[100px] cursor-pointer">
-            Login
-          </Button>
-        </Link>
-
-        <Link href="/signup" className="w-[80%]">
-          <Button className="bg-white text-[#2E604A] w-full text-lg cursor-pointer hover:bg-transparent hover:text-white hover:border-2 hover:border-white">
-            Sign Up
-          </Button>
-        </Link>
-      </div>
+          </Link>
+          <Sheet>
+            <SheetTrigger className="sm:hidden">
+              <MenuIcon size={24} />
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle className="sr-only">Side menu</SheetTitle>
+                <div className="flex mt-12 flex-col gap-2">
+                  <Link
+                    className="bg-white py-2 px-4 rounded-md font-semibold justify-center items-center border-2 border-primary h-9 text-sm text-primary hover:text-white hover:bg-primary flex"
+                    href="/sign-in"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-9 text-sm text-white hover:bg-primary/90 flex"
+                    href="/sign-up"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </Container>
     </nav>
   );
 };
