@@ -22,18 +22,7 @@ const Footer = () => {
                   <div>
                     <Link href="/home" className="w-fit">
                       <div className="flex items-center justify-start gap-2">
-                        <LogoIcon
-                          color="white"
-                          className="hidden sm:block"
-                          width={48}
-                          height={48}
-                        />
-                        <LogoIcon
-                          color="white"
-                          className="sm:hidden"
-                          width={24}
-                          height={24}
-                        />
+                        <LogoIcon className="fill-white h-6 w-6 sm:h-12 sm:w-12" />
                         <span className="font-extrabold text-lg sm:text-4xl font-baloo text-white">
                           ReconXi
                         </span>
@@ -69,25 +58,25 @@ const Footer = () => {
                 href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
               >
-                <InstagramIcon className="fill-inherit" />
+                <InstagramIcon className="fill-inherit w-6 h-6" />
               </Link>
               <Link
                 href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
               >
-                <FacebookIcon className="fill-inherit" />
+                <FacebookIcon className="fill-inherit w-6 h-6" />
               </Link>
               <Link
                 href="https://www.linkedin.com/in/recon-xi-b06835354"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
               >
-                <LinkedinIcon className="fill-inherit" />
+                <LinkedinIcon className="fill-inherit w-6 h-6" />
               </Link>
               <Link
                 href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
               >
-                <TwitterIcon className="fill-inherit" />
+                <TwitterIcon className="fill-inherit w-6 h-6" />
               </Link>
             </div>
           </div>

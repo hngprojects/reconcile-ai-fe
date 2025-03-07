@@ -18,7 +18,7 @@ const Features = () => {
 
   return (
     <section>
-      <Container className="py-12">
+      <Container className="py-6 sm:py-12">
         <div className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12">
           <p className="text-primary mb-[12px] font-semibold">How it Works</p>
           <h3 className="text-3xl sm:text-4xl font-semibold mb-2 sm:mb-4 text-[#101828] ">
