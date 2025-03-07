@@ -86,12 +86,25 @@ export default function FileUploadLayout({
         setReconcileProgress((prev) => Math.min(prev + 10, 90));
       }, 500);
 
-      await reconcileFiles(bankStatement, companyLedger, "amount");
+      console.log("Starting reconciliation process...");
+
+      const result = await reconcileFiles(
+        bankStatement,
+        companyLedger,
+        "amount"
+      );
+      console.log("Reconciliation result:", result);
+
       clearInterval(progressInterval);
       setReconcileProgress(100);
 
-      onReconcile(bankStatement, companyLedger);
+      // Wait for progress animation to complete
+      setTimeout(() => {
+        setShowUploadModal(false);
+        onReconcile(bankStatement, companyLedger);
+      }, 1000);
     } catch (error) {
+      console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
       setShowErrorModal(true);
     }
