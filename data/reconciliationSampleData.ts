@@ -35,7 +35,7 @@ export interface BankStatement {
 }
 
 export interface CompanyLedger {
-  id?: number,
+  id?: string,
   date: string;
   description: string;
   amount: number;
@@ -137,7 +137,7 @@ export const companyLedgerData: CompanyLedger[] = [
     date: "27/01/2024",
     description: "Salary",
     amount: 681321,
-    matched: "Matched",
+    matched: true,
   },
   {
     id: "2",
