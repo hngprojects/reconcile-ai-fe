@@ -27,7 +27,7 @@ export interface ReconciliationItem {
 
   type ResponseData = {
     matches: matched[],
-    unmatched: unmatched[],
+    unmatched: unmatched,
     only_in_file1: Transaction[],
     only_in_file2: Transaction[]
   }
@@ -53,8 +53,8 @@ export function useReconciliationLogic() {
     setData(JSON.parse(saved as string));
   }, []);
   
-  let bankData = [];
-  let ledgerData = [];
+  const bankData: Transaction[] = [];
+  const ledgerData: Transaction[] = [];
 
   if(data.matches){
     data.matches.map(data => {
