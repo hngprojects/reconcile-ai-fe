@@ -20,12 +20,8 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { StatusBadge } from "./StatusBadge";
 import { ChevronDown } from "lucide-react";
-import { useReconciliationLogic } from "@/hooks/useReconciliationLogic";
-import {
-  BankStatement,
-  CompanyLedger,
-  formatCurrency,
-} from "@/data/reconciliationSampleData";
+import { useReconciliationLogic, Transaction } from "@/hooks/useReconciliationLogic";
+import { formatCurrency } from "@/data/reconciliationSampleData";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,8 +30,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // Create column helpers
-const bankColumnHelper = createColumnHelper<BankStatement>();
-const ledgerColumnHelper = createColumnHelper<CompanyLedger>();
+const bankColumnHelper = createColumnHelper<Transaction>();
+const ledgerColumnHelper = createColumnHelper<Transaction>();
 
 type ReconciliationTableProps = {
   leftTableTitle?: string;
@@ -62,15 +58,15 @@ export function ReconciliationTable({
   // Define bank statement columns
   const bankColumns = React.useMemo(
     () => [
-      bankColumnHelper.accessor("date", {
+      bankColumnHelper.accessor("Date", {
         header: "Date",
         cell: (info) => info.getValue(),
       }),
-      bankColumnHelper.accessor("description", {
+      bankColumnHelper.accessor("Description", {
         header: "Description",
         cell: (info) => info.getValue(),
       }),
-      bankColumnHelper.accessor("amount", {
+      bankColumnHelper.accessor("Amount", {
         header: "Amount",
         cell: (info) => formatCurrency(info.getValue()),
       }),
@@ -81,15 +77,15 @@ export function ReconciliationTable({
   // Define company ledger columns
   const ledgerColumns = React.useMemo(
     () => [
-      ledgerColumnHelper.accessor("date", {
+      ledgerColumnHelper.accessor("Date", {
         header: "Date",
         cell: (info) => info.getValue(),
       }),
-      ledgerColumnHelper.accessor("description", {
+      ledgerColumnHelper.accessor("Description", {
         header: "Description",
         cell: (info) => info.getValue(),
       }),
-      ledgerColumnHelper.accessor("amount", {
+      ledgerColumnHelper.accessor("Amount", {
         header: "Amount",
         cell: (info) => formatCurrency(info.getValue()),
       }),
@@ -103,8 +99,8 @@ export function ReconciliationTable({
       paginatedBankData.map((bankItem) => ({
         matched: paginatedLedgerData.some(
           (ledgerItem) =>
-            ledgerItem.description === bankItem.description &&
-            ledgerItem.amount === bankItem.amount
+            ledgerItem['Description'] === bankItem['Description'] &&
+            ledgerItem['Amount'] === bankItem['Amount']
         ),
       })),
     [paginatedBankData, paginatedLedgerData]
@@ -282,8 +278,8 @@ export function ReconciliationTable({
                   paginatedBankData.map((bankItem, index) => {
                     const matchingLedger = paginatedLedgerData.find(
                       (ledger) =>
-                        ledger.description === bankItem.description &&
-                        ledger.amount === bankItem.amount
+                        ledger['Description'] === bankItem['Description'] &&
+                        ledger['Amount'] === bankItem['Amount']
                     );
                     const isMatched = !!matchingLedger;
 
@@ -304,9 +300,9 @@ export function ReconciliationTable({
                                 "max-w-[200px] md:max-w-none",
                                 "whitespace-nowrap overflow-hidden text-ellipsis"
                               )}
-                              title={matchingLedger.date}
+                              title={matchingLedger['Date']}
                             >
-                              {matchingLedger.date}
+                              {matchingLedger['Date']}
                             </TableCell>
                             <TableCell
                               className={cn(
@@ -314,9 +310,9 @@ export function ReconciliationTable({
                                 "max-w-[200px] md:max-w-none",
                                 "whitespace-nowrap overflow-hidden text-ellipsis"
                               )}
-                              title={matchingLedger.description}
+                              title={matchingLedger['Description']}
                             >
-                              {matchingLedger.description}
+                              {matchingLedger['Description']}
                             </TableCell>
                             <TableCell
                               className={cn(
@@ -324,9 +320,9 @@ export function ReconciliationTable({
                                 "max-w-[200px] md:max-w-none",
                                 "whitespace-nowrap overflow-hidden text-ellipsis"
                               )}
-                              title={formatCurrency(matchingLedger.amount)}
+                              title={formatCurrency(matchingLedger['Amount'])}
                             >
-                              {formatCurrency(matchingLedger.amount)}
+                              {formatCurrency(matchingLedger['Amount'])}
                             </TableCell>
                           </>
                         ) : (
