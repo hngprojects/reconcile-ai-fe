@@ -4,10 +4,7 @@ import Container from "./Container";
 import { FileIcon, SpeedIcon } from "./Icon/Icons";
 
 const Features = () => {
-  const firstFeature = [
-    "Leverage AI to move fast",
-    "Easy upload feature",
-  ];
+  const firstFeature = ["Leverage AI to move fast", "Easy upload feature"];
   const secondFeature = [
     "Instant records matching",
     "Clear status indicators: Matched, Unmatched",
@@ -28,7 +25,8 @@ const Features = () => {
             Analytics that feels like it&apos;s from the future
           </h3>
           <p className="sm:text-lg max-w-[768px] text-[#475467]">
-            Self-serve product to help you reconcile your bank statement and company ledger with AI.
+            Self-serve product to help you reconcile your bank statement and
+            company ledger with AI.
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-16">
@@ -42,8 +40,8 @@ const Features = () => {
             </h3>
 
             <p className="sm:text-lg max-w-[560px] text-[#475467] mb-6">
-              Upload bank statement and company ledger in
-              just a few clicks. The only supported file format is CSV.
+              Upload bank statement and company ledger in just a few clicks. The
+              only supported file format is CSV.
             </p>
 
             <ul className="list-none flex flex-col gap-3 items-start">
@@ -58,17 +56,16 @@ const Features = () => {
 
           <div className="w-full relative flex items-center h-[400px]">
             <Image
-              src="/assets/images/FILE UPLOAD.svg"
+              src="/assets/images/feature1-mockup.svg"
               fill
               alt="Reconciliation dashboard"
-              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
             />
           </div>
         </div>
         <div className="flex flex-col-reverse sm:flex-row items-start justify-between w-full py-10 sm:py-28 gap-16">
           <div className="w-full relative flex items-center h-[400px] ">
             <Image
-              src="/assets/images/AI reconciliation.svg"
+              src="/assets/images/feature2-mockup.svg"
               fill
               alt="Reconciliation dashboard"
               className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
