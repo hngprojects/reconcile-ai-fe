@@ -5,6 +5,8 @@ import Header from "../coming-soon/components/Header";
 import StatementUpload from "@/components/reconciliation/StatementUpload";
 import LedgerUpload from "@/components/reconciliation/LedgerUpload";
 import DeleteMsg from "@/components/reconciliation/DeleteMsg";
+import UploadModal from "@/components/reconciliation/UploadModal";
+import ErrorUploadModal from "@/components/reconciliation/ErrorUploadModal";
 
 const UploadFile = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -40,6 +42,7 @@ const UploadFile = () => {
           Reconcile
         </Button>
       </section>
+      <ErrorUploadModal />
     </>
   );
 };
