@@ -10,7 +10,7 @@ export function StatusBadge({ matched, className }: StatusBadgeProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center text-sm font-semibold",
+        "inline-flex items-center text-sm font-semibold px-1",
         matched ? "bg-[#F3FEFA] text-[#007A55]" : "bg-[#FFF4F0] text-[#C50700]",
         className
       )}

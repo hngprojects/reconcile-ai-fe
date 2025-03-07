@@ -1,11 +1,9 @@
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
 
 export default function TermsConditionPage() {
   return (
     <main>
-      <Nav />
       <div className="font-inter">
         <div className="bg-[#F5FAF8] flex flex-col items-center justify-center p-10 lg:py-16 lg:px-64 ">
           <p className=" bg-[#E6FFF2] rounded-lg py-2 px-3 text-[1rem] ">

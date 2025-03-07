@@ -1,14 +1,9 @@
-import React from "react";
-
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
 import CTASection from "@/components/CTASection";
+import Footer from "@/components/Footer";
 
 const PrivacyPage = () => {
   return (
     <div>
-      <Nav />
-
       <header className="flex justify-center md:py-[110px] py-[48px] px-6 bg-[#F5FAF8]">
         <div className="text-center">
           <p className="text-[#009A49] bg-[#E6FFF2] px-3 py-1 text-sm rounded-2xl inline-block w-fit mb-6 mx-auto">
