@@ -9,8 +9,7 @@ export default function TryFreeCard() {
           Try it for free
         </h2>
         <p className="text-sm  text-center lg:text-start text-[#475467]">
-          We are offering it completely free for a limited time Get access to
-          all features while we continue to improve.
+          We are offering it free for a limited time.
         </p>
       </div>
       <Button className="px-5">Get Started</Button>

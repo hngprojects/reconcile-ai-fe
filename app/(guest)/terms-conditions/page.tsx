@@ -1,6 +1,6 @@
+import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
 import Nav from "@/components/Nav";
-import TryFreeCard from "@/components/try-free-card";
 
 export default function TermsConditionPage() {
   return (
@@ -12,10 +12,10 @@ export default function TermsConditionPage() {
             Current as of 05 Mar 2025
           </p>
           <h1 className="my-2 font-bold text-[1.5rem] lg:text-[2rem] ">
-            Terms of service
+            Terms and Conditions
           </h1>
           <p className="text-center text-sm">
-            By accessing our website, you are agreeing to be bound by these
+            By accessing our product, you are agreeing to be bound by these
             terms of service, all applicable laws and regulations, and agree
             that you are responsible for compliance with any applicable local
             laws.
@@ -28,28 +28,57 @@ export default function TermsConditionPage() {
               Introduction
             </h2>
             <p className="text-sm text-center lg:text-start text-[#475467]">
-              Reconcile AI is a data reconciliation software that leverages
-              AI-powered automation to streamline financial, operational, and
-              business data matching. It helps businesses detect discrepancies,
-              automate workflows, and generate reports. The platform integrates
-              with third-party applications and prioritizes
-              security and compliance.
+              ReconXi is a financial reconciliation tool that uses AI to
+              reconcile bank statement with company ledger.
             </p>
           </div>
 
           <div className="mt-5">
             <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
-              What information do we collect?
+              What Information do we Collect?
+            </h2>
+            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              We collect information to deliver and improve our reconciliation
+              tool, including:
+            </p>
+            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Transactional Data: Details of financial records, i.e bank
+              statement.
+            </p>
+            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Company Data: Details of your Company&apos;s records. i.e bank
+              statement.
+            </p>
+            {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Personal Information: Such as account details, names, email
+              addresses, and phone numbers provided during registration or
+              service use.
+            </p> */}
+            {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Usage Data: Log files, device information, and analytics that help
+              us understand how you interact with our platform.
+            </p> */}
+            {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Other Data: Additional information you provide or that is
+              automatically collected to enhance your experience.
+            </p> */}
+          </div>
+
+          {/* <div className="mt-5">
+            <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
+              How do we use your Information?
             </h2>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
               We collect information to deliver and improve our reconciliation
               services, including:
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Transactional Data: Details of financial records, transfers, and
-              reconciliation transactions.
+              Transactional Data: Details of financial records, i.e bank statement.
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Company Data: Details of your Company&apos;s records. i.e bank statement.
+            </p> */}
+          {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
               Personal Information: Such as account details, names, email
               addresses, and phone numbers provided during registration or
               service use.
@@ -61,37 +90,10 @@ export default function TermsConditionPage() {
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
               Other Data: Additional information you provide or that is
               automatically collected to enhance your experience.
-            </p>
-          </div>
+            </p> */}
+          {/* </div> */}
 
-          <div className="mt-5">
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
-              How do we use your information?
-            </h2>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              We collect information to deliver and improve our reconciliation
-              services, including:
-            </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Transactional Data: Details of financial records, transfers, and
-              reconciliation transactions
-            </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Personal Information: Such as account details, names, email
-              addresses, and phone numbers provided during registration or
-              service use.
-            </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Usage Data: Log files, device information, and analytics that help
-              us understand how you interact with our platform.
-            </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Other Data: Additional information you provide or that is
-              automatically collected to enhance your experience.
-            </p>
-          </div>
-
-          <div className="mt-5">
+          {/* <div className="mt-5">
             <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
               Cookies and Tracking Technologies
             </h2>
@@ -111,8 +113,8 @@ export default function TermsConditionPage() {
               You can manage your cookie preferences through your browser
               settings.
             </p>
-          </div>
-          <div className="mt-5">
+          </div> */}
+          {/* <div className="mt-5">
             <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start py-2">
               Retention of Your Information
             </h2>
@@ -122,8 +124,8 @@ export default function TermsConditionPage() {
               legal and regulatory obligations. Once the retention period
               expires, we will securely delete or anonymize your information.
             </p>
-          </div>
-          <div className="mt-5">
+          </div> */}
+          {/* <div className="mt-5">
             <h2 className="text-[#101828] text-[1.5rem] font-semibold  text-center lg:text-start py-2">
               Data Security
             </h2>
@@ -133,16 +135,14 @@ export default function TermsConditionPage() {
               strive for maximum security, please be aware that no system is
               completely foolproof.
             </p>
-          </div>
+          </div> */}
           <div className="mt-5">
             <h2 className="text-[#101828] text-[1.5rem] font-semibold  text-center lg:text-start py-2">
-              Your privacy rights.
+              Your Privacy Rights.
             </h2>
             <p className="text-sm  text-center lg:text-start text-[#475467]">
-              Depending on your location, you may have rights regarding your
-              personal information, including the ability to access, correct, or
-              delete your data. For more detailed information, please review our
-              Privacy Policy..
+              You may have rights regarding your financial information, For more
+              detailed information, please review our Privacy Policy.
             </p>
           </div>
           <div className="mt-5">
@@ -150,17 +150,17 @@ export default function TermsConditionPage() {
               Contact Us
             </h2>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              If you have any questions about these Terms of Service or our
-              privacy practices, please contact us at:
+              If you have any questions about these Terms and Conditions or our
+              privacy policy, please contact us at:
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Email: [reconXi@gmail.com]
+              Email: reconxi02@gmail.com
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Phone: [09012345789]
+              Phone Number: +1-599-654-7936
             </p>
             <p className="text-sm text-center lg:text-start text-[#475467] py-2">
-              Address: [Melbourne, Australia]
+              Address: Chicago, United States
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
               We are committed to addressing privacy concerns promptly
@@ -168,7 +168,7 @@ export default function TermsConditionPage() {
             </p>
           </div>
         </div>
-        <TryFreeCard />
+        <CTASection />
       </div>
       <Footer />
     </main>
