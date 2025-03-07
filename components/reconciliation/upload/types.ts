@@ -7,10 +7,11 @@ export interface UploadCardProps {
   error?: string;
   uploadProgress?: number;
   isUploading?: boolean;
+  existingFiles?: string[];
 }
 
 export interface FileUploadLayoutProps {
-  onReconcile: () => void;
+  onReconcile: (file1: File, file2: File) => Promise<void>;
 }
 
 export interface FilePreviewProps {

@@ -1,17 +1,29 @@
 import Image from "next/image";
 import csvIcon from "@/public/csvIcon.svg";
 import deleteIcon from "@/public/deleteIcon.svg";
+import deleteCheckIcon from "@/public/deleteCheckIcon.svg";
 import { FilePreviewProps } from "./types";
+import { toast } from "sonner";
+import { X } from "lucide-react";
 
 export function FilePreview({ fileName, onDelete }: FilePreviewProps) {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onDelete();
+    toast.success("File Deleted", {
+      icon: <Image src={deleteCheckIcon} width={20} height={20} alt="Delete" />,
+      action: {
+        label: <p className="bg-inherit">Close</p>,
+        onClick: () => toast.dismiss(),
+      },
+    });
+  };
+
   return (
-    <div className="flex flex-col items-center gap-4 w-full relative">
+    <div className="flex flex-col items-center gap-4 w-full">
       <button
-        onClick={(e) => {
-          e.preventDefault();
-          onDelete();
-        }}
-        className="absolute mt-[14px] mr-[18px] top-0 right-0 p-2 
+        onClick={handleDelete}
+        className="absolute top-[90px] right-[65px] p-2 
                    hover:bg-gray-100 rounded-full transition-colors"
       >
         <Image src={deleteIcon} width={20} height={20} alt="Delete" />
