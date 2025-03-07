@@ -1,4 +1,8 @@
-export const Logo = () => {
+interface LogoProps {
+  className?: string;
+}
+
+export const Logo: React.FC<LogoProps> = ({ className }) => {
   return (
     <svg
       width="159"
@@ -6,6 +10,7 @@ export const Logo = () => {
       viewBox="0 0 159 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <mask
         id="mask0_1256_14522"
@@ -162,6 +167,32 @@ export const Gradient2 = () => {
           <stop offset="1" stopColor="#D2FF9A" stopOpacity="0.03" />
         </linearGradient>
       </defs>
+    </svg>
+  );
+};
+export const Play = () => {
+  return (
+    <svg
+      width="64"
+      height="64"
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M31.9999 58.6666C46.7275 58.6666 58.6666 46.7276 58.6666 32C58.6666 17.2724 46.7275 5.33331 31.9999 5.33331C17.2723 5.33331 5.33325 17.2724 5.33325 32C5.33325 46.7276 17.2723 58.6666 31.9999 58.6666Z"
+        stroke="white"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M26.6666 21.3333L42.6666 32L26.6666 42.6666V21.3333Z"
+        stroke="white"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 };

@@ -1,23 +1,33 @@
-name: Next.js CI/CD
+name: Next.js CI
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev] # Runs for same-repo PRs
+  pull_request_target:
+    branches: [main, dev] # Runs for PRs from forks
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: reconcile
+    timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }} # Checkout the fork's branch
+          persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Lint
+      - name: Run Linting
         run: npm run lint
+
+      - name: Run Build
+        run: npm run build

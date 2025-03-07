@@ -3,9 +3,11 @@ import Container from "./Container";
 
 const Footer = () => {
   return (
-    <Container className="text-[#AFAFAF] text-sm w-full bg-[#214435] font-inter flex py-4 justify-center items-center">
-      ©2025. ReconXi Ltd. All Rights Reserved.
-    </Container>
+    <footer className="text-[#AFAFAF] w-full bg-[#214435] py-4 ">
+      <Container className="flex justify-center text-sm font-inter  items-center">
+        ©2025. ReconXi Ltd. All Rights Reserved.
+      </Container>
+    </footer>
   );
 };
 

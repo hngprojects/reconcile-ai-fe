@@ -51,8 +51,8 @@ const EmailSubscribeForm = () => {
                 <div className="relative">
                   <Input
                     type="email"
-                    placeholder="Enter your email address"
-                    className="p-4 h-full pr-32" // Added extra padding for button
+                    placeholder="Enter email address"
+                    className="p-4 h-full pr-36 focus-visible:ring-1" // Added extra padding for button
                     {...field}
                   />
                   <Button
