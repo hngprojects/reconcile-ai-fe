@@ -39,7 +39,11 @@ export interface ReconciliationItem {
     'Amount': number
   }
 
-  const validateDocuments = (data) => {
+  export type TData = {
+    [key: string]: string|number 
+  }
+
+  const validateDocuments = (data: TData[]) => {
     const requiredHeaders = ['Date', 'Description', 'Amount'];
 
     const valid = data.every(tx => 
