@@ -12,7 +12,7 @@ export default function HeroSection() {
             AI-Powered Financial Reconciliation in Minutes, Not Hours
           </h1>
           <p className="text-[#475467] sm:text-xl max-w-[768px] mt-4">
-            Reconcile your bank statement and company ledger with AI. 
+            Reconcile your bank statement and company ledger with AI.
           </p>
           <div className="flex flex-col items-center justify-center w-full gap-6 my-6 sm:flex-row">
             {/* <Link
@@ -29,7 +29,7 @@ export default function HeroSection() {
             </Link>
           </div>
           <Image
-            src="/assets/images/macbook_mockup.svg"
+            src="/assets/images/hero-mockup.svg"
             alt="macbook mockup"
             width={621}
             height={387}
