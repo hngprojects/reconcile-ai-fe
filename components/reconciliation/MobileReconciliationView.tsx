@@ -25,78 +25,92 @@ export function MobileReconciliationView() {
 
   return (
     <div className="space-y-3 py-6">
-      {/* Column Headers */}
-      <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-t-md border">
-        <div className="text-sm font-medium text-gray-500">
-          Date/Description
-        </div>
-        <div className="text-sm font-medium text-gray-500">Amount</div>
-      </div>
+      <h1 className="text-2xl font-semibold">Matched Result</h1>
 
       {/* Transaction Cards */}
       {data.map((item, index) => (
         <div
           key={`${item.bankStatement.description}-${index}`}
-          className={cn("rounded-lg border bg-white shadow-sm p-4 space-y-4", {
-            "rounded-t-none": index === 0,
-          })}
+          className={cn(
+            "rounded-lg border shadow-sm",
+            item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
+            {
+              "rounded-t-lg": index === 0,
+            }
+          )}
         >
-          {/* Bank Statement */}
-          <div className="space-y-2">
-            <div className="text-sm font-medium text-gray-500">
-              Bank Statement
+          {/* Column Headers */}
+          {index === 0 && (
+            <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-t-md border-b">
+              <div className="text-sm font-medium text-gray-500">
+                Date/Description
+              </div>
+              <div className="text-sm font-medium text-gray-500">Amount</div>
             </div>
-            <div className="flex justify-between items-start">
-              <div className="space-y-1">
-                <div className="text-sm text-gray-600">
-                  {item.bankStatement.date}
+          )}
+
+          <div className="p-4 space-y-4">
+            {/* Bank Statement */}
+            <div className="space-y-2">
+              <div className="text-sm font-medium text-gray-500">
+                Bank Statement
+              </div>
+              <div className="flex justify-between items-start">
+                <div className="space-y-1">
+                  <div className="text-sm text-gray-600">
+                    {item.bankStatement.date}
+                  </div>
+                  <div className="font-medium text-gray-900">
+                    {item.bankStatement.description}
+                  </div>
                 </div>
                 <div className="font-medium text-gray-900">
-                  {item.bankStatement.description}
+                  {formatCurrency(item.bankStatement.amount)}
                 </div>
               </div>
-              <div className="font-medium text-gray-900">
-                {formatCurrency(item.bankStatement.amount)}
-              </div>
+              {item.matched && (
+                <div className="pt-1">
+                  <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
+                    <StatusBadge matched={true} />
+                  </div>
+                </div>
+              )}
             </div>
-            {item.matched && (
+
+            {/* Company Ledger - Only show if matched */}
+            {item.matched && item.companyLedger && (
+              <>
+                <div className="border-t border-gray-100" />
+                <div className="space-y-2 pt-2">
+                  <div className="text-sm font-medium text-gray-500">
+                    Company Ledger
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <div className="text-sm text-gray-600">
+                        {item.companyLedger.date}
+                      </div>
+                      <div className="font-medium text-gray-900">
+                        {item.companyLedger.description}
+                      </div>
+                    </div>
+                    <div className="font-medium text-gray-900">
+                      {formatCurrency(item.companyLedger.amount)}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Show Unmatched status if not matched */}
+            {!item.matched && (
               <div className="pt-1">
-                <StatusBadge matched={true} />
+                <div className="inline-block border-[0.5px] border-[#C50700] p-2 rounded-3xl">
+                  <StatusBadge matched={false} />
+                </div>
               </div>
             )}
           </div>
-
-          {/* Company Ledger - Only show if matched */}
-          {item.matched && item.companyLedger && (
-            <>
-              <div className="border-t border-gray-100" />
-              <div className="space-y-2 pt-2">
-                <div className="text-sm font-medium text-gray-500">
-                  Company Ledger
-                </div>
-                <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <div className="text-sm text-gray-600">
-                      {item.companyLedger.date}
-                    </div>
-                    <div className="font-medium text-gray-900">
-                      {item.companyLedger.description}
-                    </div>
-                  </div>
-                  <div className="font-medium text-gray-900">
-                    {formatCurrency(item.companyLedger.amount)}
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* Show Unmatched status if not matched */}
-          {!item.matched && (
-            <div className="pt-1">
-              <StatusBadge matched={false} />
-            </div>
-          )}
         </div>
       ))}
 

@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: hng12interns
+    runs-on: reconcile
     timeout-minutes: 10
 
     steps:
@@ -40,24 +40,25 @@ jobs:
             git clean -fd
             git pull origin $(basename $GITHUB_REF)
 
-            # Install dependencies
+            # Install Dependencies
             npm install
+
+            # Build the project for production
+            npm run build
 
             # Install PM2 locally if not installed
             npm install pm2 --save-dev
-
 
             # Restart or start PM2 process
             if npx pm2 list | grep -q "$PM2_NAME"; then
               npx pm2 restart "$PM2_NAME"
             else
-              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run dev
+              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
             fi
 
             # Save PM2 process list
             npx pm2 save
 
-            # Restart NGINX to apply changes
-            sudo systemctl restart nginx
+
 
             echo "Deployment completed successfully!"

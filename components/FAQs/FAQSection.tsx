@@ -10,33 +10,33 @@ const faqItems: FAQ[] = [
   {
     question: "What is ReconXi?",
     answer:
-      "ReconXi is an AI-powered financial reconciliation tool designed to help businesses automate the process of matching transactions between their bank statements and company ledgers. By using advanced algorithms, the tool saves time, reduces human error, and ensures your financial records are accurate and up-to-date.",
+      "ReconXi is an AI-powered financial reconciliation tool designed to help businesses automate the process of matching transactions between their bank statements and company ledgers.",
   },
   {
-    question: "Is ReconXi really free to use??",
+    question: "Is ReconXi really free to use?",
     answer:
-      "Yes! For now, ReconXi is completely free as part of our MVP release. You can sign up and start using the tool without any cost. We want you to experience the simplicity and efficiency it offers while we continue to improve it. This free access will be available for a limited time, so sign up now!",
+      "Yes! For now, ReconXi is completely free as part of our MVP release.",
   },
   {
     question: "What types of files can I upload to ReconXi?",
     answer:
-      "You can upload CSV files for both your bank statements and company ledger. ReconXi will automatically match transactions based on the data from these files, making the reconciliation process fast and easy.",
+      "You can upload CSV files for both your bank statements and company ledger. ReconXi will automatically match transactions based on the data from these files.",
   },
   {
     question: "Is my data secure with ReconXi?",
     answer:
-      "Absolutely! ReconXi is designed to handle both personal and business financial reconciliation needs.",
+      "Absolutely!",
   },
   {
-    question: "Can I use ReconXi for personal finances?",
+    question: "Can I manually update matched transactions?",
     answer:
-      "Absolutely! Your privacy and security are our top priorities. All data uploaded to ReconXi is encrypted and securely processed using industry-standard encryption protocols. We do not share your data with third parties and comply with strict data protection standards.",
+      "No, at present, you can't manually update matched transactions. This would come in future updates.",
   },
   {
     question:
       "Will ReconXi integrate with other financial software (e.g., QuickBooks, Xero)?",
     answer:
-      "Currently, ReconXi supports manual file uploads (CSV) for reconciliation. As we move forward, we plan to add integrations with popular financial software like QuickBooks and Xero to streamline your workflow even further. Stay tuned for future updates as we continue to improve the tool!",
+      "Currently, ReconXi supports manual file uploads (CSV) for reconciliation. As we move forward, we plan to add integrations with popular financial software like QuickBooks and Xero. Stay tuned for future updates as we continue to improve the tool!",
   },
 ];
 

@@ -1,5 +1,6 @@
-import ComingSoonPage from "./coming-soon/page";
 
-export default function Home() {
-  return <ComingSoonPage />;
+import HomePage from "./(guest)/home";
+
+export default function LandingPage() {
+  return <HomePage />;
 }

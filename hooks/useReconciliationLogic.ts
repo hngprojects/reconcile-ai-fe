@@ -21,7 +21,7 @@ export interface ReconciliationItem {
 export function useReconciliationLogic() {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
-    pageSize: 8,
+    pageSize: 10,
   });
 
   const bankData = bankStatementData;
@@ -67,6 +67,14 @@ export function useReconciliationLogic() {
     setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
   };
 
+  const onRowsPerPageChange = (newSize: number) => {
+    if (newSize > totalItems) return;
+    setPagination((prev) => ({
+      pageIndex: 0,
+      pageSize: newSize,
+    }));
+  };
+
   // Slice data based on pagination
   const paginatedBankData = bankData.slice(
     pagination.pageIndex * pagination.pageSize,
@@ -93,5 +101,6 @@ export function useReconciliationLogic() {
     canNextPage,
     onPreviousPage,
     onNextPage,
+    onRowsPerPageChange,
   };
 }
