@@ -118,8 +118,8 @@ export default function FileUploadLayout({
   ) as string[];
 
   return (
-    <div className="mt-[60px] mx-auto max-w-[1440px] px-[80px]">
-      <div className="flex flex-row justify-center gap-[40px]">
+    <div className="mt-[60px] mx-auto max-w-[1440px] px-4 md:px-[80px]">
+      <div className="flex flex-col md:flex-row justify-center gap-[40px]">
         <UploadCard
           title="Upload Bank Statement"
           fileUploaded={!!bankStatement}
@@ -145,8 +145,8 @@ export default function FileUploadLayout({
       <Button
         onClick={handleReconciliation}
         disabled={!bankStatement || !companyLedger}
-        className="mt-[40px] w-[552px] h-[64px] bg-[#2E604A] 
-                  disabled:bg-opacity-50 px-[200px] py-[16px] 
+        className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
+                  disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
                   rounded-[8px] mx-auto block"
       >
         Reconcile
