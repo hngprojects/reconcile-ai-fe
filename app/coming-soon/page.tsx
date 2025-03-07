@@ -12,7 +12,7 @@ import EmailSubscribeForm from "./components/form/EmailSubscribeForm";
 const ComingSoonPage = () => {
   const [showBg, setShowBg] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -25,17 +25,17 @@ const ComingSoonPage = () => {
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
-  const playVideo = ()=> {
-    if(videoRef.current){
-      if(isPlaying) {
-        videoRef.current.pause()
+  const playVideo = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
       } else {
-        videoRef.current.play()
+        videoRef.current.play();
       }
 
-      setIsPlaying(!isPlaying)
+      setIsPlaying(!isPlaying);
     }
-  }
+  };
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -84,13 +84,18 @@ const ComingSoonPage = () => {
                   className="w-full h-full rounded-lg shadow-xl object-cover"
                   poster="/assets/video/teaser-poster.png"
                 >
-                  <source src="/assets/video/teaser.mp4" type="video/mp4" />
+                  <source src="/assets/video/ReconXi.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
-                <button onClick={playVideo} className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 m-auto w-fit">
-                  {
-                    !isPlaying ? <Play /> : <Pause className="text-white opacity-30" />
-                  }
+                <button
+                  onClick={playVideo}
+                  className="cursor-pointer absolute left-0 right-0 top-0 bottom-0 m-auto w-fit"
+                >
+                  {!isPlaying ? (
+                    <Play />
+                  ) : (
+                    <Pause className="text-white opacity-30" />
+                  )}
                 </button>
               </div>
             </div>
