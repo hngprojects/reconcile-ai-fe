@@ -1,6 +1,6 @@
 // Format currency
 export const formatCurrency = (amount: number) => {
-  return `$ ${amount.toLocaleString("en-US")}`;
+  return `${amount.toLocaleString("en-US")}`;
 };
 
 export interface ReconciliationItem {
@@ -35,7 +35,7 @@ export interface BankStatement {
 }
 
 export interface CompanyLedger {
-  id?: string,
+  id?: string;
   date: string;
   description: string;
   amount: number;
