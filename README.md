@@ -1,101 +1,41 @@
-# Reconcile AI ~ An AI-Powered Financial Reconciliation
+![act-logo](https://raw.githubusercontent.com/wiki/nektos/act/img/logo-150.png)
 
-Reconcile AI is an easy-to-use reconciliation platform (web app) for comparing any two sets of financial records, like customer records (e.g., student payments, inventory sales, transaction alerts), with bank statements for any discrepancies or irregularities. It offers a simple file upload interface, AI-based matching algorithms with manual overrides, and multiple options for exporting results, thereby decreasing manual interventions by the users while increasing efficiency and accuracy.
+# Overview [![push](https://github.com/nektos/act/workflows/push/badge.svg?branch=master&event=push)](https://github.com/nektos/act/actions) [![Join the chat at https://gitter.im/nektos/act](https://badges.gitter.im/nektos/act.svg)](https://gitter.im/nektos/act?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Go Report Card](https://goreportcard.com/badge/github.com/nektos/act)](https://goreportcard.com/report/github.com/nektos/act) [![awesome-runners](https://img.shields.io/badge/listed%20on-awesome--runners-blue.svg)](https://github.com/jonico/awesome-runners)
 
-## 📑 Table of Contents
+> "Think globally, `act` locally"
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
+Run your [GitHub Actions](https://developer.github.com/actions/) locally! Why would you want to do this? Two reasons:
 
-## <span id="features"> ✨ Core Functionality </span>
+- **Fast Feedback** - Rather than having to commit/push every time you want to test out the changes you are making to your `.github/workflows/` files (or for any changes to embedded GitHub actions), you can use `act` to run the actions locally. The [environment variables](https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables) and [filesystem](https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#filesystems-on-github-hosted-runners) are all configured to match what GitHub provides.
+- **Local Task Runner** - I love [make](<https://en.wikipedia.org/wiki/Make_(software)>). However, I also hate repeating myself. With `act`, you can use the GitHub Actions defined in your `.github/workflows/` to replace your `Makefile`!
 
-- **User Onboarding and Authentication:** Give users an excellent onboarding experience so that they may easily learn and use the product.
+> [!TIP]
+> **Now Manage and Run Act Directly From VS Code!**<br/>
+> Check out the [GitHub Local Actions](https://sanjulaganepola.github.io/github-local-actions-docs/) Visual Studio Code extension which allows you to leverage the power of `act` to run and test workflows locally without leaving your editor.
 
-- **Reconciliation:** Identify discrepancies with high precision, minimizing the risk of errors in financial reporting by utilizing AI-based matching algorithms.
+# How Does It Work?
 
-- **Flexibility:** Provides manual override options that would allow its users to tackle complex or peculiar cases and provide accuracy in reconciliations.
+When you run `act` it reads in your GitHub Actions from `.github/workflows/` and determines the set of actions that need to be run. It uses the Docker API to either pull or build the necessary images, as defined in your workflow files and finally determines the execution path based on the dependencies that were defined. Once it has the execution path, it then uses the Docker API to run containers for each action based on the images prepared earlier. The [environment variables](https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables) and [filesystem](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#file-systems) are all configured to match what GitHub provides.
 
-- **Optimize User Experience:** Provides an easy-to-use file upload interface for users.
+Let's see it in action with a [sample repo](https://github.com/cplee/github-actions-demo)!
 
-- **Results Export:** Ensures users can export reconciliation results for reports and further analysis.
+![Demo](https://raw.githubusercontent.com/wiki/nektos/act/quickstart/act-quickstart-2.gif)
 
-## <span id="tech-stack">🛠️ Tech Stack</span>
+# Act User Guide
 
-- **Framework**: Next.js 15 with App Router
-- **UI Library**: Shadcn UI
-- **State Management**: Zustand
-- **lucide-react** – Icon library for React.
-- **Styling**: Tailwind CSS
+Please look at the [act user guide](https://nektosact.com) for more documentation.
 
-## <span id="getting-started"> 🚀 Getting Started </span>
+# Support
 
-### Prerequisites
+Need help? Ask on [Gitter](https://gitter.im/nektos/act)!
 
-- Node.js (v18 or higher)
-- Package manager: **npm**
+# Contributing
 
-### Installation
+Want to contribute to act? Awesome! Check out the [contributing guidelines](CONTRIBUTING.md) to get involved.
 
-1. Clone the repository:
+## Manually building from source
 
-```bash
-git clone <repository-url>
-```
-
-2. Navigate to the project directory:
-
-```bash
-cd [project-directory]
-```
-
-3. Install dependencies:
-
-```bash
-npm install
-```
-
-4. Run the development server:
-
-```bash
-npm run dev
-```
-
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
-
-## <span id="project-structure">📂 Project Structure</span>
-
-```plaintext
-reconcile-ai-fe/
-├── public/
-|   |
-│   └── favicon.ico          # Favicon
-|
-├── src/
-|   └── app/                 # Next.js app router
-│        ├── page.tsx        # Homepage
-│        ├── favicon.ico     # Favicon
-│        └── page.tsx
-|
-│
-├── components/
-│   ├── common/              # Reusable components (e.g., Container.tsx,)
-│   └── ui/                  # Shadcn components
-│
-|
-├── next.config.ts           # Next.js configuration
-├── tailwind.config.ts       # TailwindCSS configuration
-├── tsconfig.json            # TypeScript configuration
-├── CONTRIBUTING.md          # Contribution guideline file
-├── README.md                # Readme file
-├── .env.local               # Environment variables (not committed)
-└── package.json             # Project dependencies and scripts
-```
-
-## <span id="contributing"> 🤝 Contributing </span>
-
-Please see [CONTRIBUTING](CONTRIBUTING.md)
+- Install Go tools 1.20+ - (<https://golang.org/doc/install>)
+- Clone this repo `git clone git@github.com:nektos/act.git`
+- Run unit tests with `make test`
+- Build and install: `make install`

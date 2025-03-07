@@ -10,8 +10,12 @@ jobs:
   deploy:
     runs-on: reconcile
     timeout-minutes: 10
-
     steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
         with:
@@ -35,30 +39,31 @@ jobs:
 
             cd $FE_PATH
 
-            # Reset and clean Git repository
-            git reset --hard HEAD
-            git clean -fd
+            # Copy and extract build artifact
+            mkdir -p $FE_PATH/tmp
+            unzip -o ~/build-artifact.zip -d $FE_PATH/tmp
+            mv $FE_PATH/tmp/.next $FE_PATH/.next_new
+            rm -rf $FE_PATH/tmp
+
+            # Pull latest code          
             git pull origin $(basename $GITHUB_REF)
 
             # Install Dependencies
-            npm install
-
-            # Build the project for production
-            npm run build
-
-            # Install PM2 locally if not installed
+            npm ci
+            # Install PM2 if not available
             npm install pm2 --save-dev
+
+            # Swap new build into place
+            mv $FE_PATH/.next $FE_PATH/.next_old
+            mv $FE_PATH/.next_new $FE_PATH/.next
+            rm -rf $FE_PATH/.next_old
 
             # Restart or start PM2 process
             if npx pm2 list | grep -q "$PM2_NAME"; then
-              npx pm2 restart "$PM2_NAME"
+              npx pm2 reload "$PM2_NAME"
             else
               PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
             fi
 
-            # Save PM2 process list
             npx pm2 save
-
-
-
             echo "Deployment completed successfully!"
