@@ -12,8 +12,7 @@ export default function HeroSection() {
             AI-Powered Financial Reconciliation in Minutes, Not Hours
           </h1>
           <p className="text-[#475467] sm:text-xl max-w-[768px] mt-4">
-            Automate, compare, and reconcile transactions effortlessly with AI.
-            No more manual matching—get accurate results in seconds.
+            Reconcile your bank statement and company ledger with AI. 
           </p>
           <div className="flex flex-col items-center justify-center w-full gap-6 my-6 sm:flex-row">
             {/* <Link
@@ -24,7 +23,7 @@ export default function HeroSection() {
             </Link> */}
             <Link
               className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
-              href="/sign-up"
+              href="/file-upload"
             >
               Start Reconciliation
             </Link>

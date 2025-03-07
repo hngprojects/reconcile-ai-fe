@@ -12,13 +12,12 @@ const CTASection = () => {
               Try it for Free
             </p>
             <p className="text-[#475467] text-lg max-w-[43rem]">
-              We are offering it completely free for a limited time Get access
-              to all features while we continue to improve.
+              We are offering it free for a limited time.
             </p>
           </div>
           <Link
-            className="bg-primary w-full sm:w-fit py-2 px-4 rounded-md font-semibold justify-center items-center h-9 text-sm text-white hover:bg-primary/90 flex"
-            href="/sign-up"
+            className="bg-primary whitespace-nowrap w-full sm:w-fit  py-2 px-4 rounded-md font-semibold justify-center items-center h-9 text-sm text-white hover:bg-primary/90 flex"
+            href="/file-upload"
           >
             Get Started
           </Link>

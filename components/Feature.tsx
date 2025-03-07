@@ -19,8 +19,7 @@ export default function Features1() {
                 </h1>
                 <p className="text-[#475467] font-inter sm:text-lg">
                   Spending hours matching transactions manually? Errors slipping
-                  through the cracks? Our tool makes reconciliation simple and
-                  error-free, so you can focus on what really matters.
+                  through the cracks? Our tool makes reconciliation simple so you can focus on what really matters.
                 </p>
               </div>
             </div>

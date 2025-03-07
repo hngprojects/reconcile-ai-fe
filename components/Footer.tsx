@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Container from "./Container";
-import FooterEmailForm from "./form/FooterEmail";
+// import FooterEmailForm from "./form/FooterEmail";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -21,15 +22,13 @@ const Footer = () => {
                 <div className="flex flex-col gap-2 ">
                   <Link href="/home" className="w-fit">
                     <div className="flex items-center justify-start gap-2">
-                      <LogoIcon
-                        color="white"
-                        className="sm:hidden"
-                        width={24}
-                        height={24}
-                      />
-                      <span className="text-lg font-extrabold text-white sm:text-4xl font-baloo">
-                        ReconXi
-                      </span>
+                    <Image
+                      src="/assets/images/Logo-white.png"
+                      alt="ReconXi"
+                      width={159}
+                      height={50}
+                      className=" "
+                    />
                     </div>
                   </Link>
                   <div className="hidden gap-4 sm:flex">
@@ -97,17 +96,17 @@ const Footer = () => {
 
             <div className="w-full">
               <nav className="items-center hidden gap-8 sm:flex">
-                <Link
+                {/* <Link
                   href="/contact"
                   className="hover:underline underline-offset-2"
                 >
                   Contact Us
-                </Link>
+                </Link> */}
                 <Link
                   href="/terms-conditions"
                   className="hover:underline underline-offset-2"
                 >
-                  Term of Service
+                  Terms of Service
                 </Link>
                 <Link
                   href="/privacy"

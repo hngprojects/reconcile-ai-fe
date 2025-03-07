@@ -1,5 +1,6 @@
+
 import HomePage from "./(guest)/home";
 
-export default function Home() {
+export default function LandingPage() {
   return <HomePage />;
 }
