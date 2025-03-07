@@ -1,15 +1,11 @@
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
-interface ErrorUploadModalProps {
-  onClose: () => void;
-}
-
-const ErrorUploadModal = ({ onClose }: ErrorUploadModalProps) => {
+const ReconciliationErrorModal = () => {
   return (
-    <Dialog open onOpenChange={onClose}>
-      <DialogTitle className="font-bold text-3xl md:text-5xl">
-            Oops!
+    <Dialog open>
+      <DialogTitle className="text-[#0F172A] font-semibold text-lg md:text-xl text-center">
+            Processing Reconciliation
       </DialogTitle>
       <DialogContent className="max-w-[535px] p-8">
         <div className="flex flex-col items-center justify-between gap-6">
@@ -21,11 +17,11 @@ const ErrorUploadModal = ({ onClose }: ErrorUploadModalProps) => {
             alt="Error icon"
             className="object-cover"
           />
-          <p className="text-[#475569]">Something went wrong</p>
+          <p className="text-[#475569]">CSV Table Structure not currently supported!</p>
         </div>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default ErrorUploadModal;
+export default ReconciliationErrorModal;
