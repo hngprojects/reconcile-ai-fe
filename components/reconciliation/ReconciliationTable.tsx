@@ -54,7 +54,8 @@ export function ReconciliationTable({
     canPreviousPage,
     canNextPage,
     onRowsPerPageChange,
-    showErrorModal
+    showErrorModal,
+    data
   } = useReconciliationLogic();
 
   // Define bank statement columns
@@ -99,11 +100,7 @@ export function ReconciliationTable({
   const statusData = React.useMemo(
     () =>
       paginatedBankData.map((bankItem) => ({
-        matched: paginatedLedgerData.some(
-          (ledgerItem) =>
-            ledgerItem['Description'] === bankItem['Description'] &&
-            ledgerItem['Amount'] === bankItem['Amount']
-        ),
+        matched: data.matches.find(match => match.file1_transaction === bankItem) ? true : false,
       })),
     [paginatedBankData, paginatedLedgerData]
   );
@@ -282,12 +279,12 @@ export function ReconciliationTable({
               <TableBody>
                 {paginatedLedgerData.length > 0 ? (
                   paginatedBankData.map((bankItem, index) => {
-                    const matchingLedger = paginatedLedgerData.find(
-                      (ledger) =>
-                        ledger['Description'] === bankItem['Description'] &&
-                        ledger['Amount'] === bankItem['Amount']
+                    const matchingData = data.matches.find(
+                      (match) =>
+                        match.file1_transaction == bankItem
                     );
-                    const isMatched = !!matchingLedger;
+                    const isMatched = !!matchingData;
+                    const matchingLedger = matchingData && matchingData.file2_transaction;
 
                     return (
                       <TableRow
@@ -326,9 +323,9 @@ export function ReconciliationTable({
                                 "max-w-[200px] md:max-w-none",
                                 "whitespace-nowrap overflow-hidden text-ellipsis"
                               )}
-                              title={formatCurrency(matchingLedger['Amount'])}
+                              title={matchingLedger['Amount'] ? formatCurrency(matchingLedger['Amount']) : ""}
                             >
-                              {formatCurrency(matchingLedger['Amount'])}
+                              {matchingLedger['Amount'] ? formatCurrency(matchingLedger['Amount']) : ""}
                             </TableCell>
                           </>
                         ) : (
