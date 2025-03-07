@@ -39,6 +39,20 @@ export interface ReconciliationItem {
     'Amount': number
   }
 
+  export type TData = {
+    [key: string]: string|number 
+  }
+
+  const validateDocuments = (data: TData[]) => {
+    const requiredHeaders = ['Date', 'Description', 'Amount'];
+
+    const valid = data.every(tx => 
+      requiredHeaders.every(h => Object.keys(tx).includes(h))
+    );
+
+    return valid;
+  }
+
 export function useReconciliationLogic() {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -53,22 +67,6 @@ export function useReconciliationLogic() {
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('reconciliation') as string);
     setData(saved);
-
-    let test_bank, test_ledger;
-
-    if (saved.matches[0]){
-      test_bank = saved.matches[0].file1_transaction;
-      test_ledger = saved.matches[0].file2_transaction;
-    }else if(saved.unmatched.unmatched_file1.length > 0){
-      test_bank = saved.unmatched.unmatched_file1[0];
-    }else if(saved.unmatched.unmatched_file2.length > 0){
-      test_ledger = saved.unmatched.unmatched_file2[0];
-    }
-
-      if(!test_bank['Amount'] || !test_ledger['Amount']){
-        setShowErrorModal(true);
-        return;
-      }
   }, []);
   
   const bankData: Transaction[] = [];
@@ -91,7 +89,11 @@ export function useReconciliationLogic() {
       }
   }
 
-  console.log(ledgerData);
+  useEffect(() => {
+    if(!validateDocuments(bankData) || !validateDocuments(ledgerData)){
+      setShowErrorModal(true);
+    }
+  }, [bankData, ledgerData]);
 
   const totalItems = bankData.length;
 
@@ -169,6 +171,8 @@ export function useReconciliationLogic() {
     onPreviousPage,
     onNextPage,
     onRowsPerPageChange,
-    showErrorModal
+    showErrorModal,
+    setData,
+    data
   };
 }
