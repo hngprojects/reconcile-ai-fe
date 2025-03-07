@@ -4,7 +4,6 @@ import deleteIcon from "@/public/deleteIcon.svg";
 import deleteCheckIcon from "@/public/deleteCheckIcon.svg";
 import { FilePreviewProps } from "./types";
 import { toast } from "sonner";
-import { X } from "lucide-react";
 
 export function FilePreview({ fileName, onDelete }: FilePreviewProps) {
   const handleDelete = (e: React.MouseEvent) => {

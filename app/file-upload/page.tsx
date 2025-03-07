@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export default function FileUploadPage() {
   const router = useRouter();
 
-  const handleReconcile = async (file1: File, file2: File) => {
+  const handleReconcile = async (_file1: File, _file2: File) => {
     try {
       router.push("/reconciliation");
     } catch (error) {
