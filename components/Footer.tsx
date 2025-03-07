@@ -99,7 +99,7 @@ const Footer = () => {
               <nav className="hidden sm:flex items-center gap-8">
                 <Link
                   href="/contact"
-                  className="hover:underline underline-offset-2"
+                  className="hover:underline none underline-offset-2"
                 >
                   Contact Us
                 </Link>
