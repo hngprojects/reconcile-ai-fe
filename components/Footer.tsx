@@ -15,9 +15,9 @@ const Footer = () => {
     <footer className="footer bg-primary">
       <Container className="w-full">
         <div className="flex flex-col items-center justify-between gap-4 py-12 text-white">
-          <div className="flex flex-col items-start w-full gap-8">
+          <div className="flex flex-col items-start w-full gap-8 lg:flex-row lg:items-center">
             <div className="flex flex-col flex-wrap items-center justify-between w-full sm:flex-row gap-y-8">
-              <div className="flex flex-row w-full gap-4 md:flex-col">
+              <div className="flex flex-col w-full gap-4 sm:w-1/2">
                 <div className="flex flex-col gap-2 ">
                   <Link href="/home" className="w-fit">
                     <div className="flex items-center justify-start gap-2">
@@ -64,45 +64,6 @@ const Footer = () => {
               {/* <div className="w-full pb-6 border-b border-white sm:w-1/2 sm:pb-0 sm:border-0">
                 <FooterEmailForm />
               </div> */}
-              <div className="w-full">
-                <nav className="items-center hidden gap-8 sm:flex">
-                  <Link
-                    href="/contact"
-                    className="hover:underline underline-offset-2"
-                  >
-                    Contact Us
-                  </Link>
-                  <Link
-                    href="/terms-conditions"
-                    className="hover:underline underline-offset-2"
-                  >
-                    Term of Service
-                  </Link>
-                  <Link
-                    href="/privacy"
-                    className="hover:underline underline-offset-2"
-                  >
-                    Privacy Policy
-                  </Link>
-                </nav>
-                <nav className="flex items-center gap-8 sm:hidden">
-                  <Link
-                    href="/terms-conditions"
-                    className="hover:underline underline-offset-2"
-                  >
-                    Terms
-                  </Link>
-                  <Link
-                    href="/privacy"
-                    className="hover:underline underline-offset-2"
-                  >
-                    Privacy
-                  </Link>
-                  <Link href="/" className="hover:underline underline-offset-2">
-                    Contact Us
-                  </Link>
-                </nav>
-              </div>
 
               <div className="flex flex-col items-start w-full gap-2 sm:hidden ">
                 <div className="flex gap-4">
@@ -132,6 +93,46 @@ const Footer = () => {
                   </Link>
                 </div>
               </div>
+            </div>
+
+            <div className="w-full">
+              <nav className="items-center hidden gap-8 sm:flex">
+                <Link
+                  href="/contact"
+                  className="hover:underline underline-offset-2"
+                >
+                  Contact Us
+                </Link>
+                <Link
+                  href="/terms-conditions"
+                  className="hover:underline underline-offset-2"
+                >
+                  Term of Service
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="hover:underline underline-offset-2"
+                >
+                  Privacy Policy
+                </Link>
+              </nav>
+              <nav className="flex items-center gap-8 sm:hidden">
+                <Link
+                  href="/terms-conditions"
+                  className="hover:underline underline-offset-2"
+                >
+                  Terms
+                </Link>
+                <Link
+                  href="/privacy"
+                  className="hover:underline underline-offset-2"
+                >
+                  Privacy
+                </Link>
+                <Link href="/" className="hover:underline underline-offset-2">
+                  Contact Us
+                </Link>
+              </nav>
             </div>
           </div>
           <span className="w-full mt-1 sm:text-center">
