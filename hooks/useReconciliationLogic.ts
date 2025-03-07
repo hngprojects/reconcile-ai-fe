@@ -1,8 +1,4 @@
-import {
-  bankStatementData,
-  companyLedgerData,
-} from "@/data/reconciliationSampleData";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export interface ReconciliationItem {
   bankStatement: {
@@ -24,9 +20,52 @@ export function useReconciliationLogic() {
     pageSize: 10,
   });
 
-  const bankData = bankStatementData;
-  const ledgerData = companyLedgerData;
-  const totalItems = bankData.length;
+  type matched = {
+    file1_transaction: Transaction,
+    file2_transaction: Transaction,
+    status: string
+  }
+
+  type unmatched = {
+    unmatched_file1: Transaction,
+    unmatched_file2: Transaction
+  }
+
+  type ResponseData = {
+    matches: matched[],
+    unmatched: unmatched[],
+    only_in_file_1: Transaction[],
+    only_in_file_2: Transaction[]
+  }
+
+  type Transaction = {
+    description: string,
+    date: string,
+    amount: number
+  }
+
+
+  const [data, setData] = useState<ResponseData>({} as ResponseData);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('reconciliation');
+    setData(JSON.parse(saved as string));
+  }, []);
+  
+  const bankData = [ ...data.only_in_file_1];
+  const ledgerData = [ ...data.only_in_file_2 ];
+
+  data.matches.map(data => {
+    bankData.push(data.file1_transaction);
+    ledgerData.push(data.file2_transaction);
+  });
+
+  data.unmatched.map(data => {
+    bankData.push(data.unmatched_file1);
+    ledgerData.push(data.unmatched_file2); 
+  });
+
+  let totalItems = bankData.length;
 
   // Combine data for mobile view and status logic
   const combinedData: ReconciliationItem[] = bankData.map((bankItem) => {
