@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface ErrorUploadModalProps {
   onClose: () => void;
@@ -8,7 +8,6 @@ interface ErrorUploadModalProps {
 const ErrorUploadModal = ({ onClose }: ErrorUploadModalProps) => {
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogTitle></DialogTitle>
       <DialogContent className="max-w-[535px] p-8">
         <div className="flex flex-col items-center justify-between gap-6">
           <h2 className="font-bold text-3xl md:text-5xl">Oops!</h2>
