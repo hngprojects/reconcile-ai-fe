@@ -7,7 +7,6 @@ import {
   FacebookIcon,
   InstagramIcon,
   LinkedinIcon,
-  LogoIcon,
   TwitterIcon,
 } from "./Icon/Icons";
 
