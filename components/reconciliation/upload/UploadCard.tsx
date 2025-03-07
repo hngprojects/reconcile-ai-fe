@@ -49,18 +49,18 @@ export default function UploadCard({
   };
 
   return (
-    <div className="w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative">
+    <div className="w-full md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative">
       <div
         className={cn(
           "flex flex-col gap-[12px] h-full",
-          isUploading ? "p-[16px_16px_58px]" : "p-[23.5px_47px]"
+          isUploading ? "p-4 md:p-[16px_16px_58px]" : "p-4 md:p-[23.5px_47px]"
         )}
       >
-        <h2 className="text-[24px] font-semibold">{title}</h2>
+        <h2 className="text-[20px] md:text-[24px] font-semibold">{title}</h2>
 
         <label
           className={cn(
-            "w-full max-w-[526px] h-[224.7px] rounded-[12px]",
+            "w-full max-w-full md:max-w-[526px] h-[224.7px] rounded-[12px]",
             "flex flex-col items-center justify-center gap-[20px]",
             "border border-[#33333380] cursor-pointer",
             "mx-auto",
@@ -94,8 +94,8 @@ export default function UploadCard({
           )}
         </label>
 
-        <div className="flex justify-between items-center mt-auto">
-          <p className="font-inter text-[16px] font-light leading-[140%]">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0 mt-auto">
+          <p className="font-inter text-[14px] md:text-[16px] font-light leading-[140%]">
             Supported format: CSV
           </p>
           <ErrorMessage message={error} />
