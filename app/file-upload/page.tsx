@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function FileUploadPage() {
   const router = useRouter();
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const handleReconcile = async (_file1: File, _file2: File) => {
     try {
       router.push("/reconciliation");
@@ -14,6 +15,7 @@ export default function FileUploadPage() {
       console.error("Reconciliation failed:", error);
     }
   };
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   return (
     <>
