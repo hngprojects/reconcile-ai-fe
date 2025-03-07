@@ -165,7 +165,7 @@ export function ReconciliationTable({
               <TableHeader className="bg-[#F9FAFB] h-[52px]">
                 {bankTable.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id} className="!border-b-0">
-                    {headerGroup.headers.map((header: any) => (
+                    {headerGroup.headers.map((header) => (
                       <TableHead key={header.id} className="text-center">
                         {header.isPlaceholder
                           ? null
@@ -262,9 +262,9 @@ export function ReconciliationTable({
           <div className="rounded-lg border overflow-hidden">
             <Table>
               <TableHeader className="bg-[#F9FAFB] h-[52px]">
-                {ledgerTable.getHeaderGroups().map((headerGroup: any) => (
+                {ledgerTable.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id} className="!border-b-0">
-                    {headerGroup.headers.map((header: any) => (
+                    {headerGroup.headers.map((header) => (
                       <TableHead key={header.id} className="text-center">
                         {header.isPlaceholder
                           ? null
