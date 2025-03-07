@@ -1,22 +1,16 @@
+import { cn } from "@/lib/utils";
+
 export interface IconProps {
   className?: string;
-  color?: string;
-  width?: number;
-  height?: number;
 }
 
-const defaultWidth = 24;
-const defaultHeight = 24;
+const defaultSize = "w-6 h-6";
 
-export const FileIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-}: IconProps) => {
+export const FileIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      className={className}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -40,15 +34,11 @@ export const FileIcon = ({
   );
 };
 
-export const SpeedIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-}: IconProps) => {
+export const SpeedIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      className={className}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -63,15 +53,11 @@ export const SpeedIcon = ({
   );
 };
 
-export const ReportIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-}: IconProps) => {
+export const ReportIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      className={className}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -86,40 +72,27 @@ export const ReportIcon = ({
   );
 };
 
-export const LogoIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-  color = "#2E604A",
-  className = "",
-}: IconProps) => {
+export const LogoIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      className={className}
+      className={cn("fill-[#2E604A]", className)}
       viewBox="0 0 48 48"
       fill="none"
     >
       <path
         d="M18.6947 47.9054C19.2541 47.9033 19.7869 47.6426 20.1394 47.1947L31.1271 33.2993C31.582 32.719 32.2541 32.3679 32.9754 32.3175C35.7213 32.1324 36.8299 35.877 34.4467 37.2899L34.3279 37.3613C31.7582 38.8583 29.1885 40.3574 26.6209 41.8544C26.416 41.9721 26.2357 42.1319 26.0881 42.319L24.209 44.7096C23.2193 45.969 24.0943 47.8423 25.6701 47.8381C28.3873 47.8318 31.1045 47.8276 33.8217 47.8192C34.3934 47.8192 34.9324 47.55 35.2889 47.0875L38.043 43.509C38.3894 43.057 38.5225 42.4683 38.4016 41.9048L34.6639 24.4289C34.5062 23.7014 34.6598 22.9445 35.0676 22.3327C36.6394 20.0157 40.1844 21.4602 39.7746 24.2544L39.7541 24.3952C39.293 27.3892 38.832 30.3832 38.3709 33.3771C38.3361 33.6168 38.3422 33.8607 38.3934 34.0941L39.043 37.0922C39.3853 38.6712 41.3607 39.138 42.3402 37.8723C43.9078 35.8454 45.9221 33.2426 47.4098 31.323C47.7664 30.8625 47.8975 30.2612 47.7664 29.6893L46.7562 25.2489C46.6271 24.6875 46.2603 24.2144 45.7582 23.9621L30.1086 16.0631C29.457 15.7372 28.9734 15.1422 28.7644 14.4336C27.9775 11.7277 31.2889 9.785 33.1619 11.856L33.2582 11.9611C35.2521 14.196 37.2459 16.4331 39.2398 18.6702C39.3996 18.8468 39.5902 18.9918 39.8012 19.0991L42.4898 20.4468C43.9078 21.1574 45.4918 19.8623 45.1394 18.2875C44.5287 15.5711 43.918 12.8546 43.3094 10.1382C43.1803 9.56634 42.8033 9.08697 42.2869 8.83467L38.2725 6.87725C37.7664 6.62915 37.1783 6.62705 36.6701 6.87304L20.8955 14.5009C20.2377 14.8205 19.4836 14.8373 18.8135 14.564C16.2623 13.5085 16.8463 9.63993 19.5902 9.42968L19.7295 9.41917C22.6762 9.21312 25.625 9.00708 28.5717 8.80103C28.8053 8.78631 29.0369 8.72324 29.248 8.62022L31.9529 7.30405C33.3771 6.61023 33.3812 4.53296 31.957 3.83283C29.5062 2.6281 27.0574 1.42547 24.6086 0.220742C24.0922 -0.0315576 23.4898 -0.0294554 22.9775 0.22705L18.9816 2.22652C18.4775 2.47672 18.1086 2.94978 17.9816 3.51115L13.957 20.9198C13.793 21.6452 13.334 22.2612 12.707 22.6292C10.3115 24.0168 7.72951 21.1364 9.27869 18.8026L9.35451 18.6849C11.0369 16.1913 12.7193 13.6998 14.3996 11.2084C14.5328 11.0087 14.6291 10.7858 14.6824 10.5503L15.3648 7.56056C15.7234 5.98579 14.1434 4.68645 12.7234 5.39288C10.4529 6.51982 7.53894 7.96844 5.3873 9.03651C4.87296 9.29302 4.5 9.77659 4.37705 10.3485L3.40984 14.7995C3.28689 15.3629 3.41804 15.9516 3.76435 16.4058L14.5205 30.4862C14.9713 31.0707 15.1537 31.8234 15.043 32.555C14.6086 35.3408 10.8012 35.6184 9.98976 32.9188L9.94878 32.7821C9.09837 29.8807 8.24591 26.9771 7.3955 24.0736C7.32787 23.8423 7.21722 23.6278 7.07173 23.4386L5.21927 21.0249C4.24181 19.755 2.2664 20.2134 1.92009 21.7924C1.32173 24.5109 0.723366 27.2294 0.122956 29.9479C-0.00409304 30.5219 0.131153 31.1211 0.489759 31.5795L3.27869 35.1306C3.6332 35.5784 4.16189 35.8412 4.72337 35.8454L22.1619 35.9947C22.8873 35.9989 23.5758 36.3206 24.0635 36.8673C25.916 38.955 23.7521 42.1782 21.1906 41.1479L21.0615 41.0954C18.3197 39.9705 15.5758 38.8415 12.834 37.7146C12.6148 37.6242 12.3832 37.5779 12.1475 37.5779L9.15574 37.559C7.57787 37.5506 6.69468 39.4218 7.68033 40.6833C9.3791 42.8594 11.0779 45.0355 12.7766 47.2115C13.1332 47.6699 13.6762 47.9348 14.248 47.9327L18.6947 47.9096V47.9054ZM13.7008 26.8405L15.2316 19.3114C15.3484 18.7395 15.7131 18.2518 16.2213 17.9889L22.9119 14.5198C23.4221 14.257 24.0205 14.2444 24.5389 14.4883L31.3504 17.6925C31.8709 17.9385 32.2521 18.4115 32.3894 18.9792L34.1947 26.441C34.332 27.0087 34.209 27.61 33.8627 28.0746L29.2992 34.1761C28.9529 34.6428 28.418 34.9182 27.8484 34.9288L20.3545 35.0759C19.7848 35.0864 19.2398 34.8299 18.875 34.38L14.0922 28.4573C13.7295 28.0073 13.584 27.4102 13.7008 26.8384V26.8405Z"
-        fill={color}
+        fill="inherit"
       />
     </svg>
   );
 };
 
-export const InstagramIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-  className = "fill-white",
-}: IconProps) => {
+export const InstagramIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      className={className}
+      className={cn("fill-white", className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -131,17 +104,11 @@ export const InstagramIcon = ({
   );
 };
 
-export const FacebookIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-  className = "fill-white",
-}: IconProps) => {
+export const FacebookIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      className={className}
+      className={cn("fill-white", className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -153,17 +120,11 @@ export const FacebookIcon = ({
   );
 };
 
-export const LinkedinIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-  className = "fill-white",
-}: IconProps) => {
+export const LinkedinIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      className={className}
+      className={cn("fill-white", className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -175,17 +136,11 @@ export const LinkedinIcon = ({
   );
 };
 
-export const TwitterIcon = ({
-  width = defaultWidth,
-  height = defaultHeight,
-  className = "fill-white",
-}: IconProps) => {
+export const TwitterIcon = ({ className = defaultSize }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      className={className}
+      className={cn("fill-white", className)}
       viewBox="0 0 20 20"
       fill="none"
     >
