@@ -1,13 +1,11 @@
-
-
 import React from "react";
-import { Plus, Minus } from "lucide-react";
+// import { Plus, Minus } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../ui/accordion"
+} from "../ui/accordion";
 
 interface FAQ {
   question: string;
@@ -86,8 +84,12 @@ const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
       <Accordion type="single" collapsible>
         {faqs.map((faq, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="hover:no-underline">{faq.question}</AccordionTrigger>
-            <AccordionContent className="text-[#475467]">{faq.answer}</AccordionContent>
+            <AccordionTrigger className="hover:no-underline">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent className="text-[#475467]">
+              {faq.answer}
+            </AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
