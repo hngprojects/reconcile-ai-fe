@@ -14,12 +14,6 @@ export interface ReconciliationItem {
   matched: boolean;
 }
 
-export function useReconciliationLogic() {
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
   type matched = {
     file1_transaction: Transaction,
     file2_transaction: Transaction,
@@ -27,22 +21,29 @@ export function useReconciliationLogic() {
   }
 
   type unmatched = {
-    unmatched_file1: Transaction,
-    unmatched_file2: Transaction
+    unmatched_file1: Transaction[],
+    unmatched_file2: Transaction[]
   }
 
   type ResponseData = {
     matches: matched[],
     unmatched: unmatched[],
-    only_in_file_1: Transaction[],
-    only_in_file_2: Transaction[]
+    only_in_file1: Transaction[],
+    only_in_file2: Transaction[]
   }
 
-  type Transaction = {
-    description: string,
-    date: string,
-    amount: number
+  export type Transaction = {
+    'Description': string,
+    'Date': string,
+    'Amount': number
   }
+
+export function useReconciliationLogic() {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
 
 
   const [data, setData] = useState<ResponseData>({} as ResponseData);
@@ -52,40 +53,49 @@ export function useReconciliationLogic() {
     setData(JSON.parse(saved as string));
   }, []);
   
-  const bankData = [ ...data.only_in_file_1];
-  const ledgerData = [ ...data.only_in_file_2 ];
+  let bankData = [];
+  let ledgerData = [];
 
-  data.matches.map(data => {
-    bankData.push(data.file1_transaction);
-    ledgerData.push(data.file2_transaction);
-  });
+  if(data.matches){
+    data.matches.map(data => {
+      bankData.push(data.file1_transaction);
+      ledgerData.push(data.file2_transaction);
+    });
+  }
 
-  data.unmatched.map(data => {
-    bankData.push(data.unmatched_file1);
-    ledgerData.push(data.unmatched_file2); 
-  });
+  if(data.unmatched){
+      if(data.unmatched.unmatched_file2) {
+        ledgerData.push(...data.unmatched.unmatched_file2);
+      }
 
-  let totalItems = bankData.length;
+      if(data.unmatched.unmatched_file1){
+        bankData.push(...data.unmatched.unmatched_file1); 
+      }
+  }
+
+  console.log(ledgerData);
+
+  const totalItems = bankData.length;
 
   // Combine data for mobile view and status logic
   const combinedData: ReconciliationItem[] = bankData.map((bankItem) => {
     const matchingLedgerItem = ledgerData.find(
       (ledgerItem) =>
-        ledgerItem.description === bankItem.description &&
-        ledgerItem.amount === bankItem.amount
+        ledgerItem['Description'] === bankItem['Description'] &&
+        ledgerItem['Amount'] === bankItem['Amount']
     );
 
     return {
       bankStatement: {
-        date: bankItem.date,
-        description: bankItem.description,
-        amount: bankItem.amount,
+        date: bankItem['Date'],
+        description: bankItem['Description'],
+        amount: bankItem['Amount'],
       },
       companyLedger: matchingLedgerItem
         ? {
-            date: matchingLedgerItem.date,
-            description: matchingLedgerItem.description,
-            amount: matchingLedgerItem.amount,
+            date: matchingLedgerItem['Date'],
+            description: matchingLedgerItem['Description'],
+            amount: matchingLedgerItem['Amount'],
           }
         : undefined,
       matched: !!matchingLedgerItem,

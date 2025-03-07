@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogTitle, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import starIcon from "@/public/star-icon.png";
@@ -12,6 +12,7 @@ interface UploadModalProps {
 export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogTitle></DialogTitle>
       <DialogContent className="max-w-[400px] p-6">
         <div className="bg-white w-[90%] max-md:mx-auto md:w-[436px] h-[213px] rounded-[12px] flex flex-col items-center justify-between p-8 ">
           <Image
