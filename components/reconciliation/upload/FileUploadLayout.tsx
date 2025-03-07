@@ -91,10 +91,12 @@ export default function FileUploadLayout({
       setReconcileProgress(100);
 
       onReconcile(bankStatement, companyLedger);
+      /* eslint-disable @typescript-eslint/no-unused-vars */
     } catch (error) {
       setShowUploadModal(false);
       setShowErrorModal(true);
     }
+    /* eslint-enable @typescript-eslint/no-unused-vars */
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
