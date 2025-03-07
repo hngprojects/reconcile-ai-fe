@@ -95,6 +95,12 @@ export default function FileUploadLayout({
       );
       console.log("Reconciliation result:", result);
 
+      if(result.status = "success"){
+        localStorage.setItem('reconciliation', result.data);
+      }else{
+        setShowErrorModal(true);
+      }
+
       clearInterval(progressInterval);
       setReconcileProgress(100);
 
