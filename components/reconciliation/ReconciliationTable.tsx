@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ReconciliationErrorModal from "./ReconciliationError";
 
 // Create column helpers
 const bankColumnHelper = createColumnHelper<Transaction>();
@@ -53,6 +54,7 @@ export function ReconciliationTable({
     canPreviousPage,
     canNextPage,
     onRowsPerPageChange,
+    showErrorModal
   } = useReconciliationLogic();
 
   // Define bank statement columns
@@ -68,7 +70,7 @@ export function ReconciliationTable({
       }),
       bankColumnHelper.accessor("Amount", {
         header: "Amount",
-        cell: (info) => formatCurrency(info.getValue()),
+        cell: (info) => { if(info.getValue()) return formatCurrency(info.getValue())},
       }),
     ],
     []
@@ -87,7 +89,7 @@ export function ReconciliationTable({
       }),
       ledgerColumnHelper.accessor("Amount", {
         header: "Amount",
-        cell: (info) => formatCurrency(info.getValue()),
+        cell: (info) => { if(info.getValue()) return formatCurrency(info.getValue())},
       }),
     ],
     []
@@ -149,6 +151,10 @@ export function ReconciliationTable({
   };
 
   return (
+    <>
+    {showErrorModal && (
+        <ReconciliationErrorModal />
+    )}
     <div className="space-y-6 py-6">
       <h1 className="text-2xl font-semibold">Matched Result</h1>
 
@@ -407,5 +413,6 @@ export function ReconciliationTable({
         </div>
       </div>
     </div>
+    </>
   );
 }
