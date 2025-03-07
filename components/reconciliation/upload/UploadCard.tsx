@@ -49,7 +49,7 @@ export default function UploadCard({
   };
 
   return (
-    <div className="w-full md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative">
+    <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative flex-1">
       <div
         className={cn(
           "flex flex-col gap-[12px] h-full",
@@ -60,7 +60,7 @@ export default function UploadCard({
 
         <label
           className={cn(
-            "w-full max-w-full md:max-w-[526px] h-[224.7px] rounded-[12px]",
+            "w-full max-w-full h-[224.7px] rounded-[12px]",
             "flex flex-col items-center justify-center gap-[20px]",
             "border border-[#33333380] cursor-pointer",
             "mx-auto",

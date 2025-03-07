@@ -1,6 +1,5 @@
 "use client";
 
-import Header from "../coming-soon/components/Header";
 import FileUploadLayout from "@/components/reconciliation/upload/FileUploadLayout";
 import { useRouter } from "next/navigation";
 
@@ -17,10 +16,5 @@ export default function FileUploadPage() {
   };
   /* eslint-enable @typescript-eslint/no-unused-vars */
 
-  return (
-    <>
-      <Header />
-      <FileUploadLayout onReconcile={handleReconcile} />
-    </>
-  );
+  return <FileUploadLayout onReconcile={handleReconcile} />;
 }

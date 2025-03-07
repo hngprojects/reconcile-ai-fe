@@ -70,8 +70,11 @@ export function MobileReconciliationView() {
               </div>
               {item.matched && (
                 <div className="pt-1">
-                  <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
-                    <StatusBadge matched={true} />
+                  <div className="flex gap-3 items-center">
+                    <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
+                      <StatusBadge matched={true} />
+                    </div>
+                    <hr className="border border-gray-200/70 flex-1" />
                   </div>
                 </div>
               )}
@@ -79,27 +82,24 @@ export function MobileReconciliationView() {
 
             {/* Company Ledger - Only show if matched */}
             {item.matched && item.companyLedger && (
-              <>
-                <div className="border-t border-gray-100" />
-                <div className="space-y-2 pt-2">
-                  <div className="text-sm font-medium text-gray-500">
-                    Company Ledger
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <div className="space-y-1">
-                      <div className="text-sm text-gray-600">
-                        {item.companyLedger.date}
-                      </div>
-                      <div className="font-medium text-gray-900">
-                        {item.companyLedger.description}
-                      </div>
+              <div className="space-y-2 pt-2">
+                <div className="text-sm font-medium text-gray-500">
+                  Company Ledger
+                </div>
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <div className="text-sm text-gray-600">
+                      {item.companyLedger.date}
                     </div>
                     <div className="font-medium text-gray-900">
-                      {formatCurrency(item.companyLedger.amount)}
+                      {item.companyLedger.description}
                     </div>
                   </div>
+                  <div className="font-medium text-gray-900">
+                    {formatCurrency(item.companyLedger.amount)}
+                  </div>
                 </div>
-              </>
+              </div>
             )}
 
             {/* Show Unmatched status if not matched */}

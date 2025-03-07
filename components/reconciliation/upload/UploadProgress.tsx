@@ -17,7 +17,7 @@ export function UploadProgress({ progress, fileName }: UploadProgressProps) {
           </span>
           <span className="text-[14px] text-[#344054]">{progress}%</span>
         </div>
-        <div className="w-full md:w-[445px] h-2 bg-[#E9ECEF] rounded-[4px] overflow-hidden">
+        <div className="w-full h-2 bg-[#E9ECEF] rounded-[4px] overflow-hidden">
           <div
             className="h-full bg-[#2E604A] rounded-[4px] transition-all duration-300"
             style={{ width: `${progress}%` }}
