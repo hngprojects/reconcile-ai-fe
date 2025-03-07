@@ -56,9 +56,10 @@ const Features = () => {
 
           <div className="w-full relative flex items-center h-[400px]">
             <Image
-              src="/assets/images/feature1-mockup.svg"
+              src="/assets/images/FILE UPLOAD.svg"
               fill
               alt="Reconciliation dashboard"
+              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
             />
           </div>
         </div>
