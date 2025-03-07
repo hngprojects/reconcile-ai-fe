@@ -8,7 +8,7 @@ const Nav = () => {
   return (
     <nav className="border-b-[0.5px] border-[#0000001A]">
       <Container className="flex py-4 justify-between w-full items-center">
-        <Link href="/home">
+        <Link href="/">
           <div className="flex items-center justify-center gap-2">
             <LogoIcon width={48} height={48} />
             <span className="font-extrabold text-3xl font-baloo text-primary">
