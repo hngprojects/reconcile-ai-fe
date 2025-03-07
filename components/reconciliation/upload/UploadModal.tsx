@@ -12,11 +12,8 @@ interface UploadModalProps {
 export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-[90%] md:max-w-[400px] p-4 md:p-6">
-        <div
-          className="bg-white w-full md:w-[436px] h-auto md:h-[213px] rounded-[12px] 
-                      flex flex-col items-center justify-between p-4 md:p-8 gap-4 md:gap-0"
-        >
+   <DialogContent className="max-w-[400px] p-6">
+   <div className="bg-white w-[90%] max-md:mx-auto md:w-[436px] h-[213px] rounded-[12px] flex flex-col items-center justify-between p-8 ">
           <Image
             src={starIcon}
             width={24}
