@@ -28,7 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ErrorModal from "../modal/ErrorModal";
+import ReconciliationErrorModal from "./ReconciliationError";
 import { ReconciliationTableProps, Transaction } from "@/types/reconciliation";
 import FilterExport from "../ui/FilterExport";
 
@@ -52,7 +52,6 @@ export function ReconciliationTable({
     canNextPage,
     onRowsPerPageChange,
     showErrorModal,
-    setShowErrorModal,
     data,
   } = useReconciliationLogic();
 
@@ -155,11 +154,9 @@ export function ReconciliationTable({
 
   return (
     <>
-    {showErrorModal && (
-    <ErrorModal  title="Oops" open={showErrorModal} onOpenChange={(open)=>setShowErrorModal(open)} buttonTitle="Go to Upload" buttonHref="/file-upload"   message="CSV Table Structure not currently supported!"    />
-    )}
-    <div className="space-y-6 py-6">
-      <h1 className="text-2xl font-semibold">Matched Result</h1>
+      {showErrorModal && <ReconciliationErrorModal />}
+      <div className="space-y-6 py-6">
+        <h1 className="text-2xl font-semibold">Matched Result</h1>
 
         <FilterExport />
 
