@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 const Contact = () => {
   return (
     <div>
-      <Nav />
+      {/* <Nav /> */}
       <div className="md:bg-[#FAFAFA] pt-[47px] px-[24px] md:py-[96px]">
         <div className="max-w-[996px] mx-auto flex flex-col items-center mb-[58px] md:mb-[64px]">
           <p className=" bg-[#E6FFF2] rounded-[16px] py-2 px-3 text-[20px] text-[#009A49]">

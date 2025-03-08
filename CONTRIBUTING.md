@@ -83,7 +83,7 @@ Our repository uses two primary branches:
    - Navigate to your fork on GitHub.
    - Open a pull request (PR) from your `feature/<feature-name>` branch to the team repository’s `dev` branch.
    - template
-
+  
     # What does the PR do?
 
     This PR initializes a NextJS 15 project and sets up ShadCN
