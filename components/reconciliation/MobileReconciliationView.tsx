@@ -5,7 +5,6 @@ import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/lib/utils";
 import { useReconciliationLogic } from "@/hooks/useReconciliationLogic";
 import { formatCurrency } from "@/data/reconciliationSampleData";
-import FilterExport from "../ui/FilterExport";
 
 export function MobileReconciliationView() {
   const {
@@ -27,8 +26,6 @@ export function MobileReconciliationView() {
   return (
     <div className="space-y-3 py-6">
       <h1 className="text-2xl font-semibold">Matched Result</h1>
-
-      <FilterExport />
 
       {/* Transaction Cards */}
       {data.map((item, index) => (
