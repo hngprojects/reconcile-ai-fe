@@ -7,7 +7,7 @@ on:
     branches: [main, dev]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: reconcile
     timeout-minutes: 10
     steps:
@@ -36,7 +36,8 @@ jobs:
         run: zip -r build-artifact.zip .next
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: build-artifact.zip
+          
