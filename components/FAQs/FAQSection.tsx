@@ -1,10 +1,6 @@
+import { FAQ } from "@/types/faq";
 import Container from "../Container";
 import FAQAccordion from "./FAQAccordion";
-
-interface FAQ {
-  question: string;
-  answer: string;
-}
 
 const faqItems: FAQ[] = [
   {
@@ -24,8 +20,7 @@ const faqItems: FAQ[] = [
   },
   {
     question: "Is my data secure with ReconXi?",
-    answer:
-      "Absolutely!",
+    answer: "Absolutely!",
   },
   {
     question: "Can I manually update matched transactions?",
