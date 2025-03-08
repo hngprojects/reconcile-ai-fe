@@ -41,7 +41,7 @@ jobs:
 
             # Copy and extract build artifact
             mkdir -p $FE_PATH/tmp
-            unzip -o ~/build-artifact.zip -d $FE_PATH/tmp
+            tar -xvf build-artifact.tar -C $FE_PATH/tmp
             mv $FE_PATH/tmp/.next $FE_PATH/.next_new
             rm -rf $FE_PATH/tmp
 

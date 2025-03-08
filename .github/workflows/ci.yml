@@ -31,15 +31,13 @@ jobs:
 
       - name: Run Build
         run: npm run build
-      - name: Install zip
-        run: sudo apt-get update && sudo apt-get install -y zip
 
       - name: Archive Build Artifact
-        run: zip -r build-artifact.zip .next
+        run: tar -cvf build-artifact.tar .next
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
-          path: build-artifact.zip
+          path: build-artifact.tar
           
