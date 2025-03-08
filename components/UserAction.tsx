@@ -1,27 +1,30 @@
 "use client";
 
 import { FC } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { useAuth } from "@/components/context/AuthContext"; // Import useAuth
+import { useAuth } from "@/components/context/AuthContext"; 
 
 const UserAction: FC = () => {
-  const { isAuthenticated, profileImage, login } = useAuth(); // Get authentication functions
+  const { isAuthenticated, profileImage, username, login } = useAuth(); 
 
   return (
-    <div>
+    <div className="flex items-center gap-3">
       {isAuthenticated && profileImage ? (
-        <Image
-          src={profileImage}
-          alt="Profile"
-          width={50}
-          height={50}
-          className="rounded-full cursor-pointer"
-        />
+        <>
+          <span className="text-sm font-semibold">{username}</span> 
+          <Image
+            src={profileImage}
+            alt="Profile"
+            width={40}
+            height={40}
+            className="rounded-full cursor-pointer"
+          />
+        </>
       ) : (
-        <button type="button"
+        <button
+          type="button"
           className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap rounded-md font-semibold justify-center items-center h-12 sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
-          onClick={login} // Call login function on click
+          onClick={login} 
         >
           Login
         </button>
