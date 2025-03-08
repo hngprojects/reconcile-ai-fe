@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { formatCurrency } from "@/data/reconciliationSampleData";
 
 export interface ReconciliationItem {
   bankStatement: {
@@ -136,13 +135,15 @@ export function useReconciliationLogic() {
     setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
   };
 
-  const onRowsPerPageChange = (newSize: number) => {
-    if (newSize > totalItems) return;
+  
+  // Handle rows per page change
+  const onRowsPerPageChange = (size: number) => {
     setPagination((prev) => ({
-      pageIndex: 0,
-      pageSize: newSize,
+      pageSize: size,
+      pageIndex: 0, // Reset to first page when page size changes
     }));
   };
+  
 
   // Slice data based on pagination
   const paginatedBankData = bankData.slice(
