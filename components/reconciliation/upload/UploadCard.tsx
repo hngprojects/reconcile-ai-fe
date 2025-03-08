@@ -61,20 +61,12 @@ export default function UploadCard({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check if file is CSV
-      if (!file.name.endsWith(".csv")) {
-        setError("File format not supported");
-        return;
-      }
+      handleFile(file);
+    }
+  };
 
-      // Check if file is already uploaded
-      if (existingFiles.includes(file.name)) {
-        setError("This file is already uploaded");
-        return;
-      }
-
-      setError("");
-      onFileSelect(file);
+  useEffect(() => {
+    if (fileUploaded && !isUploading) {
       toast.success("File Uploaded Successfully", {
         icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
         action: {
@@ -84,6 +76,7 @@ export default function UploadCard({
       });
     }
   }, [fileUploaded, isUploading]);
+
   return (
     <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative flex-1">
       <div
