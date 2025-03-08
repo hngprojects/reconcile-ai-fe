@@ -31,6 +31,8 @@ jobs:
 
       - name: Run Build
         run: npm run build
+      - name: Install zip
+        run: sudo apt-get update && sudo apt-get install -y zip
 
       - name: Archive Build Artifact
         run: zip -r build-artifact.zip .next
