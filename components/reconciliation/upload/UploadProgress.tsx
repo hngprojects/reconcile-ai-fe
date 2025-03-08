@@ -1,10 +1,6 @@
 import csvIcon from "@/public/csvIcon.svg";
+import { UploadProgressProps } from "@/types/upload";
 import Image from "next/image";
-
-interface UploadProgressProps {
-  progress: number;
-  fileName: string;
-}
 
 export function UploadProgress({ progress, fileName }: UploadProgressProps) {
   return (

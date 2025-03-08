@@ -1,8 +1,6 @@
-interface LogoProps {
-  className?: string;
-}
+import { IconClassProps } from "@/types/icon";
 
-export const Logo: React.FC<LogoProps> = ({ className }) => {
+export const Logo: React.FC<IconClassProps> = ({ className }) => {
   return (
     <svg
       width="159"

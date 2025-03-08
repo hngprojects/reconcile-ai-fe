@@ -2,12 +2,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
 import starIcon from "@/public/star-icon.png";
-
-interface UploadModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  progress: number;
-}
+import { UploadModalProps } from "@/types/upload";
 
 export function UploadModal({ isOpen, progress }: UploadModalProps) {
   return (
