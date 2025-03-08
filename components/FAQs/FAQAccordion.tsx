@@ -2,11 +2,7 @@
 
 import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
-
-interface FAQ {
-  question: string;
-  answer: string;
-}
+import { AccordionItemProps, FAQ } from "@/types/faq";
 
 const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
   const [selected, setSelected] = useState<number | null>(null);
@@ -27,13 +23,6 @@ const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
     </div>
   );
 };
-
-interface AccordionItemProps {
-  faq: FAQ;
-  selected: number | null;
-  setSelected: (index: number | null) => void;
-  index: number;
-}
 
 const AccordionItem = ({
   faq,

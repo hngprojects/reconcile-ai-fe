@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { UploadCardProps } from "./types";
 import { FilePreview } from "./FilePreview";
@@ -61,10 +61,29 @@ export default function UploadCard({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      handleFile(file);
-    }
-  };
+      // Check if file is CSV
+      if (!file.name.endsWith(".csv")) {
+        setError("File format not supported");
+        return;
+      }
 
+      // Check if file is already uploaded
+      if (existingFiles.includes(file.name)) {
+        setError("This file is already uploaded");
+        return;
+      }
+
+      setError("");
+      onFileSelect(file);
+      toast.success("File Uploaded Successfully", {
+        icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
+        action: {
+          label: <p>Close</p>,
+          onClick: () => toast.dismiss(),
+        },
+      });
+    }
+  }, [fileUploaded, isUploading]);
   return (
     <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative flex-1">
       <div

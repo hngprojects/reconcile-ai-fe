@@ -8,6 +8,7 @@ const Features = () => {
   const secondFeature = [
     "Instant records matching",
     "Clear status indicators: Matched, Unmatched",
+    "Export data quickly",
   ];
 
   // const thirdFeature = [
