@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import UploadCard from "./UploadCard";
 import UploadModal from "./UploadModal";
-import ErrorUploadModal from "./ErrorUploadModal";
+
+
 import { reconcileFiles } from "@/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/components/Container";
+import ErrorModal from "@/components/modal/ErrorModal";
 
 export default function FileUploadLayout({
   onReconcile,
@@ -111,13 +113,12 @@ export default function FileUploadLayout({
         onReconcile(bankStatement, companyLedger);
       }, 1000);
       onReconcile(bankStatement, companyLedger);
-      /* eslint-disable @typescript-eslint/no-unused-vars */
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
       setShowErrorModal(true);
     }
-    /* eslint-enable @typescript-eslint/no-unused-vars */
+   
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
@@ -166,7 +167,8 @@ export default function FileUploadLayout({
       />
 
       {showErrorModal && (
-        <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
+        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
+        <ErrorModal open={showErrorModal} onOpenChange={() => setShowErrorModal(false)}  title="Oops!" message="Something went wrong" buttonTitle="Go to Upload" buttonHref="/file-upload"/>
       )}
     </Container>
   );
