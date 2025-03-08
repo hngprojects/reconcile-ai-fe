@@ -1,4 +1,3 @@
-import Nav from "@/components/Nav";
 import { Button } from "@/components/ui/button";
 import TryFreeCard from "@/components/try-free-card";
 import Footer from "@/components/Footer";
