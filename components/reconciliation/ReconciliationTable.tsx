@@ -159,6 +159,7 @@ export function ReconciliationTable({
     )}
     <div className="space-y-6 py-6">
       <h1 className="text-2xl font-semibold">Matched Result</h1>
+
         <div className="grid grid-cols-12 gap-2 max-w-[1440px] mx-auto">
           {/* Bank Statement Table */}
           <div className="col-span-5">
