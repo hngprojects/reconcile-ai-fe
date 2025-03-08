@@ -3,10 +3,14 @@
 import Link from "next/link";
 import Container from "./Container";
 import { LogoIcon } from "./Icon/Icons";
+import UserAction from "@/components/UserAction";
+import { useAuth } from "@/components/context/AuthContext"; // Import useAuth
 
 const Nav = () => {
+  const { isAuthenticated, profileImage } = useAuth(); // Get authentication state
+
   return (
-    <nav className="border-b-[1px] border-[#0000001A] sticky top-0 left-0 right-0 bg-white z-50">
+    <nav className="border-b-[1px] flex items-center border-[#0000001A] sticky top-0 left-0 right-0 bg-white z-50">
       <Container className="flex py-4 justify-between w-full items-center">
         <Link href="/">
           <div className="flex items-center justify-center gap-2">
@@ -16,6 +20,9 @@ const Nav = () => {
             </span>
           </div>
         </Link>
+
+        {/* Pass authentication state to UserAction */}
+        <UserAction />
       </Container>
     </nav>
   );
