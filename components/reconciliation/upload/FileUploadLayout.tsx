@@ -113,13 +113,12 @@ export default function FileUploadLayout({
         onReconcile(bankStatement, companyLedger);
       }, 1000);
       onReconcile(bankStatement, companyLedger);
-      /* eslint-disable @typescript-eslint/no-unused-vars */
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
       setShowErrorModal(true);
     }
-    /* eslint-enable @typescript-eslint/no-unused-vars */
+   
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
