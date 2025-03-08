@@ -149,6 +149,10 @@ export const TwitterIcon = ({ className = defaultSize }: IconClassProps) => {
   );
 };
 
+export const SearchIcon = ({ className = defaultSize }: IconClassProps) => {
+  
+}
+
 const Icons = {
   File: FileIcon,
   Speed: SpeedIcon,

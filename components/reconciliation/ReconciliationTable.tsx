@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ReconciliationErrorModal from "./ReconciliationError";
 import { ReconciliationTableProps, Transaction } from "@/types/reconciliation";
+import FilterExport from "../ui/FilterExport";
 
 // Create column helpers
 const bankColumnHelper = createColumnHelper<Transaction>();
@@ -156,6 +157,8 @@ export function ReconciliationTable({
       {showErrorModal && <ReconciliationErrorModal />}
       <div className="space-y-6 py-6">
         <h1 className="text-2xl font-semibold">Matched Result</h1>
+
+        <FilterExport />
 
         <div className="grid grid-cols-12 gap-2 max-w-[1440px] mx-auto">
           {/* Bank Statement Table */}
