@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UploadCardProps } from "./types";
 import { FilePreview } from "./FilePreview";
 import { UploadProgress } from "./UploadProgress";
@@ -38,6 +38,12 @@ export default function UploadCard({
 
       setError("");
       onFileSelect(file);
+    }
+  };
+
+  useEffect(() => {
+    if (fileUploaded && !isUploading) {
+      // Only show toast when upload is completed
       toast.success("File Uploaded Successfully", {
         icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
         action: {
@@ -46,8 +52,8 @@ export default function UploadCard({
         },
       });
     }
-  };
-
+  }, [fileUploaded, isUploading]);
+  
   return (
     <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative flex-1">
       <div
