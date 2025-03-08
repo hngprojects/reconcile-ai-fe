@@ -15,7 +15,7 @@ const Nav = () => {
         <Link href="/">
           <div className="flex items-center justify-center gap-2">
             <LogoIcon className="size-9 md:size-12" />
-            <span className="font-extrabold text-3xl font-baloo text-primary leading-0 mt-1">
+            <span className="font-extrabold text-xl sm:text-3xl font-baloo text-primary leading-0 mt-1">
               ReconXi
             </span>
           </div>

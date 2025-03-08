@@ -8,10 +8,10 @@ const UserAction: FC = () => {
   const { isAuthenticated, profileImage, username, login } = useAuth(); 
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-1 sm:gap-3">
       {isAuthenticated && profileImage ? (
         <>
-          <span className="text-sm font-semibold">{username}</span> 
+          <span className="text-xs sm:text-sm font-semibold">{username}</span> 
           <Image
             src={profileImage}
             alt="Profile"
