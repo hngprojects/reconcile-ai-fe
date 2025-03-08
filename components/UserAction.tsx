@@ -26,7 +26,7 @@ const UserAction: FC = () => {
           className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap rounded-md font-semibold justify-center items-center h-12 sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
           onClick={login} 
         >
-          Login
+          Get Started
         </button>
       )}
     </div>
