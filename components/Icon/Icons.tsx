@@ -1,12 +1,9 @@
 import { cn } from "@/lib/utils";
-
-export interface IconProps {
-  className?: string;
-}
+import { IconClassProps } from "@/types/icon";
 
 const defaultSize = "w-6 h-6";
 
-export const FileIcon = ({ className = defaultSize }: IconProps) => {
+export const FileIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +31,7 @@ export const FileIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const SpeedIcon = ({ className = defaultSize }: IconProps) => {
+export const SpeedIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +50,7 @@ export const SpeedIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const ReportIcon = ({ className = defaultSize }: IconProps) => {
+export const ReportIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -72,7 +69,7 @@ export const ReportIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const LogoIcon = ({ className = defaultSize }: IconProps) => {
+export const LogoIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +85,7 @@ export const LogoIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const InstagramIcon = ({ className = defaultSize }: IconProps) => {
+export const InstagramIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +101,7 @@ export const InstagramIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const FacebookIcon = ({ className = defaultSize }: IconProps) => {
+export const FacebookIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +117,7 @@ export const FacebookIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const LinkedinIcon = ({ className = defaultSize }: IconProps) => {
+export const LinkedinIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +133,7 @@ export const LinkedinIcon = ({ className = defaultSize }: IconProps) => {
   );
 };
 
-export const TwitterIcon = ({ className = defaultSize }: IconProps) => {
+export const TwitterIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
