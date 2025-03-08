@@ -39,3 +39,7 @@ export type Transaction = {
 export type TData = {
   [key: string]: string | number;
 };
+export type ReconciliationTableProps = {
+  leftTableTitle?: string;
+  rightTableTitle?: string;
+};
