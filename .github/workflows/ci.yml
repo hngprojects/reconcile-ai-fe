@@ -2,20 +2,19 @@ name: Next.js CI
 
 on:
   pull_request:
-    branches: [main, dev] # Runs for same-repo PRs
+    branches: [main, dev]
   pull_request_target:
-    branches: [main, dev] # Runs for PRs from forks
+    branches: [main, dev]
 
 jobs:
   build-and-test:
     runs-on: reconcile
     timeout-minutes: 10
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.pull_request.head.sha }} # Checkout the fork's branch
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
 
       - name: Setup Node.js
@@ -24,10 +23,21 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        run: npm install
+        run: 
+          npm install          
 
       - name: Run Linting
         run: npm run lint
 
       - name: Run Build
         run: npm run build
+
+      - name: Archive Build Artifact
+        run: tar -cvf build-artifact.tar .next
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: build-artifact.tar
+          
