@@ -28,7 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ReconciliationErrorModal from "./ReconciliationError";
+import ErrorModal from "../modal/ErrorModal";
 import { ReconciliationTableProps, Transaction } from "@/types/reconciliation";
 
 // Create column helpers
@@ -51,6 +51,7 @@ export function ReconciliationTable({
     canNextPage,
     onRowsPerPageChange,
     showErrorModal,
+    setShowErrorModal,
     data,
   } = useReconciliationLogic();
 
@@ -153,9 +154,11 @@ export function ReconciliationTable({
 
   return (
     <>
-      {showErrorModal && <ReconciliationErrorModal />}
-      <div className="space-y-6 py-6">
-        <h1 className="text-2xl font-semibold">Matched Result</h1>
+    {showErrorModal && (
+    <ErrorModal  title="Oops" open={showErrorModal} onOpenChange={(open)=>setShowErrorModal(open)} buttonTitle="Go to Upload" buttonHref="/file-upload"   message="CSV Table Structure not currently supported!"    />
+    )}
+    <div className="space-y-6 py-6">
+      <h1 className="text-2xl font-semibold">Matched Result</h1>
 
         <div className="grid grid-cols-12 gap-2 max-w-[1440px] mx-auto">
           {/* Bank Statement Table */}
