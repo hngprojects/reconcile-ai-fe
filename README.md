@@ -26,7 +26,7 @@ Reconcile AI transforms financial record matching through AI-powered automation.
 
 ### Setup Instructions
 
-1. Clone the repository:
+1. Clone the repository:S
 ```bash
 git clone https://github.com/hngprojects/reconcile-ai-fe.git
 ```
