@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import UploadCard from "./UploadCard";
 import UploadModal from "./UploadModal";
-import ErrorUploadModal from "./ErrorUploadModal";
+
+
 import { reconcileFiles } from "@/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/components/Container";
+import ErrorModal from "@/components/modal/ErrorModal";
 
 export default function FileUploadLayout({
   onReconcile,
@@ -166,7 +168,8 @@ export default function FileUploadLayout({
       />
 
       {showErrorModal && (
-        <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
+        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
+        <ErrorModal open={showErrorModal} onOpenChange={() => setShowErrorModal(false)}  title="Oops!" message="Something went wrong" buttonTitle="Go to Upload" buttonHref="/file-upload"/>
       )}
     </Container>
   );

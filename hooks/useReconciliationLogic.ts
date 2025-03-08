@@ -63,6 +63,8 @@ export function useReconciliationLogic() {
 
   const [data, setData] = useState<ResponseData>({} as ResponseData);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [validationShown, setValidationShown] = useState(false);
+
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem('reconciliation') as string);
@@ -89,11 +91,15 @@ export function useReconciliationLogic() {
       }
   }
 
+
   useEffect(() => {
-    if(!validateDocuments(bankData) || !validateDocuments(ledgerData)){
-      setShowErrorModal(true);
+    if(!validationShown && (bankData.length > 0 || ledgerData.length > 0)) {
+      if(!validateDocuments(bankData) || !validateDocuments(ledgerData)){
+        setShowErrorModal(true);
+        setValidationShown(true);
+      }
     }
-  }, [bankData, ledgerData]);
+  }, [bankData, ledgerData, validationShown]);
 
   const totalItems = bankData.length;
 
@@ -172,6 +178,7 @@ export function useReconciliationLogic() {
     onNextPage,
     onRowsPerPageChange,
     showErrorModal,
+    setShowErrorModal,
     setData,
     data
   };
