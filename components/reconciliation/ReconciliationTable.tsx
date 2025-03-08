@@ -105,19 +105,17 @@ export function ReconciliationTable({
     [paginatedBankData, paginatedLedgerData]
   );
 
-  // Create tables with shared pagination state
   const bankTable = useReactTable({
     data: paginatedBankData,
     columns: bankColumns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
     state: {
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil(paginatedBankData.length / pagination.pageSize),
   });
+  
 
   const ledgerTable = useReactTable({
     data: paginatedLedgerData,
@@ -132,12 +130,9 @@ export function ReconciliationTable({
     pageCount: Math.ceil(paginatedLedgerData.length / pagination.pageSize),
   });
 
-  // Calculate current page range
+  // Pagination start and end
   const pageStart = pagination.pageIndex * pagination.pageSize + 1;
-  const pageEnd = Math.min(
-    (pagination.pageIndex + 1) * pagination.pageSize,
-    totalItems
-  );
+  const pageEnd = Math.min(pageStart + pagination.pageSize - 1, totalItems);
 
   // array of row options
   const rowOptions = [10, 25, 50];
