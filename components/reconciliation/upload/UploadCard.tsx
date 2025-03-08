@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useDropzone } from "react-dropzone";
 import { UploadCardProps } from "./types";
 import { FilePreview } from "./FilePreview";
 import { UploadProgress } from "./UploadProgress";
 import ErrorMessage from "./ErrorMessage";
-import uploadIcon from "@/public/uploadIcon.svg";
 import Image from "next/image";
-import { toast } from "sonner";
+import uploadIcon from "@/public/uploadIcon.svg";
 import checkIcon from "@/public/check-icon.svg";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export default function UploadCard({
@@ -21,30 +22,46 @@ export default function UploadCard({
 }: UploadCardProps) {
   const [error, setError] = useState<string>("");
 
+  // Function to handle file validation and selection
+  const handleFile = (file: File) => {
+    if (!file.name.endsWith(".csv")) {
+      setError("File format not supported");
+      return;
+    }
+
+    if (existingFiles.includes(file.name)) {
+      setError("This file is already uploaded");
+      return;
+    }
+
+    setError("");
+    onFileSelect(file);
+    toast.success("File Uploaded Successfully", {
+      icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
+      action: {
+        label: <p>Close</p>,
+        onClick: () => toast.dismiss(),
+      },
+    });
+  };
+
+  // Drag-and-drop handler
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      handleFile(acceptedFiles[0]);
+    }
+  }, []);
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { "text/csv": [".csv"] },
+  });
+
+  // Handle manual file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Check if file is CSV
-      if (!file.name.endsWith(".csv")) {
-        setError("File format not supported");
-        return;
-      }
-
-      // Check if file is already uploaded
-      if (existingFiles.includes(file.name)) {
-        setError("This file is already uploaded");
-        return;
-      }
-
-      setError("");
-      onFileSelect(file);
-      toast.success("File Uploaded Successfully", {
-        icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
-        action: {
-          label: <p>Close</p>,
-          onClick: () => toast.dismiss(),
-        },
-      });
+      handleFile(file);
     }
   };
 
@@ -58,44 +75,53 @@ export default function UploadCard({
       >
         <h2 className="text-[20px] md:text-[24px] font-semibold">{title}</h2>
 
-        <label
+        {/* Drag & Drop Wrapper */}
+        <div
+          {...getRootProps()}
           className={cn(
             "w-full max-w-full h-[224.7px] rounded-[12px]",
-            "flex flex-col items-center justify-center gap-[20px]",
+            "flex flex-col items-center justify-center gap-[12px]",
             "border border-[#33333380] cursor-pointer",
             "mx-auto",
-            error && "border-[#C50700]"
+            error
+              ? "border-[#C50700]"
+              : "hover:bg-gray-100 transition duration-200"
           )}
         >
+          <input {...getInputProps()} />
           {isUploading ? (
             <UploadProgress progress={uploadProgress} fileName={fileName!} />
           ) : !fileUploaded ? (
             <>
               <Image src={uploadIcon} width={48} height={48} alt="Upload" />
               <p
-                className={`text-[18px] font-bold ${
-                  error ? "text-[#C50700]" : "text-[#678e82]"
+                className={`text-[18px] font-medium ${
+                  error ? "text-[#C50700]" : "text-[#4A5568]"
                 }`}
               >
-                {error || "Upload file"}
+                <span className="hidden md:inline">
+                  {error || "Drag & Drop files here or "}
+                </span>
+                <span className="text-[#2F855A] font-semibold underline">
+                  Choose file
+                </span>
               </p>
-              <p className="underline text-[20px] font-normal text-[#333333B2]">
-                Choose file here
-              </p>
-              <input
-                type="file"
-                accept=".csv"
-                onChange={handleFileChange}
-                className="hidden"
-              />
             </>
           ) : (
             <FilePreview fileName={fileName!} onDelete={onFileDelete} />
           )}
-        </label>
+        </div>
+
+        {/* Hidden input for manual file selection */}
+        <input
+          type="file"
+          accept=".csv"
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-0 mt-auto">
-          <p className="font-inter text-[14px] md:text-[16px] font-light leading-[140%]">
+          <p className="text-[14px] md:text-[16px] font-light leading-[140%]">
             Supported format: CSV
           </p>
           <ErrorMessage message={error} />
