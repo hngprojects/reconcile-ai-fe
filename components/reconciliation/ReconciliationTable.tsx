@@ -50,7 +50,7 @@ export function ReconciliationTable({
     canPreviousPage,
     canNextPage,
     onRowsPerPageChange,
-    showErrorModal,
+    // showErrorModal,
     data,
   } = useReconciliationLogic();
 
