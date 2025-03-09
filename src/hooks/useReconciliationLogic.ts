@@ -101,11 +101,10 @@ export function useReconciliationLogic() {
     setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
   };
 
-  const onRowsPerPageChange = (newSize: number) => {
-    if (newSize > totalItems) return;
-    setPagination(() => ({
-      pageIndex: 0,
-      pageSize: newSize,
+  const onRowsPerPageChange = (size: number) => {
+    setPagination((prev) => ({
+      pageSize: size,
+      pageIndex: 0, // Reset to first page when page size changes
     }));
   };
 
