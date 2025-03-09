@@ -282,16 +282,6 @@ export function ReconciliationTable({
 
   return (
     <>
-      {showErrorModal && (
-        <ErrorModal
-          title="Oops"
-          open={showErrorModal}
-          onOpenChange={(open) => setShowErrorModal(open)}
-          buttonTitle="Go to Upload"
-          buttonHref="/file-upload"
-          message="CSV table structure not currently supported!"
-        />
-      )}
       <div className="space-y-6 py-6">
         {/* Custom Toast Message */}
         {showSuccessToast && (
