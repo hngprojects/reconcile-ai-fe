@@ -13,11 +13,11 @@ import {
 const Footer = () => {
   return (
     <footer className="footer bg-primary">
-      <Container className="w-full">
+      <Container className="w-full overflow-x-hidden">
         <div className="flex flex-col gap-4 text-white py-12 items-center justify-between">
           <div className="w-full flex flex-col gap-8 items-start">
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
-              <div className="flex flex-col w-full sm:w-1/2 gap-4">
+              <div className="flex flex-col w-full sm:w-fit gap-4">
                 <div className="flex flex-col gap-2 ">
                   <Link href="/home" className="w-fit sm:mb-3">
                     <div className="flex items-center justify-start gap-2">
@@ -91,7 +91,7 @@ const Footer = () => {
             </div>
 
             <div className="sm:w-1/2 w-full">
-              <nav className="hidden sm:flex items-center gap-8">
+              <nav className="hidden sm:flex flex-wrap items-center gap-x-8 gap-y-4">
                 <Link
                   href="/contact"
                   className="hover:underline underline-offset-2"
