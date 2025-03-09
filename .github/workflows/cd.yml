@@ -57,7 +57,7 @@ jobs:
               PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
             fi
 
-            npm install
+            npm ci
             pm2 restart "$PM2_NAME" --update-env
             npx pm2 save
           #EOF
