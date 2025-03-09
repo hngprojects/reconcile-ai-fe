@@ -25,7 +25,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
   imageWidth = 100,
   imageHeight = 100,
   buttonTitle = "close",
-  buttonHref = "#",
+  buttonHref = "/file-upload",
 }) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -41,7 +41,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           <h2 className="font-bold text-3xl md:text-5xl text-center">
             {title}
           </h2>
-          <p className="text-[#475569]">{message}</p>
+          <p className="text-[#475569] text-center">{message}</p>
           <Link
             className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
             href={buttonHref}

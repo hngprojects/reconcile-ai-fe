@@ -22,7 +22,9 @@ export default function FileUploadLayout({
   });
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Something went wrong");
   const [reconcileProgress, setReconcileProgress] = useState(0);
+  const [isReconciling, setIsReconciling] = useState(false);
 
   // Load files from localStorage on mount
   useEffect(() => {
@@ -59,8 +61,30 @@ export default function FileUploadLayout({
     saveFile(companyLedger, "companyLedger");
   }, [bankStatement, companyLedger]);
 
+  // Function to check if files are duplicates
+  const checkDuplicateFiles = () => {
+    if (bankStatement && companyLedger && bankStatement.name === companyLedger.name) {
+      setErrorMessage("Cannot use the same file for both bank statement and company ledger");
+      setShowErrorModal(true);
+      return true;
+    }
+    return false;
+  };
+
   const handleFileUpload = async (file: File, type: "bank" | "ledger") => {
     if (!file.name.endsWith(".csv")) return;
+
+    // Check if the file would create a duplicate scenario
+    const wouldCreateDuplicate = type === "bank" 
+      ? (companyLedger && file.name === companyLedger.name)
+      : (bankStatement && file.name === bankStatement.name);
+    
+    if (wouldCreateDuplicate) {
+      console.log("Duplicate file detected:", file.name);
+      setErrorMessage("Cannot use the same file for both bank statement and company ledger");
+      setShowErrorModal(true);
+      return;
+    }
 
     const targetState = type === "bank" ? setBankStatement : setCompanyLedger;
     targetState(file);
@@ -79,6 +103,15 @@ export default function FileUploadLayout({
 
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
+    
+    // First check for duplicate files
+    if (checkDuplicateFiles()) {
+      return; // Stop if files are duplicates
+    }
+    
+    // Set reconciling state to prevent multiple reconciliations
+    if (isReconciling) return;
+    setIsReconciling(true);
 
     setShowUploadModal(true);
     setReconcileProgress(0);
@@ -97,34 +130,40 @@ export default function FileUploadLayout({
       );
       console.log("Reconciliation result:", result);
 
-      if ((result.status = "success")) {
+      if (result.status === "success") {
         localStorage.setItem("reconciliation", JSON.stringify(result.data));
+        
+        clearInterval(progressInterval);
+        setReconcileProgress(100);
+
+        // Wait for progress animation to complete
+        setTimeout(() => {
+          setShowUploadModal(false);
+          onReconcile(bankStatement, companyLedger);
+          setIsReconciling(false);
+        }, 1000);
       } else {
-        setShowErrorModal(true);
-      }
-
-      clearInterval(progressInterval);
-      setReconcileProgress(100);
-
-      // Wait for progress animation to complete
-      setTimeout(() => {
+        clearInterval(progressInterval);
         setShowUploadModal(false);
-        onReconcile(bankStatement, companyLedger);
-      }, 1000);
-      onReconcile(bankStatement, companyLedger);
+        setErrorMessage("Something went wrong during reconciliation");
+        setShowErrorModal(true);
+        setIsReconciling(false);
+      }
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
+      setErrorMessage("Something went wrong during reconciliation");
       setShowErrorModal(true);
+      setIsReconciling(false);
     }
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
     Boolean
   ) as string[];
-
-   // Check if any file is currently uploading
-   const isAnyFileUploading = isUploading.bank || isUploading.ledger;
+  
+  // Check if any file is currently uploading
+  const isAnyFileUploading = isUploading.bank || isUploading.ledger;
 
   return (
     <Container className="my-10">
@@ -153,7 +192,7 @@ export default function FileUploadLayout({
 
       <Button
         onClick={handleReconciliation}
-        disabled={!bankStatement || !companyLedger || isAnyFileUploading}
+        disabled={!bankStatement || !companyLedger || isAnyFileUploading || isReconciling}
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
                   disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
                   rounded-[8px] mx-auto block"
@@ -163,21 +202,22 @@ export default function FileUploadLayout({
 
       <UploadModal
         isOpen={showUploadModal}
-        onClose={() => setShowUploadModal(false)}
+        onClose={() => {
+          if (!isReconciling) {
+            setShowUploadModal(false);
+          }
+        }}
         progress={reconcileProgress}
       />
 
-      {showErrorModal && (
-        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} /> 
-        <ErrorModal
-          open={showErrorModal}
-          onOpenChange={() => setShowErrorModal(false)}
-          title="Oops!"
-          message="Something went wrong"
-          buttonTitle="Go to Upload"
-          buttonHref="/file-upload"
-        />
-      )}
+      <ErrorModal
+        open={showErrorModal}
+        onOpenChange={() => setShowErrorModal(false)}
+        title="Oops"
+        message={errorMessage}
+        buttonTitle="Go to Upload"
+        buttonHref="/file-upload"
+      />
     </Container>
   );
 }
