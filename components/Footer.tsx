@@ -14,7 +14,7 @@ const Footer = () => {
   return (
     <footer className="footer bg-primary">
       <Container className="w-full">
-        <div className="flex flex-col gap-4 text-white py-12 items-center justify-between">
+        <div className="flex flex-col gap-4 text-white py-12 items-center justify-between overflow-x-hidden">
           <div className="w-full flex flex-col gap-8 items-start">
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
               <div className="flex flex-col w-full sm:w-1/2 gap-4">
