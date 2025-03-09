@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Baloo_Paaji_2 } from "next/font/google";
 import "./globals.css";
+
 import { Toaster } from "sonner";
 import Nav from "@/src/components/Nav";
-import { AuthProvider } from "@/src/components/context/AuthContext"; // Import useAuth
 
 const inter = Inter({
   variable: "--font-inter",
@@ -83,29 +83,27 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
-        <AuthProvider>
-          {" "}
-          {/* Wrap the app with AuthProvider */}
-          <Nav />
-          {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              style: {
-                background: "#EEFFEE",
-                width: "438px",
-                height: "48px",
-                padding: "12px 24px",
-                borderRadius: "8px",
-                boxShadow: "none",
-              },
-            }}
-          />
-        </AuthProvider>
+        <Nav />
+        {children}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: {
+              background: "#EEFFEE",
+              width: "438px",
+              height: "48px",
+              padding: "12px 24px",
+              borderRadius: "8px",
+              boxShadow: "none",
+            },
+          }}
+        />
       </body>
     </html>
   );

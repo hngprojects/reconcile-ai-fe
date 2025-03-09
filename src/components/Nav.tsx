@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Container from "./Container";
 import { LogoIcon } from "./Icon/Icons";
-import UserAction from "@/src/components/UserAction";
 
 const Nav = () => {
   return (
@@ -17,9 +16,6 @@ const Nav = () => {
             </span>
           </div>
         </Link>
-
-        {/* Pass authentication state to UserAction */}
-        <UserAction />
       </Container>
     </nav>
   );
