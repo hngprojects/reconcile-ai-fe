@@ -5,8 +5,8 @@ import { FilePreview } from "./FilePreview";
 import { UploadProgress } from "./UploadProgress";
 import ErrorMessage from "./ErrorMessage";
 import Image from "next/image";
-import uploadIcon from "@/public/uploadIcon.svg";
-import checkIcon from "@/public/check-icon.svg";
+import uploadIcon from "@/public/assets/images/uploadIcon.svg";
+import checkIcon from "@/public/assets/images/check-icon.svg";
 import { toast } from "sonner";
 import { cn } from "@/src/lib/utils";
 

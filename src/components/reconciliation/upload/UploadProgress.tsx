@@ -1,4 +1,4 @@
-import csvIcon from "@/public/csvIcon.svg";
+import csvIcon from "@/public/assets/images/csvIcon.svg";
 import { UploadProgressProps } from "@/src/types/upload";
 import Image from "next/image";
 
