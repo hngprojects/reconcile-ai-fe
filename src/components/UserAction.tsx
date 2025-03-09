@@ -1,0 +1,35 @@
+"use client";
+
+import { FC } from "react";
+import { useAuth } from "@/src/components/context/AuthContext";
+// import GoogleAuthModal from "./modal/GoogleAuthModal";
+
+const UserAction: FC = () => {
+  const { isAuthenticated } = useAuth();
+  // const [showAuthModal, setShowAuthModal] = useState(false);
+
+  return (
+    <>
+      <div className="flex items-center gap-1 sm:gap-3">
+        {!isAuthenticated && (
+          <button
+            type="button"
+            className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
+                     rounded-md font-semibold justify-center items-center h-12 
+                     sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
+            // onClick={() => setShowAuthModal(true)}
+          >
+            Get Started
+          </button>
+        )}
+      </div>
+
+      {/* <GoogleAuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+      /> */}
+    </>
+  );
+};
+
+export default UserAction;
