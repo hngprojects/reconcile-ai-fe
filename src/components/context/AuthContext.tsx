@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { User, AuthResponse } from "@/src/types/auth";
+import { BASE_URL } from "@/src/lib/apiEndpoints";
 
 interface AuthContextType {
   user: User | null;
@@ -26,13 +27,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = () => {
     // Simply redirect to the Google auth endpoint
-    window.location.href = "https://api-dev.reconxi.com/api/v1/auth/google";
+    window.location.href = `${BASE_URL}/auth/google`;
   };
 
   const handleAuthCallback = async () => {
     try {
       const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/auth/google/callback",
+        `${BASE_URL}/auth/google/callback`,
         {
           method: "GET",
           headers: {
