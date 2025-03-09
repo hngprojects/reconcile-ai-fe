@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ErrorMessageProps } from "./types";
-import warningIcon from "@/public/alert-icon.svg";
+import warningIcon from "@/public/assets/images/alert-icon.svg";
 
 export default function ErrorMessage({ message }: ErrorMessageProps) {
   if (!message) return null;

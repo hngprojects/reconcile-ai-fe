@@ -1,7 +1,7 @@
 import Image from "next/image";
-import csvIcon from "@/public/csvIcon.svg";
-import deleteIcon from "@/public/deleteIcon.svg";
-import deleteCheckIcon from "@/public/deleteCheckIcon.svg";
+import csvIcon from "@/public/assets/images/csvIcon.svg";
+import deleteIcon from "@/public/assets/images/deleteIcon.svg";
+import deleteCheckIcon from "@/public/assets/images/deleteCheckIcon.svg";
 import { FilePreviewProps } from "./types";
 import { toast } from "sonner";
 

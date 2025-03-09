@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import { Progress } from "@/src/components/ui/progress";
 import Image from "next/image";
-import starIcon from "@/public/star-icon.png";
+import starIcon from "@/public/assets/images/star-icon.png";
 
 interface UploadModalProps {
   isOpen: boolean;
