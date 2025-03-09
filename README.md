@@ -1,101 +1,107 @@
-# Reconcile AI ~ An AI-Powered Financial Reconciliation
+# Reconcile AI - Intelligent Financial Reconciliation Platform
 
-Reconcile AI is an easy-to-use reconciliation platform (web app) for comparing any two sets of financial records, like customer records (e.g., student payments, inventory sales, transaction alerts), with bank statements for any discrepancies or irregularities. It offers a simple file upload interface, AI-based matching algorithms with manual overrides, and multiple options for exporting results, thereby decreasing manual interventions by the users while increasing efficiency and accuracy.
+Reconcile AI transforms financial record matching through AI-powered automation. Our platform streamlines the comparison of financial datasets (like student payments, inventory sales, transaction alerts) against bank statements, delivering precision and efficiency in identifying discrepancies.
 
-## 📑 Table of Contents
+## ⭐ Key Features
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
+- **Smart Reconciliation Engine** - AI-powered matching algorithms with high accuracy
+- **Flexible Override System** - Manual controls for handling edge cases
+- **Intuitive Interface** - Simple drag-and-drop file uploads
+- **Export Options** - Multiple formats for reconciliation reports
+- **Secure Authentication** - Protected access to financial data
 
-## <span id="features"> ✨ Core Functionality </span>
+## 🛠️ Technology Stack
 
-- **User Onboarding and Authentication:** Give users an excellent onboarding experience so that they may easily learn and use the product.
-
-- **Reconciliation:** Identify discrepancies with high precision, minimizing the risk of errors in financial reporting by utilizing AI-based matching algorithms.
-
-- **Flexibility:** Provides manual override options that would allow its users to tackle complex or peculiar cases and provide accuracy in reconciliations.
-
-- **Optimize User Experience:** Provides an easy-to-use file upload interface for users.
-
-- **Results Export:** Ensures users can export reconciliation results for reports and further analysis.
-
-## <span id="tech-stack">🛠️ Tech Stack</span>
-
-- **Framework**: Next.js 15 with App Router
-- **UI Library**: Shadcn UI
+- **Frontend Framework**: Next.js 15 (App Router)
+- **Component Library**: Shadcn UI
 - **State Management**: Zustand
-- **lucide-react** – Icon library for React.
+- **Icons**: Lucide React
 - **Styling**: Tailwind CSS
 
-## <span id="getting-started"> 🚀 Getting Started </span>
+## 🚀 Quick Start
 
-### Prerequisites
+### System Requirements
+- Node.js >= v18
+- npm package manager
 
-- Node.js (v18 or higher)
-- Package manager: **npm**
+### Setup Instructions
 
-### Installation
-
-1. Clone the repository:
-
+1. Clone the repository:S
 ```bash
-git clone <repository-url>
+git clone https://github.com/hngprojects/reconcile-ai-fe.git
 ```
 
-2. Navigate to the project directory:
-
+2. Navigate to project folder:
 ```bash
-cd [project-directory]
+cd reconcile-ai-fe
 ```
 
 3. Install dependencies:
-
 ```bash
 npm install
 ```
 
-4. Run the development server:
-
+4. Start development server:
 ```bash
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
+5. Visit `http://localhost:3000` in your browser
 
-## <span id="project-structure">📂 Project Structure</span>
+## 📁 Project Structure
 
-```plaintext
+```
 reconcile-ai-fe/
-├── public/
-|   |
-│   └── favicon.ico          # Favicon
-|
+├── public/                # Static assets
 ├── src/
-|   └── app/                 # Next.js app router
-│        ├── page.tsx        # Homepage
-│        ├── favicon.ico     # Favicon
-│        └── page.tsx
-|
-│
-├── components/
-│   ├── common/              # Reusable components (e.g., Container.tsx,)
-│   └── ui/                  # Shadcn components
-│
-|
-├── next.config.ts           # Next.js configuration
-├── tailwind.config.ts       # TailwindCSS configuration
-├── tsconfig.json            # TypeScript configuration
-├── CONTRIBUTING.md          # Contribution guideline file
-├── README.md                # Readme file
-├── .env.local               # Environment variables (not committed)
-└── package.json             # Project dependencies and scripts
+│   ├── app/              # Next.js app router pages
+│   └── components/       # React components
+│       ├── common/       # Shared components
+│       └── ui/           # Shadcn UI components
+├── next.config.ts        # Next.js configuration
+├── tailwind.config.ts    # Tailwind CSS settings
+└── package.json          # Project metadata
 ```
 
-## <span id="contributing"> 🤝 Contributing </span>
+## 💡 Core Features
 
-Please see [CONTRIBUTING](CONTRIBUTING.md)
+1. **User Authentication**
+   - Seamless onboarding
+   - Secure login system
+
+2. **Reconciliation Engine**
+   - AI-powered matching
+   - High precision algorithms
+   - Real-time processing
+
+3. **Manual Controls**
+   - Override capabilities
+   - Custom matching rules
+   - Exception handling
+
+4. **File Management**
+   - Multi-format support
+   - Bulk upload capability
+   - Data validation
+
+5. **Export & Reporting**
+   - Multiple export formats
+   - Detailed reconciliation reports
+   - Audit trails
+
+## 🤝 Contributing
+
+We welcome contributions! Check our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+- Code standards
+- Pull request process
+- Development workflow
+
+## 📄 License
+
+[License details here]
+
+## 🔗 Links
+
+- [Documentation]()
+- [API Reference]()
+- [Support]()

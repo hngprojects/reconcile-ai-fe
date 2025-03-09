@@ -1,56 +1,20 @@
 import { useState, useEffect } from "react";
+import {
+  ReconciliationItem,
+  ResponseData,
+  TData,
+  Transaction,
+} from "@/types/reconciliation";
 
-export interface ReconciliationItem {
-  bankStatement: {
-    date: string;
-    description: string;
-    amount: number;
-  };
-  companyLedger?: {
-    date: string;
-    description: string;
-    amount: number;
-  };
-  matched: boolean;
-}
+const validateDocuments = (data: TData[]) => {
+  const requiredHeaders = ["Date", "Description", "Amount"];
 
-  type matched = {
-    file1_transaction: Transaction,
-    file2_transaction: Transaction,
-    status: string
-  }
+  const valid = data.every((tx) =>
+    requiredHeaders.every((h) => Object.keys(tx).includes(h))
+  );
 
-  type unmatched = {
-    unmatched_file1: Transaction[],
-    unmatched_file2: Transaction[]
-  }
-
-  type ResponseData = {
-    matches: matched[],
-    unmatched: unmatched,
-    only_in_file1: Transaction[],
-    only_in_file2: Transaction[]
-  }
-
-  export type Transaction = {
-    'Description': string,
-    'Date': string,
-    'Amount': number
-  }
-
-  export type TData = {
-    [key: string]: string|number 
-  }
-
-  const validateDocuments = (data: TData[]) => {
-    const requiredHeaders = ['Date', 'Description', 'Amount'];
-
-    const valid = data.every(tx => 
-      requiredHeaders.every(h => Object.keys(tx).includes(h))
-    );
-
-    return valid;
-  }
+  return valid;
+};
 
 export function useReconciliationLogic() {
   const [pagination, setPagination] = useState({
@@ -58,41 +22,45 @@ export function useReconciliationLogic() {
     pageSize: 10,
   });
 
-
-
   const [data, setData] = useState<ResponseData>({} as ResponseData);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [validationShown, setValidationShown] = useState(false);
+
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('reconciliation') as string);
+    const saved = JSON.parse(localStorage.getItem("reconciliation") as string);
     setData(saved);
   }, []);
-  
+
   const bankData: Transaction[] = [];
   const ledgerData: Transaction[] = [];
 
-  if(data.matches){
-    data.matches.map(data => {
+  if (data.matches) {
+    data.matches.map((data) => {
       bankData.push(data.file1_transaction);
       ledgerData.push(data.file2_transaction);
     });
   }
 
-  if(data.unmatched){
-      if(data.unmatched.unmatched_file2) {
-        ledgerData.push(...data.unmatched.unmatched_file2);
-      }
+  if (data.unmatched) {
+    if (data.unmatched.unmatched_file2) {
+      ledgerData.push(...data.unmatched.unmatched_file2);
+    }
 
-      if(data.unmatched.unmatched_file1){
-        bankData.push(...data.unmatched.unmatched_file1); 
-      }
+    if (data.unmatched.unmatched_file1) {
+      bankData.push(...data.unmatched.unmatched_file1);
+    }
   }
 
+
   useEffect(() => {
-    if(!validateDocuments(bankData) || !validateDocuments(ledgerData)){
-      setShowErrorModal(true);
+    if(!validationShown && (bankData.length > 0 || ledgerData.length > 0)) {
+      if(!validateDocuments(bankData) || !validateDocuments(ledgerData)){
+        setShowErrorModal(true);
+        setValidationShown(true);
+      }
     }
-  }, [bankData, ledgerData]);
+  }, [bankData, ledgerData, validationShown]);
 
   const totalItems = bankData.length;
 
@@ -106,15 +74,15 @@ export function useReconciliationLogic() {
 
     return {
       bankStatement: {
-        date: bankItem['Date'],
-        description: bankItem['Description'],
-        amount: bankItem['Amount'],
+        date: bankItem["Date"],
+        description: bankItem["Description"],
+        amount: bankItem["Amount"],
       },
       companyLedger: matchingLedgerItem
         ? {
-            date: matchingLedgerItem['Date'],
-            description: matchingLedgerItem['Description'],
-            amount: matchingLedgerItem['Amount'],
+            date: matchingLedgerItem["Date"],
+            description: matchingLedgerItem["Description"],
+            amount: matchingLedgerItem["Amount"],
           }
         : undefined,
       matched: !!matchingLedgerItem,
@@ -137,7 +105,7 @@ export function useReconciliationLogic() {
 
   const onRowsPerPageChange = (newSize: number) => {
     if (newSize > totalItems) return;
-    setPagination((prev) => ({
+    setPagination(() => ({
       pageIndex: 0,
       pageSize: newSize,
     }));
@@ -171,7 +139,8 @@ export function useReconciliationLogic() {
     onNextPage,
     onRowsPerPageChange,
     showErrorModal,
+    setShowErrorModal,
     setData,
-    data
+    data,
   };
 }

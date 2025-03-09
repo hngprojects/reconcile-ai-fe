@@ -8,6 +8,7 @@ const Features = () => {
   const secondFeature = [
     "Instant records matching",
     "Clear status indicators: Matched, Unmatched",
+    "Export data quickly",
   ];
 
   // const thirdFeature = [
@@ -18,7 +19,7 @@ const Features = () => {
 
   return (
     <section>
-      <Container className="py-12">
+      <Container className="py-6 sm:py-12">
         <div className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12">
           <p className="text-primary mb-[12px] font-semibold">How it Works</p>
           <h3 className="text-3xl sm:text-4xl font-semibold mb-2 sm:mb-4 text-[#101828] ">
@@ -30,7 +31,7 @@ const Features = () => {
           </p>
         </div>
         <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-16">
-          <div className="w-full text-center sm:mt-9 sm:text-left flex flex-col">
+          <div className="w-full text-center sm:mt-9 items-center sm:items-start sm:text-left flex flex-col">
             <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
               <FileIcon />
             </div>
@@ -44,9 +45,9 @@ const Features = () => {
               only supported file format is CSV.
             </p>
 
-            <ul className="list-none flex flex-col gap-3 items-start">
+            <ul className="list-none self-start flex flex-col gap-3 items-start">
               {firstFeature.map((feature, index) => (
-                <div key={index} className="flex items-center pl-4">
+                <div key={index} className="flex items-start text-start pl-4">
                   <CheckCircle2Icon className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6" />
                   <span className="sm:text-lg text-[#475467]">{feature}</span>
                 </div>
@@ -56,13 +57,14 @@ const Features = () => {
 
           <div className="w-full relative flex items-center h-[400px]">
             <Image
-              src="/assets/images/feature1-mockup.svg"
+              src="/assets/images/FILE UPLOAD.svg"
               fill
               alt="Reconciliation dashboard"
+              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
             />
           </div>
         </div>
-        <div className="flex flex-col-reverse sm:flex-row items-start justify-between w-full py-10 sm:py-28 gap-16">
+        <div className="flex flex-col-reverse sm:flex-row items-start justify-between w-full pt-10 sm:pt-28 gap-16">
           <div className="w-full relative flex items-center h-[400px] ">
             <Image
               src="/assets/images/feature2-mockup.svg"
@@ -71,7 +73,7 @@ const Features = () => {
               className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
             />
           </div>
-          <div className="w-full text-center sm:mt-9 sm:text-left flex flex-col">
+          <div className="w-full text-center items-center sm:items-start sm:mt-9 sm:text-left flex flex-col">
             <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
               <SpeedIcon />
             </div>
@@ -84,9 +86,9 @@ const Features = () => {
               Watch as Ai automatically matches your records.
             </p>
 
-            <ul className="list-none flex flex-col gap-3 items-start">
+            <ul className="list-none flex self-start flex-col gap-3 items-start">
               {secondFeature.map((feature, index) => (
-                <div key={index} className="flex items-center pl-4">
+                <div key={index} className="flex items-start text-start pl-4">
                   <CheckCircle2Icon className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6" />
                   <span className="sm:text-lg text-[#475467]">{feature}</span>
                 </div>
@@ -95,9 +97,9 @@ const Features = () => {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-16">
+        {/* <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-16">
           <div className="w-full text-center sm:mt-9 sm:text-left flex flex-col">
-            {/* <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
+            <div className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3 ">
               <ReportIcon />
             </div>
 
@@ -107,27 +109,27 @@ const Features = () => {
 
             <p className="sm:text-lg max-w-[560px] text-[#475467] mb-6">
               View your matched records with a green status tag "Matched" and your unmatched records with a red status tag "Unmatched". 
-            </p> */}
+            </p>
 
-            {/* <ul className="list-none flex flex-col gap-3 items-start">
+            <ul className="list-none flex flex-col gap-3 items-start">
               {thirdFeature.map((feature, index) => (
                 <div key={index} className="flex items-center pl-4">
                   <CheckCircle2Icon className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6" />
                   <span className="sm:text-lg text-[#475467]">{feature}</span>
                 </div>
               ))}
-            </ul> */}
+            </ul>
           </div>
 
-          {/* <div className="w-full relative flex items-center h-[400px]">
+          <div className="w-full relative flex items-center h-[400px]">
             <Image
               src="/assets/images/Features-3-image.png"
               fill
               alt="Reconciliation dashboard"
               className="border-[3.13px] border-[#101828] rounded-[7.61px] object-cover"
             />
-          </div> */}
-        </div>
+          </div>
+        </div> */}
       </Container>
     </section>
   );

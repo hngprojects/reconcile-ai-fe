@@ -4,9 +4,12 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import UploadCard from "./UploadCard";
 import UploadModal from "./UploadModal";
-import ErrorUploadModal from "./ErrorUploadModal";
+
+
 import { reconcileFiles } from "@/lib/api";
 import { FileUploadLayoutProps } from "./types";
+import Container from "@/components/Container";
+import ErrorModal from "@/components/modal/ErrorModal";
 
 export default function FileUploadLayout({
   onReconcile,
@@ -72,7 +75,7 @@ export default function FileUploadLayout({
         clearInterval(interval);
         setIsUploading((prev) => ({ ...prev, [type]: false }));
       }
-    }, 500);
+    }, 200);
   };
 
   const handleReconciliation = async () => {
@@ -95,9 +98,9 @@ export default function FileUploadLayout({
       );
       console.log("Reconciliation result:", result);
 
-      if(result.status = "success"){
-        localStorage.setItem('reconciliation', JSON.stringify(result.data));
-      }else{
+      if ((result.status = "success")) {
+        localStorage.setItem("reconciliation", JSON.stringify(result.data));
+      } else {
         setShowErrorModal(true);
       }
 
@@ -110,13 +113,12 @@ export default function FileUploadLayout({
         onReconcile(bankStatement, companyLedger);
       }, 1000);
       onReconcile(bankStatement, companyLedger);
-      /* eslint-disable @typescript-eslint/no-unused-vars */
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
       setShowErrorModal(true);
     }
-    /* eslint-enable @typescript-eslint/no-unused-vars */
+   
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
@@ -124,7 +126,7 @@ export default function FileUploadLayout({
   ) as string[];
 
   return (
-    <div className="mt-[60px] mx-auto max-w-[1440px] px-4 md:px-[80px]">
+    <Container className="my-10">
       <div className="flex flex-col md:flex-row justify-center gap-[40px]">
         <UploadCard
           title="Upload Bank Statement"
@@ -165,8 +167,9 @@ export default function FileUploadLayout({
       />
 
       {showErrorModal && (
-        <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
+        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
+        <ErrorModal open={showErrorModal} onOpenChange={() => setShowErrorModal(false)}  title="Oops!" message="Something went wrong" buttonTitle="Go to Upload" buttonHref="/file-upload"/>
       )}
-    </div>
+    </Container>
   );
 }
