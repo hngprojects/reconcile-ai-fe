@@ -286,7 +286,7 @@ export function ReconciliationTable({
         {/* Custom Toast Message */}
         {showSuccessToast && (
           <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
-            <SuccessToast message={toastMessage} />
+            <SuccessToast message={toastMessage} onClose={() => {setShowSuccessToast(!setShowSuccessToast)}} />
           </div>
         )}
 
@@ -294,7 +294,7 @@ export function ReconciliationTable({
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
           <button
-            className="px-14 py-4 bg-[#2E604A] text-white rounded-md w-[165px] h-[50px] flex items-center justify-center"
+            className="px-14 py-4 bg-[#297B65] hover:bg-[#297B65]/90 text-white rounded-md w-[165px] h-[50px] flex items-center justify-center cursor-pointer"
             onClick={handleExport}
             disabled={isExporting}
           >
