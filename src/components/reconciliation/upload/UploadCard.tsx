@@ -10,6 +10,8 @@ import checkIcon from "@/public/check-icon.svg";
 import { toast } from "sonner";
 import { cn } from "@/src/lib/utils";
 
+const MAX_FILE_SIZE = 5;
+
 export default function UploadCard({
   title,
   fileUploaded,
@@ -29,6 +31,13 @@ export default function UploadCard({
       return;
     }
 
+    // Limit the file size
+    const fileSizeInMB = file.size / ( 1024 * 1024 )
+    if (fileSizeInMB > MAX_FILE_SIZE) {
+      setError(`File size exceeds ${MAX_FILE_SIZE}MB`);
+      return;
+    }
+
     if (existingFiles.includes(file.name)) {
       setError("This file is already uploaded");
       return;
@@ -37,8 +46,22 @@ export default function UploadCard({
     setError("");
     onFileSelect(file);
     // I removed this toast, as it will be triggered by useEffect when fileUploaded becomes true
+
     
   };
+
+  useEffect(() => {
+    // Only show toast when a file has been uploaded AND is no longer uploading
+    if (fileUploaded && !isUploading) {
+      toast.success("File Uploaded Successfully", {
+        icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
+        action: {
+          label: <p>Close</p>,
+          onClick: () => toast.dismiss(),
+        },
+      });
+    }
+  }, [fileUploaded, isUploading]);
 
   // Drag-and-drop handler
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -102,12 +125,10 @@ export default function UploadCard({
             <>
               <Image src={uploadIcon} width={48} height={48} alt="Upload" />
               <p
-                className={`text-[18px] font-medium ${
-                  error ? "text-[#C50700]" : "text-[#4A5568]"
-                }`}
+                className={`text-[18px] font-medium text-[#4A5568]`}
               >
-                <span className="hidden md:inline">
-                  {error || "Drag & Drop files here or "}
+                <span className="hidden md:inline mr-2">
+                  Drag & Drop files here or
                 </span>
                 <span className="text-[#2F855A] font-semibold underline">
                   Choose file
@@ -131,9 +152,15 @@ export default function UploadCard({
           <p className="text-[14px] md:text-[16px] font-light leading-[140%]">
             Supported format: CSV
           </p>
-          <ErrorMessage message={error} />
+          <p className="text-[14px] md:text-[16px] font-light leading-[140%]">
+            Maximum size: {MAX_FILE_SIZE}MB
+          </p>
         </div>
       </div>
+      <div className="w-full flex justify-center md:justify-end md:mt-2 mb-2 md:mb-0"> 
+        {error && <ErrorMessage message={error} />}
+      </div>
     </div>
+    
   );
 }

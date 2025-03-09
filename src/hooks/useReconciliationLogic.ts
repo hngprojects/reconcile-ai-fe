@@ -64,11 +64,10 @@ export function useReconciliationLogic() {
 
   // Combine data for mobile view and status logic
   const combinedData: ReconciliationItem[] = bankData.map((bankItem) => {
-    const matchingLedgerItem = ledgerData.find(
-      (ledgerItem) =>
-        ledgerItem["Description"] === bankItem["Description"] &&
-        ledgerItem["Amount"] === bankItem["Amount"]
+    const matchingData = data.matches.find(
+        (match) => match.file1_transaction == bankItem
     );
+    const matchingLedgerItem = matchingData && matchingData.file2_transaction;
 
     return {
       bankStatement: {
@@ -101,11 +100,10 @@ export function useReconciliationLogic() {
     setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
   };
 
-  const onRowsPerPageChange = (newSize: number) => {
-    if (newSize > totalItems) return;
+  const onRowsPerPageChange = (size: number) => {
     setPagination(() => ({
-      pageIndex: 0,
-      pageSize: newSize,
+      pageSize: size,
+      pageIndex: 0, // Reset to first page when page size changes
     }));
   };
 
