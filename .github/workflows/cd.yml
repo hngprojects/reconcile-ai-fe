@@ -1,6 +1,10 @@
 name: Next.js CD
 
 on:
+  workflow_run:
+    workflows: ["Next.js CI"]
+    types:
+      - completed
   push:
     branches:
       - main
@@ -11,10 +15,14 @@ jobs:
     runs-on: reconcile
     timeout-minutes: 10
     steps:
+      - name: list files
+        run: ls -R
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
+          path: ./build-artifact
+
 
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
