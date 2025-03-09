@@ -1,6 +1,6 @@
 name: Next.js CD
 
-on: 
+on:
   push:
     branches:
       - main
@@ -11,12 +11,21 @@ jobs:
     runs-on: reconcile
     timeout-minutes: 10
     steps:
-      - name: Copy the zipped folder into the server
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Next.js App
+        run: npm run build
+
+      - name: Archive the build folder
+        run: tar -cvf build-artifact.tar .next
+
+      - name: Copy the build artifact to the server
         run: |
           scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar
-        env:
-          SSHPASS: ${{ secrets.EC2_PASSWORD }}
-     
 
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
@@ -41,11 +50,8 @@ jobs:
 
             cd $FE_PATH
 
-            # Copy and extract build artifact
-            mkdir -p $FE_PATH/tmp
-            tar -xvf /home/${{ secrets.EC2_USERNAME }}/build-artifact.tar -C $FE_PATH/tmp
-            mv $FE_PATH/tmp/.next $FE_PATH/.next_new
-            rm -rf $FE_PATH/tmp
+            # Extract build artifact directly to .next
+            tar -xvf /home/${{ secrets.EC2_USERNAME }}/build-artifact.tar -C $FE_PATH
 
             # Pull latest code          
             git pull origin $(basename $GITHUB_REF)
@@ -53,11 +59,6 @@ jobs:
             # Install Dependencies
             npm ci
             npm install pm2 --save-dev
-
-            # Swap new build into place
-            mv $FE_PATH/.next $FE_PATH/.next_old
-            mv $FE_PATH/.next_new $FE_PATH/.next
-            rm -rf $FE_PATH/.next_old
 
             # Restart or start PM2 process
             if npx pm2 list | grep -q "$PM2_NAME"; then
