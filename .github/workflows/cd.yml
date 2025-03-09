@@ -23,6 +23,7 @@ jobs:
           name: build-artifact
           path: ./build-artifact
 
+
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
         with:
