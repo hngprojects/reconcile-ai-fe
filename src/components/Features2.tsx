@@ -83,7 +83,7 @@ const Features = () => {
             </h3>
 
             <p className="sm:text-lg max-w-[560px] text-[#475467] mb-6">
-              Watch as Ai automatically matches your records.
+              Watch as AI automatically matches your records.
             </p>
 
             <ul className="list-none flex self-start flex-col gap-3 items-start">
