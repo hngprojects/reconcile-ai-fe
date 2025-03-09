@@ -30,17 +30,34 @@ jobs:
 
       - name: Copy the build artifact to the server
         run: |
-          sshpass -p ${{secrets.EC2_PASSWORD}} scp -o StrictHostKeyChecking=no build-artifact.tar ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}}:~/build-artifact
+          sshpass -p ${{ secrets.EC2_PASSWORD }} scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
 
-      - name: Update Deployment 
+      - name: Update Deployment
         run: |
-         sshpass -p ${{secrets.EC2_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}} << 'EOF'
-             cd ~/fe
-             git pull origin dev
-             cp ~/build-artifact/build-artifact.tar .
-             tar -xvf build-artifact.tar
-             rm -f build-artifact.tar
-             pm2 stop reconcile-fe-dev
-             npm install
-             pm2 restart reconcile-fe-dev --update-env
-           # EOF
+          sshpass -p ${{ secrets.EC2_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+              FE_PATH="/home/Reconcile/fe-main"
+              PORT=3005
+              PM2_NAME="reconcile-fe"
+            else
+              FE_PATH="/home/Reconcile/fe"
+              PORT=3006
+              PM2_NAME="reconcile-fe-dev"
+            fi
+
+            cd "$FE_PATH"
+            git pull origin $(basename $GITHUB_REF)
+            cp ~/build-artifact/build-artifact.tar .
+            tar -xvf build-artifact.tar
+            rm -f build-artifact.tar
+
+            if npx pm2 list | grep -q "$PM2_NAME"; then
+              npx pm2 reload "$PM2_NAME"
+            else
+              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
+            fi
+
+            npm ci
+            pm2 restart "$PM2_NAME" --update-env
+            npx pm2 save
+          #EOF
