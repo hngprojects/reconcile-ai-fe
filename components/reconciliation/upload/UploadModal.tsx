@@ -9,11 +9,11 @@ interface UploadModalProps {
   progress: number;
 }
 
-export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
+export function UploadModal({ isOpen, progress }: UploadModalProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-   <DialogContent className="max-w-[400px] p-6">
-   <div className="bg-white w-[90%] max-md:mx-auto md:w-[436px] h-[213px] rounded-[12px] flex flex-col items-center justify-between p-8 ">
+    <Dialog open={isOpen}>
+      <DialogContent className="max-w-[400px] p-6" closeButton={false}>
+        <div className="bg-white w-[90%] max-md:mx-auto md:w-[436px] h-[213px] rounded-[12px] flex flex-col items-center justify-between p-8 ">
           <Image
             src={starIcon}
             width={24}

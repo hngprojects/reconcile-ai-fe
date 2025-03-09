@@ -1,10 +1,6 @@
 import { cn } from "@/lib/utils";
+import { StatusBadgeProps } from "@/types/status-badge";
 import { Check as CheckIcon, X as XIcon } from "lucide-react";
-
-interface StatusBadgeProps {
-  matched: boolean;
-  className?: string;
-}
 
 export function StatusBadge({ matched, className }: StatusBadgeProps) {
   return (
