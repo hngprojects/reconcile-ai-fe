@@ -1,4 +1,8 @@
-import { RECONCILE_API_URL, WAITLIST_API_URL } from "./apiEndpoints";
+import {
+  CONTACT_US_API_URL,
+  RECONCILE_API_URL,
+  WAITLIST_API_URL,
+} from "./apiEndpoints";
 
 export async function reconcileFiles(
   file1: File,
@@ -59,6 +63,34 @@ export async function handleAddToWaitlist(email: string): Promise<{
     return { success: data.message };
   } catch (error) {
     console.error(`Waitlist error for email ${email}:`, error);
+    return { error: "Something went wrong. Please try again later." };
+  }
+}
+
+// CONTACT US
+export async function handleContactUs(userInfo: {
+  name: string;
+  email: string;
+  message: string;
+  phone_number: string;
+}) {
+  try {
+    const response = await fetch(CONTACT_US_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send contact us message");
+    }
+
+    return { success: data.message };
+  } catch (error) {
+    console.error("Contact us error:", error);
     return { error: "Something went wrong. Please try again later." };
   }
 }

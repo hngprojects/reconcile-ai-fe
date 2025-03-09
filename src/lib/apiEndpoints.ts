@@ -5,3 +5,6 @@ export const RECONCILE_API_URL = `${BASE_URL}/reconcile`;
 
 // WAITLIST
 export const WAITLIST_API_URL = `${BASE_URL}/wait-list`;
+
+// CONTACT US
+export const CONTACT_US_API_URL = `${BASE_URL}/contact`;
