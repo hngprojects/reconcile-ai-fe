@@ -1,19 +1,22 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 import { useRouter } from "next/navigation";
-
-interface User {
-  email: string;
-  name: string;
-  picture: string;
-}
+import { User, AuthResponse } from "@/src/types/auth";
+import { BASE_URL } from "@/src/lib/apiEndpoints";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  signInWithGoogle: () => Promise<void>;
-  logout: () => Promise<void>;
+  signInWithGoogle: () => void;
+  logout: () => void;
+  handleAuthCallback: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,24 +25,51 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = () => {
+    // Simply redirect to the Google auth endpoint
+    window.location.href = `${BASE_URL}/auth/google`;
+  };
+
+  const handleAuthCallback = async () => {
     try {
-      window.location.href = "/api/auth/google";
+      const response = await fetch(
+        `${BASE_URL}/auth/google/callback`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Authentication failed");
+      }
+
+      const data: AuthResponse = await response.json();
+      setUser(data.user);
+      localStorage.setItem("auth_token", data.token);
+      router.push("/file-upload");
     } catch (error) {
-      console.error("Google sign in error:", error);
-      throw error;
+      console.error("Auth callback error:", error);
+      router.push("/");
     }
   };
 
-  const logout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      setUser(null);
-      router.push("/");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const logout = () => {
+    localStorage.removeItem("auth_token");
+    setUser(null);
+    router.push("/");
   };
+
+  // Check for authenticated user on mount
+  useEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if (token) {
+      // Verify token and get user info
+      // Add API endpoint to verify token if available
+    }
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -48,6 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated: !!user,
         signInWithGoogle,
         logout,
+        handleAuthCallback,
       }}
     >
       {children}
