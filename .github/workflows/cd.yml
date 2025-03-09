@@ -1,7 +1,7 @@
 name: Next.js CD
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - dev
@@ -15,8 +15,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
+          path: .
 
-      - name: Deploy and Start Application
+      - name: Transfer Artifact to Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          password: ${{ secrets.EC2_PASSWORD }}
+          source: "build-artifact.tar"
+          target: "/tmp/build-artifact.tar"
+
+      - name: Deploy and Restart Application
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -39,31 +49,23 @@ jobs:
 
             cd $FE_PATH
 
-            # Copy and extract build artifact
+            # Extract new build to a temporary folder
             mkdir -p $FE_PATH/tmp
-            tar -xvf build-artifact.tar -C $FE_PATH/tmp
+            tar -xvf /tmp/build-artifact.tar -C $FE_PATH/tmp
             mv $FE_PATH/tmp/.next $FE_PATH/.next_new
+            mv $FE_PATH/tmp/package.json $FE_PATH/package.json
+            mv $FE_PATH/tmp/package-lock.json $FE_PATH/package-lock.json
             rm -rf $FE_PATH/tmp
 
-            # Pull latest code          
-            git pull origin $(basename $GITHUB_REF)
-
-            # Install Dependencies
+            # Install dependencies
             npm ci
-            # Install PM2 if not available
-            npm install pm2 --save-dev
 
-            # Swap new build into place
+            # Swap new build into place instantly
             mv $FE_PATH/.next $FE_PATH/.next_old
             mv $FE_PATH/.next_new $FE_PATH/.next
             rm -rf $FE_PATH/.next_old
 
-            # Restart or start PM2 process
-            if npx pm2 list | grep -q "$PM2_NAME"; then
-              npx pm2 reload "$PM2_NAME"
-            else
-              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
-            fi
+            # Reload PM2 process without downtime
+            npx pm2 reload "$PM2_NAME"
 
-            npx pm2 save
             echo "Deployment completed successfully!"

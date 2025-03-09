@@ -23,8 +23,7 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        run: 
-          npm install          
+        run: npm install
 
       - name: Run Linting
         run: npm run lint
@@ -33,11 +32,10 @@ jobs:
         run: npm run build
 
       - name: Archive Build Artifact
-        run: tar -cvf build-artifact.tar .next
+        run: tar -cvf build-artifact.tar .next package.json package-lock.json
 
-      - name: Upload Artifact
+      - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-artifact
           path: build-artifact.tar
-          
