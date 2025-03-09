@@ -41,13 +41,13 @@ const EmailSubscribeForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: data.email,
+        body: JSON.stringify({ email: data.email }),
       });
       console.log("api",response)
       if (response.ok) {
         setSubscribed(true);
       } else {
-        setErrorMessage("dynamic error message")
+        setErrorMessage("error, pls try again")
       }
     } catch (error) {
 
