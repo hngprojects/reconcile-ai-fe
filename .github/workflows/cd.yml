@@ -11,14 +11,12 @@ jobs:
     runs-on: reconcile
     timeout-minutes: 10
     steps:
-      - name: Copy the zipped folder into the server 
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          source: "build-artifact.tar"
-          target: "/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar"         
+      - name: Copy the zipped folder into the server
+        run: |
+          scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar
+        env:
+          SSHPASS: ${{ secrets.EC2_PASSWORD }}
+     
 
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
