@@ -19,7 +19,7 @@ import {
 import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
-import { ChevronDown, Loader2 } from "lucide-react";
+import { ChevronDown, Loader2, Check, AlertCircle } from "lucide-react";
 import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
 import { formatCurrency } from "@/src/data/reconciliationSampleData";
 import {
@@ -28,12 +28,47 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import ErrorModal from "../modal/ErrorModal";
-import SuccessModal from "../modal/SuccessModal";
 import {
   ReconciliationTableProps,
   Transaction,
 } from "@/src/types/reconciliation";
+import { toast } from "sonner";
+
+// Custom Toast component
+const SuccessToast = ({ message }: { message: string }) => {
+  return (
+    <div className="flex items-center justify-between w-full">
+      <div className="flex items-center gap-2">
+        <Check size={"16px"} className="text-[#008000]" />
+        <p className="text-[#333333] text-sm">{message}</p>
+      </div>
+      <button
+        onClick={() => toast.dismiss()}
+        className="text-[#333333] absolute right-3 cursor-pointer"
+      >
+        Close
+      </button>
+    </div>
+  );
+};
+
+// Error Toast component
+const ErrorToast = ({ message }: { message: string }) => {
+  return (
+    <div className="flex items-center justify-between w-full">
+      <div className="flex items-center gap-2">
+        <AlertCircle size={"16px"} className="text-[#FF0000]" />
+        <p className="text-[#333333] text-sm">{message}</p>
+      </div>
+      <button
+        onClick={() => toast.dismiss()}
+        className="text-[#333333] absolute right-3 cursor-pointer"
+      >
+        Close
+      </button>
+    </div>
+  );
+};
 
 // Create column helpers
 const bankColumnHelper = createColumnHelper<Transaction>();
@@ -61,22 +96,6 @@ export function ReconciliationTable({
 
   // Add loading state for export
   const [isExporting, setIsExporting] = React.useState(false);
-  // Add error state for export
-  const [exportError, setExportError] = React.useState<{
-    show: boolean;
-    message: string;
-  }>({
-    show: false,
-    message: "",
-  });
-  // Add success state for export
-  const [exportSuccess, setExportSuccess] = React.useState<{
-    show: boolean;
-    message: string;
-  }>({
-    show: false,
-    message: "",
-  });
 
   // Define bank statement columns
   const bankColumns = React.useMemo(
@@ -175,12 +194,29 @@ export function ReconciliationTable({
     return (size > 10 && totalItems <= 10) || (size > 25 && totalItems <= 25);
   };
 
+  // Show CSV structure error toast
+  React.useEffect(() => {
+    if (showErrorModal) {
+      toast.custom(
+        () => (
+          <ErrorToast message="CSV Table Structure not currently supported!" />
+        ),
+        {
+          duration: 5000,
+          action: {
+            label: "Go to Upload",
+            onClick: () => (window.location.href = "/file-upload"),
+          },
+        }
+      );
+      setShowErrorModal(false);
+    }
+  }, [showErrorModal, setShowErrorModal]);
+
   // Export function
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      setExportError({ show: false, message: "" });
-      setExportSuccess({ show: false, message: "" });
 
       // Get reconciliation data from localStorage
       const reconciliationData = localStorage.getItem("reconciliation");
@@ -240,19 +276,30 @@ export function ReconciliationTable({
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      // Show success modal after successful download
-      setExportSuccess({
-        show: true,
-        message:
-          "Export completed successfully! Your file has been downloaded.",
-      });
+      // Show success toast after successful download
+      toast.custom(
+        () => (
+          <SuccessToast message="Your data has been exported successfully!" />
+        ),
+        {
+          duration: 5000,
+        }
+      );
     } catch (error) {
       console.error("Export error:", error);
-      setExportError({
-        show: true,
-        message:
-          error instanceof Error ? error.message : "Failed to export data",
-      });
+      // Show error toast
+      toast.custom(
+        () => (
+          <ErrorToast
+            message={
+              error instanceof Error ? error.message : "Failed to export data"
+            }
+          />
+        ),
+        {
+          duration: 5000,
+        }
+      );
     } finally {
       setIsExporting(false);
     }
@@ -260,47 +307,6 @@ export function ReconciliationTable({
 
   return (
     <>
-      {showErrorModal && (
-        <ErrorModal
-          title="Oops"
-          open={showErrorModal}
-          onOpenChange={(open) => setShowErrorModal(open)}
-          buttonTitle="Go to Upload"
-          buttonHref="/file-upload"
-          message="CSV Table Structure not currently supported!"
-        />
-      )}
-
-      {exportError.show && (
-        <ErrorModal
-          title="Export Failed"
-          open={exportError.show}
-          onOpenChange={(open) =>
-            setExportError({ ...exportError, show: open })
-          }
-          buttonTitle="Close"
-          buttonHref="#"
-          message={
-            exportError.message || "Failed to export data. Please try again."
-          }
-        />
-      )}
-
-      {exportSuccess.show && (
-        <SuccessModal
-          title="Export Successful"
-          open={exportSuccess.show}
-          onOpenChange={(open) =>
-            setExportSuccess({ ...exportSuccess, show: open })
-          }
-          buttonTitle="Close"
-          buttonHref="#"
-          message={
-            exportSuccess.message || "Your data has been exported successfully!"
-          }
-        />
-      )}
-
       <div className="space-y-6 py-6">
         {/* header section */}
         <div className="flex justify-between items-center mb-4">
