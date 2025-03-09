@@ -1,6 +1,10 @@
 name: Next.js CD
 
 on:
+  workflow_run:
+    workflows: ["Next.js CI"]
+    types:
+      - completed
   push:
     branches:
       - main
@@ -15,6 +19,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
+          path: .
 
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
