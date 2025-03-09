@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { Toaster } from "sonner";
 import Nav from "@/src/components/Nav";
+import { AuthProvider } from "@/src/components/context/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -89,21 +90,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
-        <Nav />
-        {children}
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            style: {
-              background: "#EEFFEE",
-              width: "438px",
-              height: "48px",
-              padding: "12px 24px",
-              borderRadius: "8px",
-              boxShadow: "none",
-            },
-          }}
-        />
+        <AuthProvider>
+          <Nav />
+          {children}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              style: {
+                background: "#EEFFEE",
+                width: "438px",
+                height: "48px",
+                padding: "12px 24px",
+                borderRadius: "8px",
+                boxShadow: "none",
+              },
+            }}
+          />
+        </AuthProvider>
       </body>
     </html>
   );
