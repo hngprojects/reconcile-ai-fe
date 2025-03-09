@@ -10,7 +10,7 @@ import checkIcon from "@/public/check-icon.svg";
 import { toast } from "sonner";
 import { cn } from "@/src/lib/utils";
 
-const MAX_FILE_SIZE = 3;
+const MAX_FILE_SIZE = 5;
 
 export default function UploadCard({
   title,
@@ -31,9 +31,8 @@ export default function UploadCard({
       return;
     }
 
-    // Check for file size
+    // Limit the file size
     const fileSizeInMB = file.size / ( 1024 * 1024 )
-    // console.log("fileSizeInMB", fileSizeInMB)
     if (fileSizeInMB > MAX_FILE_SIZE) {
       setError(`File size exceeds ${MAX_FILE_SIZE}MB`);
       return;
