@@ -19,56 +19,41 @@ import {
 import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
-import { ChevronDown, Loader2, Check, AlertCircle } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
-import { formatCurrency } from "@/src/data/reconciliationSampleData";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
-import {
-  ReconciliationTableProps,
-  Transaction,
-} from "@/src/types/reconciliation";
-import { toast } from "sonner";
+import { SuccessToast } from "./SuccessToast";
+import { ErrorToast } from "./ErrorToast";
 
-// Custom Toast component
-const SuccessToast = ({ message }: { message: string }) => {
-  return (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center gap-2">
-        <Check size={"16px"} className="text-[#008000]" />
-        <p className="text-[#333333] text-sm">{message}</p>
-      </div>
-      <button
-        onClick={() => toast.dismiss()}
-        className="text-[#333333] absolute right-3 cursor-pointer"
-      >
-        Close
-      </button>
-    </div>
-  );
-};
+interface Transaction {
+  Date: string;
+  Description: string;
+  Amount: number | string;
+  [key: string]: any;
+}
 
-// Error Toast component
-const ErrorToast = ({ message }: { message: string }) => {
-  return (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center gap-2">
-        <AlertCircle size={"16px"} className="text-[#FF0000]" />
-        <p className="text-[#333333] text-sm">{message}</p>
-      </div>
-      <button
-        onClick={() => toast.dismiss()}
-        className="text-[#333333] absolute right-3 cursor-pointer"
-      >
-        Close
-      </button>
-    </div>
-  );
-};
+interface Match {
+  file1_transaction: Transaction;
+  file2_transaction: Transaction;
+  status?: string;
+}
+
+interface ReconciliationData {
+  matches: Match[];
+  unmatched?: any;
+  only_in_file1?: Transaction[];
+  only_in_file2?: Transaction[];
+}
+
+interface ReconciliationTableProps {
+  leftTableTitle?: string;
+  rightTableTitle?: string;
+}
 
 // Create column helpers
 const bankColumnHelper = createColumnHelper<Transaction>();
@@ -94,8 +79,12 @@ export function ReconciliationTable({
     data,
   } = useReconciliationLogic();
 
-  // Add loading state for export
   const [isExporting, setIsExporting] = React.useState(false);
+
+  // Add state for custom toasts
+  const [showSuccessToast, setShowSuccessToast] = React.useState(false);
+  const [showErrorToast, setShowErrorToast] = React.useState(false);
+  const [toastMessage, setToastMessage] = React.useState("");
 
   // Define bank statement columns
   const bankColumns = React.useMemo(
@@ -110,9 +99,7 @@ export function ReconciliationTable({
       }),
       bankColumnHelper.accessor("Amount", {
         header: "Amount",
-        cell: (info) => {
-          if (info.getValue()) return formatCurrency(info.getValue());
-        },
+        cell: (info) => info.getValue(),
       }),
     ],
     []
@@ -131,9 +118,7 @@ export function ReconciliationTable({
       }),
       ledgerColumnHelper.accessor("Amount", {
         header: "Amount",
-        cell: (info) => {
-          if (info.getValue()) return formatCurrency(info.getValue());
-        },
+        cell: (info) => info.getValue(), // No formatting
       }),
     ],
     []
@@ -197,21 +182,27 @@ export function ReconciliationTable({
   // Show CSV structure error toast
   React.useEffect(() => {
     if (showErrorModal) {
-      toast.custom(
-        () => (
-          <ErrorToast message="CSV Table Structure not currently supported!" />
-        ),
-        {
-          duration: 5000,
-          action: {
-            label: "Go to Upload",
-            onClick: () => (window.location.href = "/file-upload"),
-          },
-        }
-      );
+      setToastMessage("CSV Table Structure not currently supported!");
+      setShowErrorToast(true);
       setShowErrorModal(false);
     }
   }, [showErrorModal, setShowErrorModal]);
+
+  // Auto-hide toast after 5 seconds
+  React.useEffect(() => {
+    let timer: number | undefined;
+
+    if (showSuccessToast || showErrorToast) {
+      timer = setTimeout(() => {
+        setShowSuccessToast(false);
+        setShowErrorToast(false);
+      }, 5000);
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [showSuccessToast, showErrorToast]);
 
   // Export function
   const handleExport = async () => {
@@ -225,11 +216,11 @@ export function ReconciliationTable({
         throw new Error("No reconciliation data found");
       }
 
-      const parsedData = JSON.parse(reconciliationData);
+      const parsedData = JSON.parse(reconciliationData) as ReconciliationData;
 
       // Format the data according to the API's expected structure
       const formattedData = {
-        matches: (parsedData.matches || []).map((match: any) => ({
+        matches: (parsedData.matches || []).map((match: Match) => ({
           ...match,
           status: match.status || "matched",
         })),
@@ -276,30 +267,16 @@ export function ReconciliationTable({
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
 
-      // Show success toast after successful download
-      toast.custom(
-        () => (
-          <SuccessToast message="Your data has been exported successfully!" />
-        ),
-        {
-          duration: 5000,
-        }
-      );
+      // Show success toast using custom component
+      setToastMessage("Your data has been exported successfully!");
+      setShowSuccessToast(true);
     } catch (error) {
       console.error("Export error:", error);
-      // Show error toast
-      toast.custom(
-        () => (
-          <ErrorToast
-            message={
-              error instanceof Error ? error.message : "Failed to export data"
-            }
-          />
-        ),
-        {
-          duration: 5000,
-        }
+      // Show error toast using custom component
+      setToastMessage(
+        error instanceof Error ? error.message : "Failed to export data"
       );
+      setShowErrorToast(true);
     } finally {
       setIsExporting(false);
     }
@@ -308,6 +285,13 @@ export function ReconciliationTable({
   return (
     <>
       <div className="space-y-6 py-6">
+        {/* Custom Toast Messages */}
+        {showSuccessToast && (
+          <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-300">
+            <SuccessToast message={toastMessage} />
+          </div>
+        )}
+
         {/* header section */}
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
@@ -499,14 +483,10 @@ export function ReconciliationTable({
                                   "whitespace-nowrap overflow-hidden text-ellipsis"
                                 )}
                                 title={
-                                  matchingLedger["Amount"]
-                                    ? formatCurrency(matchingLedger["Amount"])
-                                    : ""
+                                  matchingLedger?.["Amount"]?.toString() || ""
                                 }
                               >
-                                {matchingLedger["Amount"]
-                                  ? formatCurrency(matchingLedger["Amount"])
-                                  : ""}
+                                {matchingLedger["Amount"] || ""}
                               </TableCell>
                             </>
                           ) : (
