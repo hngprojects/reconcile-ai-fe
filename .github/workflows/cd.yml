@@ -43,4 +43,4 @@ jobs:
              pm2 stop reconcile-fe-dev
              npm install
              pm2 restart reconcile-fe-dev --update-env
-           EOF
+           # EOF
