@@ -21,7 +21,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
-          path: ./build-artifact
+          path: .
 
 
       - name: Deploy and Start Application
@@ -49,7 +49,7 @@ jobs:
 
             # Copy and extract build artifact
             mkdir -p $FE_PATH/tmp
-            tar -xvf build-artifact.tar -C $FE_PATH/tmp
+            tar -xvf build-artifact.zip -C $FE_PATH/tmp
             mv $FE_PATH/tmp/.next $FE_PATH/.next_new
             rm -rf $FE_PATH/tmp
 
