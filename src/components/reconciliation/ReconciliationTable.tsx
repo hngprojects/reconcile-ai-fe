@@ -118,7 +118,7 @@ export function ReconciliationTable({
       }),
       ledgerColumnHelper.accessor("Amount", {
         header: "Amount",
-        cell: (info) => info.getValue(), // No formatting
+        cell: (info) => info.getValue(),  
       }),
     ],
     []
@@ -287,7 +287,7 @@ export function ReconciliationTable({
       <div className="space-y-6 py-6">
         {/* Custom Toast Messages */}
         {showSuccessToast && (
-          <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-300">
+          <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
             <SuccessToast message={toastMessage} />
           </div>
         )}
