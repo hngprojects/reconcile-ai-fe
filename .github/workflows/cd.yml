@@ -30,6 +30,4 @@ jobs:
 
       - name: Copy the build artifact to the server
         run: |
-       #   scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar
-
           sshpass -p ${{secrets.EC2_PASSWORD}} scp -o StrictHostKeyChecking=no build-artifact.tar ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}}:~/build-artifact
