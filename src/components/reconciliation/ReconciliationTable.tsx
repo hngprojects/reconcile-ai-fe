@@ -164,7 +164,7 @@ export function ReconciliationTable({
           onOpenChange={(open) => setShowErrorModal(open)}
           buttonTitle="Go to Upload"
           buttonHref="/file-upload"
-          message="CSV Table Structure not currently supported!"
+          message="CSV table structure not currently supported!"
         />
       )}
       <div className="space-y-6 py-6">

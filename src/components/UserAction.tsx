@@ -1,12 +1,12 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
-// import GoogleAuthModal from "./modal/GoogleAuthModal";
+import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 
 const UserAction: FC = () => {
   const { isAuthenticated } = useAuth();
-  // const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   return (
     <>
@@ -17,17 +17,17 @@ const UserAction: FC = () => {
             className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
                      rounded-md font-semibold justify-center items-center h-12 
                      sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
-            // onClick={() => setShowAuthModal(true)}
+            onClick={() => setShowAuthModal(true)}
           >
             Get Started
           </button>
         )}
       </div>
 
-      {/* <GoogleAuthModal
+      <GoogleAuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-      /> */}
+      />
     </>
   );
 };
