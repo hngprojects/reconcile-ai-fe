@@ -19,7 +19,7 @@ import {
 import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
 import { formatCurrency } from "@/src/data/reconciliationSampleData";
 import {
@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import ErrorModal from "../modal/ErrorModal";
+import SuccessModal from "../modal/SuccessModal";
 import {
   ReconciliationTableProps,
   Transaction,
@@ -57,6 +58,25 @@ export function ReconciliationTable({
     setShowErrorModal,
     data,
   } = useReconciliationLogic();
+
+  // Add loading state for export
+  const [isExporting, setIsExporting] = React.useState(false);
+  // Add error state for export
+  const [exportError, setExportError] = React.useState<{
+    show: boolean;
+    message: string;
+  }>({
+    show: false,
+    message: "",
+  });
+  // Add success state for export
+  const [exportSuccess, setExportSuccess] = React.useState<{
+    show: boolean;
+    message: string;
+  }>({
+    show: false,
+    message: "",
+  });
 
   // Define bank statement columns
   const bankColumns = React.useMemo(
@@ -155,6 +175,89 @@ export function ReconciliationTable({
     return (size > 10 && totalItems <= 10) || (size > 25 && totalItems <= 25);
   };
 
+  // Export function
+  const handleExport = async () => {
+    try {
+      setIsExporting(true);
+      setExportError({ show: false, message: "" });
+      setExportSuccess({ show: false, message: "" });
+
+      // Get reconciliation data from localStorage
+      const reconciliationData = localStorage.getItem("reconciliation");
+
+      if (!reconciliationData) {
+        throw new Error("No reconciliation data found");
+      }
+
+      const parsedData = JSON.parse(reconciliationData);
+
+      // Format the data according to the API's expected structure
+      const formattedData = {
+        matches: (parsedData.matches || []).map((match: any) => ({
+          ...match,
+          status: match.status || "matched",
+        })),
+        unmatched: parsedData.unmatched || {},
+        only_in_file1: parsedData.only_in_file1 || [],
+        only_in_file2: parsedData.only_in_file2 || [],
+      };
+
+      // Send POST request to API
+      const response = await fetch(
+        "https://api-dev.reconxi.com/api/v1/reconcile/export",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            data: formattedData,
+          }),
+        }
+      );
+
+      // Check for errors with better error reporting
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const errorMessage =
+          errorData?.message || `Export failed with status: ${response.status}`;
+        console.error("API error:", errorData);
+        throw new Error(errorMessage);
+      }
+
+      // Get the blob from the response
+      const blob = await response.blob();
+
+      // Create a download link and trigger the download
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `reconciliation_export_${
+        new Date().toISOString().split("T")[0]
+      }.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      // Show success modal after successful download
+      setExportSuccess({
+        show: true,
+        message:
+          "Export completed successfully! Your file has been downloaded.",
+      });
+    } catch (error) {
+      console.error("Export error:", error);
+      setExportError({
+        show: true,
+        message:
+          error instanceof Error ? error.message : "Failed to export data",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <>
       {showErrorModal && (
@@ -167,8 +270,55 @@ export function ReconciliationTable({
           message="CSV Table Structure not currently supported!"
         />
       )}
+
+      {exportError.show && (
+        <ErrorModal
+          title="Export Failed"
+          open={exportError.show}
+          onOpenChange={(open) =>
+            setExportError({ ...exportError, show: open })
+          }
+          buttonTitle="Close"
+          buttonHref="#"
+          message={
+            exportError.message || "Failed to export data. Please try again."
+          }
+        />
+      )}
+
+      {exportSuccess.show && (
+        <SuccessModal
+          title="Export Successful"
+          open={exportSuccess.show}
+          onOpenChange={(open) =>
+            setExportSuccess({ ...exportSuccess, show: open })
+          }
+          buttonTitle="Close"
+          buttonHref="#"
+          message={
+            exportSuccess.message || "Your data has been exported successfully!"
+          }
+        />
+      )}
+
       <div className="space-y-6 py-6">
-        <h1 className="text-2xl font-semibold">Matched Result</h1>
+        {/* header section */}
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-semibold">Matched Results</h1>
+          <button
+            className="px-14 py-4 bg-[#2E604A] text-white rounded-md w-[165px] h-[50px] flex items-center justify-center"
+            onClick={handleExport}
+            disabled={isExporting}
+          >
+            {isExporting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+              </>
+            ) : (
+              "Export"
+            )}
+          </button>
+        </div>
 
         <div className="grid grid-cols-12 gap-2 max-w-[1440px] mx-auto">
           {/* Bank Statement Table */}
