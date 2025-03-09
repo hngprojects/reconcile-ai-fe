@@ -285,7 +285,7 @@ export function ReconciliationTable({
   return (
     <>
       <div className="space-y-6 py-6">
-        {/* Custom Toast Messages */}
+        {/* Custom Toast Message */}
         {showSuccessToast && (
           <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
             <SuccessToast message={toastMessage} />
