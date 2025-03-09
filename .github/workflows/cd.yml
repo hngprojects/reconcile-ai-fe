@@ -12,12 +12,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "23"
 
       - name: Install Dependencies
         run: npm install
@@ -30,47 +30,17 @@ jobs:
 
       - name: Copy the build artifact to the server
         run: |
-          scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar
+          sshpass -p ${{secrets.EC2_PASSWORD}} scp -o StrictHostKeyChecking=no build-artifact.tar ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}}:~/build-artifact
 
-      - name: Deploy and Start Application
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          script: |
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              FE_PATH="/var/www/html/reconcile-ai-fe"
-              PORT=3005
-              PM2_NAME="reconcile-fe"
-              URL="https://reconxi.com"
-            else
-              FE_PATH="/var/www/html/reconcile-ai-fe-dev"
-              PORT=3006
-              PM2_NAME="reconcile-fe-dev"
-              URL="https://dev.reconxi.com"
-            fi
-
-            echo "Deploying to $FE_PATH on port $PORT ($URL)"
-
-            cd $FE_PATH
-
-            # Extract build artifact directly to .next
-            tar -xvf /home/${{ secrets.EC2_USERNAME }}/build-artifact.tar -C $FE_PATH
-
-            # Pull latest code          
-            git pull origin $(basename $GITHUB_REF)
-
-            # Install Dependencies
-            npm ci
-            npm install pm2 --save-dev
-
-            # Restart or start PM2 process
-            if npx pm2 list | grep -q "$PM2_NAME"; then
-              npx pm2 reload "$PM2_NAME"
-            else
-              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
-            fi
-
-            npx pm2 save
-            echo "Deployment completed successfully!"
+      - name: Update Deployment 
+        run: |
+         sshpass -p ${{secrets.EC2_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}} << 'EOF'
+             cd ~/fe
+             git pull origin dev
+             cp ~/build-artifact/build-artifact.tar .
+             tar -xvf build-artifact.tar
+             rm -f build-artifact.tar
+             pm2 stop reconcile-fe-dev
+             npm install
+             pm2 restart reconcile-fe-dev --update-env
+           # EOF
