@@ -23,10 +23,9 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        run: 
-          npm install          
+        run: npm install
 
-      - name: Run Linting
+      - name: Run Lint
         run: npm run lint
 
       - name: Run Build
@@ -40,4 +39,3 @@ jobs:
         with:
           name: build-artifact
           path: build-artifact.tar
-          
