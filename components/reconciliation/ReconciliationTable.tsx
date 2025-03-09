@@ -28,7 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ReconciliationErrorModal from "./ReconciliationError";
+// import ReconciliationErrorModal from "./ReconciliationError";
 import { ReconciliationTableProps, Transaction } from "@/types/reconciliation";
 
 // Create column helpers
@@ -50,7 +50,7 @@ export function ReconciliationTable({
     canPreviousPage,
     canNextPage,
     onRowsPerPageChange,
-    showErrorModal,
+    // showErrorModal,
     data,
   } = useReconciliationLogic();
 
@@ -153,7 +153,7 @@ export function ReconciliationTable({
 
   return (
     <>
-      {showErrorModal && <ReconciliationErrorModal />}
+      {/* {showErrorModal && <ReconciliationErrorModal />} */}
       <div className="space-y-6 py-6">
         <h1 className="text-2xl font-semibold">Matched Result</h1>
 
