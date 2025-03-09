@@ -64,11 +64,10 @@ export function useReconciliationLogic() {
 
   // Combine data for mobile view and status logic
   const combinedData: ReconciliationItem[] = bankData.map((bankItem) => {
-    const matchingLedgerItem = ledgerData.find(
-      (ledgerItem) =>
-        ledgerItem["Description"] === bankItem["Description"] &&
-        ledgerItem["Amount"] === bankItem["Amount"]
+    const matchingData = data.matches.find(
+        (match) => match.file1_transaction == bankItem
     );
+    const matchingLedgerItem = matchingData && matchingData.file2_transaction;
 
     return {
       bankStatement: {
