@@ -29,12 +29,11 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
 
-
 interface Transaction {
   Date: string;
   Description: string;
   Amount: number | string;
-  [key: string]: string | number;  
+  [key: string]: string | number;
 }
 
 interface Match {
@@ -189,7 +188,7 @@ export function ReconciliationTable({
 
   // Auto-hide toast after 5 seconds
   React.useEffect(() => {
-    let timer: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
 
     if (showSuccessToast || showErrorToast) {
       timer = setTimeout(() => {
