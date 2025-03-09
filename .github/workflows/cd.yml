@@ -31,3 +31,16 @@ jobs:
       - name: Copy the build artifact to the server
         run: |
           sshpass -p ${{secrets.EC2_PASSWORD}} scp -o StrictHostKeyChecking=no build-artifact.tar ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}}:~/build-artifact
+
+      - name: Update Deployment 
+        run: |
+         sshpass -p ${{secrets.EC2_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}} << 'EOF'
+             cd ~/fe
+             git pull origin dev
+             cp ~/build-artifact/build-artifact.tar .
+             tar -xvf build-artifact.tar
+             rm -f build-artifact.tar
+             pm2 stop reconcile-fe-dev
+             npm install
+             pm2 restart reconcile-fe-dev --update-env
+           # EOF
