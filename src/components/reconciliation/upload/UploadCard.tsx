@@ -36,13 +36,8 @@ export default function UploadCard({
 
     setError("");
     onFileSelect(file);
-    toast.success("File Uploaded Successfully", {
-      icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
-      action: {
-        label: <p>Close</p>,
-        onClick: () => toast.dismiss(),
-      },
-    });
+    // I removed this toast, as it will be triggered by useEffect when fileUploaded becomes true
+    
   };
 
   // Drag-and-drop handler
