@@ -10,7 +10,7 @@ import checkIcon from "@/public/check-icon.svg";
 import { toast } from "sonner";
 import { cn } from "@/src/lib/utils";
 
-const MAX_FILE_SIZE = 5;
+const MAX_FILE_SIZE = 2;
 
 export default function UploadCard({
   title,
