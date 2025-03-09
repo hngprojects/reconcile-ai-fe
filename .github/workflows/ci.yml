@@ -33,18 +33,5 @@ jobs:
         run: npm run build
 
       - name: Archive Build Artifact
-        run: tar -cvf build-artifact.zip .next
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: build-artifact.zip
-
-      - name: List Files After Build
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Listing files:"
-          ls -lah
-          
+        run: tar -cvf build-artifact.tar .next      
+      
