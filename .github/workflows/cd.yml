@@ -1,10 +1,6 @@
 name: Next.js CD
 
-on:
-  workflow_run:
-    workflows: ["Next.js CI"]
-    types:
-      - completed
+on: 
   push:
     branches:
       - main
@@ -15,14 +11,12 @@ jobs:
     runs-on: reconcile
     timeout-minutes: 10
     steps:
-      - name: list files
-        run: ls -R
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: ./build-artifact
-
+      - name: Copy the zipped folder into the server
+        run: |
+          scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar
+        env:
+          SSHPASS: ${{ secrets.EC2_PASSWORD }}
+     
 
       - name: Deploy and Start Application
         uses: appleboy/ssh-action@master
@@ -49,7 +43,7 @@ jobs:
 
             # Copy and extract build artifact
             mkdir -p $FE_PATH/tmp
-            tar -xvf build-artifact.tar -C $FE_PATH/tmp
+            tar -xvf /home/${{ secrets.EC2_USERNAME }}/build-artifact.tar -C $FE_PATH/tmp
             mv $FE_PATH/tmp/.next $FE_PATH/.next_new
             rm -rf $FE_PATH/tmp
 
@@ -58,7 +52,6 @@ jobs:
 
             # Install Dependencies
             npm ci
-            # Install PM2 if not available
             npm install pm2 --save-dev
 
             # Swap new build into place
