@@ -8,6 +8,7 @@ import { toast } from "sonner";
 export function FilePreview({ fileName, onDelete }: FilePreviewProps) {
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation()
     onDelete();
     toast.success("File Deleted", {
       icon: <Image src={deleteCheckIcon} width={20} height={20} alt="Delete" />,
