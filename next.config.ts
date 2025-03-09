@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const nextConfig: NextConfig = {
-  devIndicators: {
-    buildActivity: process.env.NODE_ENV === 'development',
-    buildActivityPosition: 'bottom-left'
-  }
+  devIndicators: isDev
+  ? { buildActivity: true, buildActivityPosition: "bottom-left" }
+  : { buildActivity: false }, 
 };
 
 export default nextConfig;
