@@ -45,6 +45,7 @@ export default function UploadCard({
 
     setError("");
     onFileSelect(file);
+
     
   };
 
@@ -80,18 +81,6 @@ export default function UploadCard({
       handleFile(file);
     }
   };
-
-  useEffect(() => {
-    if (fileUploaded && !isUploading) {
-      toast.success("File Uploaded Successfully", {
-        icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
-        action: {
-          label: <p>Close</p>,
-          onClick: () => toast.dismiss(),
-        },
-      });
-    }
-  }, [fileUploaded, isUploading]);
 
   return (
     <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative flex-1">
