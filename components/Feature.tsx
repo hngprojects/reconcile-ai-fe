@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Container from "./Container";
+import Container from "@/components/Container";
 
 export default function Features1() {
   return (

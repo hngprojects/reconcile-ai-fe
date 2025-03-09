@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ErrorMessageProps } from "./types";
+import { ErrorMessageProps } from "@/components/reconciliation/upload/types";
 import warningIcon from "@/public/alert-icon.svg";
 
 export default function ErrorMessage({ message }: ErrorMessageProps) {

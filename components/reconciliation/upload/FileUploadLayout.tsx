@@ -2,12 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import UploadCard from "./UploadCard";
-import UploadModal from "./UploadModal";
-
-
+import UploadCard from "@/components/reconciliation/upload/UploadCard";
+import UploadModal from "@/components/reconciliation/upload/UploadModal";
 import { reconcileFiles } from "@/lib/api";
-import { FileUploadLayoutProps } from "./types";
+import { FileUploadLayoutProps } from "@/components/reconciliation/upload/types";
 import Container from "@/components/Container";
 import ErrorModal from "@/components/modal/ErrorModal";
 

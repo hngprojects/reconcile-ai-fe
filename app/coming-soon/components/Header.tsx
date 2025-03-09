@@ -1,6 +1,6 @@
 import React from "react";
 import { Logo } from "./Icons";
-import Container from "./Container";
+import Container from "@/components/Container";
 import Link from "next/link";
 
 const Header = () => {

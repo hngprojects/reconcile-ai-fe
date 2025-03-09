@@ -18,7 +18,7 @@ import {
 } from "@tanstack/react-table";
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge } from "@/components/reconciliation/StatusBadge";
 import { ChevronDown } from "lucide-react";
 import { useReconciliationLogic } from "@/hooks/useReconciliationLogic";
 import { formatCurrency } from "@/data/reconciliationSampleData";
@@ -28,7 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ErrorModal from "../modal/ErrorModal";
+import ErrorModal from "@/components/modal/ErrorModal";
 import { ReconciliationTableProps, Transaction } from "@/types/reconciliation";
 
 // Create column helpers

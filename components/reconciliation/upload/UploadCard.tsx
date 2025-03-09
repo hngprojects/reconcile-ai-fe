@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { UploadCardProps } from "./types";
-import { FilePreview } from "./FilePreview";
-import { UploadProgress } from "./UploadProgress";
-import ErrorMessage from "./ErrorMessage";
+import { UploadCardProps } from "@/components/reconciliation/upload/types";
+import { FilePreview } from "@/components/reconciliation/upload/FilePreview";
+import { UploadProgress } from "@/components/reconciliation/upload/UploadProgress";
+import ErrorMessage from "@/components/reconciliation/upload/ErrorMessage";
 import Image from "next/image";
 import uploadIcon from "@/public/uploadIcon.svg";
 import checkIcon from "@/public/check-icon.svg";
@@ -50,7 +50,7 @@ export default function UploadCard({
     if (acceptedFiles.length > 0) {
       handleFile(acceptedFiles[0]);
     }
-  }, []);
+  }, [handleFile]);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,

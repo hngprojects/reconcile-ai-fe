@@ -1,6 +1,6 @@
 "use client";
 import React, { FormEvent } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 const FooterEmail = () => {
   const [email, setEmail] = React.useState("");

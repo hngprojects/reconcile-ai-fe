@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge } from "@/components/reconciliation/StatusBadge";
 import { cn } from "@/lib/utils";
 import { useReconciliationLogic } from "@/hooks/useReconciliationLogic";
 import { formatCurrency } from "@/data/reconciliationSampleData";

@@ -2,7 +2,7 @@ import Image from "next/image";
 import csvIcon from "@/public/csvIcon.svg";
 import deleteIcon from "@/public/deleteIcon.svg";
 import deleteCheckIcon from "@/public/deleteCheckIcon.svg";
-import { FilePreviewProps } from "./types";
+import { FilePreviewProps } from "@/components/reconciliation/upload/types";
 import { toast } from "sonner";
 
 export function FilePreview({ fileName, onDelete }: FilePreviewProps) {

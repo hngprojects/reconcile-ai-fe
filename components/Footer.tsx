@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import Container from "./Container";
-import FooterEmailForm from "./form/FooterEmail";
+import Container from "@/components/Container";
+import FooterEmailForm from "@/components/form/FooterEmail";
 import {
   FacebookIcon,
   InstagramIcon,

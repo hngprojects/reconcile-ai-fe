@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Container from "./Container";
-import { LogoIcon } from "./Icon/Icons";
+import Container from "@/components/Container";
+import { LogoIcon } from "@/components/Icon/Icons";
 
 const Nav = () => {
   return (

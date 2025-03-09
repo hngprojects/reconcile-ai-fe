@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { CheckCircle2Icon } from "lucide-react";
-import Container from "./Container";
-import { FileIcon, SpeedIcon } from "./Icon/Icons";
+import Container from "@/components/Container";
+import { FileIcon, SpeedIcon } from "@/components/Icon/Icons";
 
 const Features = () => {
   const firstFeature = ["Leverage AI to move fast", "Easy upload feature"];

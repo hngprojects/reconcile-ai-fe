@@ -1,6 +1,6 @@
 import { FAQ } from "@/types/faq";
-import Container from "../Container";
-import FAQAccordion from "./FAQAccordion";
+import Container from "@/components/Container";
+import FAQAccordion from "@/components/FAQs/FAQAccordion";
 
 const faqItems: FAQ[] = [
   {

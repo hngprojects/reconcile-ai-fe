@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Container from "./components/Container";
+import Container from "@/components/Container";
 import Header from "./components/Header";
 import bgImg from "./img/bg.png";
-import Footer from "./components/Footer";
+import Footer from "@/components/Footer";
 import { Gradient1, Gradient2, Play } from "./components/Icons";
 import { Pause } from "lucide-react";
 import EmailSubscribeForm from "./components/form/EmailSubscribeForm";
