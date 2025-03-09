@@ -1,6 +1,6 @@
 name: Next.js CD
 
-on:
+on: 
   push:
     branches:
       - main
@@ -10,6 +10,13 @@ jobs:
   deploy:
     runs-on: reconcile
     timeout-minutes: 10
+    steps:
+      - name: Copy the zipped folder into the server
+        run: |
+          scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USERNAME }}/build-artifact.tar
+        env:
+          SSHPASS: ${{ secrets.EC2_PASSWORD }}
+     
 
     steps:
       - name: Deploy and Start Application
@@ -35,13 +42,18 @@ jobs:
 
             cd $FE_PATH
 
-            # Reset and clean Git repository
-            git reset --hard HEAD
-            git clean -fd
+            # Copy and extract build artifact
+            mkdir -p $FE_PATH/tmp
+            tar -xvf /home/${{ secrets.EC2_USERNAME }}/build-artifact.tar -C $FE_PATH/tmp
+            mv $FE_PATH/tmp/.next $FE_PATH/.next_new
+            rm -rf $FE_PATH/tmp
+
+            # Pull latest code          
             git pull origin $(basename $GITHUB_REF)
 
             # Install Dependencies
-            npm install
+            npm ci
+            npm install pm2 --save-dev
 
             # Build the project for production
             npm run build
