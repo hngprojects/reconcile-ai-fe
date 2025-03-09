@@ -36,14 +36,21 @@ export default function UploadCard({
 
     setError("");
     onFileSelect(file);
-    toast.success("File Uploaded Successfully", {
-      icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
-      action: {
-        label: <p>Close</p>,
-        onClick: () => toast.dismiss(),
-      },
-    });
+    
   };
+
+  useEffect(() => {
+    // Only show toast when a file has been uploaded AND is no longer uploading
+    if (fileUploaded && !isUploading) {
+      toast.success("File Uploaded Successfully", {
+        icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
+        action: {
+          label: <p>Close</p>,
+          onClick: () => toast.dismiss(),
+        },
+      });
+    }
+  }, [fileUploaded, isUploading]);
 
   // Drag-and-drop handler
   const onDrop = useCallback((acceptedFiles: File[]) => {
