@@ -82,7 +82,7 @@ const EmailSubscribeForm = () => {
                           <div className="">
                             <Input
                               placeholder="Enter your email"
-                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full sm:w-[315px]"
+                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full sm:w-fit"
                               {...field}
                             />
                             <FormMessage className="text-sm text-left text-red-500 mt-0.5" /> 
