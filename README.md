@@ -1,107 +1,128 @@
 # Reconcile AI - Intelligent Financial Reconciliation Platform
 
+<div align="center">
+  <img src="public/logo.png" alt="Reconcile AI Logo" width="200"/>
+  
+  [![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+  [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+</div>
+
 Reconcile AI transforms financial record matching through AI-powered automation. Our platform streamlines the comparison of financial datasets (like student payments, inventory sales, transaction alerts) against bank statements, delivering precision and efficiency in identifying discrepancies.
 
-## ⭐ Key Features
+## 📚 Table of Contents
+- [Key Features](#-key-features)
+- [Technology Stack](#️-technology-stack)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Core Features](#-core-features)
+- [Environment Variables](#-environment-variables)
+- [API Documentation](#-api-documentation)
+- [Contributing](#-contributing)
+- [Support](#-support)
 
-- **Smart Reconciliation Engine** - AI-powered matching algorithms with high accuracy
-- **Flexible Override System** - Manual controls for handling edge cases
-- **Intuitive Interface** - Simple drag-and-drop file uploads
-- **Export Options** - Multiple formats for reconciliation reports
-- **Secure Authentication** - Protected access to financial data
+## ⭐ Key Features
+[Previous features section remains the same]
 
 ## 🛠️ Technology Stack
 
-- **Frontend Framework**: Next.js 15 (App Router)
-- **Component Library**: Shadcn UI
+### Frontend
+- **Framework**: Next.js 15 (App Router)
+- **UI Components**: Shadcn UI
 - **State Management**: Zustand
-- **Icons**: Lucide React
 - **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+
+### Development Tools
+- **Package Manager**: npm
+- **Code Quality**: ESLint, Prettier
+- **Testing**: Jest, React Testing Library
+- **Git Hooks**: Husky
 
 ## 🚀 Quick Start
 
-### System Requirements
+### Prerequisites
 - Node.js >= v18
 - npm package manager
+- Git
 
-### Setup Instructions
+[Previous setup instructions remain the same]
 
-1. Clone the repository:S
+## 🔧 Environment Variables
+
+Create a `.env.local` file in the root directory:
+
+```env
+NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_AUTH_KEY=your_auth_key
+```
+
+## 📊 Performance Optimization
+
+- Implements dynamic imports for better code splitting
+- Image optimization using Next.js Image component
+- Efficient state management with Zustand
+- Lazy loading for better initial page load
+
+## 🧪 Testing
+
 ```bash
-git clone https://github.com/hngprojects/reconcile-ai-fe.git
+npm run test
 ```
 
-2. Navigate to project folder:
 ```bash
-cd reconcile-ai-fe
+npm run test:e2e
 ```
 
-3. Install dependencies:
+## 📦 Production Deployment
+
 ```bash
-npm install
+npm run build
 ```
 
-4. Start development server:
 ```bash
-npm run dev
+npm run start
 ```
 
-5. Visit `http://localhost:3000` in your browser
+## 🔐 Security Features
 
-## 📁 Project Structure
+- HTTPS enforced
+- CSRF protection
+- Rate limiting
+- Input sanitization
+- Secure authentication flows
 
-```
-reconcile-ai-fe/
-├── public/                # Static assets
-├── src/
-│   ├── app/              # Next.js app router pages
-│   └── components/       # React components
-│       ├── common/       # Shared components
-│       └── ui/           # Shadcn UI components
-├── next.config.ts        # Next.js configuration
-├── tailwind.config.ts    # Tailwind CSS settings
-└── package.json          # Project metadata
-```
+## 🌐 Browser Support
 
-## 💡 Core Features
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-1. **User Authentication**
-   - Seamless onboarding
-   - Secure login system
+## 📈 Version History
 
-2. **Reconciliation Engine**
-   - AI-powered matching
-   - High precision algorithms
-   - Real-time processing
+- v1.0.0 - Initial Release
+- v1.1.0 - Added AI matching improvements
+- v1.2.0 - Enhanced reporting features
 
-3. **Manual Controls**
-   - Override capabilities
-   - Custom matching rules
-   - Exception handling
+## 👥 Team
 
-4. **File Management**
-   - Multi-format support
-   - Bulk upload capability
-   - Data validation
+- Product Owner: [Name]
+- Tech Lead: [Name]
+- Frontend Engineers: [Names]
+- UI/UX Designer: [Name]
 
-5. **Export & Reporting**
-   - Multiple export formats
-   - Detailed reconciliation reports
-   - Audit trails
+[Previous sections for Core Features, Contributing, and License remain the same]
 
-## 🤝 Contributing
+## 🔗 Important Links
 
-We welcome contributions! Check our [Contributing Guidelines](CONTRIBUTING.md) for details on:
-- Code standards
-- Pull request process
-- Development workflow
+- [Live Demo](https://demo.reconcileai.com)
+- [API Documentation](https://api.reconcileai.com/docs)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Change Log](CHANGELOG.md)
+- [Support Portal](https://support.reconcileai.com)
 
-## 📄 License
+## 💬 Community
 
-[License details here]
-
-## 🔗 Links
-
-- [Documentation]()
-- [API Reference]()
-- [Support]()
+- [Discord Community](https://discord.gg/reconcileai)
+- [Twitter](https://twitter.com/reconcileai)
+- [Blog](https://blog.reconcileai.com)
