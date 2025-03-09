@@ -34,7 +34,7 @@ jobs:
 
       - name: Update Deployment 
         run: |
-         sshpass -p $PASSWORD ssh -o StrictHostKeyChecking=no $USERNAME@$HOST << 'EOF'
+         sshpass -p ${{secrets.EC2_PASSWORD}} ssh -o StrictHostKeyChecking=no ${{secrets.EC2_USERNAME}}@${{secrets.EC2_HOST}} << 'EOF'
              cd ~/fe
              git pull origin dev
              cp ~/build-artifact/build-artifact.tar .
