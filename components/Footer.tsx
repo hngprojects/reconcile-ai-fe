@@ -18,7 +18,7 @@ const Footer = () => {
           <div className="w-full flex flex-col gap-8 items-start">
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
               <div className="flex flex-col w-full sm:w-1/2 gap-4">
-                <div className="flex flex-col gap-2 ">
+                <div className="flex flex-col gap-2 w-fit">
                   <Link href="/home" className="w-fit sm:mb-3">
                     <div className="flex items-center justify-start gap-2">
                       <LogoIcon className="w-6 h-6 sm:h-12 sm:w-12 fill-white" />
@@ -90,7 +90,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className="sm:w-1/2 w-full">
+            <div className=" w-full">
               <nav className="hidden sm:flex items-center gap-8">
                 <Link
                   href="/contact"
@@ -130,7 +130,7 @@ const Footer = () => {
               </nav>
             </div>
           </div>
-          <span className="w-full mt-1 sm:text-center">
+          <span className="w-full mt-2 sm:text-center">
             © 2025 ReconXi Ltd. All rights reserved.
           </span>
         </div>

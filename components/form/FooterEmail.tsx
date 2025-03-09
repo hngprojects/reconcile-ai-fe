@@ -18,12 +18,12 @@ const FooterEmail = () => {
     <form onSubmit={(e) => handleSubmit(e)} className="flex justify-end">
       <div className="flex flex-col gap-4 w-full sm:w-fit">
         <p className="text-[16px] self-start">Stay up to date</p>
-        <div className="flex sm:flex-row flex-col w-full sm:w-fit gap-4">
+        <div className="flex sm:flex-row flex-wrap flex-col w-full sm:w-fit gap-4">
           <input
             required
             type="email"
             placeholder="Enter your email"
-            className="py-2.5 px-3.5 bg-white text-black rounded-lg outline-none border-none w-full sm:w-[315px]"
+            className="py-2.5 px-3.5 bg-white text-black rounded-lg outline-none border-none w-full sm:w-fit"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
