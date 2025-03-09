@@ -28,13 +28,13 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
-import { ErrorToast } from "./ErrorToast";
+
 
 interface Transaction {
   Date: string;
   Description: string;
   Amount: number | string;
-  [key: string]: any;
+  [key: string]: string | number;  
 }
 
 interface Match {
@@ -45,11 +45,10 @@ interface Match {
 
 interface ReconciliationData {
   matches: Match[];
-  unmatched?: any;
+  unmatched?: Record<string, Transaction[]>;
   only_in_file1?: Transaction[];
   only_in_file2?: Transaction[];
 }
-
 interface ReconciliationTableProps {
   leftTableTitle?: string;
   rightTableTitle?: string;
@@ -118,7 +117,7 @@ export function ReconciliationTable({
       }),
       ledgerColumnHelper.accessor("Amount", {
         header: "Amount",
-        cell: (info) => info.getValue(),  
+        cell: (info) => info.getValue(),
       }),
     ],
     []
