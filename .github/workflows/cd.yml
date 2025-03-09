@@ -20,7 +20,7 @@ jobs:
         run: npm run build
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-artifact
           path: .next
@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Download Build Artifact
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: build-artifact
 
