@@ -123,6 +123,9 @@ export default function FileUploadLayout({
     Boolean
   ) as string[];
 
+   // Check if any file is currently uploading
+   const isAnyFileUploading = isUploading.bank || isUploading.ledger;
+
   return (
     <Container className="my-10">
       <div className="flex flex-col md:flex-row justify-center gap-[40px]">
@@ -150,7 +153,7 @@ export default function FileUploadLayout({
 
       <Button
         onClick={handleReconciliation}
-        disabled={!bankStatement || !companyLedger}
+        disabled={!bankStatement || !companyLedger || isAnyFileUploading}
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
                   disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
                   rounded-[8px] mx-auto block"
