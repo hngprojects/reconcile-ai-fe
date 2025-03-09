@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
-import Container from "./components/Container";
-import Header from "./components/Header";
-import bgImg from "./img/bg.png";
-import Footer from "./components/Footer";
-import { Gradient1, Gradient2, Play } from "./components/Icons";
 import { Pause } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import Container from "./components/Container";
+import Footer from "./components/Footer";
 import EmailSubscribeForm from "./components/form/EmailSubscribeForm";
+import { Gradient1, Gradient2, Play } from "./components/Icons";
+import bgImg from "./img/bg.png";
 
 const ComingSoonPage = () => {
   const [showBg, setShowBg] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -32,10 +32,10 @@ const ComingSoonPage = () => {
       } else {
         videoRef.current.play();
       }
-
       setIsPlaying(!isPlaying);
     }
   };
+
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -54,7 +54,6 @@ const ComingSoonPage = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <Header />
       <div className="w-full h-full relative flex-1 flex items-start sm:items-center justify-center">
         <Container className="h-full w-full flex items-center justify-center py-8 ">
           <Gradient1 />
@@ -71,7 +70,10 @@ const ComingSoonPage = () => {
                 </p>
               </div>
               <div className="hidden sm:block">
-                <EmailSubscribeForm />
+                <EmailSubscribeForm
+                  isSubmitted={isSubmitted}
+                  setIsSubmitted={setIsSubmitted}
+                />
               </div>
             </div>
             <div>
@@ -99,8 +101,11 @@ const ComingSoonPage = () => {
                 </button>
               </div>
             </div>
-            <div className="sm:hidden block mt-3">
-              <EmailSubscribeForm />
+            <div className="sm:hidden block mt-3 w-full">
+              <EmailSubscribeForm
+                isSubmitted={isSubmitted}
+                setIsSubmitted={setIsSubmitted}
+              />
             </div>
           </div>
         </Container>
