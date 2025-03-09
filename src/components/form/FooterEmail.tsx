@@ -14,8 +14,6 @@ from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { useState } from "react";
-import { error } from "console";
-
 const emailSchema = z.object({
   email: z
   .string()
