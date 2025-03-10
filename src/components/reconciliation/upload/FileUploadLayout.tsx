@@ -215,7 +215,6 @@ export default function FileUploadLayout({
         title="Oops"
         message={errorMessage}
         buttonTitle="Go to Upload"
-        buttonHref="/file-upload"
       />
     </Container>
   );
