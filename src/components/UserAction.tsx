@@ -11,7 +11,11 @@ const UserAction: FC = () => {
   return (
     <>
       <div className="flex items-center gap-1 sm:gap-3">
-        {!isAuthenticated && (
+        {!isAuthenticated ? (<div className="flex items-center justify-center bg-gray-100 text-[#297B65] size-12 text-xl rounded-full">
+  <p>N</p>
+</div>):
+(
+          
           <button
             type="button"
             className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
