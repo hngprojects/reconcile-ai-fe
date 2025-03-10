@@ -9,6 +9,10 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
+import Cookies from "js-cookie";
+
+const MAX_UPLOAD = 5;
+const COOKIE_NAME = "upload_count";
 
 export default function FileUploadLayout({
   onReconcile,
@@ -23,6 +27,19 @@ export default function FileUploadLayout({
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [reconcileProgress, setReconcileProgress] = useState(0);
+
+  const [uploadCount, setUploadCount] = useState(0);
+  const [isUploadLimitReached, setIsUploadLimitReached] = useState(false);
+
+  // Check if user  is authenticated
+  const isAuthenticated = false;
+
+  // Get curent upload count from cookies
+  useEffect(() => {
+    const count = parseInt(Cookies.get(COOKIE_NAME) || "0", 10);
+    setUploadCount(count);
+    console.log("uploadCount", count)
+  }, [])
 
   // Load files from localStorage on mount
   useEffect(() => {
@@ -80,6 +97,12 @@ export default function FileUploadLayout({
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
+    // check if user is not authenticated and has reached max upload limit
+    if(!isAuthenticated && uploadCount >= MAX_UPLOAD) {
+      setIsUploadLimitReached(true);
+      return
+    }   
+
     setShowUploadModal(true);
     setReconcileProgress(0);
 
@@ -99,6 +122,14 @@ export default function FileUploadLayout({
 
       if ((result.status = "success")) {
         localStorage.setItem("reconciliation", JSON.stringify(result.data));
+
+      // Increment upload count in Cookies for unautenticated user
+      if(!isAuthenticated){
+        const newUploadCount = uploadCount + 1;
+        setUploadCount(newUploadCount);
+        Cookies.set(COOKIE_NAME, newUploadCount.toString())
+      } 
+
       } else {
         setShowErrorModal(true);
       }
@@ -174,6 +205,18 @@ export default function FileUploadLayout({
           message="Something went wrong"
           buttonTitle="Go to Upload"
           buttonHref="/file-upload"
+        />
+      )}
+      {isUploadLimitReached && (
+        <ErrorModal
+          open={isUploadLimitReached}
+          onOpenChange={() => setIsUploadLimitReached(false)}
+          title="Oops!"
+          message="You've used up your free limit. See you next time!"
+          buttonTitle="Go to Home"
+          buttonHref="/"
+          imageSrc="/assets/images/Tries_limit_emoji.png"
+          imageAlt="File tries limit emoji"
         />
       )}
     </Container>
