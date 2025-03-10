@@ -25,14 +25,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const signInWithGoogle = () => {
-    // Simply redirect to the Google auth endpoint
-    window.location.href = "https://api-dev.reconxi.com/api/v1/auth/google";
+    router.push('https://api-dev.reconxi.com/api/v1/auth/google');
   };
 
   const handleAuthCallback = async () => {
     try {
       const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/auth/google/callback",
+        'https://api-dev.reconxi.com/api/v1/auth/google/callback',
         {
           method: "GET",
           headers: {

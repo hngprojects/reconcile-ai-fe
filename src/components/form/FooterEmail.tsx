@@ -52,7 +52,7 @@ const EmailSubscribeForm = () => {
     } catch (error) {
 
       const errorMessage =
-      error instanceof Error ? error.message : String(error);
+      error instanceof Error ? "This email has already been subscribed" : String(error);
       setErrorMessage(errorMessage)
     }
   };
