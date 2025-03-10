@@ -1,11 +1,9 @@
 name: Next.js CD
-
 on:
   push:
     branches:
       - main
       - dev
-
 jobs:
   deploy:
     runs-on: reconcile
@@ -13,28 +11,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "23"
-
       - name: Install Dependencies
         run: npm install
-
       - name: Build Next.js App
         run: npm run build
-
       - name: Archive the build folder
         run: tar -cvf build-artifact.tar .next
-
       - name: Copy the build artifact to the server
         run: |
           sshpass -p ${{ secrets.EC2_PASSWORD }} scp -o StrictHostKeyChecking=no build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
-
       - name: Update Deployment
         run: |
-          sshpass -p ${{ secrets.EC2_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          sshpass -p ${{ secrets.EC2_PASSWORD }} ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
             if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
               FE_PATH="/var/www/html/reconcile-ai-fe"
               PORT=3005
@@ -44,20 +37,17 @@ jobs:
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi
-
-            cd "$FE_PATH"
-            git pull origin $(basename $GITHUB_REF)
+            cd "\$FE_PATH"
+            git pull origin ${BRANCH_NAME}
             cp ~/build-artifact/build-artifact.tar .
             tar -xvf build-artifact.tar
             rm -f build-artifact.tar
-
-            if npx pm2 list | grep -q "$PM2_NAME"; then
-              npx pm2 reload "$PM2_NAME"
+            if npx pm2 list | grep -q "\$PM2_NAME"; then
+              npx pm2 reload "\$PM2_NAME"
             else
-              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
+              PORT=$PORT npx pm2 start npm --name "\$PM2_NAME" -- run start
             fi
-
             npm ci
-            pm2 restart "$PM2_NAME" --update-env
+            pm2 restart "\$PM2_NAME" --update-env
             npx pm2 save
-          #EOF
+          EOF
