@@ -29,14 +29,43 @@ export async function reconcileFiles(
     const data = await response.json();
     console.log("Raw API Response:", data);
 
-    if (!response.ok) {
-      throw new Error(data.message || "Reconciliation failed");
+    // Handle specific status codes
+    if (response.status === 429) {
+      return {
+        status: "error",
+        code: 429,
+        message:
+          "Maximum number of requests reached. Please login to continue.",
+      };
     }
 
-    return data;
-  } catch (error) {
+    if (response.status === 408) {
+      return {
+        status: "error",
+        code: 408,
+        message: "File processing took too long. Please try again later.",
+      };
+    }
+
+    if (!response.ok) {
+      return {
+        status: "error",
+        code: response.status,
+        message: data.message || "Reconciliation failed",
+      };
+    }
+
+    return {
+      status: "success",
+      data: data,
+    };
+  } catch (error: any) {
     console.error("Reconciliation error:", error);
-    throw error;
+    return {
+      status: "error",
+      code: error.status || 500,
+      message: error.message || "An unexpected error occurred",
+    };
   }
 }
 

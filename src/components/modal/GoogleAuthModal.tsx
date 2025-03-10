@@ -29,6 +29,7 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
       <DialogContent
         className="w-[90%] md:!max-w-[535px] h-auto rounded-[12px] bg-white p-0 border-none mx-auto"
         closeButton={false}
+        aria-describedby="google-auth-modal"
       >
         <button
           onClick={onClose}
@@ -49,7 +50,7 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
             <h2 className="font-baloo font-extrabold text-2xl md:text-[28px] leading-none text-[#2E604A] -mt-4">
               ReconXi
             </h2>
-            <p className="font-openSans text-xs md:text-sm leading-[140%] text-[#475569] text-center px-2 md:px-0">
+            <p id="google-auth-modal" className="font-openSans text-xs md:text-sm leading-[140%] text-[#475569] text-center px-2 md:px-0">
               Use your Google account to get started quickly
             </p>
           </div>
