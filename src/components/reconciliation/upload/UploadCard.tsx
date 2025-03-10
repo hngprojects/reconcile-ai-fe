@@ -111,7 +111,7 @@ export default function UploadCard({
         <div
           {...getRootProps()}
           className={cn(
-            "w-full max-w-full h-[224.7px] rounded-[12px]",
+            "w-full max-w-full h-[224.7px] rounded-[12px] cursor-pointer",
             "flex flex-col items-center justify-center gap-[12px]",
             isDragging || isUploading ? "border-dashed border-2" : "border",
             "border-[#33333380]",
@@ -140,7 +140,7 @@ export default function UploadCard({
                   Drag & Drop files here or
                 </span>
                 <span className="text-[#2F855A] font-semibold underline">
-                  Choose file
+                  Choose
                 </span>
               </p>
             </>
