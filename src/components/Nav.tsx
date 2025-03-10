@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Container from "./Container";
 import { LogoIcon } from "./Icon/Icons";
+import UserAction from "./UserAction";
 
 const Nav = () => {
   return (
@@ -16,6 +17,8 @@ const Nav = () => {
             </span>
           </div>
         </Link>
+        
+        <UserAction />
       </Container>
     </nav>
   );

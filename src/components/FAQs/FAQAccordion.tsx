@@ -46,7 +46,7 @@ const AccordionItem = ({
         <span className="text-base font-medium text-[#101828] text-left">
           {faq.question}
         </span>
-        <div className="w-8 h-8 rounded-full border border-[#D1D5DB] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border border-[#D1D5DB] flex items-center justify-center flex-shrink-0">
           {isOpen ? (
             <Minus className="w-5 h-5 text-[#6B7280]" />
           ) : (

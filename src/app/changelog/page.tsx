@@ -99,7 +99,6 @@ export default function ReconXiReleases() {
                                     {/* Video Section */}
                                     <div className="relative w-full h-0 pb-[56.25%] bg-gray-100 mb-6 rounded-md overflow-hidden">
                                         <video
-                                            autoPlay
                                             controls
                                             playsInline
                                             ref={videoRef}
@@ -110,16 +109,13 @@ export default function ReconXiReleases() {
                                         </video>
                                         <button
                                             onClick={playVideo}
+                                            aria-label={isPlaying ? "Pause video" : "Play video"}
                                             className="absolute inset-0 flex items-center justify-center cursor-pointer"
-
                                         >
-                                            {!isPlaying ? (
-                                                <Play />
-                                            ) : (
-                                                <Pause className="opacity-30"/>
-                                            )}
+                                            {!isPlaying ? <Play className="h-8 w-8 text-white" /> : <Pause className="h-8 w-8 text-white opacity-80" />}
                                         </button>
                                     </div>
+
 
                                     {/* Content Sections */}
                                     <div className="space-y-5">

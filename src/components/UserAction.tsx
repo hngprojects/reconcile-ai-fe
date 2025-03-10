@@ -1,33 +1,41 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
-// import GoogleAuthModal from "./modal/GoogleAuthModal";
+import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
+import UserDetails from "@/src/components/UserDetails";
 
 const UserAction: FC = () => {
-  const { isAuthenticated } = useAuth();
-  // const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, setUser } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if(user){
+      setUser(JSON.parse(user));
+    }
+  }, []);
 
   return (
     <>
-      <div className="flex items-center gap-1 sm:gap-3">
-        {!isAuthenticated && (
+    {user ? (<UserDetails />):
+(
+          
           <button
             type="button"
             className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
                      rounded-md font-semibold justify-center items-center h-12 
                      sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
-            // onClick={() => setShowAuthModal(true)}
+            onClick={() => setShowAuthModal(true)}
           >
             Get Started
           </button>
         )}
-      </div>
 
-      {/* <GoogleAuthModal
+      <GoogleAuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-      /> */}
+      />
     </>
   );
 };

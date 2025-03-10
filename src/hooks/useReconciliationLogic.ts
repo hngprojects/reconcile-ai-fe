@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   ReconciliationItem,
   ResponseData,
@@ -31,25 +31,31 @@ export function useReconciliationLogic() {
     setData(saved);
   }, []);
 
-  const bankData: Transaction[] = [];
-  const ledgerData: Transaction[] = [];
-
-  if (data.matches) {
-    data.matches.map((data) => {
-      bankData.push(data.file1_transaction);
-      ledgerData.push(data.file2_transaction);
-    });
-  }
-
-  if (data.unmatched) {
-    if (data.unmatched.unmatched_file2) {
-      ledgerData.push(...data.unmatched.unmatched_file2);
+  const bankData = useMemo(() => {
+    const result: Transaction[] = [];
+    if (data.matches) {
+      data.matches.map((data) => {
+        result.push(data.file1_transaction);
+      });
     }
-
-    if (data.unmatched.unmatched_file1) {
-      bankData.push(...data.unmatched.unmatched_file1);
+    if (data.unmatched && data.unmatched.unmatched_file1) {
+      result.push(...data.unmatched.unmatched_file1);
     }
-  }
+    return result;
+  }, [data.matches, data.unmatched]);
+
+  const ledgerData = useMemo(() => {
+    const result: Transaction[] = [];
+    if (data.matches) {
+      data.matches.map((data) => {
+        result.push(data.file2_transaction);
+      });
+    }
+    if (data.unmatched && data.unmatched.unmatched_file2) {
+      result.push(...data.unmatched.unmatched_file2);
+    }
+    return result;
+  }, [data.matches, data.unmatched]);
 
   useEffect(() => {
     if (!validationShown && (bankData.length > 0 || ledgerData.length > 0)) {
@@ -65,7 +71,7 @@ export function useReconciliationLogic() {
   // Combine data for mobile view and status logic
   const combinedData: ReconciliationItem[] = bankData.map((bankItem) => {
     const matchingData = data.matches.find(
-        (match) => match.file1_transaction == bankItem
+      (match) => match.file1_transaction == bankItem
     );
     const matchingLedgerItem = matchingData && matchingData.file2_transaction;
 

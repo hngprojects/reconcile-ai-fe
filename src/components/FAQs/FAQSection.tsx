@@ -19,8 +19,8 @@ const faqItems: FAQ[] = [
       "You can upload CSV files for both your bank statements and company ledger. ReconXi will automatically match transactions based on the data from these files.",
   },
   {
-    question: "Is my data secure with ReconXi?",
-    answer: "Absolutely!",
+    question: "Is my uploaded bank statement stored permanently?",
+    answer: "No, uploaded bank statements are only stored temporarily for processing. Once the required data is extracted, the file is automatically deleted from our servers.",
   },
   {
     question: "Can I manually update matched transactions?",

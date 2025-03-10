@@ -9,17 +9,15 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} 
-from "@/src/components/ui/form";
+} from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { useState } from "react";
-const emailSchema = z.object({
-  email: z
-  .string()
-  .min(1, "Email cannot be empty")
-  .email("Invalid email address"),
-});
+import { emailSchema } from "@/src/types/schema";
+import { subscribe } from "diagnostics_channel";
+import { subscribeAction } from "@/src/actions";
+
+
 
 const EmailSubscribeForm = () => {
   const [errorMessage, setErrorMessage] = useState("")
@@ -35,16 +33,12 @@ const EmailSubscribeForm = () => {
   const onSubmit = async (data: z.infer<typeof emailSchema>) => {
     try {
       console.log(data)
-      const response = await fetch("https://api-dev.reconxi.com/api/v1/newsletter/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const Response = await response.json()
-      console.log("api",Response)
-      if (Response.status = "success") {
+      const response = await subscribeAction(data)
+      console.log(response);
+      
+      const Response = response
+      console.log("api",Response.status)
+      if (Response.status === 200) {
         setSubscribed(true);
       } else {
         setErrorMessage(Response.message)
@@ -63,26 +57,23 @@ const EmailSubscribeForm = () => {
         <h1>Thank you for subscribing, you can now check your email</h1>
       ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full "
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full ">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                  <div className="flex w-full justify-end">
-                      <div className="flex flex-col gap-4  w-full sm:w-fit">
+                    <div className="flex w-full justify-end">
+                      <div className="flex flex-col gap-4 w-full md:w-fit">
                         <p className="text-[16px] self-start">
                           Stay up to date
                         </p>
-                        <div className="flex sm:flex-row flex-col w-full sm:w-fit gap-4">
+                        <div className="flex md:flex-row flex-col w-full gap-4">
                           <div className="">
                             <Input
                               placeholder="Enter your email"
-                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full sm:w-fit"
+                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:max-w-md"
                               {...field}
                             />
                             <FormMessage className="text-sm text-left text-red-500 mt-0.5" /> 
@@ -108,12 +99,4 @@ const EmailSubscribeForm = () => {
   );
 };
 
-
-
 export default EmailSubscribeForm;
-
-
-
-
-
-
