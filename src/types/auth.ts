@@ -2,12 +2,21 @@ export interface User {
   id: number;
   email: string;
   name: string;
-  picture?: string;
+  avatar: string,
+  created_at: string,
+  updated_at: string
+}
+
+export interface Response {
+  status: string,
+  status_code: number,
+  message: string,
+  data: AuthResponse
 }
 
 export interface AuthResponse {
   user: User;
-  token: string;
+  access_token: string;
 }
 
 export interface GoogleTokens {

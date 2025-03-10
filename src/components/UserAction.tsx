@@ -1,47 +1,26 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
-import { ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu";
+import UserDetails from "@/src/components/UserDetails";
 
 const UserAction: FC = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, setUser } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  const getUserInitials = (name?: string) => {
-    if (!name) return "G";
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase();
-  };
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if(user){
+      setUser(JSON.parse(user));
+    }
+  }, []);
 
   return (
     <>
-      <div className="flex items-center gap-1 sm:gap-3">
-        {isAuthenticated ? (
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2">
-              <div className="flex items-center justify-center bg-gray-100 text-[#297B65] size-12 text-xl rounded-full">
-                <p>{getUserInitials(user?.name)}</p>
-              </div>
-              <ChevronDown className="h-4 w-4 text-gray-600" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem onClick={logout} className="text-red-600">
-                Logout
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : (
+    {user ? (<UserDetails />):
+(
+          
           <button
             type="button"
             className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
@@ -52,7 +31,6 @@ const UserAction: FC = () => {
             Get Started
           </button>
         )}
-      </div>
 
       <GoogleAuthModal
         isOpen={showAuthModal}

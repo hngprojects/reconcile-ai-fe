@@ -4,11 +4,12 @@ import { useAuth } from "@/src/components/context/AuthContext";
 import { useEffect } from "react";
 
 export default function AuthCallback() {
-  const { handleAuthCallback } = useAuth();
+  const { getUserDetails } = useAuth();
 
   useEffect(() => {
-    handleAuthCallback();
-  }, [handleAuthCallback]);
+    const token = localStorage.getItem('access_token');
+    if(token) getUserDetails(token as string);
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
