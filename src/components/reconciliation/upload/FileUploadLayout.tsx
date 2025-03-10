@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import UploadCard from "./UploadCard";
 import UploadModal from "./UploadModal";
+import { toast } from "sonner";
 
 import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
@@ -61,6 +62,13 @@ export default function FileUploadLayout({
 
   const handleFileUpload = async (file: File, type: "bank" | "ledger") => {
     if (!file.name.endsWith(".csv")) return;
+
+    const maxSize = 2 * 1024 * 1024; 
+    if (file.size > maxSize) {
+      
+      toast.error("Maximum file size is 2MB");
+      return;
+    }
 
     const targetState = type === "bank" ? setBankStatement : setCompanyLedger;
     targetState(file);
@@ -151,7 +159,7 @@ export default function FileUploadLayout({
 
       <Button
         onClick={handleReconciliation}
-        disabled={!bankStatement || !companyLedger|| isAnyFileUploading}
+        disabled={!bankStatement || !companyLedger || isAnyFileUploading}
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
                   disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
                   rounded-[8px] mx-auto block"
@@ -166,7 +174,7 @@ export default function FileUploadLayout({
       />
 
       {showErrorModal && (
-        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} /> 
+        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} />
         <ErrorModal
           open={showErrorModal}
           onOpenChange={() => setShowErrorModal(false)}
