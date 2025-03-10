@@ -24,7 +24,7 @@ export function FilePreview({ fileName, onDelete }: FilePreviewProps) {
       <button
         onClick={handleDelete}
         className="absolute top-[90px] right-[65px] p-2 
-                   hover:bg-gray-100 rounded-full transition-colors"
+                   hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
       >
         <Image src={deleteIcon} width={20} height={20} alt="Delete" />
       </button>
