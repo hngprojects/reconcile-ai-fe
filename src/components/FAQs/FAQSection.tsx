@@ -20,7 +20,7 @@ const faqItems: FAQ[] = [
   },
   {
     question: "Is my uploaded bank statement stored permanently?",
-    answer: "No, uploaded bank statements are only stored temporarily for processing. Once the required data is extracted, the file is automatically deleted from our servers",
+    answer: "No, uploaded bank statements are only stored temporarily for processing. Once the required data is extracted, the file is automatically deleted from our servers.",
   },
   {
     question: "Can I manually update matched transactions?",
