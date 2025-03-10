@@ -109,7 +109,7 @@ export default function UploadCard({
             "w-full max-w-full h-[224.7px] rounded-[12px]",
             "flex flex-col items-center justify-center gap-[12px]",
             isDragging || isUploading ? "border-dashed border-2" : "border",
-            "border-[#33333380]",
+            "border-[#33333380]","border-dashed", "border-2",
             "mx-auto transition-all duration-200",
             error
               ? "border-[#C50700]"
