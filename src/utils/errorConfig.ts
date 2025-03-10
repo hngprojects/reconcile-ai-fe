@@ -12,8 +12,8 @@ export const getErrorConfig = (
           "Maximum number of requests reached. Please login to continue.",
         imageSrc: "/rate-limit.png",
         buttonTitle: "Sign in with Google",
-        buttonHref: "#", // Changed to # since we'll use onClick handler
-        buttonAction: "googleSignIn", // Add this to identify action type
+        buttonHref: "#",
+        buttonAction: "googleSignIn",
       };
     case 408:
       return {
@@ -22,6 +22,7 @@ export const getErrorConfig = (
         imageSrc: "/assets/images/Sad.png",
         buttonTitle: "Try Again",
         buttonHref: "/file-upload",
+        buttonAction: "navigate",
       };
     case 500:
       return {
@@ -30,6 +31,7 @@ export const getErrorConfig = (
         imageSrc: "/assets/images/Sad.png",
         buttonTitle: "Go Back",
         buttonHref: "/file-upload",
+        buttonAction: "navigate",
       };
     default:
       return {
@@ -38,6 +40,7 @@ export const getErrorConfig = (
         imageSrc: "/assets/images/Sad.png",
         buttonTitle: "Go to Upload",
         buttonHref: "/file-upload",
+        buttonAction: "navigate",
       };
   }
 };

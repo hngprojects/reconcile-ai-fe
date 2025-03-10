@@ -4,7 +4,7 @@ export interface ErrorModalConfig {
   imageSrc: string;
   buttonTitle: string;
   buttonHref: string;
-  buttonAction?: 'googleSignIn' | undefined;
+  buttonAction: "googleSignIn" | "navigate";
 }
 
 export interface ErrorModalProps {
