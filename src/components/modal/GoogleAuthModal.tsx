@@ -1,7 +1,5 @@
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import Image from "next/image";
-import reconAuthLogo from "@/public/assets/images/reconAuthLogo.svg"
-import GoogleIcon from "@/public/assets/images/GoogleIcon.svg"
 import { X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -43,7 +41,7 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
         <div className="px-4 md:px-6 py-8 md:py-[76px] flex flex-col items-center justify-center gap-6">
           <div className="flex flex-col items-center gap-4">
             <Image
-              src={reconAuthLogo}
+              src="/assets/images/reconAuthLogo.svg"
               alt="ReconXi Logo"
               width={48}
               height={48}
@@ -66,7 +64,7 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
                      max-w-[90%] md:max-w-none mx-auto"
           >
             <Image
-              src={GoogleIcon}
+              src="/assets/images/GoogleIcon.svg"
               alt="Google Logo"
               width={24}
               height={24}

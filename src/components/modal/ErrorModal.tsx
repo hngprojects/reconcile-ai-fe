@@ -3,6 +3,7 @@ import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import Link from "next/link";
 import { ErrorModalProps } from "@/src/types/error-modal";
 import { getErrorConfig } from "@/src/utils/errorConfig";
+import { useAuth } from "@/src/components/context/AuthContext";
 
 const ErrorModal: React.FC<ErrorModalProps> = ({
   open,
@@ -10,7 +11,15 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
   errorCode,
   defaultMessage,
 }) => {
+  const { signInWithGoogle } = useAuth();
   const config = getErrorConfig(errorCode, defaultMessage);
+
+  const handleButtonClick = () => {
+    if (config.buttonAction === "googleSignIn") {
+      signInWithGoogle();
+      onOpenChange(false);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -23,16 +32,25 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
             alt="Error icon"
             className="object-cover"
           />
-          <h2 className="font-bold text-3xl md:text-5xl text-center">
+          <h2 className="font-bold text-3xl md:text-4xl text-center">
             {config.title}
           </h2>
-          <p className="text-[#475569]">{config.message}</p>
-          <Link
-            className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
-            href={config.buttonHref}
-          >
-            {config.buttonTitle}
-          </Link>
+          <p className="text-[#475569] text-center">{config.message}</p>
+          {config.buttonAction === "googleSignIn" ? (
+            <button
+              onClick={handleButtonClick}
+              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
+            >
+              {config.buttonTitle}
+            </button>
+          ) : (
+            <Link
+              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
+              href={config.buttonHref}
+            >
+              {config.buttonTitle}
+            </Link>
+          )}
         </div>
       </DialogContent>
     </Dialog>
