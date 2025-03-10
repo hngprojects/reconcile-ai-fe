@@ -154,7 +154,7 @@ export default function FileUploadLayout({
         disabled={!bankStatement || !companyLedger|| isAnyFileUploading}
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
                   disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
-                  rounded-[8px] mx-auto block"
+                  rounded-[8px] mx-auto block cursor-pointer"
       >
         Reconcile
       </Button>
