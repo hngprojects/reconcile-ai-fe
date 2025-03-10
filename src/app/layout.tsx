@@ -89,6 +89,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+            <head>
+        <meta
+          name="google-site-verification"
+          content="28pBz0UhT1sDm1ccjNQ6_ajz59wpNfpvGUV2lQvFRzQ"
+        />
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-GJKRNRM550"
+        ></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: ` window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-GJKRNRM550'); `,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
         <AuthProvider>
           <Nav />
