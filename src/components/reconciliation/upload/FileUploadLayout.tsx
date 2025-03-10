@@ -80,7 +80,6 @@ export default function FileUploadLayout({
       : (bankStatement && file.name === bankStatement.name);
     
     if (wouldCreateDuplicate) {
-      console.log("Duplicate file detected:", file.name);
       setErrorMessage("Cannot use the same file for both bank statement and company ledger");
       setShowErrorModal(true);
       return;
@@ -106,7 +105,7 @@ export default function FileUploadLayout({
     
     // First check for duplicate files
     if (checkDuplicateFiles()) {
-      return; // Stop if files are duplicates
+      return;
     }
     
     // Set reconciling state to prevent multiple reconciliations
