@@ -37,13 +37,13 @@ export default function UserDetails() {
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <p onClick={() => setOpen(true)} className="text-[#297b65]">
+            <p onClick={() => setOpen(true)} className="text-[#297b65] cursor-pointer">
               {open ? <ChevronUp /> : <ChevronDown />}
             </p>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="absolute right-[-28px] top-[12px]">
             <DropdownMenuItem
-              className="hover:bg-[#FFF4F0] cursor-pointer"
+              className="hover:bg-red-300 cursor-pointer"
               onSelect={(e) => e.preventDefault()}
             >
               <div

@@ -29,16 +29,28 @@ export const getErrorConfig = (
         title: "Server Error",
         message: "Something went wrong on our end. Please try again later.",
         imageSrc: "/assets/images/Sad.png",
-        buttonTitle: "Go Back",
+        buttonTitle: "Try Again",
+        buttonHref: "/file-upload",
+        buttonAction: "navigate",
+      };
+    case 422: 
+      return {
+        title: "Invalid File Structure",
+        message:
+          "CSV Table Structure not currently supported",
+        imageSrc: "/assets/images/Sad.png",
+        buttonTitle: "Upload Correct Files",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
       };
     default:
       return {
-        title: "Oops!",
-        message: defaultMessage || "Something went wrong",
+        title: "Invalid File Structure",
+        message:
+          defaultMessage ||
+          "Please ensure your files follow the required format",
         imageSrc: "/assets/images/Sad.png",
-        buttonTitle: "Go to Upload",
+        buttonTitle: "Try Again",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
       };
