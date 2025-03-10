@@ -1,7 +1,4 @@
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL || "https://api-dev.reconxi.com/api/v1";
-if (!BASE_URL) {
-  throw new Error("NEXT_PUBLIC_BASE_API_URL is not defined");
-}
+export const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_API_URL}`;
 
 // RECONCILE
 export const RECONCILE_API_URL = `${BASE_URL}/reconcile`;
