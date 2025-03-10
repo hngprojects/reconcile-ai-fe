@@ -14,7 +14,6 @@ import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { useState } from "react";
 import { emailSchema } from "@/src/types/schema";
-import { subscribe } from "diagnostics_channel";
 import { subscribeAction } from "@/src/actions";
 
 
