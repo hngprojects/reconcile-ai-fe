@@ -1,13 +1,14 @@
 import Image from "next/image";
-import csvIcon from "@/public/csvIcon.svg";
-import deleteIcon from "@/public/deleteIcon.svg";
-import deleteCheckIcon from "@/public/deleteCheckIcon.svg";
+import csvIcon from "@/public/assets/images/csvIcon.svg";
+import deleteIcon from "@/public/assets/images/deleteIcon.svg";
+import deleteCheckIcon from "@/public/assets/images/deleteCheckIcon.svg";
 import { FilePreviewProps } from "./types";
 import { toast } from "sonner";
 
 export function FilePreview({ fileName, onDelete }: FilePreviewProps) {
   const handleDelete = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation()
     onDelete();
     toast.success("File Deleted", {
       icon: <Image src={deleteCheckIcon} width={20} height={20} alt="Delete" />,
