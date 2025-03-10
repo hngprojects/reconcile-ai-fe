@@ -124,7 +124,7 @@ const Footer = () => {
                 >
                   Privacy
                 </Link>
-                <Link href="/" className="hover:underline underline-offset-2">
+                <Link href="/contact" className="hover:underline underline-offset-2">
                   Contact Us
                 </Link>
               </nav>

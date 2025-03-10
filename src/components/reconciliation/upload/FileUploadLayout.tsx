@@ -9,10 +9,18 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
+import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
+import { useAuth } from "@/src/components/context/AuthContext";
+
+interface ReconciliationError extends Error {
+  code?: number;
+  status?: number;
+}
 
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
+  const { isAuthenticated } = useAuth();
   const [bankStatement, setBankStatement] = useState<File | null>(null);
   const [companyLedger, setCompanyLedger] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState({ bank: 0, ledger: 0 });
@@ -23,6 +31,7 @@ export default function FileUploadLayout({
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [reconcileProgress, setReconcileProgress] = useState(0);
+  const [errorCode, setErrorCode] = useState<number>();
 
   // Load files from localStorage on mount
   useEffect(() => {
@@ -80,6 +89,14 @@ export default function FileUploadLayout({
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
+    // Check rate limit for guest users
+    if (!isAuthenticated && checkRateLimit()) {
+      console.log("Rate limit reached for guest user");
+      setErrorCode(429);
+      setShowErrorModal(true);
+      return;
+    }
+
     setShowUploadModal(true);
     setReconcileProgress(0);
 
@@ -95,11 +112,25 @@ export default function FileUploadLayout({
         companyLedger,
         "amount"
       );
+
+      if (result.status === "error") {
+        setErrorCode(result.code);
+        setShowErrorModal(true);
+        return;
+      }
+
+      // Increment attempt count for guest users
+      if (!isAuthenticated) {
+        incrementAttempts();
+        console.log("Incrementing guest attempts");
+      }
+
       console.log("Reconciliation result:", result);
 
-      if ((result.status = "success")) {
+      if (result.status === "success") {
         localStorage.setItem("reconciliation", JSON.stringify(result.data));
       } else {
+        setErrorCode(result.code); // Add state for error code
         setShowErrorModal(true);
       }
 
@@ -111,10 +142,11 @@ export default function FileUploadLayout({
         setShowUploadModal(false);
         onReconcile(bankStatement, companyLedger);
       }, 1000);
-      onReconcile(bankStatement, companyLedger);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
+      const reconciliationError = error as ReconciliationError;
+      setErrorCode(reconciliationError.code || reconciliationError.status);
       setShowErrorModal(true);
     }
   };
@@ -151,10 +183,10 @@ export default function FileUploadLayout({
 
       <Button
         onClick={handleReconciliation}
-        disabled={!bankStatement || !companyLedger|| isAnyFileUploading}
+        disabled={!bankStatement || !companyLedger || isAnyFileUploading}
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
                   disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
-                  rounded-[8px] mx-auto block"
+                  rounded-[8px] mx-auto block cursor-pointer"
       >
         Reconcile
       </Button>
@@ -166,14 +198,10 @@ export default function FileUploadLayout({
       />
 
       {showErrorModal && (
-        // <ErrorUploadModal onClose={() => setShowErrorModal(false)} /> 
         <ErrorModal
           open={showErrorModal}
           onOpenChange={() => setShowErrorModal(false)}
-          title="Oops!"
-          message="Something went wrong"
-          buttonTitle="Go to Upload"
-          buttonHref="/file-upload"
+          errorCode={errorCode}
         />
       )}
     </Container>

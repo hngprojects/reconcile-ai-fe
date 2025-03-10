@@ -9,21 +9,22 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} 
-from "@/src/components/ui/form";
+} from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
 import { Button } from "@/src/components/ui/button";
 import { useState } from "react";
+import { handleAddToNewsLetter } from "@/src/lib/api";
+
 const emailSchema = z.object({
   email: z
-  .string()
-  .min(1, "Email cannot be empty")
-  .email("Invalid email address"),
+    .string()
+    .min(1, "Email cannot be empty")
+    .email("Invalid email address"),
 });
 
 const EmailSubscribeForm = () => {
-  const [errorMessage, setErrorMessage] = useState("")
-  const [subscribed, setSubscribed] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
@@ -33,66 +34,66 @@ const EmailSubscribeForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof emailSchema>) => {
+    setIsSubmitting(true);
+
     try {
-      console.log(data)
-      const response = await fetch("https://api-dev.reconxi.com/api/v1/newsletter/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const Response = await response.json()
-      console.log("api",Response)
-      if (Response.status = "success") {
-        setSubscribed(true);
-      } else {
-        setErrorMessage(Response.message)
+      const result = await handleAddToNewsLetter(data.email);
+
+      if (result.success) {
+        setIsSubscribed(true);
+        return;
+      }
+
+      if (result.error) {
+        form.setError("email", {
+          message: "This email has already been subscribed",
+        });
       }
     } catch (error) {
-
-      const errorMessage =
-      error instanceof Error ? "This email has already been subscribed" : String(error);
-      setErrorMessage(errorMessage)
+      form.setError("email", {
+        message:
+          error instanceof Error
+            ? "Something went wrong. Please try again later."
+            : String(error),
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div>
-      {subscribed ? (
+      {isSubscribed ? (
         <h1>Thank you for subscribing, you can now check your email</h1>
       ) : (
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full "
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full ">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                  <div className="flex w-full justify-end">
-                      <div className="flex flex-col gap-4  w-full sm:w-fit">
+                    <div className="flex w-full justify-end">
+                      <div className="flex flex-col gap-4 w-full md:w-fit">
                         <p className="text-[16px] self-start">
                           Stay up to date
                         </p>
-                        <div className="flex sm:flex-row flex-col w-full sm:w-fit gap-4">
+                        <div className="flex md:flex-row flex-col w-full gap-4">
                           <div className="">
                             <Input
                               placeholder="Enter your email"
-                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full sm:w-fit"
+                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:max-w-md"
                               {...field}
                             />
-                            <FormMessage className="text-sm text-left text-red-500 mt-0.5" /> 
-                            {errorMessage && <p className="text-sm text-left text-red-500 mt-0.5" >{errorMessage}</p>}
+                            <FormMessage className="text-sm text-left text-red-500 mt-0.5 whitespace-normal" />
                           </div>
                           <Button
                             variant="outline"
                             className={`border-primary text-primary font-semibold cursor-pointer h-12 md:w-[115px]`}
+                            disabled={isSubmitting}
                           >
-                            Subscribe
+                            {isSubmitting ? "Submitting..." : "Subscribe"}
                           </Button>
                         </div>
                       </div>
@@ -108,12 +109,4 @@ const EmailSubscribeForm = () => {
   );
 };
 
-
-
 export default EmailSubscribeForm;
-
-
-
-
-
-
