@@ -128,7 +128,10 @@ export default function FileUploadLayout({
       console.log("Reconciliation result:", result);
 
       if (result.status === "success") {
-        localStorage.setItem("reconciliation", JSON.stringify(result.data));
+        localStorage.setItem(
+          "reconciliation",
+          JSON.stringify(result.data.data)
+        );
       } else {
         setErrorCode(result.code); // Add state for error code
         setShowErrorModal(true);
