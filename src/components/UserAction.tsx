@@ -3,17 +3,15 @@
 import { FC, useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
+import UserDetails from "@/src/components/UserDetails";
 
 const UserAction: FC = () => {
-  const { isAuthenticated } = useAuth();
+  const { user } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   return (
     <>
-      <div className="flex items-center gap-1 sm:gap-3">
-        {!isAuthenticated ? (<div className="flex items-center justify-center bg-gray-100 text-[#297B65] size-12 text-xl rounded-full">
-  <p>N</p>
-</div>):
+    {user ? (<UserDetails />):
 (
           
           <button
@@ -26,7 +24,6 @@ const UserAction: FC = () => {
             Get Started
           </button>
         )}
-      </div>
 
       <GoogleAuthModal
         isOpen={showAuthModal}
