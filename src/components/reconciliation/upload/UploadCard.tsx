@@ -98,7 +98,7 @@ export default function UploadCard({
           className={cn(
             "w-full max-w-full h-[224.7px] rounded-[12px]",
             "flex flex-col items-center justify-center gap-[12px]",
-            "border border-[#33333380] cursor-pointer",
+            "border border-dashed border-[#33333380] cursor-pointer",
             "mx-auto",
             error
               ? "border-[#C50700]"
