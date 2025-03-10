@@ -4,6 +4,11 @@ import {
   WAITLIST_API_URL,
 } from "./apiEndpoints";
 
+interface ApiError extends Error {
+  code?: number;
+  status?: number;
+}
+
 export async function reconcileFiles(
   file1: File,
   file2: File,
@@ -59,12 +64,13 @@ export async function reconcileFiles(
       status: "success",
       data: data,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Reconciliation error:", error);
+    const err = error as ApiError;
     return {
       status: "error",
-      code: error.status || 500,
-      message: error.message || "An unexpected error occurred",
+      code: err.status || 500,
+      message: err.message || "An unexpected error occurred",
     };
   }
 }

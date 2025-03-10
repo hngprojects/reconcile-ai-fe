@@ -39,13 +39,13 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           {config.buttonAction === "googleSignIn" ? (
             <button
               onClick={handleButtonClick}
-              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
+              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer"
             >
               {config.buttonTitle}
             </button>
           ) : (
             <Link
-              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
+              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer"
               href={config.buttonHref}
             >
               {config.buttonTitle}

@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Nav from "@/src/components/Nav";
 import { AuthProvider } from "@/src/components/context/AuthContext";
+import Script from "next/script";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -89,18 +90,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-            <head>
-        <meta
-          name="google-site-verification"
-          content="28pBz0UhT1sDm1ccjNQ6_ajz59wpNfpvGUV2lQvFRzQ"
+      <head>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
         />
-        <script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-GJKRNRM550"
-        ></script>
-        <script
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: ` window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-GJKRNRM550'); `,
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+            `,
           }}
         />
       </head>

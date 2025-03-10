@@ -25,30 +25,30 @@ export default function UploadCard({
   const [error, setError] = useState<string>("");
   const [isDragging, setIsDragging] = useState(false);
 
-  // Function to handle file validation and selection
-  const handleFile = (file: File) => {
-    if (!file.name.endsWith(".csv")) {
-      setError("File format not supported");
-      return;
-    }
+  // Wrap handleFile in useCallback
+  const handleFile = useCallback(
+    (file: File) => {
+      if (!file.name.endsWith(".csv")) {
+        setError("File format not supported");
+        return;
+      }
 
-    // Limit the file size
-    const fileSizeInMB = file.size / (1024 * 1024);
-    if (fileSizeInMB > MAX_FILE_SIZE) {
-      setError(`File size exceeds ${MAX_FILE_SIZE}MB`);
-      return;
-    }
+      const fileSizeInMB = file.size / (1024 * 1024);
+      if (fileSizeInMB > MAX_FILE_SIZE) {
+        setError(`File size exceeds ${MAX_FILE_SIZE}MB`);
+        return;
+      }
 
-    if (existingFiles.includes(file.name)) {
-      setError("This file has already been uploaded");
-      return;
-    }
+      if (existingFiles.includes(file.name)) {
+        setError("This file has already been uploaded");
+        return;
+      }
 
-    setError("");
-    onFileSelect(file);
-
-    
-  };
+      setError("");
+      onFileSelect(file);
+    },
+    [existingFiles, onFileSelect]
+  );
 
   useEffect(() => {
     // Only show toast when a file has been uploaded AND is no longer uploading
@@ -64,13 +64,16 @@ export default function UploadCard({
     }
   }, [fileUploaded, isUploading]);
 
-  // Drag-and-drop handler
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    setIsDragging(false);
-    if (acceptedFiles.length > 0) {
-      handleFile(acceptedFiles[0]);
-    }
-  }, []);
+  // Update onDrop with proper dependencies
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setIsDragging(false);
+      if (acceptedFiles.length > 0) {
+        handleFile(acceptedFiles[0]);
+      }
+    },
+    [handleFile]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,

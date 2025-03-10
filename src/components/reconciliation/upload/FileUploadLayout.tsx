@@ -12,6 +12,11 @@ import ErrorModal from "@/src/components/modal/ErrorModal";
 import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
 import { useAuth } from "@/src/components/context/AuthContext";
 
+interface ReconciliationError extends Error {
+  code?: number;
+  status?: number;
+}
+
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
@@ -137,10 +142,11 @@ export default function FileUploadLayout({
         setShowUploadModal(false);
         onReconcile(bankStatement, companyLedger);
       }, 1000);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error in reconciliation handler:", error);
       setShowUploadModal(false);
-      setErrorCode(error.code || error.status);
+      const reconciliationError = error as ReconciliationError;
+      setErrorCode(reconciliationError.code || reconciliationError.status);
       setShowErrorModal(true);
     }
   };
