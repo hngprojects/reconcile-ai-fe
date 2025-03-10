@@ -9,7 +9,7 @@ export const getErrorConfig = (
       return {
         title: "Rate Limit Reached",
         message:
-          "Maximum number of requests reached. Please login to continue.",
+          "You have used up your free limit. Please login to continue.",
         imageSrc: "/rate-limit.png",
         buttonTitle: "Sign in with Google",
         buttonHref: "#",
