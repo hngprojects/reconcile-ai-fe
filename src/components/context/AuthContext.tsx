@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const getUserDetails = async (token: string) => {
     try {
-      const response = await fetch(USER_API_URL, {
+      const response = await fetch('https://api-dev.reconxi.com/api/v1/user', {
+      // const response = await fetch(USER_API_URL, {
           headers: {
               Authorization: `Bearer ${token}`,
               Accept: 'application/json',
