@@ -39,7 +39,7 @@ export default function UploadCard({
         return;
       }
 
-      if (existingFiles.includes(file.name)) {
+      if (existingFiles.includes(file.name) && file.name !== fileName) {
         setError("This file has already been uploaded");
         return;
       }
@@ -47,7 +47,7 @@ export default function UploadCard({
       setError("");
       onFileSelect(file);
     },
-    [existingFiles, onFileSelect]
+    [existingFiles, onFileSelect, fileName]
   );
 
   useEffect(() => {
