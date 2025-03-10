@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
-import Link from "next/link";
+
 
 interface ErrorModalProps {
   open: boolean;

@@ -25,7 +25,7 @@ export default function UploadCard({
   const [error, setError] = useState<string>("");
 
   // Function to handle file validation and selection
-  const handleFile = (file: File) => {
+  const handleFile = useCallback((file: File) => {
     if (!file.name.endsWith(".csv")) {
       setError("File format not supported");
       return;
@@ -47,7 +47,7 @@ export default function UploadCard({
     onFileSelect(file);
 
     
-  };
+  }, []);
 
   useEffect(() => {
     // Only show toast when a file has been uploaded AND is no longer uploading
