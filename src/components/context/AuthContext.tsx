@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const data: Response = await response.json();
 
       localStorage.setItem('user', JSON.stringify(data.data.user));
+      setUser(data.data.user);
     } catch (e) {
       console.error('Failed to fetch', e);
     }

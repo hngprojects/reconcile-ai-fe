@@ -23,7 +23,6 @@ export default function FileUploadPage() {
     if (typeof window !== "undefined") {
           const urlParams = new URLSearchParams(window.location.search);
           const token = urlParams.get("token");
-          console.log(token);
 
           if (token) {
               localStorage.setItem("access_token", token); // Store token
