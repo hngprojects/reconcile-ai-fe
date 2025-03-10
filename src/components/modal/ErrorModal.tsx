@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
-import Link from "next/link";
 import { ErrorModalProps } from "@/src/types/error-modal";
 import { getErrorConfig } from "@/src/utils/errorConfig";
 import { useAuth } from "@/src/components/context/AuthContext";
