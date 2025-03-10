@@ -10,7 +10,7 @@ export const getErrorConfig = (
         title: "Rate Limit Reached",
         message:
           "You have used up your free limit. Please login to continue.",
-        imageSrc: "/rate-limit.png",
+        imageSrc: "/rate-limit.svg",
         buttonTitle: "Sign in with Google",
         buttonHref: "#",
         buttonAction: "googleSignIn",
@@ -19,7 +19,7 @@ export const getErrorConfig = (
       return {
         title: "Processing Timeout",
         message: "File processing took too long. Please try again later.",
-        imageSrc: "/assets/images/Sad.png",
+        imageSrc: "/assets/images/Sad.svg",
         buttonTitle: "Try Again",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
@@ -28,7 +28,7 @@ export const getErrorConfig = (
       return {
         title: "Server Error",
         message: "Something went wrong on our end. Please try again later.",
-        imageSrc: "/assets/images/Sad.png",
+        imageSrc: "/assets/images/Sad.svg",
         buttonTitle: "Try Again",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
@@ -38,7 +38,7 @@ export const getErrorConfig = (
         title: "Invalid File Structure",
         message:
           "file format not currently supported",
-        imageSrc: "/assets/images/Sad.png",
+        imageSrc: "/assets/images/Sad.svg",
         buttonTitle: "Upload Correct Files",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
@@ -49,7 +49,7 @@ export const getErrorConfig = (
         message:
           defaultMessage ||
           "Please ensure your files follow the required format",
-        imageSrc: "/assets/images/Sad.png",
+        imageSrc: "/assets/images/Sad.svg",
         buttonTitle: "Try Again",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
