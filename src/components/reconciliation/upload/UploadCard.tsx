@@ -32,21 +32,20 @@ export default function UploadCard({
     }
 
     // Limit the file size
-    const fileSizeInMB = file.size / ( 1024 * 1024 )
+    const fileSizeInMB = file.size / (1024 * 1024);
     if (fileSizeInMB > MAX_FILE_SIZE) {
       setError(`File size exceeds ${MAX_FILE_SIZE}MB`);
       return;
     }
 
-    if (existingFiles.includes(file.name)) {
+    // Check if this file is already uploaded to the other card
+    if (existingFiles.includes(file.name) && file.name !== fileName) {
       setError("This file is already uploaded");
       return;
     }
 
     setError("");
     onFileSelect(file);
-
-    
   };
 
   useEffect(() => {
@@ -67,7 +66,7 @@ export default function UploadCard({
     if (acceptedFiles.length > 0) {
       handleFile(acceptedFiles[0]);
     }
-  }, []);
+  }, [existingFiles, fileName]);  // Add dependencies
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
