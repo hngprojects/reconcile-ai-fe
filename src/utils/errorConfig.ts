@@ -11,8 +11,8 @@ export const getErrorConfig = (
         message:
           "Maximum number of requests reached. Please login to continue.",
         imageSrc: "/rate-limit.png",
-        buttonTitle: "Login",
-        buttonHref: "/login",
+        buttonTitle: "Sign in with Google",
+        buttonHref: "/api/v1/auth/google",
       };
     case 408:
       return {

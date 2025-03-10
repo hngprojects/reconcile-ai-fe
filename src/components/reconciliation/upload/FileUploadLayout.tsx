@@ -15,7 +15,7 @@ import { useAuth } from "@/src/components/context/AuthContext";
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
-  // const { isLoggedIn } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [bankStatement, setBankStatement] = useState<File | null>(null);
   const [companyLedger, setCompanyLedger] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState({ bank: 0, ledger: 0 });
@@ -85,12 +85,12 @@ export default function FileUploadLayout({
     if (!bankStatement || !companyLedger) return;
 
     // Check rate limit for guest users
-    // if (!isLoggedIn && checkRateLimit()) {
-    //   console.log("Rate limit reached for guest user");
-    //   setErrorCode(429);
-    //   setShowErrorModal(true);
-    //   return;
-    // }
+    if (!isAuthenticated && checkRateLimit()) {
+      console.log("Rate limit reached for guest user");
+      setErrorCode(429);
+      setShowErrorModal(true);
+      return;
+    }
 
     setShowUploadModal(true);
     setReconcileProgress(0);
@@ -115,10 +115,10 @@ export default function FileUploadLayout({
       }
 
       // Increment attempt count for guest users
-      // if (!isLoggedIn) {
-      //   incrementAttempts();
-      //   console.log("Incrementing guest attempts");
-      // }
+      if (!isAuthenticated) {
+        incrementAttempts();
+        console.log("Incrementing guest attempts");
+      }
 
       console.log("Reconciliation result:", result);
 
@@ -177,7 +177,7 @@ export default function FileUploadLayout({
 
       <Button
         onClick={handleReconciliation}
-        disabled={!bankStatement || !companyLedger|| isAnyFileUploading}
+        disabled={!bankStatement || !companyLedger || isAnyFileUploading}
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
                   disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
                   rounded-[8px] mx-auto block cursor-pointer"
