@@ -7,7 +7,7 @@ import {
   useEffect,
   ReactNode,
   Dispatch,
-  SetStateAction
+  SetStateAction,
 } from "react";
 import { useRouter } from "next/navigation";
 import { User, Response } from "@/src/types/auth";
@@ -16,7 +16,7 @@ import { User, Response } from "@/src/types/auth";
 
 interface AuthContextType {
   user: User | null;
-  setUser: Dispatch<SetStateAction<User|null>>,
+  setUser: Dispatch<SetStateAction<User | null>>;
   isAuthenticated: boolean;
   signInWithGoogle: () => void;
   logout: () => void;
@@ -30,30 +30,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const signInWithGoogle = async () => {
-      // window.location.href = GOOGLE_API_URL;
-      router.push('https://api-dev.reconxi.com/api/v1/auth/google');
+    // window.location.href = GOOGLE_API_URL;
+    router.push("https://api-dev.reconxi.com/api/v1/auth/google");
   };
 
   const getUserDetails = async (token: string) => {
     try {
-      const response = await fetch('https://api-dev.reconxi.com/api/v1/user', {
-      // const response = await fetch(USER_API_URL, {
-          headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: 'application/json',
-          },
-      })
+      const response = await fetch("https://api-dev.reconxi.com/api/v1/user", {
+        // const response = await fetch(USER_API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
       const data: Response = await response.json();
 
-      localStorage.setItem('user', JSON.stringify(data.data.user));
+      localStorage.setItem("user", JSON.stringify(data.data.user));
       setUser(data.data.user);
     } catch (e) {
-      console.error('Failed to fetch', e);
+      console.error("Failed to fetch", e);
     }
-  }
+  };
 
   const logout = () => {
-    localStorage.removeItem("auth_token");
+    localStorage.removeItem("access_token");
     localStorage.removeItem("user");
     setUser(null);
     router.push("/");
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Check for authenticated user on mount
   useEffect(() => {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("access_token");
     const userDetails = localStorage.getItem("user");
     if (token && userDetails) {
       setUser(JSON.parse(userDetails));
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated: !!user,
         signInWithGoogle,
         logout,
-        getUserDetails
+        getUserDetails,
       }}
     >
       {children}
