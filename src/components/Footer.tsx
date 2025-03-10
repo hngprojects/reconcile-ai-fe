@@ -19,7 +19,7 @@ const Footer = () => {
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
               <div className="flex flex-col w-full sm:w-fit gap-4">
                 <div className="flex flex-col gap-2 ">
-                  <Link href="/home" className="w-fit sm:mb-3">
+                  <Link href="/" className="w-fit sm:mb-3">
                     <div className="flex items-center justify-start gap-2">
                       <LogoIcon className="w-6 h-6 sm:h-12 sm:w-12 fill-white" />
                       <span className="font-extrabold text-lg sm:text-4xl font-baloo text-white">
@@ -124,7 +124,10 @@ const Footer = () => {
                 >
                   Privacy
                 </Link>
-                <Link href="/contact" className="hover:underline underline-offset-2">
+                <Link
+                  href="/contact"
+                  className="hover:underline underline-offset-2"
+                >
                   Contact Us
                 </Link>
               </nav>
