@@ -14,16 +14,25 @@ import { User } from "@/src/types/auth";
 export default function UserDetails() {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
+
+  const getUserInitials = (name: string) => {
+    return name[0].toUpperCase();
+  };
+
   return (
       <div className="flex items-center gap-1 sm:gap-3">
           <div className="flex items-center justify-center bg-gray-100 text-[#297B65] size-10 text-xl rounded-full">
-            <Image
+          {
+            (user as User).avatar ?
+            (<Image
               src={(user as User).avatar}
               alt={(user as User).name}
               width={80}
               height={80}
               className="rounded-full"
-            />
+            />) :
+            <p>{getUserInitials((user as User).name)}</p>
+          }
           </div>
           <div>
           <DropdownMenu>
