@@ -29,7 +29,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const signInWithGoogle = async () => {
-      window.location.href = GOOGLE_API_URL;
+      // window.location.href = GOOGLE_API_URL;
+      router.push('https://api-dev.reconxi.com/api/v1/auth/google');
   };
 
   const getUserDetails = async (token: string) => {
