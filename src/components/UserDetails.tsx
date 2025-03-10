@@ -29,7 +29,7 @@ export default function UserDetails() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <p onClick={() => setOpen(true)} className="text-[#297b65]">
-              { open ? (<ChevronDown />) : (<ChevronUp />) }
+              { open ?  (<ChevronUp />) : (<ChevronDown />)}
               </p>
             </DropdownMenuTrigger>
               <DropdownMenuContent className="absolute right-[-28px] top-[12px]">
