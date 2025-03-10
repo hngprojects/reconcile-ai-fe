@@ -1,5 +1,6 @@
 import {
   CONTACT_US_API_URL,
+  NEWSLETTER_API_URL,
   RECONCILE_API_URL,
   WAITLIST_API_URL,
 } from "./apiEndpoints";
@@ -126,6 +127,33 @@ export async function handleContactUs(userInfo: {
     return { success: data.message };
   } catch (error) {
     console.error("Contact us error:", error);
+    return { error: "Something went wrong. Please try again later." };
+  }
+}
+
+// Newsletter API
+export async function handleAddToNewsLetter(email: string): Promise<{
+  success?: string;
+  error?: string;
+}> {
+  try {
+    const response = await fetch(NEWSLETTER_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return { error: data.message || "Failed to add to newsletter" };
+    }
+
+    return { success: data.message };
+  } catch {
+    // console.error(`Newsletter error for email ${email}:`, error);
     return { error: "Something went wrong. Please try again later." };
   }
 }

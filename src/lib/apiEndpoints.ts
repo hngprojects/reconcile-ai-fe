@@ -8,3 +8,6 @@ export const WAITLIST_API_URL = `${BASE_URL}/wait-list`;
 
 // CONTACT US
 export const CONTACT_US_API_URL = `${BASE_URL}/contact`;
+
+// NEWSLETTER
+export const NEWSLETTER_API_URL = `${BASE_URL}/newsletter/subscribe`;
