@@ -58,7 +58,7 @@ export const releases: ReleaseItem[] = [
           title: "Known Limitations",
           items: [
             "Processing accuracy is currently at 85% while future updates will improve the precision.",
-            "Maximum file size is 3MB. Larger formats will be introduced in future releases.",
+            "Maximum file size is 2MB. Larger formats will be introduced in future releases.",
           ],
         },
         {
