@@ -139,7 +139,7 @@ export default function UploadCard({
                 <span className="hidden md:inline mr-2">
                   Drag & Drop files here or
                 </span>
-                <span className="text-[#2F855A] font-semibold underline">
+                <span className="text-[#2F855A] font-semibold underline cursor-pointer">
                   Choose file
                 </span>
               </p>
