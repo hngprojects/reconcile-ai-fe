@@ -115,7 +115,7 @@ export default function UploadCard({
                 className={`text-[18px] font-medium text-[#4A5568]`}
               >
                 <span className="hidden md:inline mr-2">
-                  Drag & Drop files here or
+                  Drag and Drop files here or
                 </span>
                 <span className="text-[#2F855A] font-semibold underline">
                   Choose file
