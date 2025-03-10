@@ -29,7 +29,7 @@ export default function FileUploadPage() {
               getUserDetails(token);
           }
       }
-  });
+  }, []);
 
   return <FileUploadLayout onReconcile={handleReconcile} />;
 }

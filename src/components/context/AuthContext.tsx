@@ -6,6 +6,8 @@ import {
   useState,
   useEffect,
   ReactNode,
+  Dispatch,
+  SetStateAction
 } from "react";
 import { useRouter } from "next/navigation";
 import { User, Response } from "@/src/types/auth";
@@ -13,6 +15,7 @@ import { GOOGLE_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 
 interface AuthContextType {
   user: User | null;
+  setUser: Dispatch<SetStateAction<User|null>>,
   isAuthenticated: boolean;
   signInWithGoogle: () => void;
   logout: () => void;
@@ -66,6 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider
       value={{
         user,
+        setUser,
         isAuthenticated: !!user,
         signInWithGoogle,
         logout,

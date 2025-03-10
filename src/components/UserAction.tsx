@@ -1,13 +1,20 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 import UserDetails from "@/src/components/UserDetails";
 
 const UserAction: FC = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if(user){
+      setUser(JSON.parse(user));
+    }
+  }, []);
 
   return (
     <>
