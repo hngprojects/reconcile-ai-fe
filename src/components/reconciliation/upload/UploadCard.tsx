@@ -24,6 +24,7 @@ export default function UploadCard({
 }: UploadCardProps) {
   const [error, setError] = useState<string>("");
   const [isDragging, setIsDragging] = useState(false);
+  const [hasBeenUploaded, setHasBeenUploaded] = useState(false);
 
   // Wrap handleFile in useCallback
   const handleFile = useCallback(
@@ -45,14 +46,15 @@ export default function UploadCard({
       }
 
       setError("");
+      setHasBeenUploaded(true);
       onFileSelect(file);
     },
     [existingFiles, onFileSelect]
   );
 
   useEffect(() => {
-    // Only show toast when a file has been uploaded AND is no longer uploading
-    if (fileUploaded && !isUploading) {
+    // Only show toast when a file has been manually uploaded AND is no longer uploading
+    if (fileUploaded && !isUploading && hasBeenUploaded) {
       toast.success("File Uploaded Successfully", {
         icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
         style: { background: "#EEFFEE" },
@@ -61,8 +63,11 @@ export default function UploadCard({
           onClick: () => toast.dismiss(),
         },
       });
+      
+      // Reset the flag after showing the toast
+      setHasBeenUploaded(false);
     }
-  }, [fileUploaded, isUploading]);
+  }, [fileUploaded, isUploading, hasBeenUploaded]);
 
   // Update onDrop with proper dependencies
   const onDrop = useCallback(
