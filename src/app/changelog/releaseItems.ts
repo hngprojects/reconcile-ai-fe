@@ -8,7 +8,7 @@ interface ReleaseItem {
   bannerColor: string;
   content: {
     // mainText: string;
-    videoUrl: string;
+    // videoUrl: string;
     sections: {
       title: string;
       items?: string[];
@@ -33,8 +33,8 @@ export const releases: ReleaseItem[] = [
     content: {
       // mainText:
         // "For the best AI-powered reconciliation tool that makes financial reconciliation faster, easier.. What is good about this?  Everything can be done in minutes! Just smart automation that gets the job done!",
-      videoUrl:
-        "/assets/video/version1.mp4",
+      // videoUrl:
+      //   "/assets/video/version1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -86,8 +86,8 @@ export const releases: ReleaseItem[] = [
     content: {
       // mainText:
         // "In this new update, we have introduced the export reconciliation results; the export feature includes both matched and unmatched records.",
-      videoUrl:
-        "/assets/video/version1.mp4",
+      // videoUrl:
+      //   "/assets/video/version1.mp4",
       sections: [
         {
           title: "What's New?",
