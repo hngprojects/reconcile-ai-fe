@@ -8,14 +8,15 @@ import {
   ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
-import { User, AuthResponse } from "@/src/types/auth";
+import { User, Response } from "@/src/types/auth";
+import { GOOGLE_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   signInWithGoogle: () => void;
   logout: () => void;
-  handleAuthCallback: () => Promise<void>;
+  getUserDetails: (token: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,38 +25,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  const signInWithGoogle = () => {
-    router.push('https://api-dev.reconxi.com/api/v1/auth/google');
+  const signInWithGoogle = async () => {
+      window.location.href = GOOGLE_API_URL;
   };
 
-  const handleAuthCallback = async () => {
+  const getUserDetails = async (token: string) => {
     try {
-      const response = await fetch(
-        'https://api-dev.reconxi.com/api/v1/auth/google/callback',
-        {
-          method: "GET",
+      const response = await fetch(USER_API_URL, {
           headers: {
-            Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/json',
           },
-        }
-      );
+      })
+      const data: Response = await response.json();
 
-      if (!response.ok) {
-        throw new Error("Authentication failed");
-      }
-
-      const data: AuthResponse = await response.json();
-      setUser(data.user);
-      localStorage.setItem("auth_token", data.token);
-      router.push("/file-upload");
-    } catch (error) {
-      console.error("Auth callback error:", error);
-      router.push("/");
+      localStorage.setItem('user', JSON.stringify(data.data.user));
+    } catch (e) {
+      console.error('Failed to fetch', e);
     }
-  };
+  }
 
   const logout = () => {
     localStorage.removeItem("auth_token");
+    localStorage.removeItem("user");
     setUser(null);
     router.push("/");
   };
@@ -63,9 +55,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Check for authenticated user on mount
   useEffect(() => {
     const token = localStorage.getItem("auth_token");
-    if (token) {
-      // Verify token and get user info
-      // Add API endpoint to verify token if available
+    const userDetails = localStorage.getItem("user");
+    if (token && userDetails) {
+      setUser(JSON.parse(userDetails));
     }
   }, []);
 
@@ -76,7 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthenticated: !!user,
         signInWithGoogle,
         logout,
-        handleAuthCallback,
+        getUserDetails
       }}
     >
       {children}
