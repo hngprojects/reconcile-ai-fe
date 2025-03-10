@@ -7,7 +7,7 @@ interface ReleaseItem {
   bannerTitle: string;
   bannerColor: string;
   content: {
-    // mainText: string;
+    mainText: string;
     // videoUrl: string;
     sections: {
       title: string;
@@ -31,8 +31,8 @@ export const releases: ReleaseItem[] = [
     bannerTitle: "Reconciliation Made Simple and Easier",
     bannerColor: "#e0f7e0",
     content: {
-      // mainText:
-        // "For the best AI-powered reconciliation tool that makes financial reconciliation faster, easier.. What is good about this?  Everything can be done in minutes! Just smart automation that gets the job done!",
+      mainText:
+        "What's in today?",
       // videoUrl:
       //   "/assets/video/version1.mp4",
       sections: [
@@ -84,8 +84,8 @@ export const releases: ReleaseItem[] = [
     bannerTitle: "Reconciliation Made Simpler and Easier",
     bannerColor: "#e0f7e0",
     content: {
-      // mainText:
-        // "In this new update, we have introduced the export reconciliation results; the export feature includes both matched and unmatched records.",
+      mainText:
+        "We're live.",
       // videoUrl:
       //   "/assets/video/version1.mp4",
       sections: [
