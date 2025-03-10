@@ -37,7 +37,7 @@ export const getErrorConfig = (
       return {
         title: "Invalid File Structure",
         message:
-          "CSV Table Structure not currently supported",
+          "file format not currently supported",
         imageSrc: "/assets/images/Sad.png",
         buttonTitle: "Upload Correct Files",
         buttonHref: "/file-upload",
