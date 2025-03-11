@@ -23,6 +23,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Create .env file
+        run: |
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env
+
       - name: Build Next.js App
         run: npm run build
 
