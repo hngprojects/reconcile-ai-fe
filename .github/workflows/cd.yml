@@ -23,9 +23,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Create .env file
-        run: |
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env
+      # - name: Create .env file
+      #   run: |
+      #     echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env
 
       - name: Build Next.js App
         run: npm run build
@@ -48,7 +48,7 @@ jobs:
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
-              FE_PATH="/var/www/html/reconcile-ai-fe-dev"
+              FE_PATH="/home/Reconcile/fe"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi
@@ -56,11 +56,11 @@ jobs:
             cd "$FE_PATH"
             git pull origin ${GITHUB_REF#refs/heads/}
             cp ~/build-artifact/build-artifact.tar .
+            rm -rf .next/
             tar -xvf build-artifact.tar
             rm -f build-artifact.tar
 
             npm ci
-            npm run build
 
             if npx pm2 list | grep -q "$PM2_NAME"; then
               npx pm2 reload "$PM2_NAME"
