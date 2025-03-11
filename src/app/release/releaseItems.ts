@@ -27,12 +27,11 @@ export const releases: ReleaseItem[] = [
     date: "7 March 2025",
     version: "ReconXi Version Release 1.0",
     isNew: true,
-    bannerIntro:"Welcome to ReconXi 1.0! ",
+    bannerIntro: "Welcome to ReconXi 1.0! ",
     bannerTitle: "Reconciliation Made Simple and Easier",
     bannerColor: "#e0f7e0",
     content: {
-      mainText:
-        "What's in today?",
+      mainText: "What's in today?",
       // videoUrl:
       //   "/assets/video/version1.mp4",
       sections: [
@@ -63,9 +62,7 @@ export const releases: ReleaseItem[] = [
         },
         {
           title: "What's Coming Next?",
-          items: [
-            "Export functionality for reconciled data.",
-          ],
+          items: ["Export functionality for reconciled data."],
         },
       ],
       feedback: {
@@ -80,12 +77,11 @@ export const releases: ReleaseItem[] = [
     date: "9 March 2025",
     version: "ReconXi Version Release 1.1",
     isNew: true,
-    bannerIntro:"Welcome to ReconXi 1.1! ",
+    bannerIntro: "Welcome to ReconXi 1.1! ",
     bannerTitle: "Reconciliation Made Simpler and Easier",
     bannerColor: "#e0f7e0",
     content: {
-      mainText:
-        "We're live.",
+      mainText: "We're live.",
       // videoUrl:
       //   "/assets/video/version1.mp4",
       sections: [
@@ -126,61 +122,56 @@ export const releases: ReleaseItem[] = [
       },
     },
   },
-  // {
-  //   id: "release-1-2",
-  //   date: "7 March 2025",
-  //   version: "ReconXi Version Release 1.2",
-  //   isNew: true,
-  //   bannerIntro:"Welcome to ReconXi 1.0! ",
-  //   bannerTitle: "Reconciliation Made Simple and Stress-Free",
-  //   bannerColor: "#e0f7e0",
-  //   content: {
-  //     // mainText:
-  //       // "For the best AI-powered reconciliation tool that makes financial reconciliation faster, easier, and more accurate. ReconXi provides users with more accurate matching and error-free reconciliation. What's good about that?",
-  //   //   videoUrl:
-  //   //     "/assets/video/version1.mp4",
-  //     sections: [
-  //       {
-  //         title: "What's New?",
-  //         text: "Product: AI-Powered Reconciliation",
-  //       },
-  //       {
-  //         title: "File Upload for Reconciliation",
-  //         text: "Users can now upload their bank statements and company ledger in CSV format only, and start the reconciliation process without the need for sign-up.",
-  //       },
-  //       {
-  //         title: "AI-Powered Bank Reconciliation",
-  //         items: [
-  //           "Automated matching of bank transactions with company ledgers using AI",
-  //           "Transactions are matched based on amounts, descriptions, and dates",
-  //           "Matched transactions are marked as green",
-  //           "Unmatched transactions are marked as red",
-  //           "AI-powered system for faster processing",
-  //           "Only CSV files supported. Other formats will be considered in future releases.",
-  //         ],
-  //       },
-  //       {
-  //         title: "Known Limitations",
-  //         items: [
-  //           "Processing accuracy is currently at 85% while future updates will improve the precision.",
-  //           "Maximum file size is 5MB. Larger formats will be introduced in future releases.",
-  //         ],
-  //       },
-  //       {
-  //         title: "What's Coming Next?",
-  //         items: [
-  //           "Export functionality for reconciled data.",
-  //           "Live manual edits and more speed!",
-  //         ],
-  //       },
-  //     ],
-  //     feedback: {
-  //       text: "Got feedback? Tell us at support@reconxi.com",
-  //       email:
-  //         "Thanks for using ReconXi! The simplest way to reconcile with confidence!",
-  //     },
-  //   },
-  // },
+  {
+    id: "release-1-2",
+    date: "10 March 2025",
+    version: "ReconXi Version Release 1.2",
+    isNew: true,
+    bannerIntro: "Welcome to ReconXi 1.2",
+    bannerTitle: "Reconciliation Made Simpler and Easier",
+    bannerColor: "#e0f7e0",
+    content: {
+      mainText: "What's in today?",
+      //   videoUrl:
+      //     "/assets/video/version1.mp4",
+      sections: [
+        {
+          title: "What's New?",
+          text: "Product: AI-Powered Reconciliation",
+        },
+        {
+          title: "Limited Trials for Users",
+          text: "With Version 1.2, users can now perform up to 5 free reconciliation sessions. Each session includes file uploads, AI-powered matching, and export functionality.",
+        },
+        {
+          title: "What this means?",
+          items: [
+            "Limited Free Access – Up to 5 Reconciliations",
+            "Users can now perform up to 5 reconciliation sessions for free.",
+            "Each reconciliation session includes full access to file uploads, AI-powered matching, and export functionality.",
+            "Once the limit is reached, users will not be able to use free access.",
+          ],
+        },
+        {
+          title: "Known Limitations",
+          items: [
+            "The version only allows limit of trials after which users will not be able to reconcile unless signed in",
+          ],
+        },
+        {
+          title: "What's Coming Next?",
+          items: [
+            "User Registration and Authentication.",
+          ],
+        },
+      ],
+      feedback: {
+        text: "Got feedback? Tell us at support@reconxi.com",
+        email:
+          "Thanks for using ReconXi! The simplest way to reconcile with confidence!",
+      },
+    },
+  },
   // {
   //   id: "release-1-3",
   //   date: "7 March 2025",
