@@ -48,21 +48,6 @@ export default function FileUploadLayout({
   const [reconcileProgress, setReconcileProgress] = useState(0);
   const [errorCode, setErrorCode] = useState<number>();
 
-  // Load files from localStorage on mount
-  useEffect(() => {
-    const loadSavedFile = (key: string) => {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        const { name, content } = JSON.parse(saved);
-        return new File([content], name, { type: "text/csv" });
-      }
-      return null;
-    };
-
-    setBankStatement(loadSavedFile("bankStatement"));
-    setCompanyLedger(loadSavedFile("companyLedger"));
-  }, []);
-
   // Save files to localStorage when they change
   useEffect(() => {
     const saveFile = async (file: File | null, key: string) => {
