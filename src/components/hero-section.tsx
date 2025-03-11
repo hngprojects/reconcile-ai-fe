@@ -24,6 +24,7 @@ export default function HeroSection() {
             <Link
               className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
               href="/file-upload"
+              aria-label="Start Reconciliation"
             >
               Start Reconciliation
             </Link>
@@ -34,6 +35,7 @@ export default function HeroSection() {
             width={621}
             height={387}
             className="mt-6 mb-2"
+            loading="eager"
             quality={100}
           />
         </div>
