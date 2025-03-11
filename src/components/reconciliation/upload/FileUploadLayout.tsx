@@ -11,11 +11,26 @@ import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
 import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
 import { useAuth } from "@/src/components/context/AuthContext";
+import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 
 interface ReconciliationError extends Error {
   code?: number;
   status?: number;
 }
+
+const validateFileHeaders = async (
+  file: File,
+  type: "bankStatement" | "companyLedger"
+): Promise<boolean> => {
+  const text = await file.text();
+  const headers = text
+    .split("\n")[0]
+    .split(",")
+    .map((h) => h.trim());
+  return REQUIRED_HEADERS[type].every((required) =>
+    headers.some((h) => h.toLowerCase() === required.toLowerCase())
+  );
+};
 
 export default function FileUploadLayout({
   onReconcile,
@@ -86,21 +101,40 @@ export default function FileUploadLayout({
     }, 200);
   };
 
+  const clearUploadedFiles = () => {
+    localStorage.removeItem("bankStatement");
+    localStorage.removeItem("companyLedger");
+    setBankStatement(null);
+    setCompanyLedger(null);
+  };
+
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
-    // Check rate limit for guest users
-    if (!isAuthenticated && checkRateLimit()) {
-      console.log("Rate limit reached for guest user");
-      setErrorCode(429);
-      setShowErrorModal(true);
-      return;
-    }
-
-    setShowUploadModal(true);
-    setReconcileProgress(0);
-
     try {
+      // Validate headers before proceeding
+      const [isBankValid, isLedgerValid] = await Promise.all([
+        validateFileHeaders(bankStatement, "bankStatement"),
+        validateFileHeaders(companyLedger, "companyLedger"),
+      ]);
+
+      if (!isBankValid || !isLedgerValid) {
+        setErrorCode(422);
+        setShowErrorModal(true);
+        return;
+      }
+
+      // Rate limit check for guest users
+      if (!isAuthenticated && checkRateLimit()) {
+        console.log("Rate limit reached for guest user");
+        setErrorCode(429);
+        setShowErrorModal(true);
+        return;
+      }
+
+      setShowUploadModal(true);
+      setReconcileProgress(0);
+
       const progressInterval = setInterval(() => {
         setReconcileProgress((prev) => Math.min(prev + 10, 90));
       }, 500);
@@ -132,8 +166,9 @@ export default function FileUploadLayout({
           "reconciliation",
           JSON.stringify(result.data.data)
         );
+        clearUploadedFiles();
       } else {
-        setErrorCode(result.code); // Add state for error code
+        setErrorCode(result.code); 
         setShowErrorModal(true);
       }
 

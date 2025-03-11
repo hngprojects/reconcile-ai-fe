@@ -12,6 +12,11 @@ export interface ReconciliationItem {
   matched: boolean;
 }
 
+export const REQUIRED_HEADERS = {
+  bankStatement: ["Date", "Description", "Amount"],
+  companyLedger: ["Date", "Description", "Amount"],
+} as const;
+
 export type matched = {
   file1_transaction: Transaction;
   file2_transaction: Transaction;
