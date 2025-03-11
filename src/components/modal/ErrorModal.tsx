@@ -41,7 +41,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
         className="max-w-[535px] p-8"
         aria-describedby="error-modal"
         onEscapeKeyDown={(e) => e.preventDefault()}
-        onPointerDownOutside={(e) => e.preventDefault()} 
+        onPointerDownOutside={(e) => e.preventDefault()}
       >
         <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground cursor-pointer">
           <X className="h-4 w-4" />
@@ -61,7 +61,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           <p className="text-[#475569] text-center">{config.message}</p>
           <button
             onClick={handleButtonClick}
-            className="bg-[#EAEFED] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer"
+            className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-primary/90 flex cursor-pointer"
           >
             {config.buttonTitle}
           </button>
