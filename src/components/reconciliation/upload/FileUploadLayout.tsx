@@ -93,6 +93,11 @@ export default function FileUploadLayout({
     setCompanyLedger(null);
   };
 
+  // clear local storage on mount
+  useEffect(() => {
+    clearUploadedFiles();
+  }, []);
+
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
