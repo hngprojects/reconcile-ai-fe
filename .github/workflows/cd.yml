@@ -60,6 +60,7 @@ jobs:
             rm -f build-artifact.tar
 
             npm ci
+            npm run build
 
             if npx pm2 list | grep -q "$PM2_NAME"; then
               npx pm2 reload "$PM2_NAME"
