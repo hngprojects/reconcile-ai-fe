@@ -11,7 +11,7 @@ import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
 import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
 import { useAuth } from "@/src/components/context/AuthContext";
-import { REQUIRED_HEADERS } from "@/src/components/reconciliation/main/reconciliation";
+import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 
 interface ReconciliationError extends Error {
   code?: number;
