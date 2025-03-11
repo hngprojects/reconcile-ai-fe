@@ -11,7 +11,7 @@ import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
 import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
 import { useAuth } from "@/src/components/context/AuthContext";
-import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
+import { REQUIRED_HEADERS } from "@/src/components/reconciliation/main/reconciliation";
 
 interface ReconciliationError extends Error {
   code?: number;
@@ -48,12 +48,11 @@ export default function FileUploadLayout({
   const [reconcileProgress, setReconcileProgress] = useState(0);
   const [errorCode, setErrorCode] = useState<number>();
 
-
   useEffect(() => {
     localStorage.removeItem("bankStatement");
     localStorage.removeItem("companyLedger");
     console.log("Cleared existing CSV files from localStorage");
-  }, []); 
+  }, []);
 
   // Load files from localStorage on mount
   // useEffect(() => {

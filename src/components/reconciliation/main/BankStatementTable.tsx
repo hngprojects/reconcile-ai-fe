@@ -1,5 +1,6 @@
 "use client";
 
+import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 import {
   Table,
   TableBody,
@@ -16,7 +17,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { bankColumns } from "./columns";
-import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 
 interface BankStatementTableProps {
   statusData: { matched: boolean }[];

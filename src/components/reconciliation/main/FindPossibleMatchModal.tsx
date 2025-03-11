@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/src/components/ui/table";
 import { cn } from "@/src/lib/utils";
-import { Transaction } from "@/src/types/reconciliation";
+import { Transaction } from "@/src/components/reconciliation/main/reconciliation";
 import { Check, Search } from "lucide-react";
 import { useState } from "react";
 import { StatusBadge } from "./StatusBadge";
@@ -52,27 +52,37 @@ export function FindPossibleMatchModal({
     const searchLower = searchTerm.toLowerCase();
 
     return (
-      filteredTransaction.description.toLowerCase().includes(searchLower) ||
-      filteredTransaction.date.toLowerCase().includes(searchLower) ||
-      String(filteredTransaction.amount).toLowerCase().includes(searchLower)
+      filteredTransaction.Description.toLowerCase().includes(searchLower) ||
+      filteredTransaction.Date.toLowerCase().includes(searchLower) ||
+      String(filteredTransaction.Amount).toLowerCase().includes(searchLower)
     );
   });
+
+  const handleCancelMatch = () => {
+    if (selectedTransactionIndex !== null && bankTransaction) {
+      // mark as unmatched
+      setIsMatched(false);
+      setSelectedTransaction(null);
+      setSelectedTransactionIndex(null);
+    }
+  };
 
   const handleMatchClick = () => {
     if (selectedTransactionIndex !== null && bankTransaction) {
       // Mark as matched
       setIsMatched(true);
-      // Set the selected transaction data
+
       const selectedLedgerTransaction =
         filteredTransactions[selectedTransactionIndex];
       setSelectedTransaction(selectedLedgerTransaction);
-
-      // Call the onMatch callback
-      onMatch(bankTransaction, selectedLedgerTransaction);
     }
   };
 
   const handleFinishClick = () => {
+    if (bankTransaction && selectedTransaction) {
+      onMatch(bankTransaction, selectedTransaction);
+    }
+
     // Close the modal
     onClose();
     // Reset states
@@ -221,11 +231,7 @@ export function FindPossibleMatchModal({
         <DialogFooter className="mx-4">
           {isMatched ? (
             <>
-              <Button
-                onClick={() => setIsMatched(false)}
-                size="lg"
-                variant="outline"
-              >
+              <Button onClick={handleCancelMatch} size="lg" variant="outline">
                 Cancel
               </Button>
               <Button

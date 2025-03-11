@@ -1,5 +1,7 @@
 "use client";
 
+import { Transaction } from "@/src/components/reconciliation/main/reconciliation";
+import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 import {
   Table,
   TableBody,
@@ -8,9 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 import { cn } from "@/src/lib/utils";
-import { Transaction } from "@/src/types/reconciliation";
 import {
   flexRender,
   getCoreRowModel,

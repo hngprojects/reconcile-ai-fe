@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/src/lib/utils";
+import { Transaction } from "@/src/components/reconciliation/main/reconciliation";
 import {
   Table,
   TableBody,
@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { Transaction } from "@/src/types/reconciliation";
+import { cn } from "@/src/lib/utils";
 
 interface TransactionTableProps {
   transaction?: Transaction | null;

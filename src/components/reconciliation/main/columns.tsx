@@ -5,37 +5,37 @@ import { Transaction } from "./reconciliation";
 
 export const bankColumns: ColumnDef<Transaction>[] = [
   {
-    accessorKey: "date",
+    accessorKey: "Date",
     header: "Date",
-    cell: ({ row }) => row.getValue("date"),
+    cell: ({ row }) => row.getValue("Date"),
   },
   {
-    accessorKey: "description",
+    accessorKey: "Description",
     header: "Description",
-    cell: ({ row }) => row.getValue("description"),
+    cell: ({ row }) => row.getValue("Description"),
   },
   {
-    accessorKey: "amount",
+    accessorKey: "Amount",
     header: "Amount",
-    cell: ({ row }) => row.getValue("amount"),
+    cell: ({ row }) => row.getValue("Amount"),
   },
 ];
 
 export const ledgerColumns: ColumnDef<Transaction>[] = [
   {
-    accessorKey: "date",
+    accessorKey: "Date",
     header: "Date",
-    cell: ({ row }) => row.getValue("date"),
+    cell: ({ row }) => row.getValue("Date"),
   },
   {
-    accessorKey: "description",
+    accessorKey: "Description",
     header: "Description",
-    cell: ({ row }) => row.getValue("description"),
+    cell: ({ row }) => row.getValue("Description"),
   },
   {
-    accessorKey: "amount",
+    accessorKey: "Amount",
     header: "Amount",
-    cell: ({ row }) => row.getValue("amount"),
+    cell: ({ row }) => row.getValue("Amount"),
   },
   {
     accessorKey: "action",

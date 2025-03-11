@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
 import {
   ReconciliationItem,
   ResponseData,
   TData,
   Transaction,
-} from "@/src/types/reconciliation";
+} from "@/src/components/reconciliation/main/reconciliation";
 import { reconciliationData } from "@/src/data/testReconciliationResult";
+import { useEffect, useMemo, useState } from "react";
 
 const validateDocuments = (data: TData[]) => {
   const requiredHeaders = ["Date", "Description", "Amount"];
@@ -118,15 +118,15 @@ export function useReconciliationLogic() {
 
     return {
       bankStatement: {
-        date: bankItem["Date"],
-        description: bankItem["Description"],
-        amount: bankItem["Amount"],
+        Date: bankItem["Date"],
+        Description: bankItem["Description"],
+        Amount: bankItem["Amount"],
       },
       companyLedger: matchingLedgerItem
         ? {
-            date: matchingLedgerItem["Date"],
-            description: matchingLedgerItem["Description"],
-            amount: matchingLedgerItem["Amount"],
+            Date: matchingLedgerItem["Date"],
+            Description: matchingLedgerItem["Description"],
+            Amount: matchingLedgerItem["Amount"],
           }
         : undefined,
       matched: !!matchingLedgerItem,
