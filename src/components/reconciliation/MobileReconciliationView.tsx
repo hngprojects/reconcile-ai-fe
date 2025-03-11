@@ -4,7 +4,6 @@ import { Button } from "@/src/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/src/lib/utils";
 import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
-import { formatCurrency } from "@/src/data/reconciliationSampleData";
 
 export function MobileReconciliationView() {
   const {
@@ -65,7 +64,7 @@ export function MobileReconciliationView() {
                   </div>
                 </div>
                 <div className="font-medium text-gray-900">
-                  {formatCurrency(item.bankStatement.Amount)}
+                  {item.bankStatement.Amount}
                 </div>
               </div>
               {item.matched && (
@@ -96,7 +95,7 @@ export function MobileReconciliationView() {
                     </div>
                   </div>
                   <div className="font-medium text-gray-900">
-                    {formatCurrency(item.companyLedger.Amount)}
+                    {item.companyLedger.Amount}
                   </div>
                 </div>
               </div>
