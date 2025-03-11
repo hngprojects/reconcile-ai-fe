@@ -101,6 +101,13 @@ export default function FileUploadLayout({
     }, 200);
   };
 
+  const clearUploadedFiles = () => {
+    localStorage.removeItem("bankStatement");
+    localStorage.removeItem("companyLedger");
+    setBankStatement(null);
+    setCompanyLedger(null);
+  };
+
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
@@ -159,8 +166,9 @@ export default function FileUploadLayout({
           "reconciliation",
           JSON.stringify(result.data.data)
         );
+        clearUploadedFiles();
       } else {
-        setErrorCode(result.code); // Add state for error code
+        setErrorCode(result.code); 
         setShowErrorModal(true);
       }
 
