@@ -48,20 +48,27 @@ export default function FileUploadLayout({
   const [reconcileProgress, setReconcileProgress] = useState(0);
   const [errorCode, setErrorCode] = useState<number>();
 
-  // Load files from localStorage on mount
-  useEffect(() => {
-    const loadSavedFile = (key: string) => {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        const { name, content } = JSON.parse(saved);
-        return new File([content], name, { type: "text/csv" });
-      }
-      return null;
-    };
 
-    setBankStatement(loadSavedFile("bankStatement"));
-    setCompanyLedger(loadSavedFile("companyLedger"));
-  }, []);
+  useEffect(() => {
+    localStorage.removeItem("bankStatement");
+    localStorage.removeItem("companyLedger");
+    console.log("Cleared existing CSV files from localStorage");
+  }, []); 
+
+  // Load files from localStorage on mount
+  // useEffect(() => {
+  //   const loadSavedFile = (key: string) => {
+  //     const saved = localStorage.getItem(key);
+  //     if (saved) {
+  //       const { name, content } = JSON.parse(saved);
+  //       return new File([content], name, { type: "text/csv" });
+  //     }
+  //     return null;
+  //   };
+
+  //   setBankStatement(loadSavedFile("bankStatement"));
+  //   setCompanyLedger(loadSavedFile("companyLedger"));
+  // }, []);
 
   // Save files to localStorage when they change
   useEffect(() => {
@@ -85,6 +92,14 @@ export default function FileUploadLayout({
 
   const handleFileUpload = async (file: File, type: "bank" | "ledger") => {
     if (!file.name.endsWith(".csv")) return;
+
+    // Check if same file is being uploaded to the other box
+    if (type === "bank" && companyLedger?.name === file.name) {
+      return; // Don't allow same file in both boxes
+    }
+    if (type === "ledger" && bankStatement?.name === file.name) {
+      return; // Don't allow same file in both boxes
+    }
 
     const targetState = type === "bank" ? setBankStatement : setCompanyLedger;
     targetState(file);
@@ -168,7 +183,7 @@ export default function FileUploadLayout({
         );
         clearUploadedFiles();
       } else {
-        setErrorCode(result.code); 
+        setErrorCode(result.code);
         setShowErrorModal(true);
       }
 
