@@ -9,7 +9,7 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
+// import { checkRateLimit, incrementAttempts } from "@/src/u qtils/rateLimit";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 
@@ -35,7 +35,7 @@ const validateFileHeaders = async (
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   const [bankStatement, setBankStatement] = useState<File | null>(null);
   const [companyLedger, setCompanyLedger] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState({ bank: 0, ledger: 0 });
