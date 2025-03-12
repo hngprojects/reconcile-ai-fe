@@ -50,10 +50,13 @@ const Features = () => {
 
             <ul className="list-none self-start flex flex-col gap-3 items-start">
               {firstFeature.map((feature, index) => (
-                <div key={index} className="flex items-start text-start pl-4">
-                  <CheckCircle2Icon className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6" />
+                <li key={index} className="flex items-start text-start pl-4">
+                  <CheckCircle2Icon
+                    className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6"
+                    aria-hidden="true"
+                  />
                   <span className="sm:text-lg text-[#475467]">{feature}</span>
-                </div>
+                </li>
               ))}
             </ul>
           </div>
@@ -91,10 +94,13 @@ const Features = () => {
 
             <ul className="list-none flex self-start flex-col gap-3 items-start">
               {secondFeature.map((feature, index) => (
-                <div key={index} className="flex items-start text-start pl-4">
-                  <CheckCircle2Icon className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6" />
+                <li key={index} className="flex items-start text-start pl-4">
+                  <CheckCircle2Icon
+                    className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6"
+                    aria-hidden="true"
+                  />
                   <span className="sm:text-lg text-[#475467]">{feature}</span>
-                </div>
+                </li>
               ))}
             </ul>
           </div>
