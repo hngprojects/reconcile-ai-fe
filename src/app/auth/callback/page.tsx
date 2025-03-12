@@ -9,7 +9,7 @@ export default function AuthCallback() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if(token) getUserDetails(token as string);
-  }, []);
+  }, [getUserDetails]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">

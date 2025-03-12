@@ -48,12 +48,11 @@ export default function FileUploadLayout({
   const [reconcileProgress, setReconcileProgress] = useState(0);
   const [errorCode, setErrorCode] = useState<number>();
 
-
   useEffect(() => {
     localStorage.removeItem("bankStatement");
     localStorage.removeItem("companyLedger");
     console.log("Cleared existing CSV files from localStorage");
-  }, []); 
+  }, []);
 
   // Load files from localStorage on mount
   // useEffect(() => {
