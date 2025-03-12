@@ -3,12 +3,12 @@ export interface ReconciliationItem {
     date: string;
     description: string;
     amount: number;
-  };
+  } | Transaction;
   companyLedger?: {
     date: string;
     description: string;
     amount: number;
-  };
+  } | Transaction;
   matched: boolean;
 }
 

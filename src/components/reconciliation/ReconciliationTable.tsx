@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import exportIcon from "@/public/assets/images/download-cloud-02.png";
-
+import { ReconciliationItem } from "@/src/types/reconciliation";
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -128,19 +128,58 @@ export function ReconciliationTable({
   // Create status column data
   const statusData = React.useMemo(
     () =>
-      paginatedBankData.map((bankItem) => ({
+      [
+        ...paginatedBankData.map((bankItem) => ({
         matched: data.matches.find(
           (match) => match.file1_transaction === bankItem
         )
           ? true
           : false,
       })),
-    [paginatedBankData, data.matches]
+        ...paginatedLedgerData.filter(ledg => data.matches.find(
+          (match) => match.file2_transaction === ledg
+        )).map(ledger => ({
+            matched: false,
+        }))
+      ],
+    [paginatedBankData, data.matches, paginatedLedgerData]
   );
+
+  console.log(statusData);
+
+  const reconciled: ReconciliationItem[] = [];
+
+  paginatedBankData.map(bank => {
+    const matched = data.matches.find(val => val.file1_transaction == bank);
+
+    if(matched){
+      reconciled.push({
+        bankStatement: bank,
+        companyLedger: matched.file2_transaction,
+        matched: !!matched
+      });
+    }else {
+      reconciled.push({
+        bankStatement: bank,
+        companyLedger: {},
+        matched: !!matched
+      });
+    }
+  });
+
+  paginatedLedgerData.filter(ledg => !data.matches.find(
+          (match) => match.file2_transaction === ledg
+        )).map(ledger => {
+          reconciled.push({
+            companyLedger: ledger,
+            bankStatement: {},
+            matched: false
+          });
+  });
 
   // Create tables with shared pagination state
   const bankTable = useReactTable({
-    data: paginatedBankData,
+    data: reconciled.map(data => data.bankStatement) as Transaction[],
     columns: bankColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -153,7 +192,7 @@ export function ReconciliationTable({
   });
 
   const ledgerTable = useReactTable({
-    data: paginatedLedgerData,
+    data: reconciled.map(data => data.companyLedger) as Transaction[],
     columns: ledgerColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -451,70 +490,39 @@ export function ReconciliationTable({
                   ))}
                 </TableHeader>
                 <TableBody>
-                  {paginatedLedgerData.length > 0 ? (
-                    paginatedBankData.map((bankItem, index) => {
-                      const matchingData = data.matches.find(
-                        (match) => match.file1_transaction == bankItem
-                      );
-                      const isMatched = !!matchingData;
-                      const matchingLedger =
-                        matchingData && matchingData.file2_transaction;
-
+                  {ledgerTable.getRowModel().rows.length > 0 ? (
+                    ledgerTable.getRowModel().rows.map((row, index) => {
+                      const isMatched = statusData[index]?.matched;
                       return (
                         <TableRow
-                          key={index}
+                          key={row.id}
                           className={`${
                             isMatched
                               ? "bg-[#F3FEFA] hover:!bg-[#F3FEFA]"
-                              : "bg-none hover:bg-white"
+                              : "bg-[#FFF4F0] hover:!bg-[#FFF4F0]"
                           } `}
                         >
-                          {matchingLedger ? (
-                            <>
-                              <TableCell
-                                className={cn(
-                                  "text-center border-r h-[64px]",
-                                  "max-w-[200px] md:max-w-none",
-                                  "whitespace-nowrap overflow-hidden text-ellipsis"
-                                )}
-                                title={matchingLedger["Date"]}
-                              >
-                                {matchingLedger["Date"]}
-                              </TableCell>
-                              <TableCell
-                                className={cn(
-                                  "text-center border-r h-[64px]",
-                                  "max-w-[200px] md:max-w-none",
-                                  "whitespace-nowrap overflow-hidden text-ellipsis"
-                                )}
-                                title={matchingLedger["Description"]}
-                              >
-                                {matchingLedger["Description"]}
-                              </TableCell>
-                              <TableCell
-                                className={cn(
-                                  "text-center h-[64px]",
-                                  "max-w-[200px] md:max-w-none",
-                                  "whitespace-nowrap overflow-hidden text-ellipsis"
-                                )}
-                                title={
-                                  matchingLedger?.["Amount"]?.toString() || ""
-                                }
-                              >
-                                {matchingLedger["Amount"] || ""}
-                              </TableCell>
-                            </>
-                          ) : (
-                            <>
-                              <TableCell className="text-center border-r h-[64px]"></TableCell>
-                              <TableCell className="text-center border-r h-[64px]"></TableCell>
-                              <TableCell className="text-center h-[64px]"></TableCell>
-                            </>
-                          )}
+                          {row.getVisibleCells().map((cell, cellIndex) => (
+                            <TableCell
+                              key={cell.id}
+                              className={cn(
+                                "text-center h-[64px] relative",
+                                "max-w-[200px] md:max-w-none",
+                                "whitespace-nowrap overflow-hidden text-ellipsis",
+                                cellIndex !==
+                                  row.getVisibleCells().length - 1 && "border-r"
+                              )}
+                              title={cell.getValue() as string}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </TableCell>
+                          ))}
                         </TableRow>
                       );
-                    })
-                  ) : (
+                    })): (
                     <TableRow>
                       <TableCell
                         colSpan={ledgerColumns.length}
@@ -523,7 +531,7 @@ export function ReconciliationTable({
                         No results.
                       </TableCell>
                     </TableRow>
-                  )}
+                    )}
                 </TableBody>
               </Table>
             </div>
