@@ -61,7 +61,6 @@ export default function ReconXiReleases() {
                                         </div>
                                     )}
                                     <h3 className="font-semibold text-[16px] md:text-[32px]">{release.version}</h3>
-                                    <p className="text-[20px]">Hey Community</p>
                                 </div>
 
                             </div>
@@ -94,7 +93,9 @@ export default function ReconXiReleases() {
 
                                 <div className="p-4">
                                     {/* Main Text */}
-                                    <p className="mb-6 text-sm md:text-lg">{release.content.mainText}</p>
+                                    <p className="font-medium text-xl mb-6 text-justify md:text-start">{release.content.heading}</p>
+                                    <p className="mb-6 text-sm md:text-lg text-justify md:text-start">{release.content.intro}</p>
+                                    <p className="font-medium text-xl mb-6 text-justify md:text-start">{release.content.mainText}</p>
 
                                     {/* Video Section */}
                                     <div className="relative w-full h-0 pb-[56.25%] bg-gray-100 mb-6 rounded-md overflow-hidden">

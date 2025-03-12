@@ -1,3 +1,6 @@
+ReconXi Just Got Better!
+ReconXi v1.1 is here, bringing even better performance, faster processing, and exporting to your data reconciliation tasks. We've improved the system to allow access for exporting reconciled data, ensuring a more efficient experience. Get ready to work smarter with ReconXi!
+
 Release Notes - Version 1.1
 Product: AI-Powered Reconciliation 
 Release Date: 07-03-2025
@@ -17,4 +20,3 @@ Free reconciliation for up to 5 times without sign-up.
 
 Got feedback?: Let us know at support@reconxi.com.
 Thanks for using ReconXi! the simplest way to reconcile with confidence! 
-
