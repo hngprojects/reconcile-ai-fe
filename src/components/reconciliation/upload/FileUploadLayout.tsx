@@ -9,18 +9,33 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
-import { useAuth } from "@/src/components/context/AuthContext";
+// import { checkRateLimit, incrementAttempts } from "@/src/u qtils/rateLimit";
+// import { useAuth } from "@/src/components/context/AuthContext";
+import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 
 interface ReconciliationError extends Error {
   code?: number;
   status?: number;
 }
 
+const validateFileHeaders = async (
+  file: File,
+  type: "bankStatement" | "companyLedger"
+): Promise<boolean> => {
+  const text = await file.text();
+  const headers = text
+    .split("\n")[0]
+    .split(",")
+    .map((h) => h.trim());
+  return REQUIRED_HEADERS[type].every((required) =>
+    headers.some((h) => h.toLowerCase() === required.toLowerCase())
+  );
+};
+
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   const [bankStatement, setBankStatement] = useState<File | null>(null);
   const [companyLedger, setCompanyLedger] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState({ bank: 0, ledger: 0 });
@@ -33,20 +48,26 @@ export default function FileUploadLayout({
   const [reconcileProgress, setReconcileProgress] = useState(0);
   const [errorCode, setErrorCode] = useState<number>();
 
-  // Load files from localStorage on mount
   useEffect(() => {
-    const loadSavedFile = (key: string) => {
-      const saved = localStorage.getItem(key);
-      if (saved) {
-        const { name, content } = JSON.parse(saved);
-        return new File([content], name, { type: "text/csv" });
-      }
-      return null;
-    };
-
-    setBankStatement(loadSavedFile("bankStatement"));
-    setCompanyLedger(loadSavedFile("companyLedger"));
+    localStorage.removeItem("bankStatement");
+    localStorage.removeItem("companyLedger");
+    console.log("Cleared existing CSV files from localStorage");
   }, []);
+
+  // Load files from localStorage on mount
+  // useEffect(() => {
+  //   const loadSavedFile = (key: string) => {
+  //     const saved = localStorage.getItem(key);
+  //     if (saved) {
+  //       const { name, content } = JSON.parse(saved);
+  //       return new File([content], name, { type: "text/csv" });
+  //     }
+  //     return null;
+  //   };
+
+  //   setBankStatement(loadSavedFile("bankStatement"));
+  //   setCompanyLedger(loadSavedFile("companyLedger"));
+  // }, []);
 
   // Save files to localStorage when they change
   useEffect(() => {
@@ -71,6 +92,14 @@ export default function FileUploadLayout({
   const handleFileUpload = async (file: File, type: "bank" | "ledger") => {
     if (!file.name.endsWith(".csv")) return;
 
+    // Check if same file is being uploaded to the other box
+    if (type === "bank" && companyLedger?.name === file.name) {
+      return; // Don't allow same file in both boxes
+    }
+    if (type === "ledger" && bankStatement?.name === file.name) {
+      return; // Don't allow same file in both boxes
+    }
+
     const targetState = type === "bank" ? setBankStatement : setCompanyLedger;
     targetState(file);
 
@@ -86,21 +115,37 @@ export default function FileUploadLayout({
     }, 200);
   };
 
+  const clearUploadedFiles = () => {
+    localStorage.removeItem("bankStatement");
+    localStorage.removeItem("companyLedger");
+    setBankStatement(null);
+    setCompanyLedger(null);
+  };
+
+  // clear local storage on mount
+  useEffect(() => {
+    clearUploadedFiles();
+  }, []);
+
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
-    // Check rate limit for guest users
-    if (!isAuthenticated && checkRateLimit()) {
-      console.log("Rate limit reached for guest user");
-      setErrorCode(429);
-      setShowErrorModal(true);
-      return;
-    }
-
-    setShowUploadModal(true);
-    setReconcileProgress(0);
-
     try {
+      // Validate headers before proceeding
+      const [isBankValid, isLedgerValid] = await Promise.all([
+        validateFileHeaders(bankStatement, "bankStatement"),
+        validateFileHeaders(companyLedger, "companyLedger"),
+      ]);
+
+      if (!isBankValid || !isLedgerValid) {
+        setErrorCode(422);
+        setShowErrorModal(true);
+        return;
+      }
+
+      setShowUploadModal(true);
+      setReconcileProgress(0);
+
       const progressInterval = setInterval(() => {
         setReconcileProgress((prev) => Math.min(prev + 10, 90));
       }, 500);
@@ -116,31 +161,27 @@ export default function FileUploadLayout({
       if (result.status === "error") {
         setErrorCode(result.code);
         setShowErrorModal(true);
+        clearInterval(progressInterval);
+        setShowUploadModal(false);
         return;
       }
 
-      // Increment attempt count for guest users
-      if (!isAuthenticated) {
-        incrementAttempts();
-        console.log("Incrementing guest attempts");
-      }
-
-      console.log("Reconciliation result:", result);
+      // Remove local rate limit check since it's handled by backend
+      // if (!isAuthenticated) {
+      //   incrementAttempts();
+      // }
 
       if (result.status === "success") {
         localStorage.setItem(
           "reconciliation",
           JSON.stringify(result.data.data)
         );
-      } else {
-        setErrorCode(result.code); // Add state for error code
-        setShowErrorModal(true);
+        clearUploadedFiles();
       }
 
       clearInterval(progressInterval);
       setReconcileProgress(100);
 
-      // Wait for progress animation to complete
       setTimeout(() => {
         setShowUploadModal(false);
         onReconcile(bankStatement, companyLedger);

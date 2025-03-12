@@ -3,8 +3,7 @@
 import { Button } from "@/src/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/src/lib/utils";
-import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
-import { formatCurrency } from "@/src/data/reconciliationSampleData";
+import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 
 export function MobileReconciliationView() {
   const {
@@ -30,7 +29,7 @@ export function MobileReconciliationView() {
       {/* Transaction Cards */}
       {data.map((item, index) => (
         <div
-          key={`${item.bankStatement.description}-${index}`}
+          key={`${item.bankStatement.Description}-${index}`}
           className={cn(
             "rounded-lg border shadow-sm",
             item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
@@ -58,14 +57,14 @@ export function MobileReconciliationView() {
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <div className="text-sm text-gray-600">
-                    {item.bankStatement.date}
+                    {item.bankStatement.Date}
                   </div>
                   <div className="font-medium text-gray-900">
-                    {item.bankStatement.description}
+                    {item.bankStatement.Description}
                   </div>
                 </div>
                 <div className="font-medium text-gray-900">
-                  {formatCurrency(item.bankStatement.amount)}
+                  {item.bankStatement.Amount}
                 </div>
               </div>
               {item.matched && (
@@ -89,14 +88,14 @@ export function MobileReconciliationView() {
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
-                      {item.companyLedger.date}
+                      {item.companyLedger.Date}
                     </div>
                     <div className="font-medium text-gray-900">
-                      {item.companyLedger.description}
+                      {item.companyLedger.Description}
                     </div>
                   </div>
                   <div className="font-medium text-gray-900">
-                    {formatCurrency(item.companyLedger.amount)}
+                    {item.companyLedger.Amount}
                   </div>
                 </div>
               </div>

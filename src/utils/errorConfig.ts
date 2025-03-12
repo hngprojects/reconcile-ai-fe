@@ -7,11 +7,19 @@ export const getErrorConfig = (
   switch (errorCode) {
     case 429:
       return {
-        title: "Rate Limit Reached",
-        message:
-          "Maximum number of requests reached. Please login to continue.",
-        imageSrc: "/rate-limit.png",
+        title: "Authentication Required",
+        message: "Please sign in to continue using the service.",
+        imageSrc: "/rate-limit.svg",
         buttonTitle: "Sign in with Google",
+        buttonHref: "#",
+        buttonAction: "googleSignIn",
+      };
+    case 401:
+      return {
+        title: "Session Expired",
+        message: "Your session has expired. Please sign in again.",
+        imageSrc: "/assets/images/Sad.svg",
+        buttonTitle: "Sign in",
         buttonHref: "#",
         buttonAction: "googleSignIn",
       };
@@ -19,7 +27,7 @@ export const getErrorConfig = (
       return {
         title: "Processing Timeout",
         message: "File processing took too long. Please try again later.",
-        imageSrc: "/assets/images/Sad.png",
+        imageSrc: "/assets/images/Sad.svg",
         buttonTitle: "Try Again",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
@@ -28,17 +36,28 @@ export const getErrorConfig = (
       return {
         title: "Server Error",
         message: "Something went wrong on our end. Please try again later.",
-        imageSrc: "/assets/images/Sad.png",
-        buttonTitle: "Go Back",
+        imageSrc: "/assets/images/Sad.svg",
+        buttonTitle: "Try Again",
+        buttonHref: "/file-upload",
+        buttonAction: "navigate",
+      };
+    case 422:
+      return {
+        title: "Invalid File Structure",
+        message: "file format not currently supported",
+        imageSrc: "/assets/images/Sad.svg",
+        buttonTitle: "Upload Correct Files",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
       };
     default:
       return {
-        title: "Oops!",
-        message: defaultMessage || "Something went wrong",
-        imageSrc: "/assets/images/Sad.png",
-        buttonTitle: "Go to Upload",
+        title: "Invalid File Structure",
+        message:
+          defaultMessage ||
+          "Please ensure your files follow the required format",
+        imageSrc: "/assets/images/Sad.svg",
+        buttonTitle: "Try Again",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
       };

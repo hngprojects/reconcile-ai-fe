@@ -1,0 +1,24 @@
+Update Alert! 
+ReconXi v1.2 is here!! This update gives you access to use the ReconXi tool with limited trials of up to 5 uses!  With this update, you get to explore every available feature on the tool without restriction. Try it out, explore the possibilities, and see how ReconXi can transform your workflow!
+
+Release Note Version 1.2
+Product: AI-Powered Bank Reconciliation 
+Release Notes: Version 1.2
+Release Date: 10-03-2025
+
+What’s New?
+Product: AI-Powered Reconciliation
+
+Limited Trials for Users
+With Version 1.2, users can now perform up to 5 free reconciliation sessions. Each session includes file uploads, AI-powered matching, and export functionality.
+Limited Free Access – Up to 5 Reconciliations
+Users can now perform up to 5 reconciliation sessions for free.
+Each reconciliation session includes full access to file uploads, AI-powered matching, and export functionality.
+Once the limit is reached, users will not be able to use free access.
+
+Limitations
+The version only allows limit of trials after which users will not be able to reconcile unless signed in
+
+Coming Soon!!!
+User Registration and Authentication
+Got feedback? Let us know at support@reconxi.com.

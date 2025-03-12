@@ -40,8 +40,11 @@ export default function UploadCard({
         return;
       }
 
-      if (existingFiles.includes(file.name)) {
-        setError("This file has already been uploaded");
+      // Only check if file exists in the other upload box
+      if (
+        existingFiles.filter((name) => name !== fileName).includes(file.name)
+      ) {
+        setError("This file is already uploaded in the other box");
         return;
       }
 
@@ -49,7 +52,7 @@ export default function UploadCard({
       setHasBeenUploaded(true);
       onFileSelect(file);
     },
-    [existingFiles, onFileSelect]
+    [existingFiles, fileName, onFileSelect]
   );
 
   useEffect(() => {
@@ -63,7 +66,7 @@ export default function UploadCard({
           onClick: () => toast.dismiss(),
         },
       });
-      
+
       // Reset the flag after showing the toast
       setHasBeenUploaded(false);
     }
@@ -111,7 +114,7 @@ export default function UploadCard({
         <div
           {...getRootProps()}
           className={cn(
-            "w-full max-w-full h-[224.7px] rounded-[12px] cursor-pointer",
+            "w-full max-w-full h-[224.7px] rounded-[12px]",
             "flex flex-col items-center justify-center gap-[12px]",
             isDragging || isUploading ? "border-dashed border-2" : "border",
             "border-[#33333380]",
@@ -139,8 +142,8 @@ export default function UploadCard({
                 <span className="hidden md:inline mr-2">
                   Drag & Drop files here or
                 </span>
-                <span className="text-[#2F855A] font-semibold underline">
-                  Choose
+                <span className="text-[#2F855A] font-semibold underline cursor-pointer">
+                  Choose file
                 </span>
               </p>
             </>

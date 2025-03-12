@@ -23,7 +23,7 @@ import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
 import { ChevronDown, Loader2 } from "lucide-react";
-import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
+import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -302,7 +302,7 @@ export function ReconciliationTable({
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
           <button
-            className="px-[57px] py-[16px] bg-[transparent] border-[1px] border-[solid]  border-[#2E604A] text-[#2E604A] rounded-md w-[150px] h-[50px] flex items-center justify-center  "
+            className="px-[57px] py-[16px] bg-[transparent] border-[1px] border-solid border-[#2E604A] text-[#2E604A] rounded-md w-[150px] h-[50px] flex items-center justify-center cursor-pointer"
             onClick={handleExport}
             disabled={isExporting}
           >

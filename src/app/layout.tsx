@@ -52,7 +52,7 @@ export const metadata: Metadata = {
       "AI-Powered Financial Reconciliation in Minutes, Not Hours. Automate, compare, and reconcile transactions effortlessly with AI.",
     images: [
       {
-        url: "/seo-image.png",
+        url: "https://reconxi.com/seo-image.png",
         width: 1200,
         height: 630,
         alt: "ReconXi - AI-Powered Financial Reconciliation",
@@ -65,22 +65,43 @@ export const metadata: Metadata = {
     description:
       "AI-Powered Financial Reconciliation in Minutes, Not Hours. Automate, compare, and reconcile transactions effortlessly with AI.",
     creator: "@reconxi",
-    images: ["/seo-image.png"],
+    images: ["https://reconxi.com/seo-image.png"],
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
+      { url: "/icons/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
       { url: "/logo.svg", type: "image/svg+xml" },
     ],
+    shortcut: ["/favicon.ico"],
     apple: [
-      { url: "/apple-icon.png" },
-      { url: "/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
-      { url: "/apple-icon-114x114.png", sizes: "114x114", type: "image/png" },
+      { url: "/icons/apple-icon.png" },
+      { url: "/icons/apple-icon-57x57.png", sizes: "57x57", type: "image/png" },
+      { url: "/icons/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
+      {
+        url: "/icons/apple-icon-114x114.png",
+        sizes: "114x114",
+        type: "image/png",
+      },
+      {
+        url: "/icons/apple-icon-180x180.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
     ],
   },
   manifest: "/site.webmanifest",
   applicationName: "ReconXi",
   category: "Financial Software",
+  verification: {
+    google: "28pBz0UhT1sDm1ccjNQ6_ajz59wpNfpvGUV2lQvFRzQ",
+  },
+  other: {
+    "google-site-verification": "28pBz0UhT1sDm1ccjNQ6_ajz59wpNfpvGUV2lQvFRzQ",
+  },
 };
 
 export default function RootLayout({
@@ -90,10 +111,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <meta
-          name="google-site-verification"
-          content="28pBz0UhT1sDm1ccjNQ6_ajz59wpNfpvGUV2lQvFRzQ"
+      <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "ReconXi",
+              url: "https://reconxi.com",
+              logo: "https://reconxi.com/logo.svg",
+            }),
+          }}
         />
         <Script
           strategy="afterInteractive"
@@ -111,8 +140,6 @@ export default function RootLayout({
             `,
           }}
         />
-      </head>
-      <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
         <AuthProvider>
           <Nav />
           {children}
@@ -121,7 +148,8 @@ export default function RootLayout({
             toastOptions={{
               style: {
                 background: "#EEFFEE",
-                width: "438px",
+                maxWidth: "90%",
+                width: "min(438px, 90%)",
                 height: "48px",
                 padding: "12px 24px",
                 borderRadius: "8px",

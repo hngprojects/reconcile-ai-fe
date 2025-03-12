@@ -24,6 +24,7 @@ export default function HeroSection() {
             <Link
               className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
               href="/file-upload"
+              aria-label="Start Reconciliation"
             >
               Start Reconciliation
             </Link>
@@ -33,8 +34,15 @@ export default function HeroSection() {
             alt="macbook mockup"
             width={621}
             height={387}
-            className="mt-6 mb-2"
-            quality={100}
+            className="mt-6 mb-2 object-contain"
+            quality={75}
+            priority={true}
+            placeholder="blur"
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAAXNSR0IArs4c6QAAAJBJREFUGFcljUEKwjAABHdjBTXvyFN66bnkVt8gaS59gEVQ0GPTJ5Q+qe+IQtNEQue4szCsqso01+YlKEgSCQkEASBN8/SgruvuZkyfl2NRYIsRCQBTghvHN7XWXdu2vRACUkqAhPceYV3hnNsP1to+i9PljJz5+S+2EDAMw4dlWRql1D3GeNjTGUKQcVmW5x9hfjTwri74OwAAAABJRU5ErkJggg=="
+            style={{
+              height: "auto",
+              maxWidth: "100%",
+            }}
           />
         </div>
       </Container>
