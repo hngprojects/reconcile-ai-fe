@@ -7,8 +7,8 @@ interface ReleaseItem {
   bannerTitle: string;
   bannerColor: string;
   content: {
-    heading:string;
-    intro:string;
+    heading: string;
+    intro: string;
     mainText: string;
     videoUrl: string;
     sections: {
@@ -34,10 +34,10 @@ export const releases: ReleaseItem[] = [
     bannerColor: "#e0f7e0",
     content: {
       heading: "Hey Community",
-      intro: "Welcome to ReconXi 1.0! The best AI-powered reconciliation tool that makes financial reconciliation faster, and easier. What is good about this? Everything can be done in minutes! Just smart automation that gets the job done! Get ready to experience smarter and faster way on reconciling data with ReconXi!",
+      intro:
+        "Welcome to ReconXi 1.0! The best AI-powered reconciliation tool that makes financial reconciliation faster, and easier. What is good about this? Everything can be done in minutes! Just smart automation that gets the job done! Get ready to experience smarter and faster way on reconciling data with ReconXi!",
       mainText: "What's in today?",
-      videoUrl:
-        "/assets/video/version1.mp4",
+      videoUrl: "/video/version1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -86,10 +86,10 @@ export const releases: ReleaseItem[] = [
     bannerColor: "#e0f7e0",
     content: {
       heading: "ReconXi Just Got Better!",
-      intro: "ReconXi v1.1 is here, bringing even better performance, faster processing, and exporting to your data reconciliation tasks. We've improved the system to allow access for exporting reconciled data, ensuring a more efficient experience. Get ready to work smarter with ReconXi!",
+      intro:
+        "ReconXi v1.1 is here, bringing even better performance, faster processing, and exporting to your data reconciliation tasks. We've improved the system to allow access for exporting reconciled data, ensuring a more efficient experience. Get ready to work smarter with ReconXi!",
       mainText: "We're live!",
-      videoUrl:
-        "/assets/video/version1.1.mp4",
+      videoUrl: "/video/version1-1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -138,10 +138,10 @@ export const releases: ReleaseItem[] = [
     bannerColor: "#e0f7e0",
     content: {
       heading: "Update Alert!",
-      intro: "ReconXi v1.2 is here!! This update gives you access to use the ReconXi tool with limited trials of up to 5 uses!  With this update, you get to explore every available feature on the tool without restriction. Try it out, explore the possibilities, and see how ReconXi can transform your workflow!",
+      intro:
+        "ReconXi v1.2 is here!! This update gives you access to use the ReconXi tool with limited trials of up to 5 uses!  With this update, you get to explore every available feature on the tool without restriction. Try it out, explore the possibilities, and see how ReconXi can transform your workflow!",
       mainText: "What's in today?",
-        videoUrl:
-          "/assets/video/version1.1.mp4",
+      videoUrl: "/video/version1-1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -168,9 +168,7 @@ export const releases: ReleaseItem[] = [
         },
         {
           title: "What's Coming Next?",
-          items: [
-            "User Registration and Authentication.",
-          ],
+          items: ["User Registration and Authentication."],
         },
       ],
       feedback: {
@@ -185,16 +183,15 @@ export const releases: ReleaseItem[] = [
     date: "10 March 2025",
     version: "ReconXi Version Release 1.3",
     isNew: true,
-    bannerIntro:"Welcome to ReconXi 1.3! ",
+    bannerIntro: "Welcome to ReconXi 1.3! ",
     bannerTitle: "Reconciliation Made Simple and Stress-Free",
     bannerColor: "#e0f7e0",
     content: {
       heading: "Hey Community,",
-      intro: "The ReconXi v1.3 here! We've brought you an exciting update on User Authentication. As a user of this tool, you can now easily sign up on the platform using your Google Account. This update aims at bringing ease of signing up for you as a user. ",
-      mainText:
-        "New Feature Update",
-      videoUrl:
-        "/assets/video/version1.mp4",
+      intro:
+        "The ReconXi v1.3 here! We've brought you an exciting update on User Authentication. As a user of this tool, you can now easily sign up on the platform using your Google Account. This update aims at bringing ease of signing up for you as a user. ",
+      mainText: "New Feature Update",
+      videoUrl: "/video/version1-1.mp4",
       sections: [
         {
           title: "User Registration and Authentication",
@@ -206,7 +203,7 @@ export const releases: ReleaseItem[] = [
             "Sign-Up/Sign-in with Google",
             "New users can create an account or log in using their Google account for quick and secure access.",
             "The Sign In option give users access to Reconcile without Limits",
-          ]
+          ],
         },
         {
           title: "Feature Limitations",
@@ -216,9 +213,7 @@ export const releases: ReleaseItem[] = [
         },
         {
           title: "What's Coming Next?",
-          items: [
-            "Manual override by users.",
-          ],
+          items: ["Manual override by users."],
         },
       ],
       feedback: {
