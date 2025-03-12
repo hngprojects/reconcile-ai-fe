@@ -47,11 +47,11 @@ jobs:
             ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
 
             if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              FE_PATH="/var/www/html/reconcile-ai-fe"
+              FE_PATH="/home/Reconcile/reconcile-ai-fe"
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
-              FE_PATH="/home/Reconcile/fe"
+              FE_PATH="/home/Reconcile/reconcile-ai-fe-dev"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi
