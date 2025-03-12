@@ -34,9 +34,14 @@ export default function HeroSection() {
             alt="macbook mockup"
             width={621}
             height={387}
-            className="mt-6 mb-2"
-            loading="eager"
-            quality={100}
+            className="mt-6 mb-2 object-contain"
+            quality={75}
+            priority={true}
+            placeholder="blur"
+            style={{
+              height: "auto",
+              maxWidth: "100%",
+            }}
           />
         </div>
       </Container>
