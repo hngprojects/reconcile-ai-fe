@@ -17,6 +17,9 @@ import { useEffect, useState } from "react";
 import { SuccessToast } from "../SuccessToast";
 import { ReconciliationTables } from "./ReconciliationTables";
 
+// Import API endpoints from environment variables
+const RECONCILE_EXPORT_URL = process.env.NEXT_PUBLIC_RECONCILE_EXPORT_URL;
+
 interface Transaction {
   Date: string;
   Description: string;
@@ -124,7 +127,7 @@ export function DesktopReconciliationView() {
 
       // Send POST request to API
       const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
+        `${RECONCILE_EXPORT_URL}`,
         {
           method: "POST",
           headers: {

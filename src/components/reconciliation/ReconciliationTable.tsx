@@ -32,6 +32,10 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
 
+// Import API endpoints from environment variables
+const RECONCILE_EXPORT_URL = process.env.NEXT_PUBLIC_RECONCILE_EXPORT_URL;
+
+
 interface Transaction {
   Date: string;
   Description: string;
@@ -232,7 +236,7 @@ export function ReconciliationTable({
 
       // Send POST request to API
       const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
+        `${RECONCILE_EXPORT_URL}`,
         {
           method: "POST",
           headers: {

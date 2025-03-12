@@ -14,6 +14,10 @@ import { User, Response } from "@/src/types/auth";
 // import { GOOGLE_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 // import { USER_API_URL } from "@/src/lib/apiEndpoints";
 
+// Import API endpoints from environment variables
+const GOOGLE_API_URL = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL as string;
+const USER_API_URL = process.env.NEXT_PUBLIC_USER_API_URL as string;
+
 interface AuthContextType {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
@@ -31,12 +35,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = async () => {
     // window.location.href = GOOGLE_API_URL;
-    router.push("https://api-dev.reconxi.com/api/v1/auth/google");
+    router.push(GOOGLE_API_URL);
   };
 
   const getUserDetails = async (token: string) => {
     try {
-      const response = await fetch("https://api-dev.reconxi.com/api/v1/user", {
+      const response = await fetch(USER_API_URL, {
         // const response = await fetch(USER_API_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
