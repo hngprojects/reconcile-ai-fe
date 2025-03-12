@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import exportIcon from "@/public/assets/images/download-cloud-02.png";
-
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -23,7 +22,7 @@ import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
 import { ChevronDown, Loader2 } from "lucide-react";
-import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
+import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -128,14 +127,21 @@ export function ReconciliationTable({
   // Create status column data
   const statusData = React.useMemo(
     () =>
-      paginatedBankData.map((bankItem) => ({
+      [
+        ...paginatedBankData.map((bankItem) => ({
         matched: data.matches.find(
           (match) => match.file1_transaction === bankItem
         )
           ? true
           : false,
       })),
-    [paginatedBankData, data.matches]
+        ...paginatedLedgerData.filter(ledg => data.matches.find(
+          (match) => match.file2_transaction === ledg
+        )).map(ledger => ledger && ({
+            matched: false,
+        }))
+      ].splice(0,10),
+    [paginatedBankData, data.matches, paginatedLedgerData]
   );
 
   // Create tables with shared pagination state
@@ -149,7 +155,7 @@ export function ReconciliationTable({
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil(paginatedBankData.length / pagination.pageSize),
+    pageCount: Math.ceil((paginatedBankData.length + paginatedLedgerData.length)/ pagination.pageSize),
   });
 
   const ledgerTable = useReactTable({
@@ -451,70 +457,39 @@ export function ReconciliationTable({
                   ))}
                 </TableHeader>
                 <TableBody>
-                  {paginatedLedgerData.length > 0 ? (
-                    paginatedBankData.map((bankItem, index) => {
-                      const matchingData = data.matches.find(
-                        (match) => match.file1_transaction == bankItem
-                      );
-                      const isMatched = !!matchingData;
-                      const matchingLedger =
-                        matchingData && matchingData.file2_transaction;
-
+                  {ledgerTable.getRowModel().rows.length > 0 ? (
+                    ledgerTable.getRowModel().rows.map((row, index) => {
+                      const isMatched = statusData[index]?.matched;
                       return (
                         <TableRow
-                          key={index}
+                          key={row.id}
                           className={`${
                             isMatched
                               ? "bg-[#F3FEFA] hover:!bg-[#F3FEFA]"
-                              : "bg-none hover:bg-white"
+                              : "bg-[#FFF4F0] hover:!bg-[#FFF4F0]"
                           } `}
                         >
-                          {matchingLedger ? (
-                            <>
-                              <TableCell
-                                className={cn(
-                                  "text-center border-r h-[64px]",
-                                  "max-w-[200px] md:max-w-none",
-                                  "whitespace-nowrap overflow-hidden text-ellipsis"
-                                )}
-                                title={matchingLedger["Date"]}
-                              >
-                                {matchingLedger["Date"]}
-                              </TableCell>
-                              <TableCell
-                                className={cn(
-                                  "text-center border-r h-[64px]",
-                                  "max-w-[200px] md:max-w-none",
-                                  "whitespace-nowrap overflow-hidden text-ellipsis"
-                                )}
-                                title={matchingLedger["Description"]}
-                              >
-                                {matchingLedger["Description"]}
-                              </TableCell>
-                              <TableCell
-                                className={cn(
-                                  "text-center h-[64px]",
-                                  "max-w-[200px] md:max-w-none",
-                                  "whitespace-nowrap overflow-hidden text-ellipsis"
-                                )}
-                                title={
-                                  matchingLedger?.["Amount"]?.toString() || ""
-                                }
-                              >
-                                {matchingLedger["Amount"] || ""}
-                              </TableCell>
-                            </>
-                          ) : (
-                            <>
-                              <TableCell className="text-center border-r h-[64px]"></TableCell>
-                              <TableCell className="text-center border-r h-[64px]"></TableCell>
-                              <TableCell className="text-center h-[64px]"></TableCell>
-                            </>
-                          )}
+                          {row.getVisibleCells().map((cell, cellIndex) => (
+                            <TableCell
+                              key={cell.id}
+                              className={cn(
+                                "text-center h-[64px] relative",
+                                "max-w-[200px] md:max-w-none",
+                                "whitespace-nowrap overflow-hidden text-ellipsis",
+                                cellIndex !==
+                                  row.getVisibleCells().length - 1 && "border-r"
+                              )}
+                              title={cell.getValue() as string}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext()
+                              )}
+                            </TableCell>
+                          ))}
                         </TableRow>
                       );
-                    })
-                  ) : (
+                    })): (
                     <TableRow>
                       <TableCell
                         colSpan={ledgerColumns.length}
@@ -523,7 +498,7 @@ export function ReconciliationTable({
                         No results.
                       </TableCell>
                     </TableRow>
-                  )}
+                    )}
                 </TableBody>
               </Table>
             </div>

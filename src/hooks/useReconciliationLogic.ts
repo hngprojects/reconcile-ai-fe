@@ -4,6 +4,7 @@ import {
   ResponseData,
   TData,
   Transaction,
+  matchedItem
 } from "@/src/types/reconciliation";
 
 const validateDocuments = (data: TData[]) => {
@@ -57,6 +58,36 @@ export function useReconciliationLogic() {
     return result;
   }, [data.matches, data.unmatched]);
 
+  const reconciled: matchedItem[] = [];
+
+  bankData.map(bank => {
+    const matched = data.matches.find(val => val.file1_transaction == bank);
+
+    if(matched){
+      reconciled.push({
+        bankStatement: bank,
+        companyLedger: matched.file2_transaction,
+        matched: !!matched
+      });
+    }else {
+      reconciled.push({
+        bankStatement: bank,
+        companyLedger: {} as Transaction,
+        matched: !!matched
+      });
+    }
+  });
+
+  ledgerData.filter(ledg => !data.matches.find(
+          (match) => match.file2_transaction === ledg
+        )).map(ledger => {
+          reconciled.push({
+            companyLedger: ledger,
+            bankStatement: {} as Transaction,
+            matched: false
+          });
+  });
+
   useEffect(() => {
     if (!validationShown && (bankData.length > 0 || ledgerData.length > 0)) {
       if (!validateDocuments(bankData) || !validateDocuments(ledgerData)) {
@@ -66,35 +97,29 @@ export function useReconciliationLogic() {
     }
   }, [bankData, ledgerData, validationShown]);
 
-  const totalItems = bankData.length;
+  const totalItems = reconciled.length;
 
   // Combine data for mobile view and status logic
-  const combinedData: ReconciliationItem[] = bankData.map((bankItem) => {
-    const matchingData = data.matches.find(
-      (match) => match.file1_transaction == bankItem
-    );
-    const matchingLedgerItem = matchingData && matchingData.file2_transaction;
-
-    return {
+  const combinedData: ReconciliationItem[] = reconciled.map((item) => {    return {
       bankStatement: {
-        date: bankItem["Date"],
-        description: bankItem["Description"],
-        amount: bankItem["Amount"],
+        date: (item.bankStatement as Transaction)["Date"],
+        description: (item.bankStatement as Transaction)["Description"],
+        amount: (item.bankStatement as Transaction)["Amount"],
       },
-      companyLedger: matchingLedgerItem
+      companyLedger: (item.companyLedger as Transaction)
         ? {
-            date: matchingLedgerItem["Date"],
-            description: matchingLedgerItem["Description"],
-            amount: matchingLedgerItem["Amount"],
+            date: (item.companyLedger as Transaction)["Date"],
+            description: (item.companyLedger as Transaction)["Description"],
+            amount: (item.companyLedger as Transaction)["Amount"],
           }
         : undefined,
-      matched: !!matchingLedgerItem,
+      matched: item.matched,
     };
   });
 
   // Pagination logic
   const currentPage = pagination.pageIndex;
-  const totalPages = Math.ceil(totalItems / pagination.pageSize);
+  const totalPages = Math.ceil(reconciled.length / pagination.pageSize);
   const canPreviousPage = currentPage > 0;
   const canNextPage = currentPage < totalPages - 1;
 
@@ -114,12 +139,12 @@ export function useReconciliationLogic() {
   };
 
   // Slice data based on pagination
-  const paginatedBankData = bankData.slice(
+  const paginatedBankData = (reconciled.map(data => data.bankStatement) as Transaction[]).slice(
     pagination.pageIndex * pagination.pageSize,
     (pagination.pageIndex + 1) * pagination.pageSize
   );
 
-  const paginatedLedgerData = ledgerData.slice(
+  const paginatedLedgerData = (reconciled.map(data => data.companyLedger) as Transaction[]).slice(
     pagination.pageIndex * pagination.pageSize,
     (pagination.pageIndex + 1) * pagination.pageSize
   );
