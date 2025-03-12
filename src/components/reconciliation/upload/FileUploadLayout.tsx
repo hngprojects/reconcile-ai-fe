@@ -143,14 +143,6 @@ export default function FileUploadLayout({
         return;
       }
 
-      // Rate limit check for guest users
-      if (!isAuthenticated && checkRateLimit()) {
-        console.log("Rate limit reached for guest user");
-        setErrorCode(429);
-        setShowErrorModal(true);
-        return;
-      }
-
       setShowUploadModal(true);
       setReconcileProgress(0);
 
@@ -169,16 +161,15 @@ export default function FileUploadLayout({
       if (result.status === "error") {
         setErrorCode(result.code);
         setShowErrorModal(true);
+        clearInterval(progressInterval);
+        setShowUploadModal(false);
         return;
       }
 
-      // Increment attempt count for guest users
-      if (!isAuthenticated) {
-        incrementAttempts();
-        console.log("Incrementing guest attempts");
-      }
-
-      console.log("Reconciliation result:", result);
+      // Remove local rate limit check since it's handled by backend
+      // if (!isAuthenticated) {
+      //   incrementAttempts();
+      // }
 
       if (result.status === "success") {
         localStorage.setItem(
@@ -186,15 +177,11 @@ export default function FileUploadLayout({
           JSON.stringify(result.data.data)
         );
         clearUploadedFiles();
-      } else {
-        setErrorCode(result.code);
-        setShowErrorModal(true);
       }
 
       clearInterval(progressInterval);
       setReconcileProgress(100);
 
-      // Wait for progress animation to complete
       setTimeout(() => {
         setShowUploadModal(false);
         onReconcile(bankStatement, companyLedger);
