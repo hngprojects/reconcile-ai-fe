@@ -56,13 +56,20 @@ export function LedgerTable({
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="px-6 h-12">
+                <TableHead
+                  key={header.id}
+                  className={
+                    header.column.id === "action"
+                      ? "w-[60px] px-6 h-12"
+                      : "px-6 h-12"
+                  }
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -89,7 +96,14 @@ export function LedgerTable({
               {row.original.ledger_txn ? (
                 // If ledger transaction exists, render normal cells
                 row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-6">
+                  <TableCell
+                    key={cell.id}
+                    className={
+                      cell.column.id === "action"
+                        ? "px-6 flex items-center justify-center"
+                        : "px-6 h-[3.3rem]"
+                    }
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))
@@ -98,7 +112,7 @@ export function LedgerTable({
                 <>
                   <TableCell
                     colSpan={ledgerColumns.length - 1}
-                    className="px-4"
+                    className="px-4 h-[3.3rem]"
                   >
                     <SearchCombobox
                       items={unmatchedLedgerTransactions.map((txn) => ({
@@ -113,7 +127,7 @@ export function LedgerTable({
                       }}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 flex items-center justify-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">

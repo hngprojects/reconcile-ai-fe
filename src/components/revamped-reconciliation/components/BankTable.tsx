@@ -56,13 +56,20 @@ export function BankStatementTable({
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="px-6 h-10">
+                <TableHead
+                  key={header.id}
+                  className={
+                    header.column.id === "action"
+                      ? "w-[60px] px-6 h-12"
+                      : "px-6 h-12"
+                  }
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -89,14 +96,24 @@ export function BankStatementTable({
               {row.original.bank_txn ? (
                 // If bank transaction exists, render normal cells
                 row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-6">
+                  <TableCell
+                    key={cell.id}
+                    className={
+                      cell.column.id === "action"
+                        ? "px-6 flex items-center justify-center"
+                        : "px-6 h-[3.3rem]"
+                    }
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))
               ) : (
                 // If no bank transaction, render a single combobox spanning all cells except action
                 <>
-                  <TableCell colSpan={bankColumns.length - 1} className="px-4">
+                  <TableCell
+                    colSpan={bankColumns.length - 1}
+                    className="px-4 h-[3.3rem]"
+                  >
                     <SearchCombobox
                       items={unmatchedBankTransactions.map((txn) => ({
                         label: `${txn.description} - ${txn.amount}`,
@@ -110,7 +127,7 @@ export function BankStatementTable({
                       }}
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 flex items-center justify-center">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">

@@ -28,13 +28,13 @@ export function StatusTable({ data }: StatusTableProps) {
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-hidden">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="text-center">
+                <TableHead key={header.id} className="text-center h-12">
                   {header.isPlaceholder
                     ? null
                     : flexRender(

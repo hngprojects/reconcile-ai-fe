@@ -120,7 +120,7 @@ export const statusColumn: ColumnDef<ReconciliationItem>[] = [
       return (
         <div
           className={cn(
-            "flex justify-center items-center text-sm font-semibold px-1 h-10",
+            "flex justify-center items-center text-sm font-semibold px-1 h-9",
             matched
               ? "bg-[#F3FEFA] text-[#007A55]"
               : "bg-[#FFF4F0] text-[#C50700]"

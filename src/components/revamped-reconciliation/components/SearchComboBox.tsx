@@ -43,7 +43,7 @@ export function SearchCombobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between h-9 px-3"
+          className="w-full justify-between px-3"
         >
           <div className="flex items-center">
             <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
