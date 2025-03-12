@@ -11,6 +11,7 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { User, Response } from "@/src/types/auth";
+import { toast } from "sonner";
 // import { GOOGLE_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 // import { USER_API_URL } from "@/src/lib/apiEndpoints";
 
@@ -52,11 +53,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    setUser(null);
-    router.push("/");
+  const logout = async () => {
+    try {
+      const res = await fetch("https://api-dev.reconxi.com/api/v1/auth/logout", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          ...(localStorage.getItem("access_token") && {Authorization: `Bearer ${localStorage.getItem("access_token")}`}), // Only send Authorization if token exists in localStorage
+        },  
+      })
+
+      if(!res.ok){
+        toast.error("Something went wrong!");
+        return
+      }
+
+      // Remove access token and user data from localStorage
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      setUser(null);
+      router.push("/");
+      toast.success("Logged out successfully!");
+    } catch (error) {
+      console.error("Something went wrong while logging out!", error);
+    }
   };
 
   // Check for authenticated user on mount
