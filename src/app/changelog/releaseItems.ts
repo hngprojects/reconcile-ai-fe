@@ -141,7 +141,7 @@ export const releases: ReleaseItem[] = [
       intro: "ReconXi v1.2 is here!! This update gives you access to use the ReconXi tool with limited trials of up to 5 uses!  With this update, you get to explore every available feature on the tool without restriction. Try it out, explore the possibilities, and see how ReconXi can transform your workflow!",
       mainText: "What's in today?",
         videoUrl:
-          "/assets/video/version1-1.mp4",
+          "/assets/video/version1-2.mp4",
       sections: [
         {
           title: "What's New?",
@@ -194,7 +194,7 @@ export const releases: ReleaseItem[] = [
       mainText:
         "New Feature Update",
       videoUrl:
-        "/assets/video/version1-1.mp4",
+        "/assets/video/version1-3.mp4",
       sections: [
         {
           title: "User Registration and Authentication",
