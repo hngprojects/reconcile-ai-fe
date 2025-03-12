@@ -4,6 +4,7 @@ import {
   ResponseData,
   TData,
   Transaction,
+  matchedItem
 } from "@/src/types/reconciliation";
 
 const validateDocuments = (data: TData[]) => {
@@ -57,7 +58,7 @@ export function useReconciliationLogic() {
     return result;
   }, [data.matches, data.unmatched]);
 
-  const reconciled: ReconciliationItem[] = [];
+  const reconciled: matchedItem[] = [];
 
   bankData.map(bank => {
     const matched = data.matches.find(val => val.file1_transaction == bank);
@@ -71,7 +72,7 @@ export function useReconciliationLogic() {
     }else {
       reconciled.push({
         bankStatement: bank,
-        companyLedger: {},
+        companyLedger: {} as Transaction,
         matched: !!matched
       });
     }
@@ -82,7 +83,7 @@ export function useReconciliationLogic() {
         )).map(ledger => {
           reconciled.push({
             companyLedger: ledger,
-            bankStatement: {},
+            bankStatement: {} as Transaction,
             matched: false
           });
   });

@@ -137,7 +137,7 @@ export function ReconciliationTable({
       })),
         ...paginatedLedgerData.filter(ledg => data.matches.find(
           (match) => match.file2_transaction === ledg
-        )).map(ledger => ({
+        )).map(ledger => ledger && ({
             matched: false,
         }))
       ].splice(0,10),

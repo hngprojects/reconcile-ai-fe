@@ -1,14 +1,14 @@
 export interface ReconciliationItem {
   bankStatement: {
-    date: string;
-    description: string;
-    amount: number;
-  } | Transaction;
+    date?: string;
+    description?: string;
+    amount?: number;
+  };
   companyLedger?: {
-    date: string;
-    description: string;
-    amount: number;
-  } | Transaction;
+    date?: string;
+    description?: string;
+    amount?: number;
+  };
   matched: boolean;
 }
 
@@ -21,6 +21,12 @@ export type matched = {
   file1_transaction: Transaction;
   file2_transaction: Transaction;
   status: string;
+};
+
+export type matchedItem = {
+  bankStatement: Transaction;
+  companyLedger: Transaction;
+  matched: boolean;
 };
 
 export type unmatched = {
