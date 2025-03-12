@@ -7,11 +7,19 @@ export const getErrorConfig = (
   switch (errorCode) {
     case 429:
       return {
-        title: "Rate Limit Reached",
-        message:
-          "You have used up your free limit. Please login to continue.",
+        title: "Authentication Required",
+        message: "Please sign in to continue using the service.",
         imageSrc: "/rate-limit.svg",
         buttonTitle: "Sign in with Google",
+        buttonHref: "#",
+        buttonAction: "googleSignIn",
+      };
+    case 401:
+      return {
+        title: "Session Expired",
+        message: "Your session has expired. Please sign in again.",
+        imageSrc: "/assets/images/Sad.svg",
+        buttonTitle: "Sign in",
         buttonHref: "#",
         buttonAction: "googleSignIn",
       };
@@ -33,11 +41,10 @@ export const getErrorConfig = (
         buttonHref: "/file-upload",
         buttonAction: "navigate",
       };
-    case 422: 
+    case 422:
       return {
         title: "Invalid File Structure",
-        message:
-          "file format not currently supported",
+        message: "file format not currently supported",
         imageSrc: "/assets/images/Sad.svg",
         buttonTitle: "Upload Correct Files",
         buttonHref: "/file-upload",

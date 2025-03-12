@@ -111,35 +111,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "ReconXi",
-            url: "https://reconxi.com",
-            logo: "https://reconxi.com/logo.svg",
-          }),
-        }}
-      />
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
+      <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "ReconXi",
+              url: "https://reconxi.com",
+              logo: "https://reconxi.com/logo.svg",
+            }),
+          }}
+        />
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
             `,
-        }}
-      />
-      <body className={`${inter.variable} ${balooPaaji2.variable} antialiased`}>
+          }}
+        />
         <AuthProvider>
           <Nav />
           {children}
@@ -148,8 +148,8 @@ export default function RootLayout({
             toastOptions={{
               style: {
                 background: "#EEFFEE",
-                maxWidth: "90%", 
-                width: "min(438px, 90%)", 
+                maxWidth: "90%",
+                width: "min(438px, 90%)",
                 height: "48px",
                 padding: "12px 24px",
                 borderRadius: "8px",
