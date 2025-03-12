@@ -105,7 +105,7 @@ export default function ReconXiReleases() {
                                             ref={videoRef}
                                             className="absolute inset-0 w-full h-full rounded-lg shadow-xl object-cover"
                                         >
-                                            <source src="/assets/video/version1.mp4" type="video/mp4" />
+                                            <source src={release.content.videoUrl} type="video/mp4" />
                                             Your browser does not support the video tag.
                                         </video>
                                         <button
