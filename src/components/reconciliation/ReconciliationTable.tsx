@@ -23,7 +23,7 @@ import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
 import { ChevronDown, Loader2 } from "lucide-react";
-import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
+import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
 import {
   DropdownMenu,
   DropdownMenuContent,
