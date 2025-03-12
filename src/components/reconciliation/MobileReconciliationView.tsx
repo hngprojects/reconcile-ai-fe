@@ -4,6 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/src/lib/utils";
 import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
+import PossibleMatch from "@/src/components/PossibleMatch";
 
 export function MobileReconciliationView() {
   const {
@@ -21,6 +22,9 @@ export function MobileReconciliationView() {
     currentPage * pagination.pageSize,
     (currentPage + 1) * pagination.pageSize
   );
+
+
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="space-y-3 py-6">
@@ -73,7 +77,11 @@ export function MobileReconciliationView() {
                     <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
                       <StatusBadge matched={true} />
                     </div>
-                    <hr className="border border-gray-200/70 flex-1" />
+                    {/* <hr 
+                    className="border border-gray-200/70 flex-1"
+                    /> */}
+                    <hr className="border border-gray-200/70 flex-1 w-full my-4 cursor-pointer" onClick={() => setOpen(true)} />
+                    <PossibleMatch open={open} setOpen={setOpen} />
                   </div>
                 </div>
               )}
