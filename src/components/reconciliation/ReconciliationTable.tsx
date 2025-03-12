@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import exportIcon from "@/public/assets/images/download-cloud-02.png";
-import { ReconciliationItem } from "@/src/types/reconciliation";
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -23,7 +22,7 @@ import * as React from "react";
 import { cn } from "@/src/lib/utils";
 import { StatusBadge } from "./StatusBadge";
 import { ChevronDown, Loader2 } from "lucide-react";
-import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
+import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -141,45 +140,13 @@ export function ReconciliationTable({
         )).map(ledger => ({
             matched: false,
         }))
-      ],
+      ].splice(0,10),
     [paginatedBankData, data.matches, paginatedLedgerData]
   );
 
-  console.log(statusData);
-
-  const reconciled: ReconciliationItem[] = [];
-
-  paginatedBankData.map(bank => {
-    const matched = data.matches.find(val => val.file1_transaction == bank);
-
-    if(matched){
-      reconciled.push({
-        bankStatement: bank,
-        companyLedger: matched.file2_transaction,
-        matched: !!matched
-      });
-    }else {
-      reconciled.push({
-        bankStatement: bank,
-        companyLedger: {},
-        matched: !!matched
-      });
-    }
-  });
-
-  paginatedLedgerData.filter(ledg => !data.matches.find(
-          (match) => match.file2_transaction === ledg
-        )).map(ledger => {
-          reconciled.push({
-            companyLedger: ledger,
-            bankStatement: {},
-            matched: false
-          });
-  });
-
   // Create tables with shared pagination state
   const bankTable = useReactTable({
-    data: reconciled.map(data => data.bankStatement) as Transaction[],
+    data: paginatedBankData,
     columns: bankColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -188,11 +155,11 @@ export function ReconciliationTable({
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil(paginatedBankData.length / pagination.pageSize),
+    pageCount: Math.ceil((paginatedBankData.length + paginatedLedgerData.length)/ pagination.pageSize),
   });
 
   const ledgerTable = useReactTable({
-    data: reconciled.map(data => data.companyLedger) as Transaction[],
+    data: paginatedLedgerData,
     columns: ledgerColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
