@@ -10,7 +10,7 @@ import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
 // import { checkRateLimit, incrementAttempts } from "@/src/u qtils/rateLimit";
-import { useAuth } from "@/src/components/context/AuthContext";
+// import { useAuth } from "@/src/components/context/AuthContext";
 import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 
 interface ReconciliationError extends Error {
