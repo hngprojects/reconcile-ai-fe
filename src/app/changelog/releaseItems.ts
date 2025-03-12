@@ -37,7 +37,7 @@ export const releases: ReleaseItem[] = [
       intro:
         "Welcome to ReconXi 1.0! The best AI-powered reconciliation tool that makes financial reconciliation faster, and easier. What is good about this? Everything can be done in minutes! Just smart automation that gets the job done! Get ready to experience smarter and faster way on reconciling data with ReconXi!",
       mainText: "What's in today?",
-      videoUrl: "/video/version1.mp4",
+      videoUrl: "/assets/video/version1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -89,7 +89,7 @@ export const releases: ReleaseItem[] = [
       intro:
         "ReconXi v1.1 is here, bringing even better performance, faster processing, and exporting to your data reconciliation tasks. We've improved the system to allow access for exporting reconciled data, ensuring a more efficient experience. Get ready to work smarter with ReconXi!",
       mainText: "We're live!",
-      videoUrl: "/video/version1-1.mp4",
+      videoUrl: "/assets/video/version1-1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -141,7 +141,7 @@ export const releases: ReleaseItem[] = [
       intro:
         "ReconXi v1.2 is here!! This update gives you access to use the ReconXi tool with limited trials of up to 5 uses!  With this update, you get to explore every available feature on the tool without restriction. Try it out, explore the possibilities, and see how ReconXi can transform your workflow!",
       mainText: "What's in today?",
-      videoUrl: "/video/version1-1.mp4",
+      videoUrl: "/assets/video/version1-1.mp4",
       sections: [
         {
           title: "What's New?",
@@ -191,7 +191,7 @@ export const releases: ReleaseItem[] = [
       intro:
         "The ReconXi v1.3 here! We've brought you an exciting update on User Authentication. As a user of this tool, you can now easily sign up on the platform using your Google Account. This update aims at bringing ease of signing up for you as a user. ",
       mainText: "New Feature Update",
-      videoUrl: "/video/version1-1.mp4",
+      videoUrl: "/assets/video/version1-1.mp4",
       sections: [
         {
           title: "User Registration and Authentication",

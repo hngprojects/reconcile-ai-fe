@@ -13,21 +13,30 @@ import {
 import { releases } from "./releaseItems";
 
 export default function ReconXiReleases() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRefs = useRef<{ [key: string]: HTMLVideoElement | null }>({});
+  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [openItems, setOpenItems] = useState<string[]>([]);
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState<{ [key: string]: boolean }>(
+    {}
+  );
 
   // play video
-  const playVideo = async () => {
-    if (videoRef.current) {
+  const playVideo = async (releaseId: string) => {
+    // Pause any currently playing video
+    if (playingVideo && videoRefs.current[playingVideo]) {
+      videoRefs.current[playingVideo]?.pause();
+    }
+
+    const video = videoRefs.current[releaseId];
+    if (video) {
       try {
-        if (isPlaying) {
-          await videoRef.current.pause();
+        if (playingVideo === releaseId) {
+          await video.pause();
+          setPlayingVideo(null);
         } else {
-          await videoRef.current.play();
+          await video.play();
+          setPlayingVideo(releaseId);
         }
-        setIsPlaying(!isPlaying);
       } catch (error) {
         console.log("Video playback error:", error);
       }
@@ -35,27 +44,24 @@ export default function ReconXiReleases() {
   };
 
   // Add video load handler
-  const handleVideoLoad = () => {
-    setVideoLoaded(true);
+  const handleVideoLoad = (releaseId: string) => {
+    setVideoLoaded((prev) => ({
+      ...prev,
+      [releaseId]: true,
+    }));
   };
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      const handleVideoEnd = () => setIsPlaying(false);
-      video.addEventListener("ended", handleVideoEnd);
-      return () => video.removeEventListener("ended", handleVideoEnd);
-    }
-  }, []);
-
-  // Add this effect to handle video reset when source changes
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load(); // Reset video when source changes
-      setIsPlaying(false);
-      setVideoLoaded(false);
-    }
-  }, [openItems]); // Reset when accordion items change
+    // Reset videos when accordion items change
+    Object.keys(videoRefs.current).forEach((key) => {
+      const video = videoRefs.current[key];
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+    setPlayingVideo(null);
+  }, [openItems]);
 
   const handleToggle = (id: string) => {
     if (openItems.includes(id)) {
@@ -146,22 +152,25 @@ export default function ReconXiReleases() {
                   {/* Video Section */}
                   <div className="relative w-full h-0 pb-[56.25%] bg-gray-100 mb-6 rounded-md overflow-hidden">
                     <video
-                      controls
                       playsInline
-                      ref={videoRef}
-                      onLoadedData={handleVideoLoad}
+                      ref={(el) => {videoRefs.current[release.id] = el}}
+                      onLoadedData={() => handleVideoLoad(release.id)}
                       className="absolute inset-0 w-full h-full rounded-lg shadow-xl object-cover"
                     >
                       <source src={release.content.videoUrl} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
-                    {videoLoaded && (
+                    {videoLoaded[release.id] && (
                       <button
-                        onClick={playVideo}
-                        aria-label={isPlaying ? "Pause video" : "Play video"}
+                        onClick={() => playVideo(release.id)}
+                        aria-label={
+                          playingVideo === release.id
+                            ? "Pause video"
+                            : "Play video"
+                        }
                         className="absolute inset-0 flex items-center justify-center cursor-pointer"
                       >
-                        {!isPlaying ? (
+                        {playingVideo !== release.id ? (
                           <Play className="h-8 w-8 text-white" />
                         ) : (
                           <Pause className="h-8 w-8 text-white opacity-80" />
