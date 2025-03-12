@@ -3,6 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { blogData } from "@/src/data/blogSampleData";
+import TryFreeCard from "@/src/components/try-free-card";
+
+
 export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
@@ -34,38 +37,49 @@ export default function BlogPage() {
       </div>
         </div>  
       {/* Blog List Heading */}
+      <div className="px-6">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold border-b pb-2">All blog posts</h2>
+        <h2 className="font-semibold text-[20px] leading-[30px]">All blog posts</h2>
       </div>
       {/* Blog Grid - 3 items per row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10">
         {currentPosts.map((blog) => (
           <Link key={blog.id} href={`/blog/${blog.id}`}>
-            <div className="border rounded-lg overflow-hidden shadow-lg cursor-pointer transition-transform hover:shadow-xl hover:translate-y-[-5px]">
-              <div className="relative w-full h-52">
+            <div className="rounded-lg overflow-hidden cursor-pointer transition-transform hover:shadow-xl hover:translate-y-[-5px]">
+              <div className="relative w-full h-60 rounded-[8px] bg-[#ddd]">
                 <Image 
                   src={blog.image} 
                   alt={blog.title} 
                   fill 
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover opacity-[1000%] hover:opacity-[80%]"
+                  // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
-              <div className="p-5">
-                <h3 className="text-xl font-semibold mb-2 line-clamp-2">{blog.title}</h3>
-                <p className="text-gray-500 text-sm mb-3">{blog.publishedDate} • {blog.authorName}</p>
-                <p className="text-gray-700 line-clamp-3">{blog.description}</p>
-                <p className="text-blue-600 font-medium mt-3 inline-flex items-center">
+              <div className="flex flex-col px-4">
+                <div className="py-[24px]">
+                <p className="lg:font-semibold lg:text-[14px] lg:leading-[20px]  text-[14px] leading-[20px] font-medium text-[#2E604A] mb-[14px]">{blog.authorName} • {blog.publishedDate} </p>
+                <div className="flex justify-between items-center">
+                <h3 className=" line-clamp-2 font-semibold text-[18px] text-[#333333] leading-[140%] mb-[24px] lg:font-semibold lg:text-[24px] lg:leading-[140%]">{blog.title}</h3>
+                <Image 
+                src="/assets/images/blog-img/icon-blog.svg"  // Path to your image
+                alt=""
+                width={10} 
+                height={10} 
+      />
+                </div>
+
+                <p className="font-normal text-[14px] leading-[24px] line-clamp-3 lg:font-normal lg:text-[16px] lg:leading-[24px]">{blog.description}</p>
+                <p className="font-medium text-[14px] leading-[24px] text-[#333333] inline-flex items-center relative after:content-[''] after:block after:w-[60%] after:h-[2px] after:bg-[#333333] after:left-0 after:bottom-0 after:absolute hover:after:w-full after:transition-all after:duration-[500ms] after:ease-in-out lg:font-medium lg:text-[16px] lg:leading-[24px]">
                   Read more
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
                 </p>
+                </div>
               </div>
             </div>
           </Link>
         ))}
       </div>
+      </div>
+      
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center mt-10">
@@ -98,6 +112,7 @@ export default function BlogPage() {
           </div>
         </div>
       )}
+    <TryFreeCard />
     </div>
   );
 }
