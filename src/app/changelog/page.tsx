@@ -48,15 +48,6 @@ export default function ReconXiReleases() {
     }
   }, []);
 
-  // Add this effect to handle video reset when source changes
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.load(); // Reset video when source changes
-      setIsPlaying(false);
-      setVideoLoaded(false);
-    }
-  }, [openItems]); // Reset when accordion items change
-
   const handleToggle = (id: string) => {
     if (openItems.includes(id)) {
       setOpenItems(openItems.filter((item) => item !== id));
