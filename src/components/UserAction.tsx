@@ -14,7 +14,7 @@ const UserAction: FC = () => {
     if(user){
       setUser(JSON.parse(user));
     }
-  }, []);
+  }, [setUser]);
 
   return (
     <>
