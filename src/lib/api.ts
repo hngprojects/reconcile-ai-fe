@@ -170,7 +170,6 @@ export async function handleAddToNewsLetter(email: string): Promise<{
 }
 
 export async function updateReconciliation(reconciliation: string, data: ManualRequestBody){
-  console.log(data);
   try {
     const response = await fetch(`${MANUAL_API_URL}${reconciliation}`, {
       method: "POST",
@@ -189,7 +188,7 @@ export async function updateReconciliation(reconciliation: string, data: ManualR
 
     return resData;
 
-  } catch (e) {
-    return { error: "Something went wrong. Please try again later." + e.message };
+  } catch {
+    return { error: "Something went wrong. Please try again later." };
   }
 }

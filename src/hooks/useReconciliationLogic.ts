@@ -153,7 +153,6 @@ export function useReconciliationLogic() {
 
   const handleMatch = async (selected: Transaction, selectedType: string, match: Transaction) => {
     let body;
-    console.log(selected);
     if(selectedType == 'statement'){
        body = {
           ledger: selected,
@@ -170,10 +169,11 @@ export function useReconciliationLogic() {
     const id = data['reconciliation_id'] as string;
 
     const response = await updateReconciliation(id, body as ManualRequestBody);
-    console.log(response);
 
-    localStorage.setItem('reconciliation', JSON.stringify(response.data));
-    setData(response.data);
+    if(response.status == 'success'){
+      localStorage.setItem('reconciliation', JSON.stringify(response.data));
+      setData(response.data);
+    }
   }
 
   return {
