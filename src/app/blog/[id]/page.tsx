@@ -18,34 +18,34 @@ export default function BlogDetail() {
       <Container className="py-8 md:py-12">
         <div className="px-4">
           {/* Breadcrumbs */}
-          <div className="lg:px-[40px]">
-            <nav className="flex mb-6 text-[14px] md:text-[16px] text-[#5C5C5C]">
+          <div className="lg:px-10">
+            <nav className="flex mb-6 text-sm md:text-base text-[#5C5C5C]">
               <Link
                 href="/"
-                className="font-normal text-[12px] leading-[16px] text-[#333333]"
+                className="font-normal text-xs leading-4 text-[#333333]"
               >
                 Home
               </Link>
-              <span className="font-normal text-[12px] leading-[16px] text-[#333333] mx-2">
+              <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
                 &gt;
               </span>
               <Link
                 href="/blog"
-                className="font-normal text-[12px] leading-[16px] text-[#333333]"
+                className="font-normal text-xs leading-4 text-[#333333]"
               >
                 Blogs
               </Link>
-              <span className="font-normal text-[12px] leading-[16px] text-[#333333] mx-2">
+              <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
                 &gt;
               </span>
-              <span className="font-normal text-[12px] leading-[16px] text-[#333333]">
+              <span className="font-normal text-xs leading-4 text-[#333333]">
                 Blog Post
               </span>
             </nav>
 
             {/* Author Info and Metadata */}
-            <div className="flex items-center gap-4 pt-[24px] mb-6">
-              <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 pt-[64px]">
+            <div className="flex items-center gap-4 pt-6 mb-6">
+              <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 pt-16">
                 <Image
                   src={blog.authorProfilePicture}
                   alt={blog.authorName}
@@ -66,7 +66,7 @@ export default function BlogDetail() {
               </div>
             </div>
             {/* Blog Title */}
-            <h1 className=" leading-[140%] lg:font-semibold text-[28px] lg:text-[36px] font-semibold lg:leading-[140%] text-[#333333] mb-[24px] lg:mb-[100px]">
+            <h1 className=" leading-[140%] lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24">
               {blog.title}
             </h1>
           </div>
@@ -77,24 +77,24 @@ export default function BlogDetail() {
               alt={blog.title}
               width={0}
               height={0}
-              className="w-full h-[184.85px] lg:h-[560px] object-cover rounded-[8px]"
+              className="w-full h-[184.85px] lg:h-[560px] object-cover rounded-xl"
               sizes="100vw"
               // style={{ width: '100%', height: '60.85px' }}
               priority
             />
           </div>
           {/* Intro Text */}
-          <div className="lg:px-[40px]">
-            <div className="flex flex-col lg:gap-y-5 gap-y-4 my-[24px] lg:my-[20px] lg:mt-[64px] ">
-              <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
+          <div className="lg:px-10">
+            <div className="flex flex-col lg:gap-y-5 gap-y-4 my-6 lg:my-5 lg:mt-16 ">
+              <p className="leading-4 font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                 {blog.introText1}
               </p>
-              {/* <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
-        {blog.introText2}
-      </p>
-      <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
-        {blog.introText3}
-      </p> */}
+              <p className="leading-6 font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                {blog.introText2}
+              </p>
+              <p className="leading-4 font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                {blog.introText3}
+              </p>
             </div>
             {/* Blog Sections */}
             <div className="space-y-8">

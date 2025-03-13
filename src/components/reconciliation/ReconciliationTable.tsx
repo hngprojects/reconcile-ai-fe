@@ -30,6 +30,7 @@ import {
 import { SuccessToast } from "./SuccessToast";
 import { DownloadCloudIcon } from "../Icon/Icons";
 import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
+import { toast } from "sonner";
 
 interface Transaction {
   Date: string;
@@ -429,11 +430,18 @@ export function ReconciliationTable({
                                 )}
                                 placeholder="Find possible Match"
                                 onSelect={async (value) => {
-                                  await handleMatch(
-                                    paginatedLedgerData[row.index],
-                                    "statement",
-                                    JSON.parse(value)
-                                  );
+                                  try {
+                                    await handleMatch(
+                                      paginatedLedgerData[row.index],
+                                      "statement",
+                                      JSON.parse(value)
+                                    );
+                                    toast.success(
+                                      "Transactions matched successfully!"
+                                    );
+                                  } catch {
+                                    toast.error("Failed to match transactions");
+                                  }
                                 }}
                               />
                             </TableCell>
@@ -563,11 +571,18 @@ export function ReconciliationTable({
                                 )}
                                 placeholder="Find possible Match"
                                 onSelect={async (value) => {
-                                  await handleMatch(
-                                    paginatedBankData[row.index],
-                                    "ledger",
-                                    JSON.parse(value)
-                                  );
+                                  try {
+                                    await handleMatch(
+                                      paginatedBankData[row.index],
+                                      "ledger",
+                                      JSON.parse(value)
+                                    );
+                                    toast.success(
+                                      "Transactions matched successfully!"
+                                    );
+                                  } catch {
+                                    toast.error("Failed to match transactions");
+                                  }
                                 }}
                               />
                             </TableCell>
