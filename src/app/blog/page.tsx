@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { blogData } from "@/src/data/blogSampleData";
 import TryFreeCard from "@/src/components/try-free-card";
-import Footer from "@/src/components/Footer";
 export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
@@ -21,8 +20,9 @@ export default function BlogPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="py-[100px] ">
-      <div className="md:px-[100px] px-4 ">
+   <div>
+     <div className="pt-[100px] max-w-7xl mx-auto">
+      <div className="">
         <div className="">
           <p className="flex justify-center items-center">
             <Link
@@ -35,7 +35,7 @@ export default function BlogPage() {
         </div>
         {/* Blog Header */}
         <div className="text-center mb-12 mx-auto flex flex-col justify-center items-center">
-          <h1 className="text-center max-w-[672px] text-[36px] md:text-[48px] font-[600] leading-[140%] my-4 mx-auto">
+          <h1 className="text-center max-w-[672px] text-[36px] md:text-[48px] font-[600] leading-[140%] my-4 mx-auto px-2 md:px-0">
             Stay Ahead with AI-Powered Financial Insights
           </h1>
           <p className="max-w-[800px] text-[16px] md:text-[18px] font-[400] leading-[24px] mx-auto text-[#5C5C5C]">
@@ -60,7 +60,7 @@ export default function BlogPage() {
           {currentPosts.map((blog) => (
             <Link key={blog.id} href={`/blog/${blog.id}`}>
               <div className="rounded-lg overflow-hidden cursor-pointer transition-transform hover:shadow-xl hover:translate-y-[-5px] group">
-                <div className="relative w-full h-60 rounded-[8px] bg-[#ddd] overflow-hidden">
+                <div className="relative w-full md:max-w-[405px] h-60 rounded-[8px] bg-[#ddd] overflow-hidden">
                   <Image
                     src={blog.image}
                     alt={blog.title}
@@ -104,7 +104,7 @@ export default function BlogPage() {
 
       {/* Updated Pagination with specific styling requirements */}
       {totalPages > 1 && (
-        <div className="px-[100px]">
+        <div className="md:px-[100px] py-10">
           <div className="flex items-center justify-between">
             <button
               onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
@@ -150,8 +150,8 @@ export default function BlogPage() {
           </div>
         </div>
       )}
-      <TryFreeCard />
-      <Footer />
     </div>
+    <TryFreeCard />
+   </div>
   );
 }
