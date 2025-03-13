@@ -1,8 +1,5 @@
 "use client";
 
-import exportIcon from "@/public/assets/images/download-cloud-02.png";
-import Image from "next/image";
-
 import { useReconciliationLogic } from "@/src/components/reconciliation/main/useReconciliationLogic";
 import { Button } from "@/src/components/ui/button";
 import {
@@ -16,6 +13,7 @@ import { ChevronDown, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SuccessToast } from "../SuccessToast";
 import { ReconciliationTables } from "./ReconciliationTables";
+import { DownloadCloudIcon } from "../../Icon/Icons";
 
 interface Transaction {
   Date: string;
@@ -194,7 +192,7 @@ export function DesktopReconciliationView() {
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
           <button
-            className="px-[57px] py-[16px] bg-[transparent] border-[1px] border-[#2E604A] text-[#2E604A] rounded-md w-[150px] h-[50px] flex items-center justify-center  "
+            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
             onClick={handleExport}
             disabled={isExporting}
           >
@@ -204,13 +202,7 @@ export function DesktopReconciliationView() {
               </>
             ) : (
               <>
-                <Image
-                  src={exportIcon}
-                  alt="Export"
-                  width={24}
-                  height={24}
-                  className="mr-2 w-5 h-5"
-                />{" "}
+                <DownloadCloudIcon className="mr-2 w-5 h-5" />
                 Export
               </>
             )}
