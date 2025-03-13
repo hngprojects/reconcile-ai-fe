@@ -5,7 +5,7 @@ import {
   TData,
   Transaction,
   matchedItem,
-  ManualRequestBody
+  ManualRequestBody,
 } from "@/src/types/reconciliation";
 import { updateReconciliation } from "@/src/lib/api";
 
@@ -13,7 +13,7 @@ const validateDocuments = (data: TData[]) => {
   const requiredHeaders = ["Date", "Description", "Amount"];
 
   const valid = data.every((tx) =>
-    requiredHeaders.every((h) => Object.keys(tx).includes(h))
+    requiredHeaders.every((h) => Object.keys(tx).includes(h)),
   );
 
   return valid;
@@ -62,33 +62,35 @@ export function useReconciliationLogic() {
 
   const reconciled: matchedItem[] = [];
 
-  bankData.map(bank => {
-    const matched = data.matches.find(val => val.file1_transaction == bank);
+  bankData.map((bank) => {
+    const matched = data.matches.find((val) => val.file1_transaction == bank);
 
-    if(matched){
+    if (matched) {
       reconciled.push({
         bankStatement: bank,
         companyLedger: matched.file2_transaction,
-        matched: !!matched
+        matched: !!matched,
       });
-    }else {
+    } else {
       reconciled.push({
         bankStatement: bank,
         companyLedger: {} as Transaction,
-        matched: !!matched
+        matched: !!matched,
       });
     }
   });
 
-  ledgerData.filter(ledg => !data.matches.find(
-          (match) => match.file2_transaction === ledg
-        )).map(ledger => {
-          reconciled.push({
-            companyLedger: ledger,
-            bankStatement: {} as Transaction,
-            matched: false
-          });
-  });
+  ledgerData
+    .filter(
+      (ledg) => !data.matches.find((match) => match.file2_transaction === ledg),
+    )
+    .map((ledger) => {
+      reconciled.push({
+        companyLedger: ledger,
+        bankStatement: {} as Transaction,
+        matched: false,
+      });
+    });
 
   useEffect(() => {
     if (!validationShown && (bankData.length > 0 || ledgerData.length > 0)) {
@@ -102,7 +104,8 @@ export function useReconciliationLogic() {
   const totalItems = reconciled.length;
 
   // Combine data for mobile view and status logic
-  const combinedData: ReconciliationItem[] = reconciled.map((item) => {    return {
+  const combinedData: ReconciliationItem[] = reconciled.map((item) => {
+    return {
       bankStatement: {
         date: (item.bankStatement as Transaction)["Date"],
         description: (item.bankStatement as Transaction)["Description"],
@@ -141,40 +144,48 @@ export function useReconciliationLogic() {
   };
 
   // Slice data based on pagination
-  const paginatedBankData = (reconciled.map(data => data.bankStatement) as Transaction[]).slice(
+  const paginatedBankData = (
+    reconciled.map((data) => data.bankStatement) as Transaction[]
+  ).slice(
     pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
+    (pagination.pageIndex + 1) * pagination.pageSize,
   );
 
-  const paginatedLedgerData = (reconciled.map(data => data.companyLedger) as Transaction[]).slice(
+  const paginatedLedgerData = (
+    reconciled.map((data) => data.companyLedger) as Transaction[]
+  ).slice(
     pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
+    (pagination.pageIndex + 1) * pagination.pageSize,
   );
 
-  const handleMatch = async (selected: Transaction, selectedType: string, match: Transaction) => {
+  const handleMatch = async (
+    selected: Transaction,
+    selectedType: string,
+    match: Transaction,
+  ) => {
     let body;
-    if(selectedType == 'statement'){
-       body = {
-          ledger: selected,
-          statement: match,
-          action: 'match'
+    if (selectedType == "statement") {
+      body = {
+        ledger: selected,
+        statement: match,
+        action: "match",
       };
-    }else {
-       body = {
-          statement: selected,
-          ledger: match,
-          action: 'match'
+    } else {
+      body = {
+        statement: selected,
+        ledger: match,
+        action: "match",
       };
     }
-    const id = data['reconciliation_id'] as string;
+    const id = data["reconciliation_id"] as string;
 
     const response = await updateReconciliation(id, body as ManualRequestBody);
 
-    if(response.status == 'success'){
-      localStorage.setItem('reconciliation', JSON.stringify(response.data));
+    if (response.status == "success") {
+      localStorage.setItem("reconciliation", JSON.stringify(response.data));
       setData(response.data);
     }
-  }
+  };
 
   return {
     pagination,
@@ -196,6 +207,6 @@ export function useReconciliationLogic() {
     setShowErrorModal,
     setData,
     data,
-    handleMatch
+    handleMatch,
   };
 }

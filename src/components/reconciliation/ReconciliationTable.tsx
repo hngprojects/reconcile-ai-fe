@@ -78,7 +78,7 @@ export function ReconciliationTable({
     showErrorModal,
     setShowErrorModal,
     data,
-    handleMatch
+    handleMatch,
   } = useReconciliationLogic();
 
   const [isExporting, setIsExporting] = React.useState(false);
@@ -104,7 +104,7 @@ export function ReconciliationTable({
         cell: (info) => info.getValue(),
       }),
     ],
-    []
+    [],
   );
 
   // Define company ledger columns
@@ -123,24 +123,43 @@ export function ReconciliationTable({
         cell: (info) => info.getValue(),
       }),
     ],
-    []
+    [],
   );
 
-  console.log(paginatedLedgerData.filter(ledg => !data.matches.find(val => val.file2_transaction == ledg) || (!ledg['Date'] && !ledg['Description'] && !ledg['Amount'])));
+  console.log(
+    paginatedLedgerData.filter(
+      (ledg) =>
+        !data.matches.find((val) => val.file2_transaction == ledg) ||
+        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"]),
+    ),
+  );
 
   // Create status column data
   const statusData = React.useMemo(
     () =>
       [
-        ...paginatedBankData.filter(bank => (bank['Date'] && bank['Description'] && bank['Amount'])).map(bankItem =>  ({
-          matched: data.matches.find(val => val.file1_transaction == bankItem) !== undefined  ? true
-          : false,
-      })),
-        ...paginatedLedgerData.filter(ledg => !data.matches.find(val => val.file2_transaction == ledg) || (!ledg['Date'] && !ledg['Description'] && !ledg['Amount'])).map(() => ({
+        ...paginatedBankData
+          .filter(
+            (bank) => bank["Date"] && bank["Description"] && bank["Amount"],
+          )
+          .map((bankItem) => ({
+            matched:
+              data.matches.find((val) => val.file1_transaction == bankItem) !==
+              undefined
+                ? true
+                : false,
+          })),
+        ...paginatedLedgerData
+          .filter(
+            (ledg) =>
+              !data.matches.find((val) => val.file2_transaction == ledg) ||
+              (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"]),
+          )
+          .map(() => ({
             matched: false,
-        }))
-      ].slice(0,10),
-    [paginatedBankData, data.matches, paginatedLedgerData]
+          })),
+      ].slice(0, 10),
+    [paginatedBankData, data.matches, paginatedLedgerData],
   );
 
   console.log(statusData);
@@ -156,7 +175,10 @@ export function ReconciliationTable({
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil((paginatedBankData.length + paginatedLedgerData.length)/ pagination.pageSize),
+    pageCount: Math.ceil(
+      (paginatedBankData.length + paginatedLedgerData.length) /
+        pagination.pageSize,
+    ),
   });
 
   const ledgerTable = useReactTable({
@@ -169,14 +191,17 @@ export function ReconciliationTable({
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil((paginatedBankData.length + paginatedLedgerData.length)/ pagination.pageSize),
+    pageCount: Math.ceil(
+      (paginatedBankData.length + paginatedLedgerData.length) /
+        pagination.pageSize,
+    ),
   });
 
   // Calculate current page range
   const pageStart = pagination.pageIndex * pagination.pageSize + 1;
   const pageEnd = Math.min(
     (pagination.pageIndex + 1) * pagination.pageSize,
-    totalItems
+    totalItems,
   );
 
   // array of row options
@@ -248,7 +273,7 @@ export function ReconciliationTable({
           body: JSON.stringify({
             data: formattedData,
           }),
-        }
+        },
       );
 
       // Check for errors with better error reporting
@@ -282,7 +307,7 @@ export function ReconciliationTable({
       console.error("Export error:", error);
       // Show error toast using custom component
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data"
+        error instanceof Error ? error.message : "Failed to export data",
       );
       setShowErrorToast(true);
     } finally {
@@ -349,7 +374,7 @@ export function ReconciliationTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </TableHead>
                       ))}
@@ -360,7 +385,11 @@ export function ReconciliationTable({
                   {bankTable.getRowModel().rows.length > 0 ? (
                     bankTable.getRowModel().rows.map((row, index) => {
                       const isMatched = statusData[index]?.matched;
-                      if(row.original['Description'] || row.original['Date'] || row.original['Amount']){
+                      if (
+                        row.original["Description"] ||
+                        row.original["Date"] ||
+                        row.original["Amount"]
+                      ) {
                         return (
                           <TableRow
                             key={row.id}
@@ -378,13 +407,14 @@ export function ReconciliationTable({
                                   "max-w-[200px] md:max-w-none",
                                   "whitespace-nowrap overflow-hidden text-ellipsis",
                                   cellIndex !==
-                                    row.getVisibleCells().length - 1 && "border-r"
+                                    row.getVisibleCells().length - 1 &&
+                                    "border-r",
                                 )}
                                 title={cell.getValue() as string}
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext()
+                                  cell.getContext(),
                                 )}
                               </TableCell>
                             ))}
@@ -392,23 +422,29 @@ export function ReconciliationTable({
                         );
                       } else {
                         return (
-                      <TableRow key={row.id}>
-                        <TableCell
-                          colSpan={ledgerColumns.length}
-                          className="px-4 h-[64px] italic font-[300] w-full"
-                        >
-                          <SearchCombobox
-                            items={data.unmatched.unmatched_file1.map(txn => ({
-                              label: `${txn['Description']} - ${txn['Amount']}`,
-                              value: JSON.stringify(txn),
-                            }))}
-                            placeholder="Find possible Match"
-                            onSelect={async (value) => {
-                                await handleMatch(paginatedLedgerData[row.index], 'statement', JSON.parse(value))}}
-                          />
-                        </TableCell>
-                      </TableRow>
-
+                          <TableRow key={row.id}>
+                            <TableCell
+                              colSpan={ledgerColumns.length}
+                              className="px-4 h-[64px] italic font-[300] w-full"
+                            >
+                              <SearchCombobox
+                                items={data.unmatched.unmatched_file1.map(
+                                  (txn) => ({
+                                    label: `${txn["Description"]} - ${txn["Amount"]}`,
+                                    value: JSON.stringify(txn),
+                                  }),
+                                )}
+                                placeholder="Find possible Match"
+                                onSelect={async (value) => {
+                                  await handleMatch(
+                                    paginatedLedgerData[row.index],
+                                    "statement",
+                                    JSON.parse(value),
+                                  );
+                                }}
+                              />
+                            </TableCell>
+                          </TableRow>
                         );
                       }
                     })
@@ -443,7 +479,7 @@ export function ReconciliationTable({
                       className={cn(
                         item.matched
                           ? "bg-[#F3FEFA] hover:bg-[#F3FEFA]"
-                          : "bg-[#FFF4F0] hover:bg-[#FFF4F0]"
+                          : "bg-[#FFF4F0] hover:bg-[#FFF4F0]",
                       )}
                     >
                       <TableCell className="text-center h-[64px]">
@@ -472,7 +508,7 @@ export function ReconciliationTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </TableHead>
                       ))}
@@ -483,7 +519,11 @@ export function ReconciliationTable({
                   {ledgerTable.getRowModel().rows.length > 0 ? (
                     ledgerTable.getRowModel().rows.map((row, index) => {
                       const isMatched = statusData[index]?.matched;
-                      if(row.original['Description'] && row.original['Date'] && row.original['Amount']){
+                      if (
+                        row.original["Description"] &&
+                        row.original["Date"] &&
+                        row.original["Amount"]
+                      ) {
                         return (
                           <TableRow
                             key={row.id}
@@ -501,39 +541,48 @@ export function ReconciliationTable({
                                   "max-w-[200px] md:max-w-none",
                                   "whitespace-nowrap overflow-hidden text-ellipsis",
                                   cellIndex !==
-                                    row.getVisibleCells().length - 1 && "border-r"
+                                    row.getVisibleCells().length - 1 &&
+                                    "border-r",
                                 )}
                                 title={cell.getValue() as string}
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext()
+                                  cell.getContext(),
                                 )}
                               </TableCell>
                             ))}
                           </TableRow>
-                      );} else {
+                        );
+                      } else {
                         return (
-                      <TableRow key={row.id}>
-                        <TableCell
-                          colSpan={ledgerColumns.length}
-                          className="px-4 h-[64px] italic font-[300] w-full"
-                        >
-                          <SearchCombobox
-                            items={data.unmatched.unmatched_file2.map(txn => ({
-                              label: `${txn['Description']} - ${txn['Amount']}`,
-                              value: JSON.stringify(txn),
-                            }))}
-                            placeholder="Find possible Match"
-                            onSelect={async (value) => {
-                                await handleMatch(paginatedBankData[row.index], 'ledger', JSON.parse(value));}} />
-                        </TableCell>
-                      </TableRow>
-
+                          <TableRow key={row.id}>
+                            <TableCell
+                              colSpan={ledgerColumns.length}
+                              className="px-4 h-[64px] italic font-[300] w-full"
+                            >
+                              <SearchCombobox
+                                items={data.unmatched.unmatched_file2.map(
+                                  (txn) => ({
+                                    label: `${txn["Description"]} - ${txn["Amount"]}`,
+                                    value: JSON.stringify(txn),
+                                  }),
+                                )}
+                                placeholder="Find possible Match"
+                                onSelect={async (value) => {
+                                  await handleMatch(
+                                    paginatedBankData[row.index],
+                                    "ledger",
+                                    JSON.parse(value),
+                                  );
+                                }}
+                              />
+                            </TableCell>
+                          </TableRow>
                         );
                       }
-
-                    })): (
+                    })
+                  ) : (
                     <TableRow>
                       <TableCell
                         colSpan={ledgerColumns.length}
@@ -542,7 +591,7 @@ export function ReconciliationTable({
                         No results.
                       </TableCell>
                     </TableRow>
-                    )}
+                  )}
                 </TableBody>
               </Table>
             </div>
@@ -570,7 +619,7 @@ export function ReconciliationTable({
                     disabled={isOptionDisabled(size)}
                     className={cn(
                       "text-sm cursor-pointer",
-                      isOptionDisabled(size) && "opacity-50 cursor-not-allowed"
+                      isOptionDisabled(size) && "opacity-50 cursor-not-allowed",
                     )}
                   >
                     {size}

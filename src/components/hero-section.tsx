@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "./Container";
 import { motion } from "framer-motion";
+import { Button } from "./ui/button";
 
 export default function HeroSection() {
   return (
@@ -32,12 +33,10 @@ export default function HeroSection() {
             >
               Start Reconciliation
             </Link> */}
-            <Link
-              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex"
-              href="/file-upload"
-              aria-label="Start Reconciliation"
-            >
-              Start Reconciliation
+            <Link href="/file-upload" aria-label="Start Reconciliation">
+              <Button className="bg-[#3D8874] text-white text-lg h-12 w-full sm:w-64 py-2 px-4 rounded-2xl shadow-[0_0.4rem_#2E604B] cursor-pointer transition-all active:shadow-[0_0.2rem_#2E604B] active:translate-y-1 hover:not-disabled:bg-[#3D8874] hover:not-disabled:text-white  disabled:cursor-auto disabled:text-gray-500">
+                Start Reconciliation
+              </Button>
             </Link>
           </motion.div>
         </motion.div>

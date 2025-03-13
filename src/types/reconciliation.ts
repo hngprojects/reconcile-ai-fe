@@ -68,4 +68,4 @@ export type ManualRequestBody = {
     amount?: number;
   };
   action: string;
-}
+};

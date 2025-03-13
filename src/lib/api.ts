@@ -3,7 +3,7 @@ import {
   NEWSLETTER_API_URL,
   RECONCILE_API_URL,
   WAITLIST_API_URL,
-  MANUAL_API_URL
+  MANUAL_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -16,7 +16,7 @@ interface ApiError extends Error {
 export async function reconcileFiles(
   file1: File,
   file2: File,
-  keyColumn: string
+  keyColumn: string,
 ) {
   const formData = new FormData();
   formData.append("file1", file1);
@@ -169,13 +169,16 @@ export async function handleAddToNewsLetter(email: string): Promise<{
   }
 }
 
-export async function updateReconciliation(reconciliation: string, data: ManualRequestBody){
+export async function updateReconciliation(
+  reconciliation: string,
+  data: ManualRequestBody,
+) {
   try {
     const response = await fetch(`${MANUAL_API_URL}${reconciliation}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify(data),
     });
@@ -187,7 +190,6 @@ export async function updateReconciliation(reconciliation: string, data: ManualR
     }
 
     return resData;
-
   } catch {
     return { error: "Something went wrong. Please try again later." };
   }
