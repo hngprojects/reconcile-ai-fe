@@ -57,14 +57,14 @@ export function MobileReconciliationView() {
               <div className="flex justify-between items-start">
                 <div className="space-y-1">
                   <div className="text-sm text-gray-600">
-                    {item.bankStatement?.date}
+                    {item.bankStatement.date}
                   </div>
                   <div className="font-medium text-gray-900">
-                    {item.bankStatement?.description}
+                    {item.bankStatement.description}
                   </div>
                 </div>
                 <div className="font-medium text-gray-900">
-                  {item.bankStatement?.amount}
+                  {item.bankStatement.amount}
                 </div>
               </div>
               {item.matched && (
