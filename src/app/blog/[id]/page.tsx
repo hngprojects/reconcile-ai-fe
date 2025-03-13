@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { blogData } from "@/src/data/blogSampleData";
 import TryFreeCard from '@/src/components/try-free-card';
-import Footer from '@/src/components/Footer';
 export default function BlogDetail() {
   const params = useParams();
   const id = params.id;
@@ -79,12 +78,12 @@ export default function BlogDetail() {
       <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
         {blog.introText1}
       </p>
-      {/* <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
+      <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
         {blog.introText2}
       </p>
       <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
         {blog.introText3}
-      </p> */}
+      </p>
       
       </div>
       {/* Blog Sections */}
@@ -119,7 +118,6 @@ export default function BlogDetail() {
     </div>
       </div>
       <TryFreeCard />
-      <Footer />
     </div>
   );
 }
