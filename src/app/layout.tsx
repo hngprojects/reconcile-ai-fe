@@ -121,7 +121,8 @@ export default function RootLayout({
             toastOptions={{
               style: {
                 background: "#EEFFEE",
-                width: "438px",
+                width: "100%",
+                maxWidth: "438px",
                 height: "48px",
                 padding: "12px 24px",
                 borderRadius: "8px",

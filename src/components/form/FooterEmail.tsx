@@ -64,10 +64,17 @@ const EmailSubscribeForm = () => {
   return (
     <div>
       {isSubscribed ? (
-        <h1>Thank you for subscribing, you can now check your email</h1>
+        <div className="flex w-full sm:justify-center">
+          <div className="w-fit space-y-1">
+            <h4 className="font-semibold text-xl">
+              Thanks for subscribing to our newsletter.
+            </h4>
+            <p>Please check your mail</p>
+          </div>
+        </div>
       ) : (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full ">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
             <FormField
               control={form.control}
               name="email"
@@ -83,7 +90,7 @@ const EmailSubscribeForm = () => {
                           <div className="">
                             <Input
                               placeholder="Enter your email"
-                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:max-w-md"
+                              className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:min-w-72"
                               {...field}
                             />
                             <FormMessage className="text-sm text-left text-red-500 mt-0.5 whitespace-normal" />
