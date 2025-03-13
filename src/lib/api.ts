@@ -20,6 +20,13 @@ export async function reconcileFiles(
   formData.append("file2", file2);
   formData.append("key_column", keyColumn);
 
+  const token = localStorage.getItem("access_token");
+  const headers: HeadersInit = {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   console.log("Sending files for reconciliation:", {
     file1: file1.name,
     file2: file2.name,
@@ -29,6 +36,7 @@ export async function reconcileFiles(
   try {
     const response = await fetch(RECONCILE_API_URL, {
       method: "POST",
+      headers,
       body: formData,
     });
 
