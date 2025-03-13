@@ -3,11 +3,8 @@
 import CTASection from "@/src/components/CTASection";
 import Footer from "@/src/components/Footer";
 import ContactUsForm from "@/src/components/form/ContactUsForm";
-import { useState } from "react";
 
 const Contact = () => {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   return (
     <div>
       <div className="md:bg-[#FAFAFA] pt-[47px] px-[24px] md:py-14">
@@ -25,17 +22,9 @@ const Contact = () => {
           </p>
         </div>
         <div className="max-w-[1261px] mx-auto flex justify-center">
-          {isSubmitted ? (
-            <div className="mb-20 p-8">
-              <p className="text-xl text-center font-semibold md:text-2xl">
-                Thank you for contacting us. We will get back to you soon!
-              </p>
-            </div>
-          ) : (
-            <div className="w-full rounded-lg md:border md:border-[rgba(82,82,82,0.2)] max-w-[663px] md:p-8">
-              <ContactUsForm setIsSubmitted={setIsSubmitted} />
-            </div>
-          )}
+          <div className="w-full rounded-lg md:border md:border-[rgba(82,82,82,0.2)] max-w-[663px] md:p-8">
+            <ContactUsForm />
+          </div>
         </div>
       </div>
       <CTASection />
