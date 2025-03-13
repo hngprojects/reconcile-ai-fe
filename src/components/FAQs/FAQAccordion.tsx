@@ -53,7 +53,7 @@ const AccordionItem = ({
         <span className="text-lg font-medium text-[#101828]">
           {faq.question}
         </span>
-        <div>{isOpen ? <Minus size={20} /> : <Plus size={20} />}</div>
+        <div className="w-8 h-8 rounded-full border border-[#D1D5DB] flex items-center justify-center flex-shrink-0">{isOpen ? <Minus size={20} /> : <Plus size={20} />}</div>
       </button>
 
       <AnimatePresence>
