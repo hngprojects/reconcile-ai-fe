@@ -45,17 +45,8 @@ const Contact = () => {
     },
   };
 
-  const successVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
-    },
-  };
+
+const Contact = () => {
 
   return (
     <div>
@@ -88,27 +79,19 @@ const Contact = () => {
           </motion.p>
         </motion.div>
         <div className="max-w-[1261px] mx-auto flex justify-center">
-          {isSubmitted ? (
-            <motion.div
-              className="mb-20 p-8"
-              variants={successVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              <p className="text-xl text-center font-semibold md:text-2xl">
-                Thank you for contacting us. We will get back to you soon!
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              variants={formVariants}
-              initial="hidden"
-             animate="visible"
-              className="w-full rounded-lg md:border md:border-[rgba(82,82,82,0.2)] max-w-[663px] md:p-8"
-            >
-              <ContactUsForm setIsSubmitted={setIsSubmitted} />
-            </motion.div>
-          )}
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 1, 
+              ease: "easeOut", 
+              delay: 0.6 
+            }}
+            className="w-full rounded-lg md:border md:border-[rgba(82,82,82,0.2)] max-w-[663px] md:p-8"
+          >
+            <ContactUsForm />
+          </motion.div>
         </div>
       </div>
       <CTASection />

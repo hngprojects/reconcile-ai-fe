@@ -79,7 +79,7 @@ export default function BlogPage() {
                           {blog.title}
                         </h3>
                         <Image
-                          src="/assets/images/icon-blog.svg"
+                          src="/assets/images/Icon-blog.svg"
                           alt="arrow-icon"
                           width={24}
                           height={24}
