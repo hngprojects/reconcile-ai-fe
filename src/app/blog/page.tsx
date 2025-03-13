@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { blogData } from "@/src/data/blogSampleData";
 import TryFreeCard from "@/src/components/try-free-card";
-import Footer from "@/src/components/Footer";
 export default function BlogPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 9;
@@ -153,7 +152,6 @@ export default function BlogPage() {
       )}
     </div>
     <TryFreeCard />
-    <Footer />
    </div>
   );
 }

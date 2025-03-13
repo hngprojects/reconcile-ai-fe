@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { blogData } from "@/src/data/blogSampleData";
 import TryFreeCard from '@/src/components/try-free-card';
-import Footer from '@/src/components/Footer';
 export default function BlogDetail() {
   const params = useParams();
   const id = params.id;
@@ -119,7 +118,6 @@ export default function BlogDetail() {
     </div>
       </div>
       <TryFreeCard />
-      <Footer />
     </div>
   );
 }
