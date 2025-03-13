@@ -79,12 +79,12 @@ export default function BlogDetail() {
       <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
         {blog.introText1}
       </p>
-      {/* <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
+      <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
         {blog.introText2}
       </p>
       <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
         {blog.introText3}
-      </p> */}
+      </p>
       
       </div>
       {/* Blog Sections */}
