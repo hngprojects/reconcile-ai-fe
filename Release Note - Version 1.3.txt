@@ -1,0 +1,21 @@
+The ReconXi v1.3 here! We've brought you an exciting update on User Authentication. As a user of this tool, you can now easily sign up on the platform using your Google Account. This update aims at bringing ease of signing up for you as a user. 
+
+Release Note Version 1.3
+Product: AI-Powered Bank Reconciliation 
+Release Date: 10-03-2025
+
+New Feature Update
+User Registration and Authentication
+This update introduces user accounts, allowing users to sign up and log in for a more personalized experience. New Users can now register and log in using their Google account. 
+
+What’s New?
+Sign-Up/Sign-in with Google
+New users can create an account or log in using their Google account for quick and secure access.
+The Sign In option give users access to Reconcile without Limits
+
+Feature Limitations
+Currently, only Google sign-up is supported (email/password registration may come in future updates).
+
+Coming Soon!
+Manual override by users.
+Got feedback? Let us know at support@reconxi.com.

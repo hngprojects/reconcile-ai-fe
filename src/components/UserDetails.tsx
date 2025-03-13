@@ -48,7 +48,7 @@ export default function UserDetails() {
             >
               <div
                 className="text-red-600 flex gap-2 items-center"
-                onClick={() => logout()}
+                onClick={logout}
               >
                 <LogOut className="text-red-600" />
                 <p>Log out</p>

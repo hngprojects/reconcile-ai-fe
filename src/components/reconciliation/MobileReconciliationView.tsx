@@ -4,7 +4,6 @@ import { Button } from "@/src/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/src/lib/utils";
 import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
-import { formatCurrency } from "@/src/data/reconciliationSampleData";
 
 export function MobileReconciliationView() {
   const {
@@ -50,8 +49,8 @@ export function MobileReconciliationView() {
           )}
 
           <div className="p-4 space-y-4">
-            {/* Bank Statement */}
-            <div className="space-y-2">
+          { (item.bankStatement.date && item.bankStatement.description && item.bankStatement.amount) 
+            && (<div className="space-y-2">
               <div className="text-sm font-medium text-gray-500">
                 Bank Statement
               </div>
@@ -65,7 +64,7 @@ export function MobileReconciliationView() {
                   </div>
                 </div>
                 <div className="font-medium text-gray-900">
-                  {formatCurrency(item.bankStatement.amount)}
+                  {item.bankStatement.amount}
                 </div>
               </div>
               {item.matched && (
@@ -80,8 +79,9 @@ export function MobileReconciliationView() {
               )}
             </div>
 
+          )}
             {/* Company Ledger - Only show if matched */}
-            {item.matched && item.companyLedger && (
+            {(item.matched && item.companyLedger) ? (
               <div className="space-y-2 pt-2">
                 <div className="text-sm font-medium text-gray-500">
                   Company Ledger
@@ -89,17 +89,37 @@ export function MobileReconciliationView() {
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
-                      {item.companyLedger.date}
+                      {item.companyLedger?.date}
                     </div>
                     <div className="font-medium text-gray-900">
-                      {item.companyLedger.description}
+                      {item.companyLedger?.description}
                     </div>
                   </div>
                   <div className="font-medium text-gray-900">
-                    {formatCurrency(item.companyLedger.amount)}
+                    {item.companyLedger?.amount}
                   </div>
                 </div>
               </div>
+            ): (
+              <div className="space-y-2 pt-2">
+                <div className="text-sm font-medium text-gray-500">
+                  Company Ledger
+                </div>
+                <div className="flex justify-between items-start">
+                  <div className="space-y-1">
+                    <div className="text-sm text-gray-600">
+                      {item.companyLedger?.date}
+                    </div>
+                    <div className="font-medium text-gray-900">
+                      {item.companyLedger?.description}
+                    </div>
+                  </div>
+                  <div className="font-medium text-gray-900">
+                    {item.companyLedger?.amount}
+                  </div>
+                </div>
+              </div>
+
             )}
 
             {/* Show Unmatched status if not matched */}

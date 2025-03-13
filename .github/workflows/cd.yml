@@ -18,10 +18,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "23"
+          node-version: "20"
 
       - name: Install Dependencies
         run: npm install
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
+    # - name: Create .env file
+    #   run: |
+    #     echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env
 
       - name: Build Next.js App
         run: npm run build
@@ -31,38 +41,52 @@ jobs:
 
       - name: Copy the build artifact to the server
         run: |
-          sshpass -p ${{ secrets.EC2_PASSWORD }} scp -o StrictHostKeyChecking=no \
+          sshpass -p "${{ secrets.EC2_PASSWORD }}" scp -o StrictHostKeyChecking=no \
             build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
 
       - name: Update Deployment
         run: |
-          sshpass -p ${{ secrets.EC2_PASSWORD }} ssh -o StrictHostKeyChecking=no \
+          sshpass -p "${{ secrets.EC2_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
             ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
 
-            if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-              FE_PATH="/var/www/html/reconcile-ai-fe"
+            echo "Connected to remote server."
+
+            BRANCH=$(basename "${{ github.ref }}")
+            if [[ "$BRANCH" == "main" ]]; then
+              FE_PATH="/home/Reconcile/reconcile-ai-fe"
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
-              FE_PATH="/var/www/html/reconcile-ai-fe-dev"
+              FE_PATH="/home/Reconcile/reconcile-ai-fe-dev"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi
 
-            cd "$FE_PATH"
-            git pull origin ${GITHUB_REF#refs/heads/}
+            cd "$FE_PATH" || { echo "Failed to change directory!"; exit 1; }
+
+            echo "Fetching latest code..."
+            git fetch origin
+            git reset --hard HEAD
+            git checkout "$BRANCH"
+            git reset --hard origin/"$BRANCH"
+            git pull --rebase --no-edit || { echo "Git pull failed!"; exit 1; }
+
+            echo "Extracting build artifact..."
             cp ~/build-artifact/build-artifact.tar .
+            rm -rf .next/
             tar -xvf build-artifact.tar
             rm -f build-artifact.tar
 
+            echo "Installing dependencies..."
             npm ci
 
+            echo "Restarting PM2 service..."
             if npx pm2 list | grep -q "$PM2_NAME"; then
-              npx pm2 reload "$PM2_NAME"
+              npx pm2 restart "$PM2_NAME" --update-env
             else
               PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
             fi
 
-            pm2 restart "$PM2_NAME" --update-env
+            echo "Saving PM2 state..."
             npx pm2 save
           EOF

@@ -19,7 +19,7 @@ const Footer = () => {
             <div className="flex w-full items-center flex-col sm:flex-row justify-between gap-y-8 flex-wrap">
               <div className="flex flex-col w-full sm:w-fit gap-4">
                 <div className="flex flex-col gap-2 ">
-                  <Link href="/" className="w-fit sm:mb-3">
+                  <Link href="/" className="w-fit sm:mb-3" aria-label="ReconXi">
                     <div className="flex items-center justify-start gap-2">
                       <LogoIcon className="w-6 h-6 sm:h-12 sm:w-12 text-white" />
                       <span className="font-extrabold text-lg sm:text-4xl font-baloo text-white">
@@ -31,24 +31,28 @@ const Footer = () => {
                     <Link
                       href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
                       className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                      aria-label="Instagram"
                     >
                       <InstagramIcon className="text-inherit w-5 h-5" />
                     </Link>
                     <Link
                       href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
                       className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                      aria-label="Facebook"
                     >
                       <FacebookIcon className="text-inherit w-5 h-5" />
                     </Link>
                     <Link
                       href="https://www.linkedin.com/in/recon-xi-b06835354"
                       className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                      aria-label="Linkedin"
                     >
                       <LinkedinIcon className="text-inherit w-5 h-5" />
                     </Link>
                     <Link
                       href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
                       className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                      aria-label="Twitter"
                     >
                       <TwitterIcon className="text-inherit w-5 h-5" />
                     </Link>
@@ -65,24 +69,28 @@ const Footer = () => {
                   <Link
                     href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
                     className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                    aria-label="Instagram"
                   >
                     <InstagramIcon className="text-inherit w-5 h-5" />
                   </Link>
                   <Link
                     href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
                     className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                    aria-label="Facebook"
                   >
                     <FacebookIcon className="text-inherit w-5 h-5" />
                   </Link>
                   <Link
                     href="https://www.linkedin.com/in/recon-xi-b06835354"
                     className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                    aria-label="Linkedin"
                   >
                     <LinkedinIcon className="text-inherit w-5 h-5" />
                   </Link>
                   <Link
                     href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
                     className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                    aria-label="Twitter"
                   >
                     <TwitterIcon className="text-inherit w-5 h-5" />
                   </Link>
@@ -95,18 +103,21 @@ const Footer = () => {
                 <Link
                   href="/contact"
                   className="hover:underline underline-offset-2"
+                  aria-label="Contact Us"
                 >
                   Contact Us
                 </Link>
                 <Link
                   href="/terms-conditions"
                   className="hover:underline underline-offset-2"
+                  aria-label="Terms of Service"
                 >
                   Term of Service
                 </Link>
                 <Link
                   href="/privacy"
                   className="hover:underline underline-offset-2"
+                  aria-label="Privacy Policy"
                 >
                   Privacy Policy
                 </Link>
@@ -115,18 +126,21 @@ const Footer = () => {
                 <Link
                   href="/terms-conditions"
                   className="hover:underline underline-offset-2"
+                  aria-label="Terms"
                 >
                   Terms
                 </Link>
                 <Link
                   href="/privacy"
                   className="hover:underline underline-offset-2"
+                  aria-label="Privacy"
                 >
                   Privacy
                 </Link>
                 <Link
                   href="/contact"
                   className="hover:underline underline-offset-2"
+                  aria-label="Contact Us"
                 >
                   Contact Us
                 </Link>

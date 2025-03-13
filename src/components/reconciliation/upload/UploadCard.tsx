@@ -38,8 +38,11 @@ export default function UploadCard({
         return;
       }
 
-      if (existingFiles.includes(file.name)) {
-        setError("This file has already been uploaded");
+      // Only check if file exists in the other upload box
+      if (
+        existingFiles.filter((name) => name !== fileName).includes(file.name)
+      ) {
+        setError("This file is already uploaded in the other box");
         return;
       }
 
@@ -47,7 +50,7 @@ export default function UploadCard({
       setHasBeenUploaded(true);
       onFileSelect(file);
     },
-    [existingFiles, onFileSelect]
+    [existingFiles, fileName, onFileSelect]
   );
 
   useEffect(() => {

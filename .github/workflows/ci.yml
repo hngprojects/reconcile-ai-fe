@@ -23,8 +23,10 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        run: 
-          npm install          
+        run: npm install
+
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
 
       - name: Run Linting
         run: npm run lint
@@ -33,5 +35,4 @@ jobs:
         run: npm run build
 
       - name: Archive Build Artifact
-        run: tar -cvf build-artifact.tar .next      
-      
+        run: tar -cvf build-artifact.tar .next
