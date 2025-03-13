@@ -368,6 +368,55 @@ export const ArrowUpRightIcon = ({
     </svg>
   );
 };
+export const DuplicateIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-white", className)}
+      viewBox="0 0 13 13"
+      fill="none"
+    >
+      <path
+        d="M2.5 11C2.225 11 1.98958 10.9021 1.79375 10.7063C1.59792 10.5104 1.5 10.275 1.5 10V6.5H2.5V10H7V11H2.5ZM4.5 9C4.225 9 3.98958 8.90208 3.79375 8.70625C3.59792 8.51042 3.5 8.275 3.5 8V4.5H4.5V8H9V9H4.5ZM6.5 7C6.225 7 5.98958 6.90208 5.79375 6.70625C5.59792 6.51042 5.5 6.275 5.5 6V3C5.5 2.725 5.59792 2.48958 5.79375 2.29375C5.98958 2.09792 6.225 2 6.5 2H10.5C10.775 2 11.0104 2.09792 11.2063 2.29375C11.4021 2.48958 11.5 2.725 11.5 3V6C11.5 6.275 11.4021 6.51042 11.2063 6.70625C11.0104 6.90208 10.775 7 10.5 7H6.5ZM6.5 6H10.5V4H6.5V6Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+};
+
+export const MissingIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-white", className)}
+      viewBox="0 0 12 13"
+      fill="none"
+    >
+      <path
+        d="M1.75 7C1.54167 7 1.36458 6.92708 1.21875 6.78125C1.07292 6.63542 1 6.45833 1 6.25C1 6.04167 1.07292 5.86458 1.21875 5.71875C1.36458 5.57292 1.54167 5.5 1.75 5.5H4.75C4.95833 5.5 5.13542 5.57292 5.28125 5.71875C5.42708 5.86458 5.5 6.04167 5.5 6.25C5.5 6.45833 5.42708 6.63542 5.28125 6.78125C5.13542 6.92708 4.95833 7 4.75 7H1.75ZM7.25 7C7.04167 7 6.86458 6.92708 6.71875 6.78125C6.57292 6.63542 6.5 6.45833 6.5 6.25C6.5 6.04167 6.57292 5.86458 6.71875 5.71875C6.86458 5.57292 7.04167 5.5 7.25 5.5H10.25C10.4583 5.5 10.6354 5.57292 10.7812 5.71875C10.9271 5.86458 11 6.04167 11 6.25C11 6.45833 10.9271 6.63542 10.7812 6.78125C10.6354 6.92708 10.4583 7 10.25 7H7.25Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+};
+export const XIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-white", className)}
+      viewBox="0 0 17 17"
+      fill="none"
+    >
+      <rect x="0.5" y="0.5" width="16" height="16" rx="8" fill="#C50700" />
+      <path
+        d="M11.8337 5.1665L5.16699 11.8332M5.16699 5.1665L11.8337 11.8332"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
 
 const Icons = {
   File: FileIcon,
@@ -389,6 +438,9 @@ const Icons = {
   ArrowLeft: ArrowLeftIcon,
   ArrowRight: ArrowRightIcon,
   ArrowUpRight: ArrowUpRightIcon,
+  Duplicate: DuplicateIcon,
+  Missing: MissingIcon,
+  X: XIcon,
 };
 
 export default Icons;
