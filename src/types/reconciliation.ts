@@ -35,6 +35,7 @@ export type unmatched = {
 };
 
 export type ResponseData = {
+  reconciliation_id: string;
   matches: matched[];
   unmatched: unmatched;
   only_in_file1: Transaction[];
@@ -54,3 +55,17 @@ export type ReconciliationTableProps = {
   leftTableTitle?: string;
   rightTableTitle?: string;
 };
+
+export type ManualRequestBody = {
+  statement: {
+    date?: string;
+    description?: string;
+    amount?: number;
+  };
+  ledger?: {
+    date?: string;
+    description?: string;
+    amount?: number;
+  };
+  action: string;
+}

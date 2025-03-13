@@ -3,7 +3,10 @@ import {
   NEWSLETTER_API_URL,
   RECONCILE_API_URL,
   WAITLIST_API_URL,
+  MANUAL_API_URL
 } from "./apiEndpoints";
+
+import { ManualRequestBody } from "@/src/types/reconciliation";
 
 interface ApiError extends Error {
   code?: number;
@@ -163,5 +166,30 @@ export async function handleAddToNewsLetter(email: string): Promise<{
   } catch {
     // console.error(`Newsletter error for email ${email}:`, error);
     return { error: "Something went wrong. Please try again later." };
+  }
+}
+
+export async function updateReconciliation(reconciliation: string, data: ManualRequestBody){
+  console.log(data);
+  try {
+    const response = await fetch(`${MANUAL_API_URL}${reconciliation}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const resData = await response.json();
+
+    if (!response.ok) {
+      return { error: resData.message || "Failed to add to newsletter" };
+    }
+
+    return resData;
+
+  } catch (e) {
+    return { error: "Something went wrong. Please try again later." + e.message };
   }
 }

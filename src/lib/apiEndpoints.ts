@@ -19,3 +19,6 @@ export const USER_API_URL = `${BASE_URL}/user`;
 
 // NEWSLETTER
 export const NEWSLETTER_API_URL = `${BASE_URL}/newsletter/subscribe`;
+
+// MATCH/UNMATCH
+export const MANUAL_API_URL = `${BASE_URL}/reconcile/`;
