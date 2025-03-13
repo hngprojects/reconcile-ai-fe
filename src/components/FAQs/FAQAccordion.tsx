@@ -1,5 +1,6 @@
 // test
 "use client";
+import { motion, AnimatePresence } from "framer-motion";
 
 import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
@@ -38,29 +39,37 @@ const AccordionItem = ({
   };
 
   return (
-    <li className="w-full">
+    <motion.div
+      className="border-b border-gray-200 py-4"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
       <button
-        className="flex justify-between gap-1 cursor-pointer items-center w-full p-4 bg-white hover:bg-[#F9FAFB]"
+        className="flex justify-between items-center w-full text-left py-2"
         onClick={handleClick}
-        aria-expanded={isOpen}
       >
-        <span className="text-base font-medium text-[#101828] text-left">
+        <span className="text-lg font-medium text-[#101828]">
           {faq.question}
         </span>
-        <div className="w-8 h-8 rounded-full border border-[#D1D5DB] flex items-center justify-center flex-shrink-0">
-          {isOpen ? (
-            <Minus className="w-5 h-5 text-[#6B7280]" />
-          ) : (
-            <Plus className="w-5 h-5 text-[#6B7280]" />
-          )}
-        </div>
+        <div>{isOpen ? <Minus size={20} /> : <Plus size={20} />}</div>
       </button>
-      {isOpen && (
-        <div className="w-full px-4 pb-4 text-base text-[#475467] break-words">
-          {faq.answer}
-        </div>
-      )}
-    </li>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <p className="py-3 text-[#475467]">{faq.answer}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 

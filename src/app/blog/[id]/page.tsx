@@ -1,43 +1,47 @@
 'use client';
-
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { blogData } from "@/src/data/blogSampleData";
-
+import TryFreeCard from '@/src/components/try-free-card';
+import Footer from '@/src/components/Footer';
 export default function BlogDetail() {
   const params = useParams();
   const id = params.id;
   const blog = blogData.find((b) => b.id === Number(id));
-
   if (!blog) {
     return <p className="text-center mt-10 text-xl">Blog not found</p>;
   }
-
   return (
-    <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
+    <div>
+    <div className="max-w-[1216px] mx-auto px-4 md:px-6 py-8 md:py-12">
       {/* Breadcrumbs */}
+      <div className='lg:px-[40px]'>
       <nav className="flex mb-6 text-[14px] md:text-[16px] text-[#5C5C5C]">
-        <Link href="/" className="hover:text-[#2E604A]">
+        <Link href="/" className="font-normal text-[12px] leading-[16px] text-[#333333]">
           Home
         </Link>
-        <span className="mx-2">&gt;</span>
-        <Link href="/blog" className="hover:text-[#2E604A]">
+        <span className="font-normal text-[12px] leading-[16px] text-[#333333] mx-2">&gt;</span>
+        <Link href="/blog" className="font-normal text-[12px] leading-[16px] text-[#333333]">
           Blogs
         </Link>
-        <span className="mx-2">&gt;</span>
-        <span className="text-[#2E604A] font-medium truncate max-w-[200px]">
-          {blog.title}
+        <span className="font-normal text-[12px] leading-[16px] text-[#333333] mx-2">&gt;</span>
+        <span className="font-normal text-[12px] leading-[16px] text-[#333333]">
+          Blog Post
         </span>
       </nav>
+      
+      
+
+
 
       {/* Author Info and Metadata */}
       <div className="flex items-center gap-4 pt-[24px] mb-6">
         <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 pt-[64px]">
-          <Image 
-            src={blog.authorProfilePicture} 
-            alt={blog.authorName} 
-            fill 
+          <Image
+            src={blog.authorProfilePicture}
+            alt={blog.authorName}
+            fill
             className="rounded-full object-cover"
             sizes="(max-width: 1000px) 48px, 56px"
           />
@@ -51,55 +55,60 @@ export default function BlogDetail() {
           </div>
         </div>
       </div>
-
       {/* Blog Title */}
-      <h1 className="text-2xl pt-[24px] md:text-4xl font-bold mb-6 leading-tight text-[#333333]">
+      <h1 className=" leading-[140%] lg:font-semibold text-[28px] lg:text-[36px] font-semibold lg:leading-[140%] text-[#333333] mb-[24px] lg:mb-[100px]">
         {blog.title}
       </h1>
-
-      {/* Featured Image */}
-      <div className="relative w-full h-[200px] md:h-[400px] mb-8">
-        <Image 
-          src={blog.image} 
-          alt={blog.title} 
-          fill 
-          className="object-cover rounded-lg min-h-[600px]"
-          sizes="(max-width: 768px) 100vw, 1024px"
-          priority
-        />
       </div>
-
+      {/* Featured Image */}
+      <div className="">
+      <Image
+      src={blog.image}
+      alt={blog.title}
+      width={0}
+      height={0}
+      className="w-full h-[184.85px] lg:h-[560px] object-cover rounded-[8px]"
+      sizes="100vw"
+      // style={{ width: '100%', height: '60.85px' }}
+      priority
+/>
+      </div>
       {/* Intro Text */}
-      <p className="text-lg md:text-xl pt-[20px] font-medium text-[#333333] mb-8 leading-relaxed">
-        {blog.introText}
+      <div className='lg:px-[40px]'>
+      <div className='flex flex-col lg:gap-y-5 gap-y-4 my-[24px] lg:my-[20px] lg:mt-[64px] '>
+      <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
+        {blog.introText1}
       </p>
+      {/* <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
+        {blog.introText2}
+      </p>
+      <p className="text-[16px] leading-[24px] md:text-[16px] font-normal lg:text-[18px] text-[#333333] lg:leading-[140%]">
+        {blog.introText3}
+      </p> */}
       
+      </div>
       {/* Blog Sections */}
       <div className="space-y-8">
         <section>
           <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">{blog.sectionOneHeading}</h2>
           <p className="text-[#5C5C5C] leading-relaxed">{blog.sectionOneText}</p>
         </section>
-        
         <section>
           <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">{blog.sectionTwoHeading}</h2>
           <p className="text-[#5C5C5C] leading-relaxed">{blog.sectionTwoText}</p>
         </section>
-        
         <section>
           <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">{blog.categoryOneHeading}</h3>
           <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
             {blog.categoryOneContent}
           </div>
         </section>
-        
         <section>
           <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">{blog.categoryTwoHeading}</h3>
           <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
             {blog.categoryTwoContent}
           </div>
         </section>
-        
         <section>
           <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">{blog.categoryThreeHeading}</h3>
           <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
@@ -107,8 +116,10 @@ export default function BlogDetail() {
           </div>
         </section>
       </div>
-
-     
+    </div>
+      </div>
+      <TryFreeCard />
+      <Footer />
     </div>
   );
 }

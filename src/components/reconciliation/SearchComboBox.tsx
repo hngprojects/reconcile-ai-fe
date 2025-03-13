@@ -64,16 +64,16 @@ export function SearchCombobox({
                 <CommandItem
                   key={item.value}
                   value={item.value}
-                  onSelect={(currentValue) => {
+                  onSelect={async (currentValue) => {
                     setValue(currentValue);
-                    onSelect(currentValue);
+                    await onSelect(currentValue);
                     setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === item.value ? "opacity-100" : "opacity-0"
+                      value === item.value ? "opacity-100" : "opacity-0",
                     )}
                   />
                   {item.label}
