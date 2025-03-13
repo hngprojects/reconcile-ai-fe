@@ -29,6 +29,7 @@ import {
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
 import { DownloadCloudIcon } from "../Icon/Icons";
+import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
 
 interface Transaction {
   Date: string;
@@ -76,6 +77,7 @@ export function ReconciliationTable({
     showErrorModal,
     setShowErrorModal,
     data,
+    handleMatch,
   } = useReconciliationLogic();
 
   const [isExporting, setIsExporting] = React.useState(false);
@@ -123,30 +125,43 @@ export function ReconciliationTable({
     []
   );
 
+  console.log(
+    paginatedLedgerData.filter(
+      (ledg) =>
+        !data.matches.find((val) => val.file2_transaction == ledg) ||
+        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
+    )
+  );
+
   // Create status column data
   const statusData = React.useMemo(
     () =>
       [
-        ...paginatedBankData.map((bankItem) => ({
-          matched: data.matches.find(
-            (match) => match.file1_transaction === bankItem
+        ...paginatedBankData
+          .filter(
+            (bank) => bank["Date"] && bank["Description"] && bank["Amount"]
           )
-            ? true
-            : false,
-        })),
+          .map((bankItem) => ({
+            matched:
+              data.matches.find((val) => val.file1_transaction == bankItem) !==
+              undefined
+                ? true
+                : false,
+          })),
         ...paginatedLedgerData
-          .filter((ledg) =>
-            data.matches.find((match) => match.file2_transaction === ledg)
+          .filter(
+            (ledg) =>
+              !data.matches.find((val) => val.file2_transaction == ledg) ||
+              (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
           )
-          .map(
-            (ledger) =>
-              ledger && {
-                matched: false,
-              }
-          ),
-      ].splice(0, 10),
+          .map(() => ({
+            matched: false,
+          })),
+      ].slice(0, 10),
     [paginatedBankData, data.matches, paginatedLedgerData]
   );
+
+  console.log(statusData);
 
   // Create tables with shared pagination state
   const bankTable = useReactTable({
@@ -175,7 +190,10 @@ export function ReconciliationTable({
       pagination,
     },
     manualPagination: true,
-    pageCount: Math.ceil(paginatedLedgerData.length / pagination.pageSize),
+    pageCount: Math.ceil(
+      (paginatedBankData.length + paginatedLedgerData.length) /
+        pagination.pageSize
+    ),
   });
 
   // Calculate current page range
@@ -360,35 +378,68 @@ export function ReconciliationTable({
                   {bankTable.getRowModel().rows.length > 0 ? (
                     bankTable.getRowModel().rows.map((row, index) => {
                       const isMatched = statusData[index]?.matched;
-                      return (
-                        <TableRow
-                          key={row.id}
-                          className={`${
-                            isMatched
-                              ? "bg-[#F3FEFA] hover:!bg-[#F3FEFA]"
-                              : "bg-[#FFF4F0] hover:!bg-[#FFF4F0]"
-                          } `}
-                        >
-                          {row.getVisibleCells().map((cell, cellIndex) => (
+                      if (
+                        row.original["Description"] ||
+                        row.original["Date"] ||
+                        row.original["Amount"]
+                      ) {
+                        return (
+                          <TableRow
+                            key={row.id}
+                            className={`${
+                              isMatched
+                                ? "bg-[#F3FEFA] hover:!bg-[#F3FEFA]"
+                                : "bg-[#FFF4F0] hover:!bg-[#FFF4F0]"
+                            } `}
+                          >
+                            {row.getVisibleCells().map((cell, cellIndex) => (
+                              <TableCell
+                                key={cell.id}
+                                className={cn(
+                                  "text-center h-[64px] relative",
+                                  "max-w-[200px] md:max-w-none",
+                                  "whitespace-nowrap overflow-hidden text-ellipsis",
+                                  cellIndex !==
+                                    row.getVisibleCells().length - 1 &&
+                                    "border-r"
+                                )}
+                                title={cell.getValue() as string}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        );
+                      } else {
+                        return (
+                          <TableRow key={row.id}>
                             <TableCell
-                              key={cell.id}
-                              className={cn(
-                                "text-center h-[64px] relative",
-                                "max-w-[200px] md:max-w-none",
-                                "whitespace-nowrap overflow-hidden text-ellipsis",
-                                cellIndex !==
-                                  row.getVisibleCells().length - 1 && "border-r"
-                              )}
-                              title={cell.getValue() as string}
+                              colSpan={ledgerColumns.length}
+                              className="px-4 h-[64px] italic font-[300] w-full"
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
+                              <SearchCombobox
+                                items={data.unmatched.unmatched_file1.map(
+                                  (txn) => ({
+                                    label: `${txn["Description"]} - ${txn["Amount"]}`,
+                                    value: JSON.stringify(txn),
+                                  })
+                                )}
+                                placeholder="Find possible Match"
+                                onSelect={async (value) => {
+                                  await handleMatch(
+                                    paginatedLedgerData[row.index],
+                                    "statement",
+                                    JSON.parse(value)
+                                  );
+                                }}
+                              />
                             </TableCell>
-                          ))}
-                        </TableRow>
-                      );
+                          </TableRow>
+                        );
+                      }
                     })
                   ) : (
                     <TableRow>
@@ -461,35 +512,68 @@ export function ReconciliationTable({
                   {ledgerTable.getRowModel().rows.length > 0 ? (
                     ledgerTable.getRowModel().rows.map((row, index) => {
                       const isMatched = statusData[index]?.matched;
-                      return (
-                        <TableRow
-                          key={row.id}
-                          className={`${
-                            isMatched
-                              ? "bg-[#F3FEFA] hover:!bg-[#F3FEFA]"
-                              : "bg-[#FFF4F0] hover:!bg-[#FFF4F0]"
-                          } `}
-                        >
-                          {row.getVisibleCells().map((cell, cellIndex) => (
+                      if (
+                        row.original["Description"] &&
+                        row.original["Date"] &&
+                        row.original["Amount"]
+                      ) {
+                        return (
+                          <TableRow
+                            key={row.id}
+                            className={`${
+                              isMatched
+                                ? "bg-[#F3FEFA] hover:!bg-[#F3FEFA]"
+                                : "bg-[#FFF4F0] hover:!bg-[#FFF4F0]"
+                            } `}
+                          >
+                            {row.getVisibleCells().map((cell, cellIndex) => (
+                              <TableCell
+                                key={cell.id}
+                                className={cn(
+                                  "text-center h-[64px] relative",
+                                  "max-w-[200px] md:max-w-none",
+                                  "whitespace-nowrap overflow-hidden text-ellipsis",
+                                  cellIndex !==
+                                    row.getVisibleCells().length - 1 &&
+                                    "border-r"
+                                )}
+                                title={cell.getValue() as string}
+                              >
+                                {flexRender(
+                                  cell.column.columnDef.cell,
+                                  cell.getContext()
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        );
+                      } else {
+                        return (
+                          <TableRow key={row.id}>
                             <TableCell
-                              key={cell.id}
-                              className={cn(
-                                "text-center h-[64px] relative",
-                                "max-w-[200px] md:max-w-none",
-                                "whitespace-nowrap overflow-hidden text-ellipsis",
-                                cellIndex !==
-                                  row.getVisibleCells().length - 1 && "border-r"
-                              )}
-                              title={cell.getValue() as string}
+                              colSpan={ledgerColumns.length}
+                              className="px-4 h-[64px] italic font-[300] w-full"
                             >
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext()
-                              )}
+                              <SearchCombobox
+                                items={data.unmatched.unmatched_file2.map(
+                                  (txn) => ({
+                                    label: `${txn["Description"]} - ${txn["Amount"]}`,
+                                    value: JSON.stringify(txn),
+                                  })
+                                )}
+                                placeholder="Find possible Match"
+                                onSelect={async (value) => {
+                                  await handleMatch(
+                                    paginatedBankData[row.index],
+                                    "ledger",
+                                    JSON.parse(value)
+                                  );
+                                }}
+                              />
                             </TableCell>
-                          ))}
-                        </TableRow>
-                      );
+                          </TableRow>
+                        );
+                      }
                     })
                   ) : (
                     <TableRow>

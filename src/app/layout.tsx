@@ -143,20 +143,7 @@ export default function RootLayout({
         <AuthProvider>
           <Nav />
           {children}
-          <Toaster
-            position="top-right"
-            toastOptions={{
-              style: {
-                background: "#EEFFEE",
-                maxWidth: "90%",
-                width: "min(438px, 90%)",
-                height: "48px",
-                padding: "12px 24px",
-                borderRadius: "8px",
-                boxShadow: "none",
-              },
-            }}
-          />
+          <Toaster position="top-right" expand={false} richColors />
         </AuthProvider>
       </body>
     </html>
