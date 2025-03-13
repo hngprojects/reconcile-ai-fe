@@ -1,4 +1,4 @@
-"use client";
+<!-- "use client";
 
 import { Button } from "@/src/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
@@ -11,17 +11,16 @@ import { useState, useEffect } from "react";
 import { SearchCombobox } from "./SearchComboBox";
 import { SuccessToast } from "./SuccessToast";
 import { Transaction } from "@/src/types/reconciliation";
-import { toast } from "sonner";
 
 interface ReconciliationData {
   matches: Array<{
-    file1_transaction: Transaction;
-    file2_transaction: Transaction;
+    file1_transaction: any;
+    file2_transaction: any;
     status?: string;
   }>;
-  unmatched?: Record<string, Transaction[]>;
-  only_in_file1?: Transaction[];
-  only_in_file2?: Transaction[];
+  unmatched?: Record<string, any[]>;
+  only_in_file1?: any[];
+  only_in_file2?: any[];
 }
 
 export function MobileReconciliationView() {
@@ -44,7 +43,7 @@ export function MobileReconciliationView() {
 
   const paginatedData = combinedData.slice(
     currentPage * pagination.pageSize,
-    (currentPage + 1) * pagination.pageSize,
+    (currentPage + 1) * pagination.pageSize
   );
 
   // Export function
@@ -76,13 +75,13 @@ export function MobileReconciliationView() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: formattedData }),
-        },
+        }
       );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         throw new Error(
-          errorData?.message || `Export failed with status: ${response.status}`,
+          errorData?.message || `Export failed with status: ${response.status}`
         );
       }
 
@@ -98,10 +97,10 @@ export function MobileReconciliationView() {
 
       setToastMessage("Your data has been exported successfully!");
       setShowSuccessToast(true);
-    } catch (error: unknown) {
+    } catch (error) {
       console.error("Export error:", error);
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data",
+        error instanceof Error ? error.message : "Failed to export data"
       );
     } finally {
       setIsExporting(false);
@@ -160,7 +159,7 @@ export function MobileReconciliationView() {
           key={`${item.bankStatement.description}-${index}`}
           className={cn(
             "rounded-lg border shadow-sm",
-            item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
+            item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]"
           )}
         >
           {/* Column Headers */}
@@ -174,14 +173,13 @@ export function MobileReconciliationView() {
           )}
 
           <div className="p-4 space-y-4">
-            {/* Bank Statement Section */}
-            <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-500">
-                Bank Statement
-              </div>
-              {item.bankStatement.date &&
-              item.bankStatement.description &&
-              item.bankStatement.amount ? (
+            {item.bankStatement.date &&
+            item.bankStatement.description &&
+            item.bankStatement.amount ? (
+              <div className="space-y-2">
+                <div className="text-sm font-medium text-gray-500">
+                  Bank Statement
+                </div>
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
@@ -195,7 +193,19 @@ export function MobileReconciliationView() {
                     {item.bankStatement.amount}
                   </div>
                 </div>
-              ) : (
+                {item.matched && (
+                  <div className="pt-1">
+                    <div className="flex gap-3 items-center">
+                      <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
+                        <StatusBadge matched={true} />
+                      </div>
+                      <hr className="border border-gray-200/70 flex-1" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="px-4 h-[64px] italic font-[300] w-full">
                 <SearchCombobox
                   items={data.unmatched.unmatched_file1.map((txn) => ({
                     label: `${txn["Description"]} - ${txn["Amount"]}`,
@@ -203,41 +213,24 @@ export function MobileReconciliationView() {
                   }))}
                   placeholder="Find possible Match"
                   onSelect={async (value) => {
-                    try {
-                      if (item.companyLedger) {
-                        await handleMatch(
-                          item.companyLedger as Transaction,
-                          "statement",
-                          JSON.parse(value),
-                        );
-                        toast.success("Transactions matched successfully!");
-                      }
-                    } catch {
-                      toast.error("Failed to match transactions");
+                    if (item.companyLedger) {
+                      await handleMatch(
+                        item.companyLedger as Transaction,
+                        "statement",
+                        JSON.parse(value)
+                      );
                     }
                   }}
                 />
-              )}
-            </div>
+              </div>
+            )}
 
-            {/* Status Badge - Now consistently positioned */}
-            <div className="pt-1">
-              <div className="flex gap-3 items-center">
-                <div
-                  className={`inline-block border-[0.5px] ${item.matched ? "border-[#007A55]" : "border-[#C50700]"} p-2 rounded-3xl`}
-                >
-                  <StatusBadge matched={item.matched} />
+            {/* Company Ledger section with search */}
+            {item.matched && item.companyLedger ? (
+              <div className="space-y-2 pt-2">
+                <div className="text-sm font-medium text-gray-500">
+                  Company Ledger
                 </div>
-                <hr className="border border-gray-200/70 flex-1" />
-              </div>
-            </div>
-
-            {/* Company Ledger Section */}
-            <div className="space-y-2">
-              <div className="text-sm font-medium text-gray-500">
-                Company Ledger
-              </div>
-              {item.matched && item.companyLedger ? (
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
@@ -251,7 +244,9 @@ export function MobileReconciliationView() {
                     {item.companyLedger?.amount}
                   </div>
                 </div>
-              ) : (
+              </div>
+            ) : (
+              <div className="px-4 h-[64px] italic font-[300] w-full">
                 <SearchCombobox
                   items={data.unmatched.unmatched_file2.map((txn) => ({
                     label: `${txn["Description"]} - ${txn["Amount"]}`,
@@ -259,24 +254,31 @@ export function MobileReconciliationView() {
                   }))}
                   placeholder="Find possible Match"
                   onSelect={async (value) => {
-                    try {
-                      await handleMatch(
-                        {
-                          Date: item.bankStatement.date,
-                          Description: item.bankStatement.description,
-                          Amount: item.bankStatement.amount,
-                        } as Transaction,
-                        "ledger",
-                        JSON.parse(value),
-                      );
-                      toast.success("Transactions matched successfully!");
-                    } catch {
-                      toast.error("Failed to match transactions");
-                    }
+                    await handleMatch(
+                      {
+                        Date: item.bankStatement.date,
+                        Description: item.bankStatement.description,
+                        Amount: item.bankStatement.amount,
+                      } as Transaction,
+                      "ledger",
+                      JSON.parse(value)
+                    );
                   }}
                 />
-              )}
-            </div>
+              </div>
+            )}
+
+            {/* Show Unmatched status if not matched */}
+            {!item.matched && (
+              <div className="pt-1">
+                <div className="flex gap-3 items-center">
+                  <div className="inline-block border-[0.5px] border-[#C50700] p-2 rounded-3xl">
+                    <StatusBadge matched={false} />
+                  </div>
+                  <hr className="border border-gray-200/70 flex-1" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ))}
@@ -309,4 +311,4 @@ export function MobileReconciliationView() {
       </div>
     </div>
   );
-}
+} -->

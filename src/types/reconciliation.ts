@@ -43,9 +43,10 @@ export type ResponseData = {
 };
 
 export type Transaction = {
-  Description: string;
   Date: string;
+  Description: string;
   Amount: number;
+  [key: string]: string | number;
 };
 
 export type TData = {
