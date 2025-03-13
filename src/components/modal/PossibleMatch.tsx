@@ -21,10 +21,9 @@ export default function PossibleMatch(
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-sm p-4">
-        <DialogHeader className="flex justify-between">
-          <DialogTitle className="text-lg font-semibold">Find Possible Match</DialogTitle>
+        <DialogHeader>
+          <DialogTitle className="flex flex-start text-lg font-semibold">Find Possible Match</DialogTitle>
         </DialogHeader>
-
               <div className="space-y-2 bg-[#FFF4F0] py-6 px-4 rounded-4">
                 <div className="text-sm font-medium text-gray-500">
                   Bank Statement
