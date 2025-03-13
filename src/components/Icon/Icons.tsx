@@ -411,8 +411,8 @@ export const XIcon = ({ className = defaultSize }: IconClassProps) => {
       <path
         d="M11.8337 5.1665L5.16699 11.8332M5.16699 5.1665L11.8337 11.8332"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

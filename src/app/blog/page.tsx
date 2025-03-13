@@ -87,7 +87,10 @@ export default function BlogPage() {
                             <h3 className="w-auto line-clamp-2 font-semibold text-[18px] text-[#333333] leading-[140%] lg:font-semibold lg:text-[24px] lg:leading-[140%]">
                               {blog.title}
                             </h3>
-                            <ArrowUpRightIcon />
+
+                            <div className="mt-0.5">
+                              <ArrowUpRightIcon />
+                            </div>
                           </div>
                           <p className="font-normal text-[14px] leading-[24px] line-clamp-3 lg:font-normal lg:text-[16px] lg:leading-[24px]">
                             {blog.description}
