@@ -4,14 +4,13 @@ import { Button } from "@/src/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/src/lib/utils";
 import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
-import Image from "next/image";
-import exportIcon from "@/public/assets/images/download-cloud-02.png";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SearchCombobox } from "./SearchComboBox";
 import { SuccessToast } from "./SuccessToast";
 import { Transaction } from "@/src/types/reconciliation";
 import { toast } from "sonner";
+import { DownloadCloudIcon } from "../Icon/Icons";
 
 interface ReconciliationData {
   matches: Array<{
@@ -44,7 +43,7 @@ export function MobileReconciliationView() {
 
   const paginatedData = combinedData.slice(
     currentPage * pagination.pageSize,
-    (currentPage + 1) * pagination.pageSize,
+    (currentPage + 1) * pagination.pageSize
   );
 
   // Export function
@@ -76,13 +75,13 @@ export function MobileReconciliationView() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: formattedData }),
-        },
+        }
       );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         throw new Error(
-          errorData?.message || `Export failed with status: ${response.status}`,
+          errorData?.message || `Export failed with status: ${response.status}`
         );
       }
 
@@ -101,7 +100,7 @@ export function MobileReconciliationView() {
     } catch (error: unknown) {
       console.error("Export error:", error);
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data",
+        error instanceof Error ? error.message : "Failed to export data"
       );
     } finally {
       setIsExporting(false);
@@ -131,7 +130,7 @@ export function MobileReconciliationView() {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Result</h1>
         <button
-          className="px-[57px] py-[16px] bg-[transparent] border-[1px] border-solid border-[#2E604A] text-[#2E604A] rounded-md w-[150px] h-[50px] flex items-center justify-center cursor-pointer"
+          className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
           onClick={handleExport}
           disabled={isExporting}
         >
@@ -141,13 +140,7 @@ export function MobileReconciliationView() {
             </>
           ) : (
             <>
-              <Image
-                src={exportIcon}
-                alt="Export"
-                width={24}
-                height={24}
-                className="mr-2 w-5 h-5"
-              />{" "}
+              <DownloadCloudIcon className="mr-2 w-5 h-5" />
               Export
             </>
           )}
@@ -160,7 +153,7 @@ export function MobileReconciliationView() {
           key={`${item.bankStatement.description}-${index}`}
           className={cn(
             "rounded-lg border shadow-sm",
-            item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
+            item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]"
           )}
         >
           {/* Column Headers */}
@@ -208,7 +201,7 @@ export function MobileReconciliationView() {
                         await handleMatch(
                           item.companyLedger as Transaction,
                           "statement",
-                          JSON.parse(value),
+                          JSON.parse(value)
                         );
                         toast.success("Transactions matched successfully!");
                       }
@@ -267,7 +260,7 @@ export function MobileReconciliationView() {
                           Amount: item.bankStatement.amount,
                         } as Transaction,
                         "ledger",
-                        JSON.parse(value),
+                        JSON.parse(value)
                       );
                       toast.success("Transactions matched successfully!");
                     } catch {
