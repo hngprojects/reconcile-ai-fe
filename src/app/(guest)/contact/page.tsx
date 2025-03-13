@@ -64,8 +64,7 @@ const Contact = () => {
           className="max-w-[996px] mx-auto flex flex-col items-center mb-[58px] md:mb-[64px]"
           variants={containerVariants}
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          animate="visible"
         >
           <motion.p
             className="bg-[#E6FFF2] rounded-[16px] py-2 px-3 text-[20px] text-[#009A49]"
@@ -104,8 +103,7 @@ const Contact = () => {
             <motion.div
               variants={formVariants}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+             animate="visible"
               className="w-full rounded-lg md:border md:border-[rgba(82,82,82,0.2)] max-w-[663px] md:p-8"
             >
               <ContactUsForm setIsSubmitted={setIsSubmitted} />
