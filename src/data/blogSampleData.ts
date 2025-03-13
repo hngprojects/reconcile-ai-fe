@@ -278,7 +278,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 12,
-      image: "/assets/images/image3.svg",
+      image: "/assets/images/Image3.svg",
       authorName: "Robert Williams",
       publishedDate: "November 15, 2025",
       title: "Leadership Skills: Becoming an Effective Leader",
@@ -301,7 +301,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 13,
-      image: "/assets/images/image4.svg",
+      image: "/assets/images/Image4.svg",
       authorName: "Jessica Martinez",
       publishedDate: "December 8, 2025",
       title: "Marketing Strategies: Growing Your Brand Online",
@@ -324,7 +324,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 14,
-      image: "/assets/images/image5.svg",
+      image: "/assets/images/Image5.svg",
       authorName: "David Johnson",
       publishedDate: "January 18, 2026",
       title: "Learn to Code: A Beginner's Guide",
@@ -347,7 +347,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 15,
-      image: "/assets/images/image6.svg",
+      image: "/assets/images/Image6.svg",
       authorName: "Olivia White",
       publishedDate: "February 22, 2026",
       title: "Mental Health Matters: Coping with Stress and Anxiety",
@@ -370,7 +370,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 16,
-      image: "/assets/images/image7.svg",
+      image: "/assets/images/Image7.svg",
       authorName: "Emily Johnson",
       publishedDate: "June 5, 2025",
       title: "The Future of AI: How Technology is Changing Our World",
@@ -393,7 +393,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 17,
-      image: "/assets/images/image9.svg",
+      image: "/assets/images/Image9.svg",
       authorName: "Michael Brown",
       publishedDate: "July 12, 2025",
       title: "Healthy Living: A Guide to Long-Term Wellness",
@@ -416,7 +416,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 18,
-      image: "/assets/images/image8.svg",
+      image: "/assets/images/Image8.svg",
       authorName: "Sophia Martinez",
       publishedDate: "August 20, 2025",
       title: "Travel on a Budget: Exploring the World Affordably",
@@ -439,7 +439,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 19,
-      image: "/assets/images/image.svg",
+      image: "/assets/images/Image.svg",
       authorName: "James Carter",
       publishedDate: "September 5, 2025",
       title: "Productivity Hacks: Get More Done in Less Time",
@@ -462,7 +462,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 20,
-      image: "/assets/images/image2.svg",
+      image: "/assets/images/Image2.svg",
       authorName: "Lisa Anderson",
       publishedDate: "October 2, 2025",
       title: "Self-Improvement: Unlock Your Full Potential",
@@ -485,7 +485,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 21,
-      image: "/assets/images/image3.svg",
+      image: "/assets/images/Image3.svg",
       authorName: "Robert Williams",
       publishedDate: "November 15, 2025",
       title: "Leadership Skills: Becoming an Effective Leader",
@@ -508,7 +508,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 22,
-      image: "/assets/images/image4.svg",
+      image: "/assets/images/Image4.svg",
       authorName: "Jessica Martinez",
       publishedDate: "December 8, 2025",
       title: "Marketing Strategies: Growing Your Brand Online",
@@ -531,7 +531,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 23,
-      image: "/assets/images/image5.svg",
+      image: "/assets/images/Image5.svg",
       authorName: "David Johnson",
       publishedDate: "January 18, 2026",
       title: "Learn to Code: A Beginner's Guide",
@@ -554,7 +554,7 @@ export const blogData: BlogDetails[] = [
     },
     {
       id: 24,
-      image: "/assets/images/image6.svg",
+      image: "/assets/images/Image6.svg",
       authorName: "Olivia White",
       publishedDate: "February 22, 2026",
       title: "Mental Health Matters: Coping with Stress and Anxiety",
