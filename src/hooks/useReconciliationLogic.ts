@@ -4,8 +4,10 @@ import {
   ResponseData,
   TData,
   Transaction,
-  matchedItem
+  matchedItem,
+  ManualRequestBody
 } from "@/src/types/reconciliation";
+import { updateReconciliation } from "@/src/lib/api";
 
 const validateDocuments = (data: TData[]) => {
   const requiredHeaders = ["Date", "Description", "Amount"];
@@ -149,6 +151,31 @@ export function useReconciliationLogic() {
     (pagination.pageIndex + 1) * pagination.pageSize
   );
 
+  const handleMatch = async (selected: Transaction, selectedType: string, match: Transaction) => {
+    let body;
+    if(selectedType == 'statement'){
+       body = {
+          ledger: selected,
+          statement: match,
+          action: 'match'
+      };
+    }else {
+       body = {
+          statement: selected,
+          ledger: match,
+          action: 'match'
+      };
+    }
+    const id = data['reconciliation_id'] as string;
+
+    const response = await updateReconciliation(id, body as ManualRequestBody);
+
+    if(response.status == 'success'){
+      localStorage.setItem('reconciliation', JSON.stringify(response.data));
+      setData(response.data);
+    }
+  }
+
   return {
     pagination,
     setPagination,
@@ -169,5 +196,6 @@ export function useReconciliationLogic() {
     setShowErrorModal,
     setData,
     data,
+    handleMatch
   };
 }

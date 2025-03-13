@@ -64,9 +64,9 @@ export function SearchCombobox({
                 <CommandItem
                   key={item.value}
                   value={item.value}
-                  onSelect={(currentValue) => {
+                  onSelect={async (currentValue) => {
                     setValue(currentValue);
-                    onSelect(currentValue);
+                    await onSelect(currentValue);
                     setOpen(false);
                   }}
                 >
