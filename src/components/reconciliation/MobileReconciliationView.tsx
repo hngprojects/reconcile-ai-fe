@@ -24,8 +24,6 @@ export function MobileReconciliationView() {
   );
 
 
-  const [open, setOpen] = useState(false);
-
   return (
     <div className="space-y-3 py-6">
       <h1 className="text-2xl font-semibold">Matched Result</h1>
@@ -77,11 +75,9 @@ export function MobileReconciliationView() {
                     <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
                       <StatusBadge matched={true} />
                     </div>
-                    {/* <hr 
+                    <hr 
                     className="border border-gray-200/70 flex-1"
-                    /> */}
-                    <hr className="border border-gray-200/70 flex-1 w-full my-4 cursor-pointer" onClick={() => setOpen(true)} />
-                    <PossibleMatch open={open} setOpen={setOpen} />
+                    />
                   </div>
                 </div>
               )}
