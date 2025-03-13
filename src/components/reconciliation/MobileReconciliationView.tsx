@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { SearchCombobox } from "./SearchComboBox";
 import { SuccessToast } from "./SuccessToast";
 import { Transaction } from "@/src/types/reconciliation";
+import { toast } from "sonner";
 
 interface ReconciliationData {
   matches: Array<{
@@ -202,12 +203,17 @@ export function MobileReconciliationView() {
                   }))}
                   placeholder="Find possible Match"
                   onSelect={async (value) => {
-                    if (item.companyLedger) {
-                      await handleMatch(
-                        item.companyLedger as Transaction,
-                        "statement",
-                        JSON.parse(value),
-                      );
+                    try {
+                      if (item.companyLedger) {
+                        await handleMatch(
+                          item.companyLedger as Transaction,
+                          "statement",
+                          JSON.parse(value),
+                        );
+                        toast.success("Transactions matched successfully!");
+                      }
+                    } catch {
+                      toast.error("Failed to match transactions");
                     }
                   }}
                 />
@@ -253,15 +259,20 @@ export function MobileReconciliationView() {
                   }))}
                   placeholder="Find possible Match"
                   onSelect={async (value) => {
-                    await handleMatch(
-                      {
-                        Date: item.bankStatement.date,
-                        Description: item.bankStatement.description,
-                        Amount: item.bankStatement.amount,
-                      } as Transaction,
-                      "ledger",
-                      JSON.parse(value),
-                    );
+                    try {
+                      await handleMatch(
+                        {
+                          Date: item.bankStatement.date,
+                          Description: item.bankStatement.description,
+                          Amount: item.bankStatement.amount,
+                        } as Transaction,
+                        "ledger",
+                        JSON.parse(value),
+                      );
+                      toast.success("Transactions matched successfully!");
+                    } catch {
+                      toast.error("Failed to match transactions");
+                    }
                   }}
                 />
               )}
