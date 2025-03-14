@@ -76,7 +76,7 @@ const EmailSubscribeForm = () => {
                         <div className="">
                           <Input
                             placeholder="Enter your email"
-                            className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:min-w-72"
+                            className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:max-w-md"
                             {...field}
                           />
                           <FormMessage className="text-sm text-left text-red-500 mt-0.5 whitespace-normal" />

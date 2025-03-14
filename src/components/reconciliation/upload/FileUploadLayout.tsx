@@ -127,12 +127,6 @@ export default function FileUploadLayout({
     clearUploadedFiles();
   }, []);
 
-  const handleFileDelete = (type: "bank" | "ledger") => {
-    const targetState = type === "bank" ? setBankStatement : setCompanyLedger;
-    targetState(null);
-    setUploadProgress((prev) => ({ ...prev, [type]: 0 }));
-  };
-
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
@@ -214,7 +208,7 @@ export default function FileUploadLayout({
           fileUploaded={!!bankStatement}
           fileName={bankStatement?.name}
           onFileSelect={(file) => handleFileUpload(file, "bank")}
-          onFileDelete={() => handleFileDelete("bank")}
+          onFileDelete={() => setBankStatement(null)}
           isUploading={isUploading.bank}
           uploadProgress={uploadProgress.bank}
           existingFiles={existingFiles}
@@ -224,7 +218,7 @@ export default function FileUploadLayout({
           fileUploaded={!!companyLedger}
           fileName={companyLedger?.name}
           onFileSelect={(file) => handleFileUpload(file, "ledger")}
-          onFileDelete={() => handleFileDelete("ledger")}
+          onFileDelete={() => setCompanyLedger(null)}
           isUploading={isUploading.ledger}
           uploadProgress={uploadProgress.ledger}
           existingFiles={existingFiles}

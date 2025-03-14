@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import exportIcon from "@/public/assets/images/download-cloud-02.png";
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -28,10 +30,8 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
-import { DownloadCloudIcon, XIcon } from "../Icon/Icons";
 import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
 import { toast } from "sonner";
-import UnlinkModal from "../modal/UnlinkModal";
 
 interface Transaction {
   Date: string;
@@ -80,17 +80,9 @@ export function ReconciliationTable({
     setShowErrorModal,
     data,
     handleMatch,
-    handleUnlink,
   } = useReconciliationLogic();
 
   const [isExporting, setIsExporting] = React.useState(false);
-
-  // Add state for UnlinkModal
-  const [activeStatusIndex, setActiveStatusIndex] = React.useState<
-    number | null
-  >(null);
-  const [showUnlinkModal, setShowUnlinkModal] = React.useState(false);
-  const [loadingUnlinkModal, setLoadingUnlinkModal] = React.useState(false);
 
   // Add state for custom toasts
   const [showSuccessToast, setShowSuccessToast] = React.useState(false);
@@ -113,7 +105,7 @@ export function ReconciliationTable({
         cell: (info) => info.getValue(),
       }),
     ],
-    []
+    [],
   );
 
   // Define company ledger columns
@@ -132,15 +124,15 @@ export function ReconciliationTable({
         cell: (info) => info.getValue(),
       }),
     ],
-    []
+    [],
   );
 
   console.log(
     paginatedLedgerData.filter(
       (ledg) =>
         !data.matches.find((val) => val.file2_transaction == ledg) ||
-        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
-    )
+        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"]),
+    ),
   );
 
   // Create status column data
@@ -149,7 +141,7 @@ export function ReconciliationTable({
       [
         ...paginatedBankData
           .filter(
-            (bank) => bank["Date"] && bank["Description"] && bank["Amount"]
+            (bank) => bank["Date"] && bank["Description"] && bank["Amount"],
           )
           .map((bankItem) => ({
             matched:
@@ -162,14 +154,16 @@ export function ReconciliationTable({
           .filter(
             (ledg) =>
               !data.matches.find((val) => val.file2_transaction == ledg) ||
-              (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
+              (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"]),
           )
           .map(() => ({
             matched: false,
           })),
-      ].slice(0, pagination.pageSize),
-    [paginatedBankData, data.matches, paginatedLedgerData, pagination.pageSize]
+      ].slice(0, 10),
+    [paginatedBankData, data.matches, paginatedLedgerData],
   );
+
+  console.log(statusData);
 
   // Create tables with shared pagination state
   const bankTable = useReactTable({
@@ -184,7 +178,7 @@ export function ReconciliationTable({
     manualPagination: true,
     pageCount: Math.ceil(
       (paginatedBankData.length + paginatedLedgerData.length) /
-        pagination.pageSize
+        pagination.pageSize,
     ),
   });
 
@@ -200,7 +194,7 @@ export function ReconciliationTable({
     manualPagination: true,
     pageCount: Math.ceil(
       (paginatedBankData.length + paginatedLedgerData.length) /
-        pagination.pageSize
+        pagination.pageSize,
     ),
   });
 
@@ -208,7 +202,7 @@ export function ReconciliationTable({
   const pageStart = pagination.pageIndex * pagination.pageSize + 1;
   const pageEnd = Math.min(
     (pagination.pageIndex + 1) * pagination.pageSize,
-    totalItems
+    totalItems,
   );
 
   // array of row options
@@ -280,7 +274,7 @@ export function ReconciliationTable({
           body: JSON.stringify({
             data: formattedData,
           }),
-        }
+        },
       );
 
       // Check for errors with better error reporting
@@ -314,7 +308,7 @@ export function ReconciliationTable({
       console.error("Export error:", error);
       // Show error toast using custom component
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data"
+        error instanceof Error ? error.message : "Failed to export data",
       );
       setShowErrorToast(true);
     } finally {
@@ -336,11 +330,12 @@ export function ReconciliationTable({
             />
           </div>
         )}
+
         {/* header section */}
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
           <button
-            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+            className="px-[57px] py-[16px] bg-[transparent] border-[1px] border-solid border-[#2E604A] text-[#2E604A] rounded-md w-[150px] h-[50px] flex items-center justify-center cursor-pointer"
             onClick={handleExport}
             disabled={isExporting}
           >
@@ -350,12 +345,19 @@ export function ReconciliationTable({
               </>
             ) : (
               <>
-                <DownloadCloudIcon className="mr-2 w-5 h-5" />
+                <Image
+                  src={exportIcon}
+                  alt="Export"
+                  width={24}
+                  height={24}
+                  className="mr-2 w-5 h-5"
+                />{" "}
                 Export
               </>
             )}
           </button>
         </div>
+
         <div className="grid grid-cols-12 gap-2 max-w-[1440px] mx-auto">
           {/* Bank Statement Table */}
           <div className="col-span-5">
@@ -373,7 +375,7 @@ export function ReconciliationTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </TableHead>
                       ))}
@@ -407,13 +409,13 @@ export function ReconciliationTable({
                                   "whitespace-nowrap overflow-hidden text-ellipsis",
                                   cellIndex !==
                                     row.getVisibleCells().length - 1 &&
-                                    "border-r"
+                                    "border-r",
                                 )}
                                 title={cell.getValue() as string}
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext()
+                                  cell.getContext(),
                                 )}
                               </TableCell>
                             ))}
@@ -431,7 +433,7 @@ export function ReconciliationTable({
                                   (txn) => ({
                                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                                     value: JSON.stringify(txn),
-                                  })
+                                  }),
                                 )}
                                 placeholder="Find possible Match"
                                 onSelect={async (value) => {
@@ -439,10 +441,10 @@ export function ReconciliationTable({
                                     await handleMatch(
                                       paginatedLedgerData[row.index],
                                       "statement",
-                                      JSON.parse(value)
+                                      JSON.parse(value),
                                     );
                                     toast.success(
-                                      "Transactions matched successfully!"
+                                      "Transactions matched successfully!",
                                     );
                                   } catch {
                                     toast.error("Failed to match transactions");
@@ -468,6 +470,7 @@ export function ReconciliationTable({
               </Table>
             </div>
           </div>
+
           {/* Status Column */}
           <div className="col-span-2 mt-[36px]">
             <div className="rounded-lg border overflow-hidden">
@@ -485,42 +488,10 @@ export function ReconciliationTable({
                         item.matched
                           ? "bg-[#F3FEFA] hover:bg-[#F3FEFA]"
                           : "bg-[#FFF4F0] hover:bg-[#FFF4F0]",
-                        activeStatusIndex === index &&
-                          "bg-[#CEFFED] hover:bg-[#CEFFED]"
                       )}
                     >
-                      {/* onClick={() => unlink()} */}
-                      <TableCell
-                        className={cn(
-                          `text-center h-[64px] relative`,
-                          item.matched && "cursor-pointer"
-                        )}
-                        onClick={() => {
-                          if (item.matched) {
-                            setActiveStatusIndex(index);
-                          }
-                        }}
-                      >
-                        {activeStatusIndex === index && (
-                          <button
-                            className="absolute hover:bg-black/20 p-1 rounded-full cursor-pointer top-2 right-1.5"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              if (item.matched) {
-                                setShowUnlinkModal(true);
-                              }
-                            }}
-                          >
-                            <XIcon className="w-3 h-3 text-[#333333]" />
-                          </button>
-                        )}
-                        <StatusBadge
-                          className={cn(
-                            activeStatusIndex === index && "bg-[#CEFFED]"
-                          )}
-                          matched={item.matched}
-                          hideIcon={activeStatusIndex === index}
-                        />
+                      <TableCell className="text-center h-[64px]">
+                        <StatusBadge matched={item.matched} />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -545,7 +516,7 @@ export function ReconciliationTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext()
+                                header.getContext(),
                               )}
                         </TableHead>
                       ))}
@@ -579,13 +550,13 @@ export function ReconciliationTable({
                                   "whitespace-nowrap overflow-hidden text-ellipsis",
                                   cellIndex !==
                                     row.getVisibleCells().length - 1 &&
-                                    "border-r"
+                                    "border-r",
                                 )}
                                 title={cell.getValue() as string}
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext()
+                                  cell.getContext(),
                                 )}
                               </TableCell>
                             ))}
@@ -603,7 +574,7 @@ export function ReconciliationTable({
                                   (txn) => ({
                                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                                     value: JSON.stringify(txn),
-                                  })
+                                  }),
                                 )}
                                 placeholder="Find possible Match"
                                 onSelect={async (value) => {
@@ -611,10 +582,10 @@ export function ReconciliationTable({
                                     await handleMatch(
                                       paginatedBankData[row.index],
                                       "ledger",
-                                      JSON.parse(value)
+                                      JSON.parse(value),
                                     );
                                     toast.success(
-                                      "Transactions matched successfully!"
+                                      "Transactions matched successfully!",
                                     );
                                   } catch {
                                     toast.error("Failed to match transactions");
@@ -663,7 +634,7 @@ export function ReconciliationTable({
                     disabled={isOptionDisabled(size)}
                     className={cn(
                       "text-sm cursor-pointer",
-                      isOptionDisabled(size) && "opacity-50 cursor-not-allowed"
+                      isOptionDisabled(size) && "opacity-50 cursor-not-allowed",
                     )}
                   >
                     {size}
@@ -697,34 +668,6 @@ export function ReconciliationTable({
             </Button>
           </div>
         </div>
-
-        {/* Unlink Modal */}
-        <UnlinkModal
-          isOpen={showUnlinkModal}
-          isLoading={loadingUnlinkModal}
-          onClose={() => {
-            setShowUnlinkModal(false);
-            setActiveStatusIndex(null);
-          }}
-          onConfirm={async () => {
-            if (activeStatusIndex !== null) {
-              setLoadingUnlinkModal(true);
-              try {
-                await handleUnlink(
-                  paginatedBankData[activeStatusIndex],
-                  paginatedLedgerData[activeStatusIndex]
-                );
-                toast.success("Transactions unlinked successfully!");
-              } catch {
-                toast.error("Failed to unlink transactions");
-              } finally {
-                setShowUnlinkModal(false);
-                setActiveStatusIndex(null);
-                setLoadingUnlinkModal(false);
-              }
-            }
-          }}
-        />
       </div>
     </>
   );

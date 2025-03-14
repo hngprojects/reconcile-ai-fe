@@ -13,7 +13,7 @@ const validateDocuments = (data: TData[]) => {
   const requiredHeaders = ["Date", "Description", "Amount"];
 
   const valid = data.every((tx) =>
-    requiredHeaders.every((h) => Object.keys(tx).includes(h))
+    requiredHeaders.every((h) => Object.keys(tx).includes(h)),
   );
 
   return valid;
@@ -82,7 +82,7 @@ export function useReconciliationLogic() {
 
   ledgerData
     .filter(
-      (ledg) => !data.matches.find((match) => match.file2_transaction === ledg)
+      (ledg) => !data.matches.find((match) => match.file2_transaction === ledg),
     )
     .map((ledger) => {
       reconciled.push({
@@ -148,20 +148,20 @@ export function useReconciliationLogic() {
     reconciled.map((data) => data.bankStatement) as Transaction[]
   ).slice(
     pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
+    (pagination.pageIndex + 1) * pagination.pageSize,
   );
 
   const paginatedLedgerData = (
     reconciled.map((data) => data.companyLedger) as Transaction[]
   ).slice(
     pagination.pageIndex * pagination.pageSize,
-    (pagination.pageIndex + 1) * pagination.pageSize
+    (pagination.pageIndex + 1) * pagination.pageSize,
   );
 
   const handleMatch = async (
     selected: Transaction,
     selectedType: string,
-    match: Transaction
+    match: Transaction,
   ) => {
     let body;
     if (selectedType == "statement") {
@@ -177,22 +177,6 @@ export function useReconciliationLogic() {
         action: "match",
       };
     }
-    const id = data["reconciliation_id"] as string;
-
-    const response = await updateReconciliation(id, body as ManualRequestBody);
-
-    if (response.status == "success") {
-      localStorage.setItem("reconciliation", JSON.stringify(response.data));
-      setData(response.data);
-    }
-  };
-
-  const handleUnlink = async (statement: Transaction, ledger: Transaction) => {
-    const body = {
-      statement,
-      ledger,
-      action: "unmatch",
-    };
     const id = data["reconciliation_id"] as string;
 
     const response = await updateReconciliation(id, body as ManualRequestBody);
@@ -224,6 +208,5 @@ export function useReconciliationLogic() {
     setData,
     data,
     handleMatch,
-    handleUnlink,
   };
 }
