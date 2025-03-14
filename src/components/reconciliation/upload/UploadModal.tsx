@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import { Progress } from "@/src/components/ui/progress";
 import Image from "next/image";
@@ -11,8 +11,15 @@ interface UploadModalProps {
 }
 
 export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
-  // const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Default: Not Authenticated
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const isUserAuthenticated = true; 
+    if (isUserAuthenticated) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const handleSubmit = () => {
     console.log("Email submitted:", email);
