@@ -160,7 +160,7 @@ export function MobileReconciliationView() {
       {/* Transaction Cards */}
       {paginatedData.map((item, index) => (
         <div
-          key={`${item.bankStatement.description}-${index}`}
+          key={`${item.bankStatement?.description}-${index}`}
           className={cn(
             "rounded-lg border shadow-sm",
             item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]"
@@ -182,20 +182,20 @@ export function MobileReconciliationView() {
               <div className="text-sm font-medium text-gray-500">
                 Bank Statement
               </div>
-              {item.bankStatement.date &&
-              item.bankStatement.description &&
-              item.bankStatement.amount ? (
+              {item.bankStatement?.date &&
+              item.bankStatement?.description &&
+              item.bankStatement?.amount ? (
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
-                      {item.bankStatement.date}
+                      {item.bankStatement?.date}
                     </div>
                     <div className="font-medium text-gray-900">
-                      {item.bankStatement.description}
+                      {item.bankStatement?.description}
                     </div>
                   </div>
                   <div className="font-medium text-gray-900">
-                    {item.bankStatement.amount}
+                    {item.bankStatement?.amount}
                   </div>
                 </div>
               ) : (
@@ -207,7 +207,6 @@ export function MobileReconciliationView() {
                   placeholder="Find possible Match"
                   onSelect={async (value) => {
                     try {
-                      console.log(item);
                       if (item.companyLedger) {
                         await handleMatch(
                           {
@@ -287,9 +286,9 @@ export function MobileReconciliationView() {
                     try {
                       await handleMatch(
                         {
-                          Date: item.bankStatement.date,
-                          Description: item.bankStatement.description,
-                          Amount: item.bankStatement.amount,
+                          Date: item.bankStatement?.date,
+                          Description: item.bankStatement?.description,
+                          Amount: item.bankStatement?.amount,
                         } as Transaction,
                         "ledger",
                         JSON.parse(value)
@@ -348,12 +347,12 @@ export function MobileReconciliationView() {
               await handleUnlink(
                 {
                   Date:
-                    paginatedData[activeStatusIndex].bankStatement.date ?? "",
+                    paginatedData[activeStatusIndex].bankStatement?.date ?? "",
                   Description:
                     paginatedData[activeStatusIndex].bankStatement
-                      .description ?? "",
+                      ?.description ?? "",
                   Amount:
-                    paginatedData[activeStatusIndex].bankStatement.amount ?? 0,
+                    paginatedData[activeStatusIndex].bankStatement?.amount ?? 0,
                 },
                 {
                   Date:
