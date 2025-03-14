@@ -203,7 +203,7 @@ export function MobileReconciliationView() {
                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                     value: JSON.stringify(txn),
                   }))}
-                  placeholder="Find possible Match"
+                  placeholder="Find possible match"
                   onSelect={async (value) => {
                     try {
                       if (item.companyLedger) {
@@ -274,7 +274,7 @@ export function MobileReconciliationView() {
                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                     value: JSON.stringify(txn),
                   }))}
-                  placeholder="Find possible Match"
+                  placeholder="Find possible match"
                   onSelect={async (value) => {
                     try {
                       await handleMatch(

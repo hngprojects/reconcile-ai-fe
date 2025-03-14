@@ -1,26 +1,54 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
 import { handleMarketingDemo } from "@/src/lib/api";
 import { toast } from "sonner";
+import { fetchCountryCodes } from "@/src/lib/constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
+import Image from "next/image";
+
+interface Country {
+  code: string;
+  name: string;
+  flag: string;
+}
 
 export default function DemoForm() {
+  const [countries, setCountries] = useState<Country[]>([]);
   const [formData, setFormData] = useState({
     fullName: "",
     businessName: "",
     email: "",
+    countryCode: "+234",
     phoneNumber: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    const loadCountries = async () => {
+      const countryData = await fetchCountryCodes();
+      setCountries(countryData as Country[]);
+    };
+    loadCountries();
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCountryCodeChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, countryCode: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,17 +60,18 @@ export default function DemoForm() {
         full_name: formData.fullName,
         business_name: formData.businessName,
         email: formData.email,
-        phone_number: formData.phoneNumber,
+        phone_number: `${formData.countryCode}${formData.phoneNumber}`,
       });
 
       if (result.success) {
         toast.success(
-          "Demo request submitted successfully! We'll be in touch soon.",
+          "Demo request submitted successfully! We'll be in touch soon."
         );
         setFormData({
           fullName: "",
           businessName: "",
           email: "",
+          countryCode: "+234",
           phoneNumber: "",
         });
       } else {
@@ -52,7 +81,7 @@ export default function DemoForm() {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to submit demo request. Please try again.",
+          : "Failed to submit demo request. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -71,7 +100,9 @@ export default function DemoForm() {
 
       <div className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="fullName">Full Name</Label>
+          <Label htmlFor="fullName" className="text-sm text-[#717171]">
+            Full Name
+          </Label>
           <Input
             id="fullName"
             name="fullName"
@@ -81,12 +112,14 @@ export default function DemoForm() {
             placeholder="Enter full name"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
+            className="h-12 bg-white !text-base"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="businessName">Business Name</Label>
+          <Label htmlFor="businessName" className="text-sm text-[#717171]">
+            Business Name
+          </Label>
           <Input
             id="businessName"
             name="businessName"
@@ -96,12 +129,14 @@ export default function DemoForm() {
             placeholder="Enter business name"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
+            className="h-12 bg-white !text-base"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className="text-sm text-[#717171]">
+            Email
+          </Label>
           <Input
             id="email"
             name="email"
@@ -111,28 +146,58 @@ export default function DemoForm() {
             placeholder="Enter email address"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
+            className="h-12 bg-white !text-base"
           />
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phoneNumber">Phone number</Label>
-          <Input
-            id="phoneNumber"
-            name="phoneNumber"
-            type="tel"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            placeholder="Enter phone number"
-            required
-            aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
-          />
+          <Label htmlFor="phoneNumber" className="text-sm text-[#717171]">
+            Phone Number
+          </Label>
+          <div className="flex gap-2">
+            <Select
+              value={formData.countryCode}
+              onValueChange={handleCountryCodeChange}
+            >
+              <SelectTrigger className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer">
+                <SelectValue placeholder="+234" />
+              </SelectTrigger>
+              <SelectContent>
+                {countries.map((country: Country) => (
+                  <SelectItem
+                    key={`${country.code}-${country.name}`}
+                    value={country.code}
+                    className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
+                  >
+                    <Image
+                      src={country.flag}
+                      alt={country.name}
+                      width={16}
+                      height={16}
+                      className="object-contain"
+                    />
+                    <span>{country.code}</span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              placeholder="Enter phone number"
+              required
+              aria-required="true"
+              className="h-12 min-h-[48px] bg-white !text-base flex-1"
+            />
+          </div>
         </div>
 
         <Button
           type="submit"
-          className="w-full bg-[#2E604A] hover:bg-[#2E604A]/90 text-white py-6 cursor-pointer"
+          className="w-full bg-[#2E604A] text-white font-semibold py-6 text-[18px] cursor-pointer"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
