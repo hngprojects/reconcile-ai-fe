@@ -1,61 +1,172 @@
+"use client";
+
+import { motion } from "framer-motion";
 import CTASection from "@/src/components/CTASection";
 import Footer from "@/src/components/Footer";
 
 const PrivacyPage = () => {
+  // Text animation variants for smoother transitions
+  const textVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 10 
+    },
+    visible: (i: number) => ({ 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.8, 
+        ease: "easeOut", 
+        delay: i * 0.2 
+      }
+    })
+  };
+
+  // Content section animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        delay: i * 0.1
+      }
+    })
+  };
+
   return (
     <div>
-      <header className="flex justify-center md:py-[110px] py-[48px] px-6 bg-[#F5FAF8]">
+      <motion.header 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="flex justify-center md:py-[110px] py-[48px] px-6 bg-[#F5FAF8]"
+      >
         <div className="text-center">
-          <p className="text-[#009A49] bg-[#E6FFF2] px-3 py-1 text-sm rounded-2xl inline-block w-fit mb-6 mx-auto">
+          <motion.p 
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={textVariants}
+            className="text-[#009A49] bg-[#E6FFF2] px-3 py-1 text-sm rounded-2xl inline-block w-fit mb-6 mx-auto"
+          >
             Privacy
-          </p>
+          </motion.p>
 
-          <h1 className="md:text-[60px] text-4xl font-semibold mb-6">
+          <motion.h1 
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={textVariants}
+            className="md:text-[60px] text-4xl font-semibold mb-6"
+          >
             How We <span className="text-[#2E604A]">Protect</span> Your
             Information
-          </h1>
+          </motion.h1>
 
-          <p className="text-md text-[#525252]">
+          <motion.p 
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={textVariants}
+            className="text-md text-[#525252]"
+          >
             Find advice and answers from our support team
-          </p>
+          </motion.p>
         </div>
-      </header>
+      </motion.header>
 
       {/* table of content section */}
       <section className="py-12 px-6 bg-[#F9FAFB]">
         <div className="flex justify-center">
           <div className="max-w-[1120px] w-full flex lg:flex-row flex-col lg:gap-22 gap-8">
-            <div className="max-w-[306px] w-full">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="max-w-[306px] w-full"
+            >
               <h2 className="md:text-4xl text-3xl mb-2 font-semibold">
                 Table of Content
               </h2>
 
               <ul className="list-disc pl-5">
-                <li className="font-semibold text-[16px] mb-2">
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
                   Introductions
-                </li>
-                <li className="font-semibold text-[16px] mb-2">
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
                   Information We Collect
-                </li>
-                <li className="font-semibold text-[16px] mb-2">
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.7 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
                   How We Use Your Information
-                </li>
-                <li className="font-semibold text-[16px] mb-2">
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
                   Data Sharing and Security
-                </li>
-                <li className="font-semibold text-[16px] mb-2">
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 0.9 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
                   Your choices and Rights
-                </li>
-                <li className="font-semibold text-[16px] mb-2">
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 1.0 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
                   Policy Updates
-                </li>
-                <li className="font-semibold text-[16px] mb-2">Contact Us </li>
-                <li className="font-semibold text-[16px] mb-2">Last Updated</li>
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 1.1 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
+                  Contact Us 
+                </motion.li>
+                <motion.li 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: 1.2 }}
+                  className="font-semibold text-[16px] mb-2"
+                >
+                  Last Updated
+                </motion.li>
               </ul>
-            </div>
+            </motion.div>
 
             <div>
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={1}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Introduction
                 </h3>
@@ -67,9 +178,15 @@ const PrivacyPage = () => {
                   take to ensure its security. By using our services, you agree
                   to the terms outlined in this policy.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={2}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Information We Collect
                 </h3>
@@ -99,9 +216,15 @@ const PrivacyPage = () => {
                   Other Data: Additional information you provide or that is
                   automatically collected to enhance your experience.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={3}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   How We Use Your Information
                 </h3>
@@ -131,9 +254,15 @@ const PrivacyPage = () => {
                   Other Data: Additional information you provide or that is
                   automatically collected to enhance your experience.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={4}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Data Sharing and Security
                 </h3>
@@ -148,9 +277,15 @@ const PrivacyPage = () => {
                   While we strive for maximum security, please be aware that no
                   system is completely foolproof.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={5}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Your Choices and Right
                 </h3>
@@ -168,9 +303,15 @@ const PrivacyPage = () => {
                   Manage Cookies & Tracking: Adjust settings in your browser to
                   control cookies and tracking mechanisms.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={6}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Policy Updates
                 </h3>
@@ -180,9 +321,15 @@ const PrivacyPage = () => {
                   Any updates will be posted on our platform, and significant
                   changes will be communicated to you.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={7}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Contact Us
                 </h3>
@@ -191,9 +338,15 @@ const PrivacyPage = () => {
                   For any privacy-related concerns, reach out to us at
                   info@ReconXi.com.
                 </p>
-              </div>
+              </motion.div>
 
-              <div className="mb-6">
+              <motion.div 
+                initial="hidden"
+                animate="visible"
+                custom={8}
+                variants={sectionVariants}
+                className="mb-6"
+              >
                 <h3 className="mb-[10px] md:text-2xl text-2xl font-semibold ">
                   Last Updated
                 </h3>
@@ -206,7 +359,7 @@ const PrivacyPage = () => {
                   For more information about our terms and conditions, please
                   visit our Terms and Conditions page.
                 </p>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
