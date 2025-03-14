@@ -4,6 +4,7 @@ import {
   RECONCILE_API_URL,
   WAITLIST_API_URL,
   MANUAL_API_URL,
+  MARKETING_DEMO_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -11,6 +12,13 @@ import { ManualRequestBody } from "@/src/types/reconciliation";
 interface ApiError extends Error {
   code?: number;
   status?: number;
+}
+
+interface MarketingDemoData {
+  full_name: string;
+  business_name: string;
+  email: string;
+  phone_number: string;
 }
 
 export async function reconcileFiles(
@@ -192,5 +200,31 @@ export async function updateReconciliation(
     return resData;
   } catch {
     return { error: "Something went wrong. Please try again later." };
+  }
+}
+
+export async function handleMarketingDemo(data: MarketingDemoData) {
+  try {
+    const response = await fetch(MARKETING_DEMO_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData.message || "Failed to submit demo request");
+    }
+
+    return { success: true, data: responseData.data };
+  } catch (error) {
+    console.error("Marketing demo error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Something went wrong",
+    };
   }
 }
