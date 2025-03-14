@@ -11,6 +11,7 @@ import { SuccessToast } from "./SuccessToast";
 import { Transaction } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { DownloadCloudIcon } from "../Icon/Icons";
+import UnlinkModal from "../modal/UnlinkModal";
 
 interface ReconciliationData {
   matches: Array<{
@@ -35,11 +36,19 @@ export function MobileReconciliationView() {
     pagination,
     data,
     handleMatch,
+    handleUnlink,
   } = useReconciliationLogic();
 
   const [isExporting, setIsExporting] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  // Add state for UnlinkModal
+  const [activeStatusIndex, setActiveStatusIndex] = useState<number | null>(
+    null
+  );
+  const [showUnlinkModal, setShowUnlinkModal] = useState(false);
+  const [loadingUnlinkModal, setLoadingUnlinkModal] = useState(false);
 
   const paginatedData = combinedData.slice(
     currentPage * pagination.pageSize,
@@ -128,7 +137,7 @@ export function MobileReconciliationView() {
       )}
 
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-semibold">Matched Result</h1>
+        <h1 className="text-2xl font-semibold">Matched Results</h1>
         <button
           className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
           onClick={handleExport}
@@ -216,11 +225,26 @@ export function MobileReconciliationView() {
             {/* Status Badge - Now consistently positioned */}
             <div className="pt-1">
               <div className="flex gap-3 items-center">
-                <div
-                  className={`inline-block border-[0.5px] ${item.matched ? "border-[#007A55]" : "border-[#C50700]"} p-2 rounded-3xl`}
+                <button
+                  className={cn(
+                    `inline-block border-[0.5px] p-2 rounded-3xl`,
+                    item.matched
+                      ? "border-[#007A55] cursor-pointer"
+                      : "border-[#C50700]"
+                  )}
+                  onClick={() => {
+                    if (item.matched) {
+                      setActiveStatusIndex(index);
+                      setShowUnlinkModal(true);
+                    }
+                  }}
                 >
-                  <StatusBadge matched={item.matched} />
-                </div>
+                  <StatusBadge
+                    matched={item.matched}
+                    isMobile
+                    hideIcon={activeStatusIndex === index}
+                  />
+                </button>
                 <hr className="border border-gray-200/70 flex-1" />
               </div>
             </div>
@@ -300,6 +324,51 @@ export function MobileReconciliationView() {
           </Button>
         </div>
       </div>
+
+      {/* Unlink Modal */}
+      <UnlinkModal
+        isOpen={showUnlinkModal}
+        isLoading={loadingUnlinkModal}
+        onClose={() => {
+          setShowUnlinkModal(false);
+          setActiveStatusIndex(null);
+        }}
+        onConfirm={async () => {
+          if (activeStatusIndex !== null) {
+            setLoadingUnlinkModal(true);
+            try {
+              await handleUnlink(
+                {
+                  Date:
+                    paginatedData[activeStatusIndex].bankStatement.date ?? "",
+                  Description:
+                    paginatedData[activeStatusIndex].bankStatement
+                      .description ?? "",
+                  Amount:
+                    paginatedData[activeStatusIndex].bankStatement.amount ?? 0,
+                },
+                {
+                  Date:
+                    paginatedData[activeStatusIndex]?.companyLedger?.date ?? "",
+                  Description:
+                    paginatedData[activeStatusIndex]?.companyLedger
+                      ?.description ?? "",
+                  Amount:
+                    paginatedData[activeStatusIndex]?.companyLedger?.amount ??
+                    0,
+                }
+              );
+              toast.success("Transactions unlinked successfully!");
+            } catch {
+              toast.error("Failed to unlink transactions");
+            } finally {
+              setShowUnlinkModal(false);
+              setActiveStatusIndex(null);
+              setLoadingUnlinkModal(false);
+            }
+          }
+        }}
+      />
     </div>
   );
 }
