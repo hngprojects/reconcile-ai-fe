@@ -426,7 +426,7 @@ export function ReconciliationTable({
                                     value: JSON.stringify(txn),
                                   })
                                 )}
-                                placeholder="Find possible Match"
+                                placeholder="Find possible match"
                                 onSelect={async (value) => {
                                   try {
                                     await handleMatch(
@@ -598,7 +598,7 @@ export function ReconciliationTable({
                                     value: JSON.stringify(txn),
                                   })
                                 )}
-                                placeholder="Find possible Match"
+                                placeholder="Find possible match"
                                 onSelect={async (value) => {
                                   try {
                                     await handleMatch(
