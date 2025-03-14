@@ -1,12 +1,13 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/src/components/ui/button"
-import { Input } from "@/src/components/ui/input"
-import { Label } from "@/src/components/ui/label"
-// import { toast } from "sonner"
+import { useState } from "react";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { Label } from "@/src/components/ui/label";
+import { handleMarketingDemo } from "@/src/lib/api";
+import { toast } from "sonner";
 
 export default function DemoForm() {
   const [formData, setFormData] = useState({
@@ -14,38 +15,49 @@ export default function DemoForm() {
     businessName: "",
     email: "",
     phoneNumber: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
-    // Simulate API call
     try {
-    //   await new Promise((resolve) => setTimeout(resolve, 1000))
-    //   toast(message: "Success", data: "")
-    //   setFormData({
-    //     fullName: "",
-    //     businessName: "",
-    //     email: "",
-    //     phoneNumber: "",
-    //   })
-    } catch  {
-    //   toast({
-    //     title: "Error",
-    //     description: "There was a problem submitting your request. Please try again.",
-    //     variant: "destructive",
-    //   })
+      const result = await handleMarketingDemo({
+        full_name: formData.fullName,
+        business_name: formData.businessName,
+        email: formData.email,
+        phone_number: formData.phoneNumber,
+      });
+
+      if (result.success) {
+        toast.success(
+          "Demo request submitted successfully! We'll be in touch soon.",
+        );
+        setFormData({
+          fullName: "",
+          businessName: "",
+          email: "",
+          phoneNumber: "",
+        });
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to submit demo request. Please try again.",
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <form
@@ -128,6 +140,5 @@ export default function DemoForm() {
         </Button>
       </div>
     </form>
-  )
+  );
 }
-
