@@ -125,6 +125,7 @@ export function MobileReconciliationView() {
     }
   }, [showSuccessToast]);
 
+
   return (
     <div className="space-y-3 py-6">
       {showSuccessToast && (
@@ -206,9 +207,14 @@ export function MobileReconciliationView() {
                   placeholder="Find possible Match"
                   onSelect={async (value) => {
                     try {
+                      console.log(item);
                       if (item.companyLedger) {
                         await handleMatch(
-                          item.companyLedger as Transaction,
+                          {
+                          Date: item.companyLedger.date,
+                          Description: item.companyLedger.description,
+                          Amount: item.companyLedger.amount,
+                        } as Transaction,
                           "statement",
                           JSON.parse(value)
                         );
@@ -254,7 +260,9 @@ export function MobileReconciliationView() {
               <div className="text-sm font-medium text-gray-500">
                 Company Ledger
               </div>
-              {item.matched && item.companyLedger ? (
+              {item.companyLedger?.date &&
+              item.companyLedger?.description &&
+              item.companyLedger?.amount ? (
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
