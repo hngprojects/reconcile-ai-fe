@@ -11,7 +11,7 @@ interface UploadModalProps {
 }
 
 export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Default: Not Authenticated
+  // const [isAuthenticated, setIsAuthenticated] = useState(false); 
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
