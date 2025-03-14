@@ -81,7 +81,7 @@ export default function DemoForm() {
             placeholder="Enter full name"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[20px]"
+            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
           />
         </div>
 
@@ -96,7 +96,7 @@ export default function DemoForm() {
             placeholder="Enter business name"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[20px]"
+            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
           />
         </div>
 
@@ -111,7 +111,7 @@ export default function DemoForm() {
             placeholder="Enter email address"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[20px]"
+            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
           />
         </div>
 
@@ -126,7 +126,7 @@ export default function DemoForm() {
             placeholder="Enter phone number"
             required
             aria-required="true"
-            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[20px]"
+            className="w-full h-16 placeholder-[#B8B8B8] placeholder:text[21px]"
           />
         </div>
 
