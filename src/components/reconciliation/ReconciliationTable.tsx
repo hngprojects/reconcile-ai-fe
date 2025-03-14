@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import exportIcon from "@/public/assets/images/download-cloud-02.png";
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -30,7 +28,9 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
+import { DownloadCloudIcon } from "../Icon/Icons";
 import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
+import { toast } from "sonner";
 
 interface Transaction {
   Date: string;
@@ -104,7 +104,7 @@ export function ReconciliationTable({
         cell: (info) => info.getValue(),
       }),
     ],
-    [],
+    []
   );
 
   // Define company ledger columns
@@ -123,15 +123,15 @@ export function ReconciliationTable({
         cell: (info) => info.getValue(),
       }),
     ],
-    [],
+    []
   );
 
   console.log(
     paginatedLedgerData.filter(
       (ledg) =>
         !data.matches.find((val) => val.file2_transaction == ledg) ||
-        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"]),
-    ),
+        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
+    )
   );
 
   // Create status column data
@@ -140,7 +140,7 @@ export function ReconciliationTable({
       [
         ...paginatedBankData
           .filter(
-            (bank) => bank["Date"] && bank["Description"] && bank["Amount"],
+            (bank) => bank["Date"] && bank["Description"] && bank["Amount"]
           )
           .map((bankItem) => ({
             matched:
@@ -153,13 +153,13 @@ export function ReconciliationTable({
           .filter(
             (ledg) =>
               !data.matches.find((val) => val.file2_transaction == ledg) ||
-              (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"]),
+              (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
           )
           .map(() => ({
             matched: false,
           })),
       ].slice(0, 10),
-    [paginatedBankData, data.matches, paginatedLedgerData],
+    [paginatedBankData, data.matches, paginatedLedgerData]
   );
 
   console.log(statusData);
@@ -177,7 +177,7 @@ export function ReconciliationTable({
     manualPagination: true,
     pageCount: Math.ceil(
       (paginatedBankData.length + paginatedLedgerData.length) /
-        pagination.pageSize,
+        pagination.pageSize
     ),
   });
 
@@ -193,7 +193,7 @@ export function ReconciliationTable({
     manualPagination: true,
     pageCount: Math.ceil(
       (paginatedBankData.length + paginatedLedgerData.length) /
-        pagination.pageSize,
+        pagination.pageSize
     ),
   });
 
@@ -201,7 +201,7 @@ export function ReconciliationTable({
   const pageStart = pagination.pageIndex * pagination.pageSize + 1;
   const pageEnd = Math.min(
     (pagination.pageIndex + 1) * pagination.pageSize,
-    totalItems,
+    totalItems
   );
 
   // array of row options
@@ -273,7 +273,7 @@ export function ReconciliationTable({
           body: JSON.stringify({
             data: formattedData,
           }),
-        },
+        }
       );
 
       // Check for errors with better error reporting
@@ -307,7 +307,7 @@ export function ReconciliationTable({
       console.error("Export error:", error);
       // Show error toast using custom component
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data",
+        error instanceof Error ? error.message : "Failed to export data"
       );
       setShowErrorToast(true);
     } finally {
@@ -334,7 +334,7 @@ export function ReconciliationTable({
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
           <button
-            className="px-[57px] py-[16px] bg-[transparent] border-[1px] border-solid border-[#2E604A] text-[#2E604A] rounded-md w-[150px] h-[50px] flex items-center justify-center cursor-pointer"
+            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
             onClick={handleExport}
             disabled={isExporting}
           >
@@ -344,13 +344,7 @@ export function ReconciliationTable({
               </>
             ) : (
               <>
-                <Image
-                  src={exportIcon}
-                  alt="Export"
-                  width={24}
-                  height={24}
-                  className="mr-2 w-5 h-5"
-                />{" "}
+                <DownloadCloudIcon className="mr-2 w-5 h-5" />
                 Export
               </>
             )}
@@ -374,7 +368,7 @@ export function ReconciliationTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext(),
+                                header.getContext()
                               )}
                         </TableHead>
                       ))}
@@ -408,13 +402,13 @@ export function ReconciliationTable({
                                   "whitespace-nowrap overflow-hidden text-ellipsis",
                                   cellIndex !==
                                     row.getVisibleCells().length - 1 &&
-                                    "border-r",
+                                    "border-r"
                                 )}
                                 title={cell.getValue() as string}
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext(),
+                                  cell.getContext()
                                 )}
                               </TableCell>
                             ))}
@@ -432,15 +426,22 @@ export function ReconciliationTable({
                                   (txn) => ({
                                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                                     value: JSON.stringify(txn),
-                                  }),
+                                  })
                                 )}
                                 placeholder="Find possible Match"
                                 onSelect={async (value) => {
-                                  await handleMatch(
-                                    paginatedLedgerData[row.index],
-                                    "statement",
-                                    JSON.parse(value),
-                                  );
+                                  try {
+                                    await handleMatch(
+                                      paginatedLedgerData[row.index],
+                                      "statement",
+                                      JSON.parse(value)
+                                    );
+                                    toast.success(
+                                      "Transactions matched successfully!"
+                                    );
+                                  } catch {
+                                    toast.error("Failed to match transactions");
+                                  }
                                 }}
                               />
                             </TableCell>
@@ -479,7 +480,7 @@ export function ReconciliationTable({
                       className={cn(
                         item.matched
                           ? "bg-[#F3FEFA] hover:bg-[#F3FEFA]"
-                          : "bg-[#FFF4F0] hover:bg-[#FFF4F0]",
+                          : "bg-[#FFF4F0] hover:bg-[#FFF4F0]"
                       )}
                     >
                       <TableCell className="text-center h-[64px]">
@@ -508,7 +509,7 @@ export function ReconciliationTable({
                             ? null
                             : flexRender(
                                 header.column.columnDef.header,
-                                header.getContext(),
+                                header.getContext()
                               )}
                         </TableHead>
                       ))}
@@ -542,13 +543,13 @@ export function ReconciliationTable({
                                   "whitespace-nowrap overflow-hidden text-ellipsis",
                                   cellIndex !==
                                     row.getVisibleCells().length - 1 &&
-                                    "border-r",
+                                    "border-r"
                                 )}
                                 title={cell.getValue() as string}
                               >
                                 {flexRender(
                                   cell.column.columnDef.cell,
-                                  cell.getContext(),
+                                  cell.getContext()
                                 )}
                               </TableCell>
                             ))}
@@ -566,15 +567,22 @@ export function ReconciliationTable({
                                   (txn) => ({
                                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                                     value: JSON.stringify(txn),
-                                  }),
+                                  })
                                 )}
                                 placeholder="Find possible Match"
                                 onSelect={async (value) => {
-                                  await handleMatch(
-                                    paginatedBankData[row.index],
-                                    "ledger",
-                                    JSON.parse(value),
-                                  );
+                                  try {
+                                    await handleMatch(
+                                      paginatedBankData[row.index],
+                                      "ledger",
+                                      JSON.parse(value)
+                                    );
+                                    toast.success(
+                                      "Transactions matched successfully!"
+                                    );
+                                  } catch {
+                                    toast.error("Failed to match transactions");
+                                  }
                                 }}
                               />
                             </TableCell>
@@ -619,7 +627,7 @@ export function ReconciliationTable({
                     disabled={isOptionDisabled(size)}
                     className={cn(
                       "text-sm cursor-pointer",
-                      isOptionDisabled(size) && "opacity-50 cursor-not-allowed",
+                      isOptionDisabled(size) && "opacity-50 cursor-not-allowed"
                     )}
                   >
                     {size}

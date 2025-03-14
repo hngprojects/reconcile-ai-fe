@@ -1,6 +1,6 @@
 import { cn } from "@/src/lib/utils";
 import { StatusBadgeProps } from "@/src/types/status-badge";
-import { Check as CheckIcon, X as XIcon } from "lucide-react";
+import { CheckIcon, XIcon } from "../Icon/Icons";
 
 export function StatusBadge({ matched, className }: StatusBadgeProps) {
   return (
@@ -19,9 +19,9 @@ export function StatusBadge({ matched, className }: StatusBadgeProps) {
         )}
       >
         {matched ? (
-          <CheckIcon className="h-3 w-3 text-white" />
+          <CheckIcon className="h-4 w-4 text-white" />
         ) : (
-          <XIcon className="h-3 w-3 text-white" />
+          <XIcon className="h-4 w-4 text-white" />
         )}
       </div>
     </div>

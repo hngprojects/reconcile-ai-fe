@@ -21,7 +21,7 @@ const Footer = () => {
                 <div className="flex flex-col gap-2 ">
                   <Link href="/" className="w-fit sm:mb-3" aria-label="ReconXi">
                     <div className="flex items-center justify-start gap-2">
-                      <LogoIcon className="w-6 h-6 sm:h-12 sm:w-12 fill-white" />
+                      <LogoIcon className="w-6 h-6 sm:h-12 sm:w-12 text-white" />
                       <span className="font-extrabold text-lg sm:text-4xl font-baloo text-white">
                         ReconXi
                       </span>
@@ -30,31 +30,31 @@ const Footer = () => {
                   <div className="hidden sm:flex gap-4">
                     <Link
                       href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                       aria-label="Instagram"
                     >
-                      <InstagramIcon className="fill-inherit w-5 h-5" />
+                      <InstagramIcon className="text-inherit w-5 h-5" />
                     </Link>
                     <Link
                       href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                       aria-label="Facebook"
                     >
-                      <FacebookIcon className="fill-inherit w-5 h-5" />
+                      <FacebookIcon className="text-inherit w-5 h-5" />
                     </Link>
                     <Link
                       href="https://www.linkedin.com/in/recon-xi-b06835354"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                       aria-label="Linkedin"
                     >
-                      <LinkedinIcon className="fill-inherit w-5 h-5" />
+                      <LinkedinIcon className="text-inherit w-5 h-5" />
                     </Link>
                     <Link
                       href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
-                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                      className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                       aria-label="Twitter"
                     >
-                      <TwitterIcon className="fill-inherit w-5 h-5" />
+                      <TwitterIcon className="text-inherit w-5 h-5" />
                     </Link>
                   </div>
                 </div>
@@ -68,31 +68,31 @@ const Footer = () => {
                 <div className="flex gap-4">
                   <Link
                     href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                     aria-label="Instagram"
                   >
-                    <InstagramIcon className="fill-inherit w-5 h-5" />
+                    <InstagramIcon className="text-inherit w-5 h-5" />
                   </Link>
                   <Link
                     href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                     aria-label="Facebook"
                   >
-                    <FacebookIcon className="fill-inherit w-5 h-5" />
+                    <FacebookIcon className="text-inherit w-5 h-5" />
                   </Link>
                   <Link
                     href="https://www.linkedin.com/in/recon-xi-b06835354"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                     aria-label="Linkedin"
                   >
-                    <LinkedinIcon className="fill-inherit w-5 h-5" />
+                    <LinkedinIcon className="text-inherit w-5 h-5" />
                   </Link>
                   <Link
                     href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
-                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white fill-white hover:fill-primary transition-colors duration-200 "
+                    className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                     aria-label="Twitter"
                   >
-                    <TwitterIcon className="fill-inherit w-5 h-5" />
+                    <TwitterIcon className="text-inherit w-5 h-5" />
                   </Link>
                 </div>
               </div>
