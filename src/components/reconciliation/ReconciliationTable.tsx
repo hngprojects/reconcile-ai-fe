@@ -135,14 +135,7 @@ export function ReconciliationTable({
     []
   );
 
-  console.log(
-    paginatedLedgerData.filter(
-      (ledg) =>
-        !data.matches.find((val) => val.file2_transaction == ledg) ||
-        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
-    )
-  );
-
+  const length = pagination.pageSize === paginatedBankData.length ? pagination.pageSize : paginatedBankData.length
   // Create status column data
   const statusData = React.useMemo(
     () =>
@@ -167,7 +160,7 @@ export function ReconciliationTable({
           .map(() => ({
             matched: false,
           })),
-      ].slice(0, pagination.pageSize),
+      ].slice(0, length),
     [paginatedBankData, data.matches, paginatedLedgerData, pagination.pageSize]
   );
 
