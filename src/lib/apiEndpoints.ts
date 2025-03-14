@@ -22,3 +22,6 @@ export const NEWSLETTER_API_URL = `${BASE_URL}/newsletter/subscribe`;
 
 // MATCH/UNMATCH
 export const MANUAL_API_URL = `${BASE_URL}/reconcile/`;
+
+// MARKETING DEMO
+export const MARKETING_DEMO_API_URL = `${BASE_URL}/outbound-marketing`;

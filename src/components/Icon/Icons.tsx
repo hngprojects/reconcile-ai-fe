@@ -404,13 +404,30 @@ export const XIcon = ({ className = defaultSize }: IconClassProps) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className={cn("text-white", className)}
-      viewBox="0 0 17 17"
+      viewBox="0 0 8 9"
       fill="none"
     >
-      <rect x="0.5" y="0.5" width="16" height="16" rx="8" fill="#C50700" />
       <path
-        d="M11.8337 5.1665L5.16699 11.8332M5.16699 5.1665L11.8337 11.8332"
+        d="M7.33329 1.16602L0.666626 7.83268M0.666626 1.16602L7.33329 7.83268"
         stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const DangerIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-[#EC261F] aspect-auto", className)}
+      viewBox="0 0 20 17"
+      fill="none"
+    >
+      <path
+        d="M10.0001 6.50019V9.83353M10.0001 13.1669H10.0085M8.84622 2.24329L1.99215 14.0821C1.61198 14.7388 1.42189 15.0671 1.44999 15.3366C1.47449 15.5716 1.59763 15.7852 1.78876 15.9242C2.0079 16.0835 2.38728 16.0835 3.14605 16.0835H16.8542C17.613 16.0835 17.9923 16.0835 18.2115 15.9242C18.4026 15.7852 18.5258 15.5716 18.5503 15.3366C18.5783 15.0671 18.3883 14.7388 18.0081 14.0821L11.154 2.24329C10.7752 1.58899 10.5858 1.26184 10.3387 1.15196C10.1232 1.05612 9.87709 1.05612 9.66154 1.15196C9.41443 1.26184 9.22503 1.58899 8.84622 2.24329Z"
+        stroke="currentColor"
+        strokeWidth="1.66667"
         strokeLinecap="round"
         strokeLinejoin="round"
       />

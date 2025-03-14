@@ -28,9 +28,10 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
 import { SuccessToast } from "./SuccessToast";
-import { DownloadCloudIcon } from "../Icon/Icons";
+import { DownloadCloudIcon, XIcon } from "../Icon/Icons";
 import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
 import { toast } from "sonner";
+import UnlinkModal from "../modal/UnlinkModal";
 
 interface Transaction {
   Date: string;
@@ -79,9 +80,17 @@ export function ReconciliationTable({
     setShowErrorModal,
     data,
     handleMatch,
+    handleUnlink,
   } = useReconciliationLogic();
 
   const [isExporting, setIsExporting] = React.useState(false);
+
+  // Add state for UnlinkModal
+  const [activeStatusIndex, setActiveStatusIndex] = React.useState<
+    number | null
+  >(null);
+  const [showUnlinkModal, setShowUnlinkModal] = React.useState(false);
+  const [loadingUnlinkModal, setLoadingUnlinkModal] = React.useState(false);
 
   // Add state for custom toasts
   const [showSuccessToast, setShowSuccessToast] = React.useState(false);
@@ -158,11 +167,9 @@ export function ReconciliationTable({
           .map(() => ({
             matched: false,
           })),
-      ].slice(0, 10),
-    [paginatedBankData, data.matches, paginatedLedgerData]
+      ].slice(0, pagination.pageSize),
+    [paginatedBankData, data.matches, paginatedLedgerData, pagination.pageSize]
   );
-
-  console.log(statusData);
 
   // Create tables with shared pagination state
   const bankTable = useReactTable({
@@ -329,7 +336,6 @@ export function ReconciliationTable({
             />
           </div>
         )}
-
         {/* header section */}
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-2xl font-semibold">Matched Results</h1>
@@ -350,7 +356,6 @@ export function ReconciliationTable({
             )}
           </button>
         </div>
-
         <div className="grid grid-cols-12 gap-2 max-w-[1440px] mx-auto">
           {/* Bank Statement Table */}
           <div className="col-span-5">
@@ -463,7 +468,6 @@ export function ReconciliationTable({
               </Table>
             </div>
           </div>
-
           {/* Status Column */}
           <div className="col-span-2 mt-[36px]">
             <div className="rounded-lg border overflow-hidden">
@@ -480,11 +484,43 @@ export function ReconciliationTable({
                       className={cn(
                         item.matched
                           ? "bg-[#F3FEFA] hover:bg-[#F3FEFA]"
-                          : "bg-[#FFF4F0] hover:bg-[#FFF4F0]"
+                          : "bg-[#FFF4F0] hover:bg-[#FFF4F0]",
+                        activeStatusIndex === index &&
+                          "bg-[#CEFFED] hover:bg-[#CEFFED]"
                       )}
                     >
-                      <TableCell className="text-center h-[64px]">
-                        <StatusBadge matched={item.matched} />
+                      {/* onClick={() => unlink()} */}
+                      <TableCell
+                        className={cn(
+                          `text-center h-[64px] relative`,
+                          item.matched && "cursor-pointer"
+                        )}
+                        onClick={() => {
+                          if (item.matched) {
+                            setActiveStatusIndex(index);
+                          }
+                        }}
+                      >
+                        {activeStatusIndex === index && (
+                          <button
+                            className="absolute hover:bg-black/20 p-1 rounded-full cursor-pointer top-2 right-1.5"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (item.matched) {
+                                setShowUnlinkModal(true);
+                              }
+                            }}
+                          >
+                            <XIcon className="w-3 h-3 text-[#333333]" />
+                          </button>
+                        )}
+                        <StatusBadge
+                          className={cn(
+                            activeStatusIndex === index && "bg-[#CEFFED]"
+                          )}
+                          matched={item.matched}
+                          hideIcon={activeStatusIndex === index}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}
@@ -661,6 +697,34 @@ export function ReconciliationTable({
             </Button>
           </div>
         </div>
+
+        {/* Unlink Modal */}
+        <UnlinkModal
+          isOpen={showUnlinkModal}
+          isLoading={loadingUnlinkModal}
+          onClose={() => {
+            setShowUnlinkModal(false);
+            setActiveStatusIndex(null);
+          }}
+          onConfirm={async () => {
+            if (activeStatusIndex !== null) {
+              setLoadingUnlinkModal(true);
+              try {
+                await handleUnlink(
+                  paginatedBankData[activeStatusIndex],
+                  paginatedLedgerData[activeStatusIndex]
+                );
+                toast.success("Transactions unlinked successfully!");
+              } catch {
+                toast.error("Failed to unlink transactions");
+              } finally {
+                setShowUnlinkModal(false);
+                setActiveStatusIndex(null);
+                setLoadingUnlinkModal(false);
+              }
+            }
+          }}
+        />
       </div>
     </>
   );
