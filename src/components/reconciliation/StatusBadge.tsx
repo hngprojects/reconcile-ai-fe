@@ -1,13 +1,8 @@
 import { cn } from "@/src/lib/utils";
 import { StatusBadgeProps } from "@/src/types/status-badge";
-import { CheckIcon, XIcon } from "../Icon/Icons";
+import { Check as CheckIcon, X as XIcon } from "lucide-react";
 
-export function StatusBadge({
-  matched,
-  className,
-  hideIcon,
-  isMobile,
-}: StatusBadgeProps) {
+export function StatusBadge({ matched, className }: StatusBadgeProps) {
   return (
     <div
       className={cn(
@@ -17,23 +12,18 @@ export function StatusBadge({
       )}
     >
       {matched ? "Matched" : "Unmatched"}
-      {!hideIcon && (
-        <div
-          className={cn(
-            "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
-            matched ? "bg-[#007A55]" : "bg-[#C50700]"
-          )}
-        >
-          {matched ? (
-            <CheckIcon className="h-4 w-4 text-white" />
-          ) : (
-            <XIcon className="h-2.5 w-2.5 text-white" />
-          )}
-        </div>
-      )}
-      {isMobile && hideIcon && (
-        <XIcon className="h-2.5 w-2.5 ml-2 stroke-2 text-[#333333]" />
-      )}
+      <div
+        className={cn(
+          "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
+          matched ? "bg-[#007A55]" : "bg-[#C50700]"
+        )}
+      >
+        {matched ? (
+          <CheckIcon className="h-3 w-3 text-white" />
+        ) : (
+          <XIcon className="h-3 w-3 text-white" />
+        )}
+      </div>
     </div>
   );
 }

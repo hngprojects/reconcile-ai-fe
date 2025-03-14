@@ -4,9 +4,11 @@ import { UploadCardProps } from "./types";
 import { FilePreview } from "./FilePreview";
 import { UploadProgress } from "./UploadProgress";
 import ErrorMessage from "./ErrorMessage";
+import Image from "next/image";
+import uploadIcon from "@/public/assets/images/uploadIcon.svg";
+import checkIcon from "@/public/assets/images/check-icon.svg";
 import { toast } from "sonner";
 import { cn } from "@/src/lib/utils";
-import { CheckIcon, FileUploadIcon } from "../../Icon/Icons";
 
 const MAX_FILE_SIZE = 2;
 
@@ -57,7 +59,7 @@ export default function UploadCard({
     // Only show toast when a file has been manually uploaded AND is no longer uploading
     if (fileUploaded && !isUploading && hasBeenUploaded) {
       toast.success("File Uploaded Successfully", {
-        icon: <CheckIcon className="w-5 h-5" />,
+        icon: <Image src={checkIcon} width={20} height={20} alt="Success" />,
         style: { background: "#EEFFEE" },
         action: {
           label: <p className="bg-inherit">Close</p>,
@@ -99,7 +101,10 @@ export default function UploadCard({
   return (
     <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative flex-1">
       <div
-        className={cn("flex flex-col gap-[12px] h-full p-3 md:p-[23.5px_47px]")}
+        className={cn(
+          "flex flex-col gap-[12px] h-full",
+          isUploading ? "p-3 md:p-[16px_16px_58px]" : "p-3 md:p-[23.5px_47px]"
+        )}
       >
         <h2 className="text-base sm:text-lg md:text-[19px] lg:text-2xl font-semibold">
           {title}
@@ -111,9 +116,7 @@ export default function UploadCard({
           className={cn(
             "w-full max-w-full h-[224.7px] rounded-[12px]",
             "flex flex-col items-center justify-center gap-[12px]",
-            isDragging || isUploading
-              ? "border-dashed border-2"
-              : "border cursor-pointer",
+            isDragging || isUploading ? "border-dashed border-2" : "border",
             "border-[#33333380]",
             "mx-auto transition-all duration-200",
             error
@@ -128,7 +131,13 @@ export default function UploadCard({
             <UploadProgress progress={uploadProgress} fileName={fileName!} />
           ) : !fileUploaded ? (
             <>
-              <FileUploadIcon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
+              <Image
+                src={uploadIcon}
+                width={36}
+                height={36}
+                alt="Upload"
+                className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+              />
               <p className="text-sm sm:text-base md:text-lg font-medium text-[#4A5568] text-center px-4">
                 <span className="hidden md:inline mr-2">
                   Drag & Drop files here or

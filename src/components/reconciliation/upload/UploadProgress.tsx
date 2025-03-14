@@ -1,10 +1,11 @@
+import csvIcon from "@/public/assets/images/csvIcon.svg";
 import { UploadProgressProps } from "@/src/types/upload";
-import { CSVIcon } from "../../Icon/Icons";
+import Image from "next/image";
 
 export function UploadProgress({ progress, fileName }: UploadProgressProps) {
   return (
     <div className="flex flex-col items-center gap-4 w-full px-4 md:px-[16px] py-[58px]">
-      <CSVIcon className="w-10 h-10" />
+      <Image src={csvIcon} width={30} height={40} alt="Uploading" />
       <div className="w-full space-y-2">
         <div className="flex justify-between items-center">
           <span className="text-[14px] text-[#344054] truncate max-w-[150px] md:max-w-none">
