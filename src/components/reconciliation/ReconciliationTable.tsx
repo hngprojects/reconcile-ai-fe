@@ -32,6 +32,7 @@ import { DownloadCloudIcon, XIcon } from "../Icon/Icons";
 import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
 import { toast } from "sonner";
 import UnlinkModal from "../modal/UnlinkModal";
+import { RECONCILE_EXPORT_API_URL } from "@/src/lib/apiEndpoints";
 
 interface Transaction {
   Date: string;
@@ -264,7 +265,7 @@ export function ReconciliationTable({
 
       // Send POST request to API
       const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
+        RECONCILE_EXPORT_API_URL,
         {
           method: "POST",
           headers: {
