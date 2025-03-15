@@ -136,7 +136,10 @@ export function ReconciliationTable({
     []
   );
 
-  const length = pagination.pageSize === paginatedBankData.length ? pagination.pageSize : paginatedBankData.length
+  const length =
+    pagination.pageSize === paginatedBankData.length
+      ? pagination.pageSize
+      : paginatedBankData.length;
   // Create status column data
   const statusData = React.useMemo(
     () =>
@@ -244,7 +247,7 @@ export function ReconciliationTable({
       setIsExporting(true);
 
       // Get reconciliation data from localStorage
-      const reconciliationData = localStorage.getItem("reconciliation");
+      const reconciliationData = localStorage.getItem("reconciliation_old");
 
       if (!reconciliationData) {
         throw new Error("No reconciliation data found");
@@ -264,18 +267,15 @@ export function ReconciliationTable({
       };
 
       // Send POST request to API
-      const response = await fetch(
-        RECONCILE_EXPORT_API_URL,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: formattedData,
-          }),
-        }
-      );
+      const response = await fetch(RECONCILE_EXPORT_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: formattedData,
+        }),
+      });
 
       // Check for errors with better error reporting
       if (!response.ok) {

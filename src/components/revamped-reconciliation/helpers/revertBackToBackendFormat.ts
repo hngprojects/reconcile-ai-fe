@@ -46,6 +46,7 @@ export const revertToBackendFormat = (
   });
 
   return {
+    reconciliation_id: frontendData.reconciliation_id,
     matches,
     only_in_file1: unmatched_file1,
     only_in_file2: unmatched_file2,

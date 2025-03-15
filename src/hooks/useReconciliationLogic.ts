@@ -30,17 +30,20 @@ export function useReconciliationLogic() {
   const [validationShown, setValidationShown] = useState(false);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("reconciliation") as string);
+    const saved = JSON.parse(
+      localStorage.getItem("reconciliation_old") as string
+    );
     setData(saved);
   }, []);
 
   const bankData = useMemo(() => {
     const result: Transaction[] = [];
     if (data.matches) {
-      result.push(...data.matches.map((data) => {
-        return data.file1_transaction;
-      }));
-
+      result.push(
+        ...data.matches.map((data) => {
+          return data.file1_transaction;
+        })
+      );
     }
     if (data.unmatched && data.unmatched.unmatched_file1) {
       result.push(...data.unmatched.unmatched_file1);
@@ -51,9 +54,11 @@ export function useReconciliationLogic() {
   const ledgerData = useMemo(() => {
     const result: Transaction[] = [];
     if (data.matches) {
-      result.push(...data.matches.map((data) => {
-        return data.file2_transaction;
-      }));
+      result.push(
+        ...data.matches.map((data) => {
+          return data.file2_transaction;
+        })
+      );
     }
     if (data.unmatched && data.unmatched.unmatched_file2) {
       result.push(...data.unmatched.unmatched_file2);
@@ -109,11 +114,13 @@ export function useReconciliationLogic() {
   // Combine data for mobile view and status logic
   const combinedData: ReconciliationItem[] = reconciled.map((item) => {
     return {
-      bankStatement: (item.bankStatement as Transaction) ? {
-        date: (item.bankStatement as Transaction)["Date"],
-        description: (item.bankStatement as Transaction)["Description"],
-        amount: (item.bankStatement as Transaction)["Amount"],
-      } : undefined,
+      bankStatement: (item.bankStatement as Transaction)
+        ? {
+            date: (item.bankStatement as Transaction)["Date"],
+            description: (item.bankStatement as Transaction)["Description"],
+            amount: (item.bankStatement as Transaction)["Amount"],
+          }
+        : undefined,
       companyLedger: (item.companyLedger as Transaction)
         ? {
             date: (item.companyLedger as Transaction)["Date"],

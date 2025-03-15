@@ -2,7 +2,7 @@ export type Transaction = {
   id: string;
   date: string;
   description: string;
-  amount: number;
+  amount: string | number;
 };
 
 export type ReconciliationItem = {

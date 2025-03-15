@@ -52,15 +52,6 @@ export function BankTable() {
     unmatchedLedgerTransactions
   );
 
-  // const handleChange = (index: number, option: TransactionOption | null) => {
-  //   setSelectedOptions((prev) => {
-  //     const updated = [...prev];
-  //     updated[index] = option;
-
-  //     return updated.filter(Boolean); // Remove nulls
-  //   });
-  // };
-
   const bankColumns: ColumnDef<ReconciliationItem>[] = [
     {
       accessorKey: "bank_txn.date",
@@ -190,7 +181,7 @@ export function BankTable() {
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
-                        className={cn("px-6 py-0 h-[3.3rem]", {
+                        className={cn("px-6 py-0 h-[3.5rem]", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
                           "flex items-center justify-center":
@@ -208,11 +199,11 @@ export function BankTable() {
                     <>
                       <TableCell
                         colSpan={bankColumns.length - 1}
-                        className="px-4 py-0 h-[3.3rem] border-r"
+                        className="px-4 py-0 h-[3.5rem] border-r"
                       >
                         {/* <TableCell
                         colSpan={bankColumns.length}
-                        className="px-4 h-[3.3rem]"
+                        className="px-4 h-[3.5rem]"
                       > */}
                         <QuickFindAndMatchComboBox
                           commandProps={{
@@ -249,7 +240,7 @@ export function BankTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell className="px-6 py-0 h-[3.3rem] flex items-center justify-center">
+                      <TableCell className="px-6 py-0 h-[3.5rem] flex items-center justify-center">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="size-8 p-0">

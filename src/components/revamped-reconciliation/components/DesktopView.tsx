@@ -49,8 +49,8 @@ export default function DesktopView() {
       setIsExporting(true);
 
       // Get reconciliation data from localStorage
-      // const reconciliationData = localStorage.getItem("reconciliation_new");
-      const localData = localStorage.getItem("reconciliation_new") as string;
+      // const reconciliationData = localStorage.getItem("reconciliation");
+      const localData = localStorage.getItem("reconciliation") as string;
 
       if (!localData) {
         throw new Error("No reconciliation data found");

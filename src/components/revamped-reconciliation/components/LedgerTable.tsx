@@ -181,7 +181,7 @@ export function LedgerTable() {
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
-                        className={cn("px-6 py-0 h-[3.3rem]", {
+                        className={cn("px-6 py-0 h-[3.5rem]", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
                           "flex items-center justify-center":
@@ -199,11 +199,11 @@ export function LedgerTable() {
                     <>
                       <TableCell
                         colSpan={ledgerColumns.length - 1}
-                        className="px-4 py-0 h-[3.3rem] border-r"
+                        className="px-4 py-0 h-[3.5rem] border-r"
                       >
                         {/* <TableCell
                         colSpan={ledgerColumns.length}
-                        className="px-4 h-[3.3rem]"
+                        className="px-4 h-[3.5rem]"
                       > */}
                         <QuickFindAndMatchComboBox
                           commandProps={{
@@ -237,7 +237,7 @@ export function LedgerTable() {
                           }
                         />
                       </TableCell>
-                      <TableCell className="px-6 h-[3.3rem] py-0 flex items-center justify-center">
+                      <TableCell className="px-6 h-[3.5rem] py-0 flex items-center justify-center">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="size-8 p-0">
