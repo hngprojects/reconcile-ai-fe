@@ -47,7 +47,7 @@ export default function HeroSection() {
           className="flex items-center justify-center"
         >
           <Image
-            src="/assets/images/hero-mockup.svg"
+            src="/assets/images/Hero-Section-Image.png"
             alt="macbook mockup"
             width={621}
             height={387}
