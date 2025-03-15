@@ -1,13 +1,13 @@
 export interface ReconciliationItem {
-  bankStatement: {
-    date: string;
-    description: string;
-    amount: number;
+  bankStatement?: {
+    date?: string;
+    description?: string;
+    amount?: number;
   };
   companyLedger?: {
-    date: string;
-    description: string;
-    amount: number;
+    date?: string;
+    description?: string;
+    amount?: number;
   };
   matched: boolean;
 }
@@ -23,12 +23,19 @@ export type matched = {
   status: string;
 };
 
+export type matchedItem = {
+  bankStatement: Transaction;
+  companyLedger: Transaction;
+  matched: boolean;
+};
+
 export type unmatched = {
   unmatched_file1: Transaction[];
   unmatched_file2: Transaction[];
 };
 
 export type ResponseData = {
+  reconciliation_id: string;
   matches: matched[];
   unmatched: unmatched;
   only_in_file1: Transaction[];
@@ -36,9 +43,10 @@ export type ResponseData = {
 };
 
 export type Transaction = {
-  Description: string;
   Date: string;
+  Description: string;
   Amount: number;
+  [key: string]: string | number;
 };
 
 export type TData = {
@@ -47,4 +55,18 @@ export type TData = {
 export type ReconciliationTableProps = {
   leftTableTitle?: string;
   rightTableTitle?: string;
+};
+
+export type ManualRequestBody = {
+  statement: {
+    date?: string;
+    description?: string;
+    amount?: number;
+  };
+  ledger?: {
+    date?: string;
+    description?: string;
+    amount?: number;
+  };
+  action: string;
 };

@@ -3,22 +3,40 @@ import {
   NEWSLETTER_API_URL,
   RECONCILE_API_URL,
   WAITLIST_API_URL,
+  MANUAL_API_URL,
+  MARKETING_DEMO_API_URL,
 } from "./apiEndpoints";
+
+import { ManualRequestBody } from "@/src/types/reconciliation";
 
 interface ApiError extends Error {
   code?: number;
   status?: number;
 }
 
+interface MarketingDemoData {
+  full_name: string;
+  business_name: string;
+  email: string;
+  phone_number: string;
+}
+
 export async function reconcileFiles(
   file1: File,
   file2: File,
-  keyColumn: string
+  keyColumn: string,
 ) {
   const formData = new FormData();
   formData.append("file1", file1);
   formData.append("file2", file2);
   formData.append("key_column", keyColumn);
+
+  const token = localStorage.getItem("access_token");
+  const headers: HeadersInit = {};
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
 
   console.log("Sending files for reconciliation:", {
     file1: file1.name,
@@ -29,6 +47,7 @@ export async function reconcileFiles(
   try {
     const response = await fetch(RECONCILE_API_URL, {
       method: "POST",
+      headers,
       body: formData,
     });
 
@@ -155,5 +174,57 @@ export async function handleAddToNewsLetter(email: string): Promise<{
   } catch {
     // console.error(`Newsletter error for email ${email}:`, error);
     return { error: "Something went wrong. Please try again later." };
+  }
+}
+
+export async function updateReconciliation(
+  reconciliation: string,
+  data: ManualRequestBody,
+) {
+  try {
+    const response = await fetch(`${MANUAL_API_URL}${reconciliation}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const resData = await response.json();
+
+    if (!response.ok) {
+      return { error: resData.message || "Failed to add to newsletter" };
+    }
+
+    return resData;
+  } catch {
+    return { error: "Something went wrong. Please try again later." };
+  }
+}
+
+export async function handleMarketingDemo(data: MarketingDemoData) {
+  try {
+    const response = await fetch(MARKETING_DEMO_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData.message || "Failed to submit demo request");
+    }
+
+    return { success: true, data: responseData.data };
+  } catch (error) {
+    console.error("Marketing demo error:", error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Something went wrong",
+    };
   }
 }

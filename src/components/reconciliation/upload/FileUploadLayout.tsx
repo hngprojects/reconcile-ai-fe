@@ -9,8 +9,8 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-import { checkRateLimit, incrementAttempts } from "@/src/utils/rateLimit";
-import { useAuth } from "@/src/components/context/AuthContext";
+// import { checkRateLimit, incrementAttempts } from "@/src/u qtils/rateLimit";
+// import { useAuth } from "@/src/components/context/AuthContext";
 import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 
 interface ReconciliationError extends Error {
@@ -35,7 +35,7 @@ const validateFileHeaders = async (
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
   const [bankStatement, setBankStatement] = useState<File | null>(null);
   const [companyLedger, setCompanyLedger] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState({ bank: 0, ledger: 0 });
@@ -127,6 +127,12 @@ export default function FileUploadLayout({
     clearUploadedFiles();
   }, []);
 
+  const handleFileDelete = (type: "bank" | "ledger") => {
+    const targetState = type === "bank" ? setBankStatement : setCompanyLedger;
+    targetState(null);
+    setUploadProgress((prev) => ({ ...prev, [type]: 0 }));
+  };
+
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
@@ -139,14 +145,6 @@ export default function FileUploadLayout({
 
       if (!isBankValid || !isLedgerValid) {
         setErrorCode(422);
-        setShowErrorModal(true);
-        return;
-      }
-
-      // Rate limit check for guest users
-      if (!isAuthenticated && checkRateLimit()) {
-        console.log("Rate limit reached for guest user");
-        setErrorCode(429);
         setShowErrorModal(true);
         return;
       }
@@ -169,16 +167,15 @@ export default function FileUploadLayout({
       if (result.status === "error") {
         setErrorCode(result.code);
         setShowErrorModal(true);
+        clearInterval(progressInterval);
+        setShowUploadModal(false);
         return;
       }
 
-      // Increment attempt count for guest users
-      if (!isAuthenticated) {
-        incrementAttempts();
-        console.log("Incrementing guest attempts");
-      }
-
-      console.log("Reconciliation result:", result);
+      // Remove local rate limit check since it's handled by backend
+      // if (!isAuthenticated) {
+      //   incrementAttempts();
+      // }
 
       if (result.status === "success") {
         localStorage.setItem(
@@ -186,15 +183,11 @@ export default function FileUploadLayout({
           JSON.stringify(result.data.data)
         );
         clearUploadedFiles();
-      } else {
-        setErrorCode(result.code);
-        setShowErrorModal(true);
       }
 
       clearInterval(progressInterval);
       setReconcileProgress(100);
 
-      // Wait for progress animation to complete
       setTimeout(() => {
         setShowUploadModal(false);
         onReconcile(bankStatement, companyLedger);
@@ -221,7 +214,7 @@ export default function FileUploadLayout({
           fileUploaded={!!bankStatement}
           fileName={bankStatement?.name}
           onFileSelect={(file) => handleFileUpload(file, "bank")}
-          onFileDelete={() => setBankStatement(null)}
+          onFileDelete={() => handleFileDelete("bank")}
           isUploading={isUploading.bank}
           uploadProgress={uploadProgress.bank}
           existingFiles={existingFiles}
@@ -231,7 +224,7 @@ export default function FileUploadLayout({
           fileUploaded={!!companyLedger}
           fileName={companyLedger?.name}
           onFileSelect={(file) => handleFileUpload(file, "ledger")}
-          onFileDelete={() => setCompanyLedger(null)}
+          onFileDelete={() => handleFileDelete("ledger")}
           isUploading={isUploading.ledger}
           uploadProgress={uploadProgress.ledger}
           existingFiles={existingFiles}
