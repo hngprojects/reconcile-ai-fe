@@ -1,37 +1,103 @@
+"use client";
 import CTASection from "@/src/components/CTASection";
 import Footer from "@/src/components/Footer";
+import { motion } from "framer-motion";
 
 export default function TermsConditionPage() {
+  const textVariants = {
+    hidden: {
+      opacity: 0,
+      y: 10,
+    },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+        delay: i * 0.2,
+      },
+    }),
+  };
+
+  // Content section animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: {
+        duration: 0.7,
+        ease: "easeOut",
+        delay: 0.2 + i * 0.15,
+      },
+    }),
+  };
+
   return (
     <main>
       <div className="font-inter">
-        <div className="bg-[#F5FAF8] flex flex-col items-center justify-center p-10 lg:py-16 lg:px-64 ">
-          <p className=" bg-[#E6FFF2] rounded-lg py-2 px-3 text-[1rem] ">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-[#F5FAF8] flex flex-col items-center justify-center p-10 lg:py-16 lg:px-64"
+        >
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={textVariants}
+            className="bg-[#E6FFF2] rounded-lg py-2 px-3 text-[1rem]"
+          >
             Current as of 05 Mar 2025
-          </p>
-          <h1 className="my-2 font-bold text-[1.5rem] lg:text-[2rem] ">
+          </motion.p>
+          <motion.h1
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={textVariants}
+            className="my-2 font-bold text-[1.5rem] lg:text-[2rem]"
+          >
             Terms and Conditions
-          </h1>
-          <p className="text-center text-sm">
+          </motion.h1>
+          <motion.p
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={textVariants}
+            className="text-center text-sm"
+          >
             By accessing our product, you are agreeing to be bound by these
             terms of service, all applicable laws and regulations, and agree
             that you are responsible for compliance with any applicable local
             laws.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
         <div className="p-3 lg:py-5 lg:px-64 ">
-          <div className="my-5">
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold mb- text-center lg:text-start ">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={sectionVariants}
+            className="my-5"
+          >
+            <h2 className="text-[#101828] text-[1.5rem] font-semibold mb- text-center lg:text-start">
               Introduction
             </h2>
             <p className="text-sm text-center lg:text-start text-[#475467]">
               ReconXi is a financial reconciliation tool that uses AI to
               reconcile bank statement with company ledger.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="mt-5">
+          <motion.div
+            className="mt-5"
+            initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={sectionVariants}
+          >
             <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
               What Information do we Collect?
             </h2>
@@ -60,7 +126,7 @@ export default function TermsConditionPage() {
               Other Data: Additional information you provide or that is
               automatically collected to enhance your experience.
             </p> */}
-          </div>
+          </motion.div>
 
           {/* <div className="mt-5">
             <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
@@ -134,37 +200,50 @@ export default function TermsConditionPage() {
               completely foolproof.
             </p>
           </div> */}
-          <div className="mt-5">
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold  text-center lg:text-start py-2">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={3}
+            variants={sectionVariants}
+            className="mt-5"
+          >
+            <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start py-2">
               Your Privacy Rights.
             </h2>
-            <p className="text-sm  text-center lg:text-start text-[#475467]">
+            <p className="text-sm text-center lg:text-start text-[#475467]">
               You may have rights regarding your financial information, For more
               detailed information, please review our Privacy Policy.
             </p>
-          </div>
-          <div className="mt-5">
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            custom={4}
+            variants={sectionVariants}
+            className="mt-5"
+          >
             <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
               Contact Us
             </h2>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
               If you have any questions about these Terms and Conditions or our
               privacy policy, please contact us at:
             </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
               Email: reconxi02@gmail.com
             </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
               Phone Number: +1-599-654-7936
             </p>
             <p className="text-sm text-center lg:text-start text-[#475467] py-2">
               Address: Chicago, United States
             </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              We are committed to addressing privacy concerns promptly
-              and transparently.
+            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
+              We are committed to addressing privacy concerns promptly and
+              transparently.
             </p>
-          </div>
+          </motion.div>
         </div>
         <CTASection />
       </div>
