@@ -12,7 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import { User, Response } from "@/src/types/auth";
 import { toast } from "sonner";
-// import { GOOGLE_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
+import { GOOGLE_API_URL, LOGOUT_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 // import { USER_API_URL } from "@/src/lib/apiEndpoints";
 
 interface AuthContextType {
@@ -32,12 +32,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInWithGoogle = async () => {
     // window.location.href = GOOGLE_API_URL;
-    router.push("https://api-dev.reconxi.com/api/v1/auth/google");
+    router.push(GOOGLE_API_URL);
   };
 
   const getUserDetails = async (token: string) => {
     try {
-      const response = await fetch("https://api-dev.reconxi.com/api/v1/user", {
+      const response = await fetch(USER_API_URL, {
         // const response = await fetch(USER_API_URL, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -55,8 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      const res = await fetch(
-        "https://api-dev.reconxi.com/api/v1/auth/logout",
+      const res = await fetch(LOGOUT_API_URL,
         {
           method: "POST",
           headers: {
