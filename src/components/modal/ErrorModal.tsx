@@ -39,7 +39,7 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
       <DialogContent
         className="max-w-[535px] p-8"
-        aria-describedby="error-modal"
+        aria-describedby="error-description"
         onEscapeKeyDown={(e) => e.preventDefault()}
         onPointerDownOutside={(e) => e.preventDefault()}
       >
@@ -58,7 +58,9 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           <h2 className="font-bold text-3xl md:text-4xl text-center">
             {config.title}
           </h2>
-          <p className="text-[#475569] text-center">{config.message}</p>
+          <p id="error-description" className="text-[#475569] text-center">
+            {config.message}
+          </p>
           <button
             onClick={handleButtonClick}
             className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-primary/90 flex cursor-pointer"

@@ -162,7 +162,7 @@ export function ReconciliationTable({
             matched: false,
           })),
       ].slice(0, length),
-    [paginatedBankData, data.matches, paginatedLedgerData, pagination.pageSize]
+    [paginatedBankData, data.matches, paginatedLedgerData, length]
   );
 
   // Create tables with shared pagination state
@@ -427,7 +427,7 @@ export function ReconciliationTable({
                                     value: JSON.stringify(txn),
                                   })
                                 )}
-                                placeholder="Find possible Match"
+                                placeholder="Find possible match"
                                 onSelect={async (value) => {
                                   try {
                                     await handleMatch(
@@ -599,7 +599,7 @@ export function ReconciliationTable({
                                     value: JSON.stringify(txn),
                                   })
                                 )}
-                                placeholder="Find possible Match"
+                                placeholder="Find possible match"
                                 onSelect={async (value) => {
                                   try {
                                     await handleMatch(
