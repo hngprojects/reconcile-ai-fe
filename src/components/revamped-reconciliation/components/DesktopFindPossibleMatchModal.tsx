@@ -120,7 +120,7 @@ export function DesktopFindPossibleMatchModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[1320px]">
+      <DialogContent className="sm:max-w-[1320px] max-h-[85vh] overflow-y-auto py-0">
         <DialogHeader>
           <DialogTitle>Find possible match</DialogTitle>
         </DialogHeader>
@@ -215,7 +215,7 @@ export function DesktopFindPossibleMatchModal({
                     <TableHead className="text-left px-6">Amount</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className="max-h-[35vh] h-full">
                   {filteredTransactions?.length > 0 ? (
                     filteredTransactions?.map((transaction, index) => (
                       <TableRow
@@ -273,7 +273,7 @@ export function DesktopFindPossibleMatchModal({
           )}
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="sticky bottom-0 left-0 right-0 bg-white py-4 border-t">
           {isMatched ? (
             <>
               <Button variant="outline" onClick={handleCancelMatch}>
