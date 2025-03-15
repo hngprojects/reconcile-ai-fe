@@ -12,6 +12,7 @@ import { Transaction } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { DownloadCloudIcon } from "../Icon/Icons";
 import UnlinkModal from "../modal/UnlinkModal";
+import { RECONCILE_EXPORT_API_URL } from "@/src/lib/apiEndpoints";
 
 interface ReconciliationData {
   matches: Array<{
@@ -76,8 +77,7 @@ export function MobileReconciliationView() {
         only_in_file2: parsedData.only_in_file2 || [],
       };
 
-      const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
+      const response = await fetch(RECONCILE_EXPORT_API_URL,
         {
           method: "POST",
           headers: {
