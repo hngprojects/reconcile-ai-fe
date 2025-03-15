@@ -12,22 +12,22 @@ interface UploadModalProps {
 
 export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
   const { getUserDetails } = useAuth();
-  const [isAuthenticated, setAuthenticated] = useState(true);
+  const [isAuthenticated, setAuthenticated] = useState(false);
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
     console.log("Emaail submitted:", email);
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("access_token");
-  //   if (token) {
-  //     getUserDetails(token as string);
-  //     setAuthenticated(true);
-  //   } else {
-  //     setAuthenticated(false);
-  //   }
-  // }, [getUserDetails]);
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      getUserDetails(token as string);
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
+  }, [getUserDetails]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
