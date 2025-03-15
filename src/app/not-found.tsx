@@ -15,7 +15,7 @@ export default function NotFound() {
                 <p className='text-[50px] font-bold text-[#13281F]'>OOPS</p>
                 <p className='text-[30px] text-[#13281F] font-semibold'>PAGE NOT FOUND</p>
             </div>
-            <Link href="/" className='border border-[#2E604A] rounded-[8px] w-full h-fit py-[20px] px-[24px] text-center text-[18px] font-[700]'>Go Back</Link>
+            <Link href="/" className='border border-[#2E604A] rounded-[8px] w-full h-fit py-[20px] px-[24px] text-center text-[18px] font-[700] hover:bg-primary hover:text-white transition-all duration-150'>Go Back</Link>
         </div>
     </div>
   )
