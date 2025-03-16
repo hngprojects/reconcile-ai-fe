@@ -24,10 +24,7 @@ jobs:
       #   run: npm install
 
       - name: Install Dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm cache clean --force
-          npm install
+        run: npm install
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
