@@ -137,25 +137,23 @@ export function StatusTable() {
         </Table>
       </div>
 
-      {selectedRow?.matched && (
-        <UnlinkModal
-          isOpen={showUnlinkModal}
-          isLoading={isLoading}
-          onClose={() => {
-            setShowUnlinkModal(false);
+      <UnlinkModal
+        isOpen={showUnlinkModal}
+        isLoading={isLoading}
+        onClose={() => {
+          setShowUnlinkModal(false);
+          setSelectedRow(null);
+        }}
+        onConfirm={async () => {
+          if (!selectedRow) return;
+
+          if (selectedRow.bank_txn && selectedRow.ledger_txn) {
+            await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
+
             setSelectedRow(null);
-          }}
-          onConfirm={async () => {
-            if (!selectedRow) return;
-
-            if (selectedRow.bank_txn && selectedRow.ledger_txn) {
-              await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
-
-              setSelectedRow(null);
-            }
-          }}
-        />
-      )}
+          }
+        }}
+      />
     </>
   );
 }

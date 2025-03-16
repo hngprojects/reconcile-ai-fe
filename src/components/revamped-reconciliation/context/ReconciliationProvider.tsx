@@ -59,6 +59,8 @@ interface ReconciliationContextProps {
   // Modals
   showUnlinkModal: boolean;
   setShowUnlinkModal: React.Dispatch<React.SetStateAction<boolean>>;
+  showUnlinkModalMobile: boolean;
+  setShowUnlinkModalMobile: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -69,6 +71,7 @@ const ReconciliationContext = createContext<
 
 export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const [showUnlinkModal, setShowUnlinkModal] = useState(false);
+  const [showUnlinkModalMobile, setShowUnlinkModalMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [data, setData] = useState<ReconciliationResponse>(
@@ -204,6 +207,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       toast.error("Failed to unlink transactions");
     } finally {
       setShowUnlinkModal(false);
+      setShowUnlinkModalMobile(false);
       setIsLoading(false);
     }
   };
@@ -241,6 +245,8 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         // modal state
         showUnlinkModal,
         setShowUnlinkModal,
+        showUnlinkModalMobile,
+        setShowUnlinkModalMobile,
         isLoading,
         setIsLoading,
       }}

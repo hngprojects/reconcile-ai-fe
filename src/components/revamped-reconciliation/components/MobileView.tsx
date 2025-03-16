@@ -41,8 +41,8 @@ export function MobileView() {
     unmatchedLedgerTransactions,
     handleMatch: onMatch,
     handleUnlink: onUnlink,
-    showUnlinkModal,
-    setShowUnlinkModal,
+    showUnlinkModalMobile,
+    setShowUnlinkModalMobile,
     isLoading,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -274,7 +274,7 @@ export function MobileView() {
                         title="Unlink matching transactions"
                         className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
                         onClick={() => {
-                          setShowUnlinkModal(true);
+                          setShowUnlinkModalMobile(true);
                           setSelectedTransactionRow(item);
                         }}
                       >
@@ -431,10 +431,10 @@ export function MobileView() {
       />
 
       <UnlinkModal
-        isOpen={showUnlinkModal}
+        isOpen={showUnlinkModalMobile}
         isLoading={isLoading}
         onClose={() => {
-          setShowUnlinkModal(false);
+          setShowUnlinkModalMobile(false);
         }}
         onConfirm={async () => {
           if (!selectedTransactionRow) return;
