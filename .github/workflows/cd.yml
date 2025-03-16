@@ -27,7 +27,7 @@ jobs:
       #     npm install
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
     
       - name: Install Dependencies
         run: npm ci
