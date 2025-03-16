@@ -121,6 +121,13 @@ const Footer = () => {
                 >
                   Privacy Policy
                 </Link>
+                <Link
+                  href="/demo"
+                  className="hover:underline underline-offset-2"
+                  aria-label="Demo"
+                >
+                  Demo
+                </Link>
               </nav>
               <nav className="flex sm:hidden items-center gap-8">
                 <Link
@@ -143,6 +150,13 @@ const Footer = () => {
                   aria-label="Contact Us"
                 >
                   Contact Us
+                </Link>
+                <Link
+                  href="/demo"
+                  className="hover:underline underline-offset-2"
+                  aria-label="Demo"
+                >
+                  Demo
                 </Link>
               </nav>
             </div>

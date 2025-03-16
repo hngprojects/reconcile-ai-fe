@@ -32,6 +32,7 @@ import { DownloadCloudIcon, XIcon } from "../Icon/Icons";
 import { SearchCombobox } from "@/src/components/reconciliation/SearchComboBox";
 import { toast } from "sonner";
 import UnlinkModal from "../modal/UnlinkModal";
+import { RECONCILE_EXPORT_API_URL } from "@/src/lib/apiEndpoints";
 
 interface Transaction {
   Date: string;
@@ -135,14 +136,10 @@ export function ReconciliationTable({
     []
   );
 
-  console.log(
-    paginatedLedgerData.filter(
-      (ledg) =>
-        !data.matches.find((val) => val.file2_transaction == ledg) ||
-        (!ledg["Date"] && !ledg["Description"] && !ledg["Amount"])
-    )
-  );
-
+  const length =
+    pagination.pageSize === paginatedBankData.length
+      ? pagination.pageSize
+      : paginatedBankData.length;
   // Create status column data
   const statusData = React.useMemo(
     () =>
@@ -167,8 +164,8 @@ export function ReconciliationTable({
           .map(() => ({
             matched: false,
           })),
-      ].slice(0, pagination.pageSize),
-    [paginatedBankData, data.matches, paginatedLedgerData, pagination.pageSize]
+      ].slice(0, length),
+    [paginatedBankData, data.matches, paginatedLedgerData, length]
   );
 
   // Create tables with shared pagination state
@@ -250,7 +247,7 @@ export function ReconciliationTable({
       setIsExporting(true);
 
       // Get reconciliation data from localStorage
-      const reconciliationData = localStorage.getItem("reconciliation");
+      const reconciliationData = localStorage.getItem("reconciliation_old");
 
       if (!reconciliationData) {
         throw new Error("No reconciliation data found");
@@ -270,18 +267,15 @@ export function ReconciliationTable({
       };
 
       // Send POST request to API
-      const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: formattedData,
-          }),
-        }
-      );
+      const response = await fetch(RECONCILE_EXPORT_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: formattedData,
+        }),
+      });
 
       // Check for errors with better error reporting
       if (!response.ok) {
@@ -433,7 +427,7 @@ export function ReconciliationTable({
                                     value: JSON.stringify(txn),
                                   })
                                 )}
-                                placeholder="Find possible Match"
+                                placeholder="Find possible match"
                                 onSelect={async (value) => {
                                   try {
                                     await handleMatch(
@@ -605,7 +599,7 @@ export function ReconciliationTable({
                                     value: JSON.stringify(txn),
                                   })
                                 )}
-                                placeholder="Find possible Match"
+                                placeholder="Find possible match"
                                 onSelect={async (value) => {
                                   try {
                                     await handleMatch(

@@ -12,6 +12,7 @@ import ErrorModal from "@/src/components/modal/ErrorModal";
 // import { checkRateLimit, incrementAttempts } from "@/src/u qtils/rateLimit";
 // import { useAuth } from "@/src/components/context/AuthContext";
 import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
+import { transformReconciliationData } from "../../revamped-reconciliation/helpers/transformReconciliationData";
 
 interface ReconciliationError extends Error {
   code?: number;
@@ -182,6 +183,14 @@ export default function FileUploadLayout({
           "reconciliation",
           JSON.stringify(result.data.data)
         );
+        const reconciliationData = transformReconciliationData(
+          result.data.data
+        );
+        localStorage.setItem(
+          "reconciliation",
+          JSON.stringify(reconciliationData)
+        );
+
         clearUploadedFiles();
       }
 

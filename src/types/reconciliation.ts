@@ -1,5 +1,5 @@
 export interface ReconciliationItem {
-  bankStatement: {
+  bankStatement?: {
     date?: string;
     description?: string;
     amount?: number;
