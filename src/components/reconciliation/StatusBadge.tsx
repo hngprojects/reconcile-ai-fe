@@ -20,12 +20,12 @@ export function StatusBadge({
       {!hideIcon && (
         <div
           className={cn(
-            "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
+            "h-4 w-4 rounded-full ml-2 flex items-center justify-center group",
             matched ? "bg-[#007A55]" : "bg-[#C50700]"
           )}
         >
           {matched ? (
-            <CheckIcon className="h-4 w-4 text-white" />
+            <CheckIcon className="h-4 w-4 text-white group-hover:hidden" />
           ) : (
             <XIcon className="h-2.5 w-2.5 text-white" />
           )}

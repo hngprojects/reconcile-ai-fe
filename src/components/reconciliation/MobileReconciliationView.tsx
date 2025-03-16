@@ -60,7 +60,7 @@ export function MobileReconciliationView() {
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      const reconciliationData = localStorage.getItem("reconciliation");
+      const reconciliationData = localStorage.getItem("reconciliation_old");
 
       if (!reconciliationData) {
         throw new Error("No reconciliation data found");
@@ -77,15 +77,13 @@ export function MobileReconciliationView() {
         only_in_file2: parsedData.only_in_file2 || [],
       };
 
-      const response = await fetch(RECONCILE_EXPORT_API_URL,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: formattedData }),
-        }
-      );
+      const response = await fetch(RECONCILE_EXPORT_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: formattedData }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
@@ -124,7 +122,6 @@ export function MobileReconciliationView() {
       return () => clearTimeout(timer);
     }
   }, [showSuccessToast]);
-
 
   return (
     <div className="space-y-3 py-6">
@@ -210,10 +207,10 @@ export function MobileReconciliationView() {
                       if (item.companyLedger) {
                         await handleMatch(
                           {
-                          Date: item.companyLedger.date,
-                          Description: item.companyLedger.description,
-                          Amount: item.companyLedger.amount,
-                        } as Transaction,
+                            Date: item.companyLedger.date,
+                            Description: item.companyLedger.description,
+                            Amount: item.companyLedger.amount,
+                          } as Transaction,
                           "statement",
                           JSON.parse(value)
                         );
