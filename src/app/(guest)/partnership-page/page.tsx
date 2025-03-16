@@ -1,6 +1,7 @@
 import React from 'react';
 import Footer from '@/src/components/Footer';
 import Image from 'next/image';
+import Link from 'next/link';
 import { StarsIcon } from "lucide-react";
 
 export default function PartnershipPage() {
@@ -11,8 +12,8 @@ export default function PartnershipPage() {
   ];
 
   return (
-    <div className='mx-auto max-w-7xl text-center'>
-      <div className='flex justify-center items-center'>
+    <div className=''>
+      <div className='flex justify-center items-center mx-auto max-w-7xl text-center bg-[#FBFEFD]'>
         <div className="flex items-center text-center sm:text-left gap-[32px] flex-1">
           <div className="flex flex-col items-start gap-[24px] w-full">
             <div className="flex flex-col items-start gap-[16px] self-stretch">
@@ -23,6 +24,13 @@ export default function PartnershipPage() {
                 At ReconXi, we are dedicated to transforming the way businesses manage their financial reconciliation processes. 
                 By partnering with us, you can enhance your offerings and provide added value to your clients while benefiting from our solution.
               </p>
+
+              <Link
+              className="bg-primary whitespace-nowrap w-full sm:w-fit  py-2 px-4 rounded-md font-semibold justify-center items-center h-12 sm:h-9 text-sm text-white hover:bg-primary/90 flex"
+              href="/"
+            >
+              Partner With Us
+            </Link>
             </div>
           </div>
           <div className="relative md:h-[500px] h-[300px] w-full max-w-[536px]">
@@ -38,7 +46,7 @@ export default function PartnershipPage() {
       </div>
 
 
-      <div className='my-10'>
+      <div className='my-10 mx-auto max-w-7xl text-center'>
         <h3 className="text-4xl font-semibold mb-2 sm:mb-4 text-[#101828] leading-11 tracking-[-0.02em] sm:text-[32px] sm:leading-[40px] md:text-[36px] md:leading-[44px] lg:text-[40px] lg:leading-[48px]">
             Why Partner With ReconXi?
         </h3>
@@ -87,7 +95,7 @@ export default function PartnershipPage() {
 
 
 
-        <div className='my-10 bg-[#FBFEFD] py-10'>
+        <div className='my-10 py-10 mx-auto max-w-7xl text-center'>
             <h3 className='py-10 text-3xl'>Partner Opportunities</h3>
             <ul className="list-none flex flex-col items-center lg:items-start ml-1 lg:ml-[16px] px-10">
                 {opportunities.map((opportunity, index) => {
@@ -115,24 +123,24 @@ export default function PartnershipPage() {
             </ul>
         </div>
 
-      <div className='my-10'>
+      <div className='my-10 bg-[#FBFEFD] py-7 mx-auto max-w-7xl text-center'>
         <h3>What We Offer Partners</h3>
         <div className='flex justify-between lg:items-start ml-1 lg:ml-[16px]'>
-            <div className='border border-solid border-[#D9D9D9] rounded-2xl p-3 h-32'>
+            <div>
                 <div className='flex items-center'>
                     <StarsIcon className="text-[#297B65] mr-3 w-6 h-6" />
                     <h3>Technical Support</h3>
                 </div>
                 <p className='text-start w-80'>Access to developer resources, documentation and a responsive engineering team.</p>
             </div>
-            <div className='border border-solid border-[#D9D9D9] rounded-2xl p-3 h-32'>
+            <div>
                 <div className='flex items-center'>
                     <StarsIcon className="text-[#297B65] mr-3 w-6 h-6" />
                     <h3>Marketing Resources</h3>
                 </div>
                 <p className='text-start w-80'>Ready-to-use collateral, case studies, and tailored campaigns to amplify your outreach.</p>
             </div>
-            <div className='border border-solid border-[#D9D9D9] rounded-2xl p-3 h-32'>
+            <div>
                 <div className='flex items-center'>
                     <StarsIcon className="text-[#297B65] mr-3 w-6 h-6" />
                     <h3>Training</h3>
