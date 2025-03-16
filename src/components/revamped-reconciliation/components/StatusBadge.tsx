@@ -25,18 +25,17 @@ export function StatusBadge({ matched, className }: StatusBadgeProps) {
         {matched ? (
           <>
             <CheckIcon className="h-3 w-3 text-white max-md:group-hover:hidden" />
-            <div
-              title="unlink matching transactions"
-              className="p-1 rounded-full max-md:hidden max-md:group-hover:block"
-            >
-              <XIcon
-                strokeWidth={2}
-                className="rounded-full h-4 w-4 text-[#333333]"
-              />
-            </div>
           </>
         ) : (
-          <XIcon className="h-3 w-3 text-white" />
+          <div
+            title="unlink matching transactions"
+            className="p-1 rounded-full max-md:hidden max-md:group-hover:block"
+          >
+            <XIcon
+              strokeWidth={2}
+              className="rounded-full h-4 w-4 text-white"
+            />
+          </div>
         )}
       </div>
     </div>
