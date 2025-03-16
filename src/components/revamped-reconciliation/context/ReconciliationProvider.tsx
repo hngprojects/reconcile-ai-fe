@@ -1,6 +1,6 @@
 "use client";
 
-import {
+import React, {
   createContext,
   useContext,
   useState,
@@ -44,7 +44,7 @@ interface ReconciliationContextProps {
   handleMatch: (
     bankTransaction: Transaction,
     ledgerTransaction: Transaction
-  ) => void;
+  ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
   onPreviousPage: () => void;
@@ -55,6 +55,12 @@ interface ReconciliationContextProps {
     bankTransaction: Transaction,
     ledgerTransaction: Transaction
   ) => Promise<void>;
+
+  // Modals
+  showUnlinkModal: boolean;
+  setShowUnlinkModal: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReconciliationContext = createContext<
@@ -62,6 +68,8 @@ const ReconciliationContext = createContext<
 >(undefined);
 
 export function ReconciliationProvider({ children }: { children: ReactNode }) {
+  const [showUnlinkModal, setShowUnlinkModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [data, setData] = useState<ReconciliationResponse>(
     {} as ReconciliationResponse
@@ -134,7 +142,6 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       );
 
       if (response.status !== "success") {
-        console.error("Failed to update reconciliation:", response);
         toast.error("Failed to match transactions");
         return;
       }
@@ -148,9 +155,8 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       setData(reconciliationData);
 
       toast.success("Transactions matched successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to match transactions");
-      console.error("Error updating reconciliation:", error);
     }
   };
 
@@ -172,6 +178,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       action: "unmatch",
     };
 
+    setIsLoading(true);
     try {
       const reconciliationId = data.reconciliation_id;
       const response = await updateReconciliation(
@@ -180,7 +187,6 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       );
 
       if (response.status !== "success") {
-        console.error("Failed to unlink reconciliation:", response);
         toast.error("Failed to unlink transactions");
         return;
       }
@@ -194,9 +200,11 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       setData(reconciliationData);
 
       toast.success("Transactions unlinked successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to unlink transactions");
-      console.error("Error unlinking reconciliation:", error);
+    } finally {
+      setShowUnlinkModal(false);
+      setIsLoading(false);
     }
   };
 
@@ -229,6 +237,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         onRowsPerPageChange,
         handleSearch,
         handleUnlink,
+
+        // modal state
+        showUnlinkModal,
+        setShowUnlinkModal,
+        isLoading,
+        setIsLoading,
       }}
     >
       {children}

@@ -26,6 +26,7 @@ import {
 import { MobileFindPossibleMatchModal } from "./MobileFindPossibleMatchModal";
 import { StatusBadge } from "./StatusBadge";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+import UnlinkModal from "../../modal/UnlinkModal";
 
 export function MobileView() {
   const {
@@ -39,6 +40,10 @@ export function MobileView() {
     unmatchedBankTransactions,
     unmatchedLedgerTransactions,
     handleMatch: onMatch,
+    handleUnlink: onUnlink,
+    showUnlinkModal,
+    setShowUnlinkModal,
+    isLoading,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -264,9 +269,17 @@ export function MobileView() {
 
                   {item.matched && (
                     <div className="flex gap-3 items-center">
-                      <div className="inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl">
+                      <button
+                        type="button"
+                        title="Unlink matching transactions"
+                        className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
+                        onClick={() => {
+                          setShowUnlinkModal(true);
+                          setSelectedTransactionRow(item);
+                        }}
+                      >
                         <StatusBadge matched={item.matched} />
-                      </div>
+                      </button>
                       <hr className="border border-gray-200/70 flex-1" />
                     </div>
                   )}
@@ -415,6 +428,27 @@ export function MobileView() {
         reconciledDataRow={selectedTransactionRow}
         unmatchedTransactions={possibleMatches}
         onMatch={onMatch}
+      />
+
+      <UnlinkModal
+        isOpen={showUnlinkModal}
+        isLoading={isLoading}
+        onClose={() => {
+          setShowUnlinkModal(false);
+        }}
+        onConfirm={async () => {
+          if (!selectedTransactionRow) return;
+
+          if (
+            selectedTransactionRow.bank_txn &&
+            selectedTransactionRow.ledger_txn
+          ) {
+            await onUnlink(
+              selectedTransactionRow.bank_txn,
+              selectedTransactionRow.ledger_txn
+            );
+          }
+        }}
       />
     </div>
   );
