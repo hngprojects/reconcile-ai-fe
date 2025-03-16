@@ -22,6 +22,7 @@ import { TransactionOption } from "../../helpers/searchComboxOptionExpander";
 import { Command, CommandGroup, CommandItem, CommandList } from "../command";
 import { GroupOption, QuickFindAndMatchComboBoxProps } from "./types";
 import { removePickedOption, transToGroupOption, useDebounce } from "./utils";
+import { useReconciliation } from "../../context/ReconciliationProvider";
 
 export interface QuickFindAndMatchComboBoxRef {
   selectedValue: TransactionOption | null;
@@ -51,6 +52,7 @@ const QuickFindAndMatchComboBox = ({
   inputProps,
   onConfirm,
 }: QuickFindAndMatchComboBoxProps) => {
+  const { isMatching } = useReconciliation();
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setOpen] = useState(false);
   const [onScrollbar, setOnScrollbar] = useState(false);
@@ -260,6 +262,9 @@ const QuickFindAndMatchComboBox = ({
                 "p-1": selected !== null,
                 "cursor-text": !disabled && selected !== null,
               },
+              {
+                "animate-pulse bg-gray-100": isMatching,
+              },
               className
             )}
             onClick={() => {
@@ -267,7 +272,7 @@ const QuickFindAndMatchComboBox = ({
               inputRef?.current?.focus();
             }}
           >
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1 items-center">
               {/* {selected && (
                 <div
                   key={selected.value}

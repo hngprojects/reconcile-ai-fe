@@ -63,6 +63,8 @@ interface ReconciliationContextProps {
   setShowUnlinkModalMobile: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isMatching: boolean;
+  setIsMatching: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ReconciliationContext = createContext<
@@ -70,6 +72,7 @@ const ReconciliationContext = createContext<
 >(undefined);
 
 export function ReconciliationProvider({ children }: { children: ReactNode }) {
+  const [isMatching, setIsMatching] = useState(false);
   const [showUnlinkModal, setShowUnlinkModal] = useState(false);
   const [showUnlinkModalMobile, setShowUnlinkModalMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -137,6 +140,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       action: "match",
     };
 
+    setIsMatching(true);
     try {
       const reconciliationId = data.reconciliation_id;
       const response = await updateReconciliation(
@@ -160,6 +164,8 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       toast.success("Transactions matched successfully!");
     } catch {
       toast.error("Failed to match transactions");
+    } finally {
+      setIsMatching(false);
     }
   };
 
@@ -249,6 +255,8 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         setShowUnlinkModalMobile,
         isLoading,
         setIsLoading,
+        isMatching,
+        setIsMatching,
       }}
     >
       {children}
