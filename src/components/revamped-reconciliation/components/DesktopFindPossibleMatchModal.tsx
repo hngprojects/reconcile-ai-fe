@@ -46,21 +46,21 @@ export function DesktopFindPossibleMatchModal({
   onMatch,
 }: FindPossibleMatchModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTransactionIndex, setSelectedTransactionIndex] = useState<
-    number | null
-  >(null);
+  const [selectedTransactionIndexes, setSelectedTransactionIndexes] = useState<
+    number[]
+  >([]);
   const [isMatched, setIsMatched] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] =
-    useState<Transaction | null>(null);
+  const [selectedTransactions, setSelectedTransactions] =
+    useState<Transaction[]>([]);
   console.log({ reconciledDataRow });
 
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
       setSearchTerm("");
-      setSelectedTransactionIndex(null);
+      setSelectedTransactionIndexes([]);
       setIsMatched(false);
-      setSelectedTransaction(null);
+      setSelectedTransactions([]);
     }
   }, [isOpen]);
 
@@ -77,31 +77,32 @@ export function DesktopFindPossibleMatchModal({
   const handleMatchClick = () => {
     // This condition only matches if one transaction is missing (null)
     if (
-      selectedTransactionIndex !== null &&
+      selectedTransactionIndexes.length &&
       (!reconciledDataRow.bank_txn || !reconciledDataRow.ledger_txn)
     ) {
-      setSelectedTransaction(filteredTransactions[selectedTransactionIndex]);
+      setSelectedTransactions(selectedTransactionIndexes.map((_, index) => filteredTransactions[index]))
+      // setSelectedTransactions(filteredTransactions[selectedTransactionIndex]);
       setIsMatched(true);
     }
   };
 
   const handleCancelMatch = () => {
     setIsMatched(false);
-    setSelectedTransaction(null);
-    setSelectedTransactionIndex(null);
+    setSelectedTransactions([]);
+    setSelectedTransactionIndexes([]);
   };
 
   const handleFinishClick = () => {
-    if (selectedTransaction) {
+    if (selectedTransactions.length) {
       // if there is a bank transaction the selected transaction goes to the right side
       if (reconciledDataRow.bank_txn) {
-        onMatch(reconciledDataRow.bank_txn, selectedTransaction);
+        // onMatch(reconciledDataRow.bank_txn, selectedTransactions);
         onClose();
       }
 
       // if there is a ledger transaction the selected transaction goes to the left side
       if (reconciledDataRow.ledger_txn) {
-        onMatch(selectedTransaction, reconciledDataRow.ledger_txn);
+        // onMatch(selectedTransaction, reconciledDataRow.ledger_txn);
         onClose();
       }
     }
@@ -119,19 +120,39 @@ export function DesktopFindPossibleMatchModal({
         <div className="space-y-6 mt-2 mx-4">
           <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-4">
             {/* Bank Transaction Details */}
-            <TransactionTable
-              transaction={reconciledDataRow.bank_txn || selectedTransaction}
-              status={
-                !isMatched &&
-                !isDefaultMatch &&
-                !selectedTransaction &&
-                !reconciledDataRow.bank_txn
-                  ? "empty"
-                  : isMatched || isDefaultMatch
-                    ? "matched"
-                    : "unmatched"
-              }
-            />
+            {
+              reconciledDataRow.bank_txn ? (
+                <TransactionTable
+                  transactions={[reconciledDataRow.bank_txn]}
+                  status={
+                    !isMatched &&
+                    !isDefaultMatch &&
+                    !selectedTransactions.length &&
+                    !reconciledDataRow.bank_txn
+                      ? "empty"
+                      : isMatched || isDefaultMatch
+                        ? "matched"
+                        : "unmatched"
+                  }
+                  NoOfMatchedData={selectedTransactions.length}
+                />
+              ) : (
+                <TransactionTable
+                  transactions={selectedTransactions}
+                  status={
+                    !isMatched &&
+                    !isDefaultMatch &&
+                    !selectedTransactions.length &&
+                    !reconciledDataRow.bank_txn
+                      ? "empty"
+                      : isMatched || isDefaultMatch
+                        ? "matched"
+                        : "unmatched"
+                  }
+                />
+              )
+            }
+
 
             {/* Status */}
             <div className="rounded-lg border overflow-hidden">
@@ -150,7 +171,9 @@ export function DesktopFindPossibleMatchModal({
                       "hover:bg-[#F3FEFA]"
                     )}
                   >
-                    <TableCell className="text-center h-[64px]">
+                    <TableCell style={{
+                      height: `${selectedTransactions.length ? selectedTransactions.length*64 : 64}px`
+                    }} className="text-center">
                       <StatusBadge matched={isDefaultMatch || isMatched} />
                     </TableCell>
                   </TableRow>
@@ -159,19 +182,38 @@ export function DesktopFindPossibleMatchModal({
             </div>
 
             {/* Company Ledger Details */}
-            <TransactionTable
-              transaction={reconciledDataRow.ledger_txn || selectedTransaction}
-              status={
-                !isMatched &&
-                !isDefaultMatch &&
-                !selectedTransaction &&
-                !reconciledDataRow.ledger_txn
-                  ? "empty"
-                  : isMatched || isDefaultMatch
-                    ? "matched"
-                    : "unmatched"
+              {
+                reconciledDataRow.ledger_txn ?(
+                  <TransactionTable
+                    transactions={[reconciledDataRow.ledger_txn]}
+                    status={
+                      !isMatched &&
+                      !isDefaultMatch &&
+                      !selectedTransactions.length &&
+                      !reconciledDataRow.ledger_txn
+                        ? "empty"
+                        : isMatched || isDefaultMatch
+                          ? "matched"
+                          : "unmatched"
+                    }
+                    NoOfMatchedData={selectedTransactions.length}
+                  />
+                ) :(
+                  <TransactionTable
+                  transactions={selectedTransactions}
+                  status={
+                    !isMatched &&
+                    !isDefaultMatch &&
+                    !selectedTransactions.length &&
+                    !reconciledDataRow.ledger_txn
+                      ? "empty"
+                      : isMatched || isDefaultMatch
+                        ? "matched"
+                        : "unmatched"
+                  }
+                />
+                )
               }
-            />
           </div>
 
           {/* Search Input */}
@@ -183,7 +225,7 @@ export function DesktopFindPossibleMatchModal({
                 placeholder="Search by description, date, or amount"
                 value={searchTerm}
                 onChange={(e) => {
-                  setSelectedTransactionIndex(null);
+                  setSelectedTransactionIndexes([]);
                   setSearchTerm(e.target.value);
                 }}
               />
@@ -208,17 +250,19 @@ export function DesktopFindPossibleMatchModal({
                 </TableHeader>
                 <TableBody className="max-h-[35vh] h-full">
                   {filteredTransactions?.length > 0 ? (
-                    filteredTransactions?.map((transaction, index) => (
+                    filteredTransactions?.map((transaction, index) => {
+                      const isSelectedIndex = selectedTransactionIndexes?.some((transactionIndex) => transactionIndex === index)
+                      return (
                       <TableRow
                         key={transaction.id}
                         className={`cursor-pointer h-[52px] ${
-                          selectedTransactionIndex === index
+                          isSelectedIndex
                             ? "bg-gray-100"
                             : ""
                         }`}
                         onClick={() =>
-                          setSelectedTransactionIndex((prev) =>
-                            prev === index ? null : index
+                          setSelectedTransactionIndexes((prev) =>
+                            isSelectedIndex ? prev?.filter((i) => i !== index) : [...prev, index]
                           )
                         }
                       >
@@ -226,12 +270,12 @@ export function DesktopFindPossibleMatchModal({
                           <div className="flex justify-center">
                             <div
                               className={`w-5 h-5 rounded-sm flex items-center justify-center border-2 ${
-                                selectedTransactionIndex === index
+                                isSelectedIndex
                                   ? "border-[#297B65]"
                                   : "border-gray-300"
                               }`}
                             >
-                              {selectedTransactionIndex === index && (
+                              {isSelectedIndex && (
                                 <Check
                                   strokeWidth={3}
                                   className="h-4 w-4 text-[#297B65]"
@@ -250,7 +294,7 @@ export function DesktopFindPossibleMatchModal({
                           {transaction.amount}
                         </TableCell>
                       </TableRow>
-                    ))
+                    )})
                   ) : (
                     <TableRow>
                       <TableCell colSpan={4} className="text-center py-4">
@@ -275,7 +319,7 @@ export function DesktopFindPossibleMatchModal({
           ) : (
             <Button
               disabled={
-                selectedTransactionIndex === null ||
+                !selectedTransactionIndexes.length ||
                 (!!reconciledDataRow.bank_txn && !!reconciledDataRow.ledger_txn)
               }
               onClick={handleMatchClick}

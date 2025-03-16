@@ -12,13 +12,15 @@ import { Transaction } from "../types/frontendResponseTypes";
 import { cn } from "@/src/lib/utils";
 
 interface TransactionTableProps {
-  transaction: Transaction | null;
+  transactions: Transaction[];
   status: "matched" | "unmatched" | "empty";
+  NoOfMatchedData?: number;
 }
 
 export function TransactionTable({
-  transaction,
+  transactions,
   status,
+  NoOfMatchedData
 }: TransactionTableProps) {
   const getRowStyles = () => {
     switch (status) {
@@ -53,17 +55,21 @@ export function TransactionTable({
               <TableCell className="px-6 h-[64px]"></TableCell>
             </TableRow>
           ) : (
-            <TableRow className={cn(getRowStyles())}>
-              <TableCell className="px-6 border-r h-[64px] whitespace-nowrap overflow-hidden text-ellipsis">
-                {transaction?.date}
-              </TableCell>
-              <TableCell className="px-6 border-r h-[64px] whitespace-nowrap overflow-hidden text-ellipsis">
-                {transaction?.description}
-              </TableCell>
-              <TableCell className="px-6 h-[64px] whitespace-nowrap overflow-hidden text-ellipsis">
-                {transaction?.amount}
-              </TableCell>
-            </TableRow>
+                transactions.map((transaction) => (
+                  <TableRow style={{
+                    height: `${NoOfMatchedData ? NoOfMatchedData*64 : 64}px`
+                  }} key={transaction.id} className={cn(getRowStyles())}>
+                      <TableCell className="px-6 border-r h-full whitespace-nowrap overflow-hidden text-ellipsis">
+                        {transaction?.date}
+                      </TableCell>
+                      <TableCell className="px-6 border-r h-full whitespace-nowrap overflow-hidden text-ellipsis">
+                        {transaction?.description}
+                      </TableCell>
+                      <TableCell className="px-6 h-full whitespace-nowrap overflow-hidden text-ellipsis">
+                        {transaction?.amount}
+                      </TableCell>
+                  </TableRow>
+                ))
           )}
         </TableBody>
       </Table>

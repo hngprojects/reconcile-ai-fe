@@ -25,7 +25,6 @@ export function StatusBadge({ matched, className }: StatusBadgeProps) {
         {matched ? (
           <>
             <CheckIcon className="h-3 w-3 text-white max-md:group-hover:hidden" />
-
             <div
               title="unlink matching transactions"
               className="p-1 rounded-full max-md:hidden max-md:group-hover:block"
