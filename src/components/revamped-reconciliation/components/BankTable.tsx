@@ -224,7 +224,6 @@ export function BankTable() {
 
                             if (reconciledDataRow.ledger_txn) {
                               onMatch(
-                                reconciledDataRow.reconciliation_pair_id,
                                 selectedOption,
                                 reconciledDataRow.ledger_txn
                               );

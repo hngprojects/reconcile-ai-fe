@@ -345,19 +345,11 @@ export function MobileView() {
                         console.log("Confirmed:", option);
 
                         if (item.ledger_txn) {
-                          onMatch(
-                            item.reconciliation_pair_id,
-                            selectedOption,
-                            item.ledger_txn
-                          );
+                          onMatch(selectedOption, item.ledger_txn);
                         }
 
                         if (item.bank_txn) {
-                          onMatch(
-                            item.reconciliation_pair_id,
-                            item.bank_txn,
-                            selectedOption
-                          );
+                          onMatch(item.bank_txn, selectedOption);
                         }
                       }}
                       emptyIndicator={

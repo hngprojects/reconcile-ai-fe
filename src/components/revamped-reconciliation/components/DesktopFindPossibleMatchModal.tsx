@@ -33,7 +33,6 @@ interface FindPossibleMatchModalProps {
   reconciledDataRow: ReconciliationItem;
   potentialMatches: Transaction[];
   onMatch: (
-    reconciliation_pair_id: string,
     bankTransaction: Transaction,
     ledgerTransaction: Transaction
   ) => void;
@@ -96,21 +95,13 @@ export function DesktopFindPossibleMatchModal({
     if (selectedTransaction) {
       // if there is a bank transaction the selected transaction goes to the right side
       if (reconciledDataRow.bank_txn) {
-        onMatch(
-          reconciledDataRow.reconciliation_pair_id,
-          reconciledDataRow.bank_txn,
-          selectedTransaction
-        );
+        onMatch(reconciledDataRow.bank_txn, selectedTransaction);
         onClose();
       }
 
       // if there is a ledger transaction the selected transaction goes to the left side
       if (reconciledDataRow.ledger_txn) {
-        onMatch(
-          reconciledDataRow.reconciliation_pair_id,
-          selectedTransaction,
-          reconciledDataRow.ledger_txn
-        );
+        onMatch(selectedTransaction, reconciledDataRow.ledger_txn);
         onClose();
       }
     }

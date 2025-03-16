@@ -145,11 +145,7 @@ export function StatusTable() {
             setLoadingUnlinkModal(true);
             try {
               if (selectedRow.bank_txn && selectedRow.ledger_txn) {
-                await onUnlink(
-                  selectedRow.reconciliation_pair_id,
-                  selectedRow.bank_txn,
-                  selectedRow.ledger_txn
-                );
+                await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
               }
 
               toast.success("Transactions unlinked successfully!");
