@@ -160,6 +160,7 @@ export default function PartnershipPage() {
                 </p>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -250,6 +251,7 @@ export default function PartnershipPage() {
                 Onboarding sessions and ongoing education to ensure your team
                 maximizes ReconXi&apos;s potential.
               </p>
+
             </div>
           </div>
         </div>

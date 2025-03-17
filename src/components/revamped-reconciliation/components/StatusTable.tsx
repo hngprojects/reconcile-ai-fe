@@ -18,20 +18,10 @@ import {
 import { CheckIcon, XIcon } from "lucide-react";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import { ReconciliationItem } from "../types/frontendResponseTypes";
-import { useState } from "react";
-import UnlinkModal from "../../modal/UnlinkModal";
 
 export function StatusTable() {
-  const {
-    paginatedData,
-    handleUnlink: onUnlink,
-    showUnlinkModal,
-    setShowUnlinkModal,
-    isLoading,
-  } = useReconciliation();
-  const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
-    null
-  );
+  const { paginatedData, setShowUnlinkModal, setSelectedRow } =
+    useReconciliation();
 
   const statusColumn: ColumnDef<ReconciliationItem>[] = [
     {
@@ -136,24 +126,6 @@ export function StatusTable() {
           </TableBody>
         </Table>
       </div>
-
-      <UnlinkModal
-        isOpen={showUnlinkModal}
-        isLoading={isLoading}
-        onClose={() => {
-          setShowUnlinkModal(false);
-          setSelectedRow(null);
-        }}
-        onConfirm={async () => {
-          if (!selectedRow) return;
-
-          if (selectedRow.bank_txn && selectedRow.ledger_txn) {
-            await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
-
-            setSelectedRow(null);
-          }
-        }}
-      />
     </>
   );
 }
