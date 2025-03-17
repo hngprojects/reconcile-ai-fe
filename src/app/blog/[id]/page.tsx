@@ -29,28 +29,22 @@ export default function BlogDetail() {
         <div className="px-4">
           {/* Breadcrumbs */}
           <div className="lg:px-10">
-            <nav className="flex mb-6 text-sm md:text-base text-[#5C5C5C]">
+            <nav className="flex justify-center items-center">
               <Link
                 href="/"
-                className="font-normal text-xs leading-4 text-[#333333]"
+                className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
               >
-                Home
+                HOME
               </Link>
               <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
-                &gt;
+                /
               </span>
               <Link
                 href="/blog"
-                className="font-normal text-xs leading-4 text-[#333333]"
+                className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
               >
-                Blogs
+                BLOG
               </Link>
-              <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
-                &gt;
-              </span>
-              <span className="font-normal text-xs leading-4 text-[#333333]">
-                Blog Post
-              </span>
             </nav>
 
             {/* Author Info and Metadata */}
