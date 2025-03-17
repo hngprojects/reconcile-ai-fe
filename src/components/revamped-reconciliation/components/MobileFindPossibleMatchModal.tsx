@@ -35,20 +35,18 @@ export function MobileFindPossibleMatchModal({
   onMatch,
 }: MobileFindPossibleMatchModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedMatchIndex, setSelectedMatchIndex] = useState<number | null>(
-    null
-  );
+  const [selectedMatchIndexes, setSelectedMatchIndexes] = useState<number[]>([]);
   const [isMatched, setIsMatched] = useState(false);
-  const [matchedTransaction, setMatchedTransaction] =
-    useState<Transaction | null>(null);
+  const [matchedTransactions, setMatchedTransactions] =
+    useState<Transaction[]>([]);
 
   // Reset state when modal opens
   useEffect(() => {
     if (isOpen) {
       setSearchTerm("");
-      setSelectedMatchIndex(null);
+      setSelectedMatchIndexes([]);
       setIsMatched(false);
-      setMatchedTransaction(null);
+      setMatchedTransactions([]);
     }
   }, [isOpen]);
 
@@ -64,30 +62,30 @@ export function MobileFindPossibleMatchModal({
 
   const handleMatchClick = () => {
     if (
-      selectedMatchIndex !== null &&
+      selectedMatchIndexes.length &&
       (!reconciledDataRow.bank_txn || !reconciledDataRow.ledger_txn)
     ) {
-      setMatchedTransaction(filteredTransactions[selectedMatchIndex]);
+      setMatchedTransactions(selectedMatchIndexes.map((_, index) => filteredTransactions[index]));
       setIsMatched(true);
     }
   };
 
   const handleCancelMatch = () => {
     setIsMatched(false);
-    setMatchedTransaction(null);
-    setSelectedMatchIndex(null);
+    setMatchedTransactions([]);
+    setSelectedMatchIndexes([]);
   };
 
   const handleFinishClick = () => {
-    if (matchedTransaction) {
+    if (matchedTransactions.length) {
       // If there is a bank transaction, the selected transaction goes to the ledger side
       if (reconciledDataRow.bank_txn) {
-        onMatch(reconciledDataRow.bank_txn, matchedTransaction);
+        // onMatch(reconciledDataRow.bank_txn, matchedTransaction);
         onClose();
       }
       // If there is a ledger transaction, the selected transaction goes to the bank side
       else if (reconciledDataRow.ledger_txn) {
-        onMatch(matchedTransaction, reconciledDataRow.ledger_txn);
+        // onMatch(matchedTransaction, reconciledDataRow.ledger_txn);
         onClose();
       }
     }
@@ -117,7 +115,7 @@ export function MobileFindPossibleMatchModal({
               isDefaultMatch || isMatched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]"
             )}
           >
-            {!isMatched && isDefaultMatch && (
+            {/* {!isMatched && isDefaultMatch && (
               <>
                 <div className="space-y-2">
                   <div className="flex justify-between">
@@ -175,7 +173,7 @@ export function MobileFindPossibleMatchModal({
                   </div>
                 </div>
               </>
-            )}
+            )} */}
 
             {!isMatched && !isDefaultMatch && (
               <>
@@ -204,14 +202,39 @@ export function MobileFindPossibleMatchModal({
                 </div>
 
                 <div className="self-start inline-block border-[0.5px] p-2 rounded-3xl">
-                  <StatusBadge matched={!!matchedTransaction} />
+                  <StatusBadge matched={!!matchedTransactions.length} />
                 </div>
               </>
             )}
 
             {isMatched && (
               <>
-                <div className="space-y-2">
+              {
+                !reconciledDataRow.bank_txn ? (
+                  matchedTransactions.map((transaction) => (
+                    <div key={transaction.id} className="space-y-2">
+                      <div className="flex justify-between">
+                        <div className="flex flex-col">
+                          <div className="text-sm font-semibold text-gray-900">
+                            Bank Statement
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-sm text-gray-700">
+                              {transaction.date}
+                            </div>
+                            <div className="text-base text-gray-700">
+                              {transaction.description}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="font-medium text-gray-600">
+                          {transaction.amount}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="space-y-2">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-sm font-semibold text-gray-900">
@@ -219,31 +242,56 @@ export function MobileFindPossibleMatchModal({
                       </div>
                       <div className="space-y-1">
                         <div className="text-sm text-gray-700">
-                          {reconciledDataRow.bank_txn?.date ||
-                            matchedTransaction?.date}
+                          {reconciledDataRow.bank_txn.date}
                         </div>
                         <div className="text-base text-gray-700">
-                          {reconciledDataRow.bank_txn?.description ||
-                            matchedTransaction?.description}
+                          {reconciledDataRow.bank_txn?.description}
                         </div>
                       </div>
                     </div>
                     <div className="font-medium text-gray-600">
-                      {reconciledDataRow.bank_txn?.amount ||
-                        matchedTransaction?.amount}
+                      {reconciledDataRow.bank_txn?.amount}
                     </div>
                   </div>
                 </div>
+                )
+              }
+
 
                 <div className="flex items-center gap-3">
                   <div className="inline-block border-[0.5px] p-2 rounded-3xl">
-                    <StatusBadge matched={!!matchedTransaction} />
+                    <StatusBadge matched={!!matchedTransactions.length} />
                   </div>
 
                   <hr className="border border-gray-200/70 flex-1" />
                 </div>
 
-                <div className="space-y-2">
+              {
+                !reconciledDataRow.ledger_txn ? (
+                  matchedTransactions.map((transaction) => (
+                    <div key={transaction.id} className="space-y-2">
+                      <div className="flex justify-between">
+                        <div className="flex flex-col">
+                          <div className="text-sm font-semibold text-gray-900">
+                            Bank Statement
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-sm text-gray-700">
+                              {transaction.date}
+                            </div>
+                            <div className="text-base text-gray-700">
+                              {transaction.description}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="font-medium text-gray-600">
+                          {transaction.amount}
+                        </div>
+                      </div>
+                    </div>
+                    ))
+                ) : (
+                  <div className="space-y-2">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-sm font-semibold text-gray-900">
@@ -251,21 +299,21 @@ export function MobileFindPossibleMatchModal({
                       </div>
                       <div className="space-y-1">
                         <div className="text-sm text-gray-700">
-                          {reconciledDataRow.ledger_txn?.date ||
-                            matchedTransaction?.date}
+                          {reconciledDataRow.ledger_txn.date}
                         </div>
                         <div className="text-base text-gray-700">
-                          {reconciledDataRow.ledger_txn?.description ||
-                            matchedTransaction?.description}
+                          {reconciledDataRow.ledger_txn.description}
                         </div>
                       </div>
                     </div>
                     <div className="font-medium text-gray-600">
-                      {reconciledDataRow.ledger_txn?.amount ||
-                        matchedTransaction?.amount}
+                      {reconciledDataRow.ledger_txn.amount}
                     </div>
                   </div>
                 </div>
+                )
+              }
+
               </>
             )}
           </div>
@@ -278,7 +326,7 @@ export function MobileFindPossibleMatchModal({
                 placeholder="Search by keyword"
                 value={searchTerm}
                 onChange={(e) => {
-                  setSelectedMatchIndex(null);
+                  setSelectedMatchIndexes([]);
                   setSearchTerm(e.target.value);
                 }}
               />
@@ -291,41 +339,41 @@ export function MobileFindPossibleMatchModal({
             filteredTransactions &&
             filteredTransactions.length > 0 && (
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                {filteredTransactions.map((transaction, index) => (
-                  <div
-                    key={transaction.id}
-                    className={cn(
-                      "p-3 border rounded-lg cursor-pointer",
-                      selectedMatchIndex === index
-                        ? "border-[#007A55] bg-primary/5"
-                        : "border-gray-200"
-                    )}
-                    onClick={() =>
-                      setSelectedMatchIndex(
-                        index === selectedMatchIndex ? null : index
-                      )
-                    }
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 text-gray-600">
-                        <div className="text-sm font-medium">
-                          {possibleMatchTitle}
+                {filteredTransactions.map((transaction, index) => {
+                  const isSelectedIndex = selectedMatchIndexes.some((transactionIndex) => transactionIndex === index)
+                  return (
+                    <div
+                      key={transaction.id}
+                      className={cn(
+                        "p-3 border rounded-lg cursor-pointer",
+                        isSelectedIndex
+                          ? "border-[#007A55] bg-primary/5"
+                          : "border-gray-200"
+                      )}
+                      onClick={() =>
+                        setSelectedMatchIndexes((prev) => isSelectedIndex ? prev?.filter((i) => i !== index) : [...prev, index])
+                      }
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 text-gray-600">
+                          <div className="text-sm font-medium">
+                            {possibleMatchTitle}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {transaction.date}
+                          </div>
+                          <div className="text-sm mt-1">
+                            {transaction.description}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {transaction.date}
-                        </div>
-                        <div className="text-sm mt-1">
-                          {transaction.description}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-medium">
-                          {transaction.amount}
+                        <div className="text-right">
+                          <div className="text-sm font-medium">
+                            {transaction.amount}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  )})}
               </div>
             )}
         </div>
@@ -349,7 +397,7 @@ export function MobileFindPossibleMatchModal({
             <Button
               className="w-full bg-[#297B65] hover:bg-[#1e5a4a]"
               disabled={
-                selectedMatchIndex === null ||
+                !selectedMatchIndexes.length ||
                 (!!reconciledDataRow.bank_txn && !!reconciledDataRow.ledger_txn)
               }
               onClick={handleMatchClick}
