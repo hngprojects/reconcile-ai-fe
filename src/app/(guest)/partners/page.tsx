@@ -16,10 +16,10 @@ export default function PartnershipPage() {
     <div>
       <div>
         <Container>
-          <div className="flex p-4 justify-center items-center mx-auto sm:rounded-xl max-w-full text-center bg-[#FBFEFD] md:mt-16 lg:mt-20">
-            <div className="flex m-5 flex-col-reverse md:flex-row items-center text-center sm:text-left gap-8 flex-1">
-              <div className="flex md:justify-end md:mr-5 flex-row items-start gap-6 w-full">
-                <div className="flex text-left flex-col items-start gap-4 self-stretch md:max-w-[614px]">
+          <div className="flex justify-center items-center mx-auto sm:rounded-xl max-w-full text-center bg-[#FBFEFD] md:mt-16 lg:mt-20">
+            <div className="flex p-4 md:p-0 flex-col-reverse md:flex-row items-center text-center sm:text-left gap:8 md:gap-4 flex-1">
+              <div className="flex md:justify-center flex-row items-start gap-6 w-full">
+                <div className="flex text-left md:p-5 flex-col items-start gap-4 self-stretch mt-5 md:mt-0 md:max-w-[614px]">
                   <h1 className="text-[#101828] font-inter text-2xl sm:text-3xl md:text-4xl font-semibold leading-tight">
                     Join us in a winning <br className="hidden md:block" />{" "}
                     partnership
@@ -57,11 +57,11 @@ export default function PartnershipPage() {
           </div>
         </Container>
 
-        <Container className="text-center md:mt-15">
+        <Container className="text-center mt-7 md:mt-15">
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-4 sm:mb-6 lg:mb-6 text-[#101828] leading-tight tracking-tight">
             Why Partner With ReconXi?
           </h3>
-          <div className="flex flex-col p-4 w-full">
+          <div className="flex flex-col w-full">
             <div className="flex justify-center flex-col md:flex-row gap-4 md:gap-6 lg:gap-[38px] w-full">
               {[
                 "Innovative Solutions",
@@ -133,11 +133,11 @@ export default function PartnershipPage() {
           </div>
         </Container>
 
-        <div className="my-7 py-10 mx-auto max-w-7xl flex flex-col items-center">
+        <Container className="my-7 py-10 mx-auto max-w-7xl flex flex-col items-center">
           <h3 className="py-10 text-2xl sm:text-3xl md:text-4xl font-semibold text-[#333333]">
             Partnership Opportunities
           </h3>
-          <ul className=" list-none flex flex-col items-center lg:items-start ml-1 lg:ml-[16px] px-5 sm:px-10 ">
+          <ul className=" list-none flex flex-col items-center lg:items-start ml-1 lg:ml-[16px] ">
             {opportunities.map((opportunity, index) => {
               if (opportunity.startsWith("Referral Partners:")) {
                 const [title, ...description] = opportunity.split(":");
@@ -188,7 +188,7 @@ export default function PartnershipPage() {
               );
             })}
           </ul>
-        </div>
+        </Container>
 
         <div className="bg-gray-50 sm:bg-white pb-25">
           <Container className="py-8">
