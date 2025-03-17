@@ -6,13 +6,23 @@ import { blogData } from "@/src/data/blogSampleData";
 import Footer from "@/src/components/Footer";
 import CTASection from "@/src/components/CTASection";
 import Container from "@/src/components/Container";
+
 export default function BlogDetail() {
   const params = useParams();
   const id = params.id;
   const blog = blogData.find((b) => b.id === Number(id));
+
   if (!blog) {
     return <p className="text-center mt-10 text-xl">Blog not found</p>;
   }
+
+  const hasContent = (
+    sectionHeading?: string,
+    sectionContent?: string,
+  ): boolean => {
+    return !!sectionHeading && !!sectionContent;
+  };
+
   return (
     <>
       <Container className="py-8 md:py-12">
@@ -65,11 +75,13 @@ export default function BlogDetail() {
                 </div>
               </div>
             </div>
+
             {/* Blog Title */}
-            <h1 className=" leading-[140%] lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24">
+            <h1 className="leading-[140%] lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24">
               {blog.title}
             </h1>
           </div>
+
           {/* Featured Image */}
           <div className="">
             <Image
@@ -79,65 +91,150 @@ export default function BlogDetail() {
               height={0}
               className="w-full h-[184.85px] lg:h-[560px] object-cover rounded-xl"
               sizes="100vw"
-              // style={{ width: '100%', height: '60.85px' }}
               priority
             />
           </div>
-          {/* Intro Text */}
+
+          {/* Blog Content */}
           <div className="lg:px-10">
-            <div className="flex flex-col lg:gap-y-5 gap-y-4 my-6 lg:my-5 lg:mt-16 ">
-              <p className="leading-4 font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
-                {blog.introText1}
-              </p>
-              <p className="leading-6 font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
-                {blog.introText2}
-              </p>
-              <p className="leading-4 font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
-                {blog.introText3}
-              </p>
+            {/* Intro Text - Always show if available */}
+            <div className="flex flex-col lg:gap-y-5 gap-y-4 my-6 lg:my-5 lg:mt-16">
+              {blog.introText1 && (
+                <p className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText1}
+                </p>
+              )}
+              {blog.introText2 && (
+                <p className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText2}
+                </p>
+              )}
+              {blog.introText3 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText3}
+                </p>
+              )}
+              {blog.introText4 && (
+                <p className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText4}
+                </p>
+              )}
+              {blog.introText5 && (
+                <p className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText5}
+                </p>
+              )}
+              {blog.introText6 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText6}
+                </p>
+              )}
+              {blog.introText7 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText7}
+                </p>
+              )}
+              {blog.introText8 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText8}
+                </p>
+              )}
+              {blog.introText9 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText9}
+                </p>
+              )}
+              {blog.introText10 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText10}
+                </p>
+              )}
+              {blog.introText11 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText11}
+                </p>
+              )}
+              {blog.introText12 && (
+                <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
+                  {blog.introText12}
+                </p>
+              )}
             </div>
-            {/* Blog Sections */}
+
+            {/* Blog Sections - Only render if content exists */}
             <div className="space-y-8">
-              <section>
-                <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
-                  {blog.sectionOneHeading}
-                </h2>
-                <p className="text-[#5C5C5C] leading-relaxed">
-                  {blog.sectionOneText}
-                </p>
-              </section>
-              <section>
-                <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
-                  {blog.sectionTwoHeading}
-                </h2>
-                <p className="text-[#5C5C5C] leading-relaxed">
-                  {blog.sectionTwoText}
-                </p>
-              </section>
-              <section>
-                <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
-                  {blog.categoryOneHeading}
-                </h3>
-                <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
-                  {blog.categoryOneContent}
-                </div>
-              </section>
-              <section>
-                <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
-                  {blog.categoryTwoHeading}
-                </h3>
-                <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
-                  {blog.categoryTwoContent}
-                </div>
-              </section>
-              <section>
-                <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
-                  {blog.categoryThreeHeading}
-                </h3>
-                <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
-                  {blog.categoryThreeContent}
-                </div>
-              </section>
+              {hasContent(blog.sectionOneHeading, blog.sectionOneText) && (
+                <section>
+                  <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
+                    {blog.sectionOneHeading}
+                  </h2>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.sectionOneText}
+                  </p>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.sectionTwoText}
+                  </p>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.section2Text}
+                  </p>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.section3Text}
+                  </p>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.section4Text}
+                  </p>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.section5Text}
+                  </p>
+                </section>
+              )}
+
+              {hasContent(blog.sectionTwoHeading, blog.sectionTwoText) && (
+                <section>
+                  <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
+                    {blog.sectionTwoHeading}
+                  </h2>
+                  <p className="text-[#5C5C5C] leading-relaxed">
+                    {blog.sectionTwoText}
+                  </p>
+                </section>
+              )}
+
+              {hasContent(blog.categoryOneHeading, blog.categoryOneContent) && (
+                <section>
+                  <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
+                    {blog.categoryOneHeading}
+                  </h3>
+                  <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
+                    {blog.categoryOneContent}
+                  </div>
+                </section>
+              )}
+
+              {hasContent(blog.categoryTwoHeading, blog.categoryTwoContent) && (
+                <section>
+                  <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
+                    {blog.categoryTwoHeading}
+                  </h3>
+                  <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
+                    {blog.categoryTwoContent}
+                  </div>
+                </section>
+              )}
+
+              {hasContent(
+                blog.categoryThreeHeading,
+                blog.categoryThreeContent,
+              ) && (
+                <section>
+                  <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
+                    {blog.categoryThreeHeading}
+                  </h3>
+                  <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
+                    {blog.categoryThreeContent}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
         </div>
