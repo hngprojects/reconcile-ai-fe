@@ -4,7 +4,7 @@ type JobListing = {
   location: string;
   description: string;
   salary: string;
-  deadline?: string;
+  deadline: string;
   workMode: "Remote" | "On-site" | "Hybrid";
   jobType: "Full-time" | "Part-time" | "Contract" | "Internship";
   experienceLevel: string;
@@ -20,6 +20,7 @@ export const jobListings = [
     id: 1,
     title: "Frontend Developer",
     location: "London, United Kingdom",
+    deadline: "July 20th, 2024",
     description:
       "As a Frontend Developer at ReconXi, you will build interactive interfaces to enhance the user experience of our platform.",
     salary: "$500K - $900K",
@@ -53,6 +54,7 @@ export const jobListings = [
     id: 2,
     title: "DevOps Engineer",
     location: "London, United Kingdom",
+    deadline: "July 15th, 2024",
     description:
       "As a DevOps Engineer, you will ensure smooth deployment processes, infrastructure reliability, and system security.",
     salary: "$500K - $900K",
@@ -122,6 +124,7 @@ export const jobListings = [
     id: 4,
     title: "Product Manager",
     location: "London, United Kingdom",
+    deadline: "July 16th, 2024",
     description:
       "As a Product Manager, you will oversee product strategy, roadmap execution, design and engineering teams.",
     salary: "$500K - $900K",
@@ -155,6 +158,7 @@ export const jobListings = [
     id: 5,
     title: "Backend Engineer",
     location: "London, United Kingdom",
+    deadline: "July 17th, 2024",
     description:
       "As a Backend Engineer at ReconXi, you will develop robust server-side applications and APIs that power our platform.",
     salary: "$500K - $900K",
@@ -188,6 +192,7 @@ export const jobListings = [
     id: 6,
     title: "Marketing Specialist",
     location: "London, United Kingdom",
+    deadline: "July 18th, 2024",
     description:
       "As a Marketing Specialist, you will drive brand awareness and optimize customer engagement strategies.",
     salary: "$500K - $900K",
