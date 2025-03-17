@@ -273,7 +273,7 @@ export function MobileFindPossibleMatchModal({
                       <div className="flex justify-between">
                         <div className="flex flex-col">
                           <div className="text-sm font-semibold text-gray-900">
-                            Bank Statement
+                            Company Ledger
                           </div>
                           <div className="space-y-1">
                             <div className="text-sm text-gray-700">

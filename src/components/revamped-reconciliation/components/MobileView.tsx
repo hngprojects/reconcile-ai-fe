@@ -57,8 +57,8 @@ export function MobileView() {
 
   const possibleMatches =
     selectedTransactionRow.bank_txn === null
-      ? unmatchedLedgerTransactions
-      : unmatchedBankTransactions;
+      ? unmatchedBankTransactions
+      : unmatchedLedgerTransactions;
 
   const { pageIndex, pageSize } = pagination;
 
