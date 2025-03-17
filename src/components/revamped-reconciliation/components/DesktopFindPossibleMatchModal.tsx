@@ -4,6 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -18,7 +19,7 @@ import {
   TableRow,
 } from "@/src/components/ui/table";
 import { cn } from "@/src/lib/utils";
-import { Check, Search } from "lucide-react";
+import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ReconciliationItem,
@@ -26,6 +27,7 @@ import {
 } from "../types/frontendResponseTypes";
 import { StatusBadge } from "./StatusBadge";
 import { TransactionTable } from "./TransactionTable";
+import { SearchIcon } from "../../Icon/Icons";
 
 interface FindPossibleMatchModalProps {
   isOpen: boolean;
@@ -111,9 +113,12 @@ export function DesktopFindPossibleMatchModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[1320px] max-h-[85vh] overflow-y-auto py-0">
+      <DialogContent className="sm:max-w-5xl max-h-[85vh] overflow-y-auto py-0">
         <DialogHeader>
           <DialogTitle>Find possible match</DialogTitle>
+          <DialogDescription className="sr-only" id="unlink-description">
+            Match Possible Transactions
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 mt-2 mx-4">
@@ -176,17 +181,19 @@ export function DesktopFindPossibleMatchModal({
 
           {/* Search Input */}
           {!isMatched && (
-            <div className="relative max-w-md">
-              <Search className="absolute right-3 top-[14px] size-5 text-gray-400" />
-              <Input
-                className="pr-10 h-12 text-base placeholder:text-base rounded-xl placeholder:text-gray-400"
-                placeholder="Search by description, date, or amount"
-                value={searchTerm}
-                onChange={(e) => {
-                  setSelectedTransactionIndex(null);
-                  setSearchTerm(e.target.value);
-                }}
-              />
+            <div className="w-full flex justify-end">
+              <div className="relative w-full max-w-[460px] mt-3">
+                <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-8" />
+                <Input
+                  className="pr-10 h-12 text-base placeholder:text-base rounded-xl placeholder:text-[#333]"
+                  placeholder="Search by description, date, or amount"
+                  value={searchTerm}
+                  onChange={(e) => {
+                    setSelectedTransactionIndex(null);
+                    setSearchTerm(e.target.value);
+                  }}
+                />
+              </div>
             </div>
           )}
 
@@ -264,7 +271,7 @@ export function DesktopFindPossibleMatchModal({
           )}
         </div>
 
-        <DialogFooter className="sticky bottom-0 left-0 right-0 bg-white py-4 border-t">
+        <DialogFooter className="sticky bottom-0 left-0 right-0 bg-white py-4">
           {isMatched ? (
             <>
               <Button variant="outline" onClick={handleCancelMatch}>

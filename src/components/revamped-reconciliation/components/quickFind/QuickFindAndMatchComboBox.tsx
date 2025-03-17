@@ -1,7 +1,6 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
 import {
   KeyboardEvent,
   useCallback,
@@ -23,6 +22,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from "../command";
 import { GroupOption, QuickFindAndMatchComboBoxProps } from "./types";
 import { removePickedOption, transToGroupOption, useDebounce } from "./utils";
 import { useReconciliation } from "../../context/ReconciliationProvider";
+import { SearchIcon } from "@/src/components/Icon/Icons";
 
 export interface QuickFindAndMatchComboBoxRef {
   selectedValue: TransactionOption | null;
@@ -60,10 +60,10 @@ const QuickFindAndMatchComboBox = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [selected, setSelected] = useState<TransactionOption | null>(
-    value || null
+    value || null,
   );
   const [options, setOptions] = useState<GroupOption>(
-    transToGroupOption(arrayDefaultOptions, groupBy)
+    transToGroupOption(arrayDefaultOptions, groupBy),
   );
   const [inputValue, setInputValue] = useState("");
   const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
@@ -105,7 +105,7 @@ const QuickFindAndMatchComboBox = ({
         }
       }
     },
-    [handleUnselect, selected]
+    [handleUnselect, selected],
   );
 
   useEffect(() => {
@@ -216,7 +216,7 @@ const QuickFindAndMatchComboBox = ({
 
   const selectables = useMemo<GroupOption>(
     () => removePickedOption(options, selected),
-    [options, selected]
+    [options, selected],
   );
 
   /** Avoid Creatable Selector freezing or lagging when paste a long string. */
@@ -244,7 +244,7 @@ const QuickFindAndMatchComboBox = ({
       }}
       className={cn(
         "h-auto overflow-visible !bg-white !w-full",
-        commandProps?.className
+        commandProps?.className,
       )}
       shouldFilter={
         commandProps?.shouldFilter !== undefined
@@ -265,7 +265,7 @@ const QuickFindAndMatchComboBox = ({
               {
                 "animate-pulse bg-gray-100": isMatching,
               },
-              className
+              className,
             )}
             onClick={() => {
               if (disabled) return;
@@ -337,7 +337,7 @@ const QuickFindAndMatchComboBox = ({
               )} */}
               {selected === null && (
                 <div className="relative flex w-full items-center">
-                  <Search className="text-muted-foreground/70 absolute left-3 h-4 w-4" />
+                  <SearchIcon className="absolute left-3 size-5" />
                   <CommandPrimitive.Input
                     {...inputProps}
                     ref={inputRef}
@@ -371,7 +371,7 @@ const QuickFindAndMatchComboBox = ({
                     placeholder={placeholder}
                     className={cn(
                       "placeholder:italic placeholder:text-muted-foreground/80 flex-1 outline-hidden disabled:cursor-not-allowed h-9 px-3 pl-9 w-full",
-                      inputProps?.className
+                      inputProps?.className,
                     )}
                   />
                 </div>
@@ -431,7 +431,7 @@ const QuickFindAndMatchComboBox = ({
                             "cursor-pointer px-2 py-2 border-b last:border-0 h-12",
                             index % 2 === 0 ? "bg-muted/30" : "bg-background",
                             option.disable &&
-                              "pointer-events-none cursor-not-allowed opacity-50"
+                              "pointer-events-none cursor-not-allowed opacity-50",
                           )}
                         >
                           <div className="grid grid-cols-7 divide-x !w-full md:grid-cols-4">
