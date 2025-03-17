@@ -113,7 +113,7 @@ const JobDetails = () => {
                 </h5>
                 <p className="text-[18px] text-[#525252]">2-3years</p>
               </div>
-              <div className="mb-7">
+              <div>
                 <h5 className="leading-[24px] mb-[5px] font-medium text-[#0A0A0A]">
                   Salary
                 </h5>
