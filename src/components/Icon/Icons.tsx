@@ -472,7 +472,7 @@ export const SearchIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#222222] aspect-auto", className)}
+      className={cn("text-[#444] aspect-auto", className)}
       viewBox="0 0 24 25"
       fill="none"
     >
