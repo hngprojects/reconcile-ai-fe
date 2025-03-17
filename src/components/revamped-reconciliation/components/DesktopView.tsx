@@ -101,7 +101,7 @@ export default function DesktopView() {
           body: JSON.stringify({
             data: formattedData,
           }),
-        }
+        },
       );
 
       // Check for errors with better error reporting
@@ -135,7 +135,7 @@ export default function DesktopView() {
       console.error("Export error:", error);
       // Show error toast using custom component
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data"
+        error instanceof Error ? error.message : "Failed to export data",
       );
       setShowErrorToast(true);
     } finally {

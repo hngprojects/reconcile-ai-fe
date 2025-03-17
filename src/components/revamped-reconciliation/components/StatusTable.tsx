@@ -34,14 +34,14 @@ export function StatusTable() {
           <div
             className={cn(
               "flex justify-center items-center text-sm font-semibold px-1 relative",
-              matched ? "text-[#007A55]" : "text-[#C50700] "
+              matched ? "text-[#007A55]" : "text-[#C50700] ",
             )}
           >
             {matched ? "Matched" : "Unmatched"}
             <div
               className={cn(
                 "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
-                matched ? "bg-[#007A55] group-hover:hidden" : "bg-[#C50700]"
+                matched ? "bg-[#007A55] group-hover:hidden" : "bg-[#C50700]",
               )}
             >
               {matched ? (
@@ -75,7 +75,7 @@ export function StatusTable() {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -90,7 +90,7 @@ export function StatusTable() {
                   "transition-colors",
                   row.original.matched
                     ? "bg-green-50 hover:bg-green-50"
-                    : "bg-red-50 hover:bg-red-50"
+                    : "bg-red-50 hover:bg-red-50",
                 )}
               >
                 {row.getVisibleCells().map((cell) => (
@@ -100,7 +100,7 @@ export function StatusTable() {
                       "h-[3.55rem] relative group transition duration-200",
                       {
                         "hover:bg-[#CEFFED]": row.original.matched,
-                      }
+                      },
                     )}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

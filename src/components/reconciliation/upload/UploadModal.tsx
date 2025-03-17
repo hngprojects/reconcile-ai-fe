@@ -34,7 +34,7 @@ export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
       <DialogContent
         className="max-w-[400px] flex flex-col h-auto items-center justify-center"
         closeButton={false}
-        // aria-describedby="upload-progress-description"
+        aria-describedby="upload-progress-description"
       >
         <div className="bg-white w-[90%] max-md:mx-auto md:w-[436px] h-[213px] rounded-[12px] flex flex-col items-center justify-between p-8">
           <StarsIcon className="w-6 h-6" />

@@ -82,6 +82,7 @@ const EmailSubscribeForm = () => {
                           <FormMessage className="text-sm text-left text-red-500 mt-0.5 whitespace-normal" />
                         </div>
                         <Button
+                          type="submit"
                           variant="outline"
                           className={`border-primary text-primary font-semibold cursor-pointer h-12 md:w-[115px]`}
                           disabled={isSubmitting}

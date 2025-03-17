@@ -53,7 +53,7 @@ export function LedgerTable() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
-    unmatchedBankTransactions
+    unmatchedBankTransactions,
   );
 
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
@@ -157,7 +157,7 @@ export function LedgerTable() {
     return transactionOptions.filter(
       (transaction) =>
         transaction.description.toLowerCase().includes(query.toLowerCase()) ||
-        transaction.date.toLowerCase().includes(query.toLowerCase())
+        transaction.date.toLowerCase().includes(query.toLowerCase()),
     );
   };
 
@@ -181,7 +181,7 @@ export function LedgerTable() {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 ))}
@@ -201,7 +201,7 @@ export function LedgerTable() {
                       ? "bg-green-50 hover:bg-green-50"
                       : row.original.ledger_txn
                         ? "bg-red-50 hover:bg-red-50"
-                        : "hover:bg-white"
+                        : "hover:bg-white",
                   )}
                 >
                   {row.original.ledger_txn ? (
@@ -218,7 +218,7 @@ export function LedgerTable() {
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext()
+                          cell.getContext(),
                         )}
                       </TableCell>
                     ))
@@ -257,7 +257,7 @@ export function LedgerTable() {
                             if (reconciledDataRow.bank_txn) {
                               onMatch(
                                 reconciledDataRow.bank_txn,
-                                selectedOption
+                                selectedOption,
                               );
                             }
                           }}

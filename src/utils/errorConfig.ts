@@ -2,7 +2,7 @@ import { ErrorModalConfig } from "@/src/types/error-modal";
 
 export const getErrorConfig = (
   errorCode?: number,
-  defaultMessage?: string
+  defaultMessage?: string,
 ): ErrorModalConfig => {
   switch (errorCode) {
     case 429:
@@ -49,6 +49,16 @@ export const getErrorConfig = (
         buttonTitle: "Upload Correct Files",
         buttonHref: "/file-upload",
         buttonAction: "navigate",
+      };
+    case 403:
+      return {
+        title: "Row Limit Exceeded",
+        message:
+          "Free users can only reconcile files with up to 100 rows. Please sign in to process larger files.",
+        imageSrc: "/assets/images/Sad.svg",
+        buttonTitle: "Sign in",
+        buttonHref: "#",
+        buttonAction: "googleSignIn",
       };
     default:
       return {

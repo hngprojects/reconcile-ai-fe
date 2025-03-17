@@ -133,7 +133,7 @@ const Features = () => {
             <Image
               src="/assets/images/upload_file.svg"
               fill
-              alt="Reconciliation dashboard"
+              alt="file upload page"
               className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
             />
           </motion.div>
