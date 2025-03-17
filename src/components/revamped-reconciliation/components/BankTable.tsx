@@ -219,7 +219,11 @@ export function BankTable() {
                     // If no bank transaction, render a single combobox spanning all cells except action
                     <>
                       <TableCell
-                        colSpan={bankColumns.length - 1}
+                        colSpan={
+                          isAuthenticated
+                            ? bankColumns.length - 1
+                            : bankColumns.length
+                        }
                         className="px-4 py-0 h-[3.5rem] border-r"
                       >
                         {/* <TableCell
@@ -260,46 +264,50 @@ export function BankTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell className="px-6 py-0 h-[3.5rem] flex items-center justify-center">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="cursor-pointer flex justify-center items-center">
-                              <span className="sr-only">Open menu</span>
-                              <VerticalDotsIcon className="h-5 w-5" />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            {reconciledDataRow.matched ? (
-                              <DropdownMenuItem
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSelectedRow(row.original);
-                                  setShowUnlinkModal(true);
-                                }}
-                                className="gap-0.5"
-                              >
-                                <CheckIcon className="text-[#333333] h-7 w-7" />
-                                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
-                                  Unlink Matched
-                                </span>
-                              </DropdownMenuItem>
-                            ) : (
-                              <DropdownMenuItem
-                                className="gap-0.5"
-                                onClick={() => {
-                                  setSelectedTransactionRow(reconciledDataRow);
-                                  setModalOpen(true);
-                                }}
-                              >
-                                <CheckIcon className="text-[#333333] h-7 w-7" />
-                                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
-                                  Find Possible Match
-                                </span>
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+                      {isAuthenticated && (
+                        <TableCell className="px-6 py-0 h-[3.5rem] flex items-center justify-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button className="cursor-pointer flex justify-center items-center">
+                                <span className="sr-only">Open menu</span>
+                                <VerticalDotsIcon className="h-5 w-5" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              {reconciledDataRow.matched ? (
+                                <DropdownMenuItem
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedRow(row.original);
+                                    setShowUnlinkModal(true);
+                                  }}
+                                  className="gap-0.5"
+                                >
+                                  <CheckIcon className="text-[#333333] h-7 w-7" />
+                                  <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                    Unlink Matched
+                                  </span>
+                                </DropdownMenuItem>
+                              ) : (
+                                <DropdownMenuItem
+                                  className="gap-0.5"
+                                  onClick={() => {
+                                    setSelectedTransactionRow(
+                                      reconciledDataRow
+                                    );
+                                    setModalOpen(true);
+                                  }}
+                                >
+                                  <CheckIcon className="text-[#333333] h-7 w-7" />
+                                  <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                    Find Possible Match
+                                  </span>
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      )}
                     </>
                   )}
                 </TableRow>
