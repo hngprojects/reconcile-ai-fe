@@ -99,7 +99,7 @@ const JobDetails = () => {
             </div>
           </div>
         </div>
-        <Link href="/careers/apply">
+        <Link href={`/careers/${jobId}/apply`}>
         <Button className="w-full sm:w-[253px] h-[64px] mb-4 md:mb-[64px]">
           Apply Now
         </Button>
