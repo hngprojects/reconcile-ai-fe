@@ -2,7 +2,7 @@ import React from 'react';
 import Footer from '@/src/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BadgeCheck, Expand, Headset, HeadsetIcon, Layers, LecternIcon, LightbulbIcon, StarsIcon, TrendingUp } from "lucide-react";
+import { BadgeCheck, Expand, Headset, Layers, LecternIcon, LightbulbIcon, StarsIcon, TrendingUp } from "lucide-react";
 
 export default function PartnershipPage() {
   const opportunities = [
