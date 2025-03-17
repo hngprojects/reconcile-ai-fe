@@ -33,7 +33,7 @@ export default function PartnershipPage() {
                   </p>
                   <Link
                     className="!p-6 bg-primary whitespace-nowrap w-full sm:w-fit py-3 px-5 rounded-md font-semibold justify-center items-center h-12 sm:h-9 text-md text-white hover:bg-primary/90 flex"
-                    href="/"
+                    href="/partners/form"
                   >
                     Partner With Us
                   </Link>
@@ -47,6 +47,7 @@ export default function PartnershipPage() {
                   height={400}
                   className="rounded-[10px] block md:hidden"
                   priority
+                  style={{ width: "auto", height: "auto" }}
                 />
                 <Image
                   src="/assets/images/partners-main-image-desktop.svg"
@@ -55,6 +56,7 @@ export default function PartnershipPage() {
                   height={400}
                   className="rounded-[10px] hidden md:block"
                   priority
+                  style={{ width: "auto", height: "auto" }}
                 />
               </div>
             </div>
@@ -89,6 +91,7 @@ export default function PartnershipPage() {
                       alt={`${title} icon`}
                       width={25}
                       height={25}
+                      style={{ width: "auto", height: "auto" }}
                     />
                     <h3 className="flex text-[#2E604A] font-medium ml-[10px]">
                       {title}
@@ -120,6 +123,7 @@ export default function PartnershipPage() {
                       alt={`${title} icon`}
                       width={25}
                       height={25}
+                      style={{ width: "auto", height: "auto" }}
                     />
                     <h3 className="text-[#2E604A] font-medium ml-[10px]">
                       {title}
@@ -228,6 +232,7 @@ export default function PartnershipPage() {
                         alt={`${item.title} icon`}
                         width={25}
                         height={25}
+                        style={{ width: "auto", height: "auto" }}
                       />
                       <h3 className="text-lg m-0 p-0 font-medium text-[#2E604A]">
                         {item.title}
