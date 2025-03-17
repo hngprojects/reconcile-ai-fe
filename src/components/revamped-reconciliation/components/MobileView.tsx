@@ -4,6 +4,7 @@ import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
 import { DownloadCloudIcon, Loader2, MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
+import UnlinkModal from "../../modal/UnlinkModal";
 import { SuccessToast } from "../../reconciliation/SuccessToast";
 import {
   DropdownMenu,
@@ -17,16 +18,15 @@ import {
   addValueAndLabel,
   TransactionOption,
 } from "../helpers/searchComboxOptionExpander";
+import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import { Matched } from "../types/backendResponseTypes";
 import {
   ReconciliationItem,
   ReconciliationResponse,
   Transaction,
 } from "../types/frontendResponseTypes";
-import { MobileFindPossibleMatchModal } from "./MobileFindPossibleMatchModal";
 import { StatusBadge } from "./StatusBadge";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
-import UnlinkModal from "../../modal/UnlinkModal";
 
 export function MobileView() {
   const {
@@ -422,11 +422,11 @@ export function MobileView() {
         </div>
       </div>
 
-      <MobileFindPossibleMatchModal
+      <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransactionRow}
-        unmatchedTransactions={possibleMatches}
+        potentialMatches={possibleMatches}
         onMatch={onMatch}
       />
 

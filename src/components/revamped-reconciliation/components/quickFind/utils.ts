@@ -44,7 +44,6 @@ export function transToGroupOption(
 
     groupOption[key].push(option);
   });
-  console.log({ groupOption });
   return groupOption;
 }
 

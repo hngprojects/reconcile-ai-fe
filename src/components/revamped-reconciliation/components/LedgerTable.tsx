@@ -23,19 +23,19 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
+import { useAuth } from "../../context/AuthContext";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
 } from "../helpers/searchComboxOptionExpander";
+import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   ReconciliationItem,
   Transaction,
 } from "../types/frontendResponseTypes";
-import { DesktopFindPossibleMatchModal } from "./DesktopFindPossibleMatchModal";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
-import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
-import { useAuth } from "../../context/AuthContext";
 
 export function LedgerTable() {
   const { isAuthenticated } = useAuth();
@@ -53,7 +53,7 @@ export function LedgerTable() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
-    unmatchedBankTransactions,
+    unmatchedBankTransactions
   );
 
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
@@ -157,7 +157,7 @@ export function LedgerTable() {
     return transactionOptions.filter(
       (transaction) =>
         transaction.description.toLowerCase().includes(query.toLowerCase()) ||
-        transaction.date.toLowerCase().includes(query.toLowerCase()),
+        transaction.date.toLowerCase().includes(query.toLowerCase())
     );
   };
 
@@ -181,7 +181,7 @@ export function LedgerTable() {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </TableHead>
                 ))}
@@ -201,7 +201,7 @@ export function LedgerTable() {
                       ? "bg-green-50 hover:bg-green-50"
                       : row.original.ledger_txn
                         ? "bg-red-50 hover:bg-red-50"
-                        : "hover:bg-white",
+                        : "hover:bg-white"
                   )}
                 >
                   {row.original.ledger_txn ? (
@@ -218,7 +218,7 @@ export function LedgerTable() {
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </TableCell>
                     ))
@@ -257,7 +257,7 @@ export function LedgerTable() {
                             if (reconciledDataRow.bank_txn) {
                               onMatch(
                                 reconciledDataRow.bank_txn,
-                                selectedOption,
+                                selectedOption
                               );
                             }
                           }}
@@ -319,7 +319,7 @@ export function LedgerTable() {
         </Table>
       </div>
 
-      <DesktopFindPossibleMatchModal
+      <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransaction}
