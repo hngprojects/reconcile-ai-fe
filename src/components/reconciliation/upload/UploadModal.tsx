@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import { Progress } from "@/src/components/ui/progress";
-import { StarsIcon } from "../../Icon/Icons";
+import { StarsIcon, CheckIcon } from "../../Icon/Icons"; // Ensure CheckIcon is imported
 import { toast } from "sonner";
-import Toast from "@/src/components/Toast";
 
 interface UploadModalProps {
   isOpen: boolean;
@@ -21,11 +20,14 @@ export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
   useEffect(() => {
     if (isAuthenticated && progress >= 100 && !emailSent && !toastShown) {
       if (user?.email) {
-        toast.custom(() => (
-          <Toast
-            message={`Reconciliation result has been sent to ${user.email}.`}
-          />
-        ));
+        toast.success(`Reconciliation result has been sent to ${user.email}.`, {
+          icon: <CheckIcon className="w-5 h-5" />,
+          style: { background: "#EEFFEE" },
+          action: {
+            label: <p className="bg-inherit">Close</p>,
+            onClick: () => toast.dismiss(),
+          },
+        });
         setEmailSent(true);
       }
       setToastShown(true);
@@ -33,10 +35,16 @@ export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
   }, [isAuthenticated, progress, emailSent, user, toastShown]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        if (progress >= 100) onClose();
+      }}
+    >
       <DialogContent
         className="max-w-[400px] flex flex-col h-auto items-center justify-center"
         closeButton={false}
+        onInteractOutside={(e) => e.preventDefault()} // Prevents outside click closing
       >
         <div className="bg-white w-[90%] max-md:mx-auto md:w-[436px] h-[213px] rounded-[12px] flex flex-col items-center justify-between p-8">
           <StarsIcon className="w-6 h-6" />
