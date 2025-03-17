@@ -126,7 +126,7 @@ export default function Careers() {
                         className="flex items-center gap-[16px] self-stretch"
                       >
                         <Image
-                          src="/assets/images/Star 1.svg"
+                          src="/assets/images/Star.svg"
                           alt="Star Icon"
                           width={32}
                           height={32}
