@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import Footer from "@/src/components/Footer";
 import { Button } from "@/src/components/ui/button";
 import { jobListings} from "@/src/data/jobDetails";
+import Link from "next/link";
 
 const JobDetails = () => {
   const params = useParams<{ id: string }>(); 
@@ -98,9 +99,12 @@ const JobDetails = () => {
             </div>
           </div>
         </div>
+        <Link href="/careers/apply">
         <Button className="w-full sm:w-[253px] h-[64px] mb-4 md:mb-[64px]">
           Apply Now
         </Button>
+        </Link>
+        
       </div>
       <Footer />
     </div>
