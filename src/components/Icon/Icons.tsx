@@ -434,6 +434,58 @@ export const DangerIcon = ({ className = defaultSize }: IconClassProps) => {
     </svg>
   );
 };
+export const VerticalDotsIcon = ({
+  className = defaultSize,
+}: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-[#98A2B3] aspect-auto", className)}
+      viewBox="0 0 20 21"
+      fill="none"
+    >
+      <path
+        d="M10.0003 11.334C10.4606 11.334 10.8337 10.9609 10.8337 10.5007C10.8337 10.0404 10.4606 9.66732 10.0003 9.66732C9.54009 9.66732 9.16699 10.0404 9.16699 10.5007C9.16699 10.9609 9.54009 11.334 10.0003 11.334Z"
+        stroke="currentColor"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.0003 5.50065C10.4606 5.50065 10.8337 5.12755 10.8337 4.66732C10.8337 4.20708 10.4606 3.83398 10.0003 3.83398C9.54009 3.83398 9.16699 4.20708 9.16699 4.66732C9.16699 5.12755 9.54009 5.50065 10.0003 5.50065Z"
+        stroke="currentColor"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M10.0003 17.1673C10.4606 17.1673 10.8337 16.7942 10.8337 16.334C10.8337 15.8737 10.4606 15.5007 10.0003 15.5007C9.54009 15.5007 9.16699 15.8737 9.16699 16.334C9.16699 16.7942 9.54009 17.1673 10.0003 17.1673Z"
+        stroke="currentColor"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+export const SearchIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("text-[#222222] aspect-auto", className)}
+      viewBox="0 0 24 25"
+      fill="none"
+    >
+      <circle cx="11" cy="11.5" r="6" stroke="currentColor" />
+      <path
+        d="M11 8.5C10.606 8.5 10.2159 8.5776 9.85195 8.72836C9.48797 8.87913 9.15726 9.1001 8.87868 9.37868C8.6001 9.65726 8.37913 9.98797 8.22836 10.352C8.0776 10.7159 8 11.106 8 11.5"
+        stroke="currentColor"
+        strokeLinecap="round"
+      />
+      <path d="M20 20.5L17 17.5" stroke="currentColor" strokeLinecap="round" />
+    </svg>
+  );
+};
 
 const Icons = {
   File: FileIcon,

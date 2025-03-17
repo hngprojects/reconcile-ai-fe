@@ -1,10 +1,10 @@
 import Container from "@/src/components/Container";
-import { ReconciliationView } from "@/src/components/reconciliation/ReconciliationView";
+import { View } from "@/src/components/revamped-reconciliation/components/View";
 
 export default function ReconciliationPage() {
   return (
     <Container>
-      <ReconciliationView />
+      <View />
     </Container>
   );
 }

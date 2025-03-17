@@ -12,6 +12,7 @@ import { Transaction } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { DownloadCloudIcon } from "../Icon/Icons";
 import UnlinkModal from "../modal/UnlinkModal";
+import { RECONCILE_EXPORT_API_URL } from "@/src/lib/apiEndpoints";
 
 interface ReconciliationData {
   matches: Array<{
@@ -59,7 +60,7 @@ export function MobileReconciliationView() {
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      const reconciliationData = localStorage.getItem("reconciliation");
+      const reconciliationData = localStorage.getItem("reconciliation_old");
 
       if (!reconciliationData) {
         throw new Error("No reconciliation data found");
@@ -76,16 +77,13 @@ export function MobileReconciliationView() {
         only_in_file2: parsedData.only_in_file2 || [],
       };
 
-      const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: formattedData }),
-        }
-      );
+      const response = await fetch(RECONCILE_EXPORT_API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: formattedData }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
@@ -159,7 +157,7 @@ export function MobileReconciliationView() {
       {/* Transaction Cards */}
       {paginatedData.map((item, index) => (
         <div
-          key={`${item.bankStatement.description}-${index}`}
+          key={`${item.bankStatement?.description}-${index}`}
           className={cn(
             "rounded-lg border shadow-sm",
             item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]"
@@ -181,20 +179,20 @@ export function MobileReconciliationView() {
               <div className="text-sm font-medium text-gray-500">
                 Bank Statement
               </div>
-              {item.bankStatement.date &&
-              item.bankStatement.description &&
-              item.bankStatement.amount ? (
+              {item.bankStatement?.date &&
+              item.bankStatement?.description &&
+              item.bankStatement?.amount ? (
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
-                      {item.bankStatement.date}
+                      {item.bankStatement?.date}
                     </div>
                     <div className="font-medium text-gray-900">
-                      {item.bankStatement.description}
+                      {item.bankStatement?.description}
                     </div>
                   </div>
                   <div className="font-medium text-gray-900">
-                    {item.bankStatement.amount}
+                    {item.bankStatement?.amount}
                   </div>
                 </div>
               ) : (
@@ -203,12 +201,16 @@ export function MobileReconciliationView() {
                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                     value: JSON.stringify(txn),
                   }))}
-                  placeholder="Find possible Match"
+                  placeholder="Find possible match"
                   onSelect={async (value) => {
                     try {
                       if (item.companyLedger) {
                         await handleMatch(
-                          item.companyLedger as Transaction,
+                          {
+                            Date: item.companyLedger.date,
+                            Description: item.companyLedger.description,
+                            Amount: item.companyLedger.amount,
+                          } as Transaction,
                           "statement",
                           JSON.parse(value)
                         );
@@ -254,7 +256,9 @@ export function MobileReconciliationView() {
               <div className="text-sm font-medium text-gray-500">
                 Company Ledger
               </div>
-              {item.matched && item.companyLedger ? (
+              {item.companyLedger?.date &&
+              item.companyLedger?.description &&
+              item.companyLedger?.amount ? (
                 <div className="flex justify-between items-start">
                   <div className="space-y-1">
                     <div className="text-sm text-gray-600">
@@ -274,14 +278,14 @@ export function MobileReconciliationView() {
                     label: `${txn["Description"]} - ${txn["Amount"]}`,
                     value: JSON.stringify(txn),
                   }))}
-                  placeholder="Find possible Match"
+                  placeholder="Find possible match"
                   onSelect={async (value) => {
                     try {
                       await handleMatch(
                         {
-                          Date: item.bankStatement.date,
-                          Description: item.bankStatement.description,
-                          Amount: item.bankStatement.amount,
+                          Date: item.bankStatement?.date,
+                          Description: item.bankStatement?.description,
+                          Amount: item.bankStatement?.amount,
                         } as Transaction,
                         "ledger",
                         JSON.parse(value)
@@ -340,12 +344,12 @@ export function MobileReconciliationView() {
               await handleUnlink(
                 {
                   Date:
-                    paginatedData[activeStatusIndex].bankStatement.date ?? "",
+                    paginatedData[activeStatusIndex].bankStatement?.date ?? "",
                   Description:
                     paginatedData[activeStatusIndex].bankStatement
-                      .description ?? "",
+                      ?.description ?? "",
                   Amount:
-                    paginatedData[activeStatusIndex].bankStatement.amount ?? 0,
+                    paginatedData[activeStatusIndex].bankStatement?.amount ?? 0,
                 },
                 {
                   Date:

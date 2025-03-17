@@ -25,10 +25,13 @@ const UnlinkModal = ({
 }: UnlinkModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className="sm:max-w-[425px]"
+        aria-describedby="unlink-description"
+      >
         <DialogHeader className="sr-only">
           <DialogTitle>Unlink Transaction</DialogTitle>
-          <DialogDescription>
+          <DialogDescription id="unlink-description">
             Unlink transaction that was previously matched by the AI
           </DialogDescription>
         </DialogHeader>
@@ -40,7 +43,7 @@ const UnlinkModal = ({
           <div className="self-start">
             <h3 className="text-lg font-semibold text-[#101828] mb-3">
               Are you sure you want to unlink? <br />
-              This will un-match the statements.
+              This will un-match the records.
             </h3>
           </div>
 

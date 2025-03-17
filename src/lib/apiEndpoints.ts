@@ -25,3 +25,10 @@ export const MANUAL_API_URL = `${BASE_URL}/reconcile/`;
 
 // MARKETING DEMO
 export const MARKETING_DEMO_API_URL = `${BASE_URL}/outbound-marketing`;
+
+// RECONCILE EXPORT
+export const RECONCILE_EXPORT_API_URL = `${BASE_URL}/reconcile/export`;
+
+// LOGOUT API
+export const LOGOUT_API_URL = `${BASE_URL}/auth/logout`;
+
