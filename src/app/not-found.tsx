@@ -31,7 +31,7 @@ export default function NotFound() {
         </div>
         <Link
           href="/"
-          className="border border-[#2E604A] rounded-[8px] w-full h-fit py-[20px] px-[24px] text-center text-[18px] font-[700]"
+          className="border border-[#2E604A] rounded-[8px] w-full h-fit py-[20px] px-[24px] text-center text-[18px] font-[700] hover:bg-primary hover:text-white transition-all duration-150"
         >
           Go Back
         </Link>

@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "./Container";
 import { motion } from "framer-motion";
-import { Button } from "./ui/button";
 
 export default function HeroSection() {
   return (
@@ -33,11 +32,13 @@ export default function HeroSection() {
             >
               Start Reconciliation
             </Link> */}
-            <Button className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer">
-              <Link href="/file-upload" aria-label="Start Reconciliation">
-                Start Reconciliation
-              </Link>
-            </Button>
+            <Link
+              href="/file-upload"
+              aria-label="Start Reconciliation"
+              className="bg-[#297B65] py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer"
+            >
+              Start Reconciliation
+            </Link>
           </motion.div>
         </motion.div>
         <motion.div
@@ -47,7 +48,7 @@ export default function HeroSection() {
           className="flex items-center justify-center"
         >
           <Image
-            src="/assets/images/hero-mockup.svg"
+            src="/assets/images/Hero-Section-Image.png"
             alt="macbook mockup"
             width={621}
             height={387}
