@@ -10,6 +10,8 @@ import { DownloadCloudIcon, Loader2 } from "lucide-react";
 import { SuccessToast } from "../../reconciliation/SuccessToast";
 import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
 import { ReconciliationResponse } from "../types/frontendResponseTypes";
+import UnlinkModal from "../../modal/UnlinkModal";
+import { useReconciliation } from "../context/ReconciliationProvider";
 
 export default function DesktopView() {
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -17,6 +19,15 @@ export default function DesktopView() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  const {
+    handleUnlink: onUnlink,
+    showUnlinkModal,
+    setShowUnlinkModal,
+    isLoading,
+    selectedRow,
+    setSelectedRow,
+  } = useReconciliation();
 
   // Show CSV structure error toast
   useEffect(() => {
@@ -187,6 +198,24 @@ export default function DesktopView() {
       </div>
 
       <PaginationControls />
+
+      <UnlinkModal
+        isOpen={showUnlinkModal}
+        isLoading={isLoading}
+        onClose={() => {
+          setShowUnlinkModal(false);
+          setSelectedRow(null);
+        }}
+        onConfirm={async () => {
+          if (!selectedRow) return;
+
+          if (selectedRow.bank_txn && selectedRow.ledger_txn) {
+            await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
+
+            setSelectedRow(null);
+          }
+        }}
+      />
     </div>
   );
 }

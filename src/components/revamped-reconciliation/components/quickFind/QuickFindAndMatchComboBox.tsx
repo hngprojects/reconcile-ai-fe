@@ -1,7 +1,6 @@
 "use client";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { Search } from "lucide-react";
 import {
   KeyboardEvent,
   useCallback,
@@ -23,6 +22,7 @@ import { Command, CommandGroup, CommandItem, CommandList } from "../command";
 import { GroupOption, QuickFindAndMatchComboBoxProps } from "./types";
 import { removePickedOption, transToGroupOption, useDebounce } from "./utils";
 import { useReconciliation } from "../../context/ReconciliationProvider";
+import { SearchIcon } from "@/src/components/Icon/Icons";
 
 export interface QuickFindAndMatchComboBoxRef {
   selectedValue: TransactionOption | null;
@@ -337,7 +337,7 @@ const QuickFindAndMatchComboBox = ({
               )} */}
               {selected === null && (
                 <div className="relative flex w-full items-center">
-                  <Search className="text-muted-foreground/70 absolute left-3 h-4 w-4" />
+                  <SearchIcon className="absolute left-3 size-5" />
                   <CommandPrimitive.Input
                     {...inputProps}
                     ref={inputRef}
