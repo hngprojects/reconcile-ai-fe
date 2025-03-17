@@ -4,6 +4,7 @@ import { FC, useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 import UserDetails from "@/src/components/UserDetails";
+import { Button } from "./ui/button";
 
 const UserAction: FC = () => {
   const { user, setUser } = useAuth();
@@ -21,7 +22,7 @@ const UserAction: FC = () => {
       {user ? (
         <UserDetails />
       ) : (
-        <button
+        <Button
           type="button"
           className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
                      rounded-md font-semibold justify-center items-center h-12 
@@ -29,7 +30,7 @@ const UserAction: FC = () => {
           onClick={() => setShowAuthModal(true)}
         >
           Get Started
-        </button>
+        </Button>
       )}
 
       <GoogleAuthModal

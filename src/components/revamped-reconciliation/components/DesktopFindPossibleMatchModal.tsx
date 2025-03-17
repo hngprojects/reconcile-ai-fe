@@ -34,7 +34,7 @@ interface FindPossibleMatchModalProps {
   potentialMatches: Transaction[];
   onMatch: (
     bankTransaction: Transaction,
-    ledgerTransaction: Transaction
+    ledgerTransaction: Transaction,
   ) => void;
 }
 
@@ -52,7 +52,7 @@ export function DesktopFindPossibleMatchModal({
   const [isMatched, setIsMatched] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
-  console.log({ reconciledDataRow });
+  // console.log({ reconciledDataRow });
 
   // Reset state when modal opens
   useEffect(() => {
@@ -147,7 +147,7 @@ export function DesktopFindPossibleMatchModal({
                       isDefaultMatch || isMatched
                         ? "bg-[#F3FEFA]"
                         : "bg-[#FFF4F0]",
-                      "hover:bg-[#F3FEFA]"
+                      "hover:bg-[#F3FEFA]",
                     )}
                   >
                     <TableCell className="text-center h-[64px]">
@@ -218,7 +218,7 @@ export function DesktopFindPossibleMatchModal({
                         }`}
                         onClick={() =>
                           setSelectedTransactionIndex((prev) =>
-                            prev === index ? null : index
+                            prev === index ? null : index,
                           )
                         }
                       >
