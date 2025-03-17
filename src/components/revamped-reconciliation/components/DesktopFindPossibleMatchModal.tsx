@@ -52,15 +52,10 @@ export function DesktopFindPossibleMatchModal({
     number[]
   >([]);
   const [isMatched, setIsMatched] = useState(false);
-<<<<<<< HEAD
   const [selectedTransactions, setSelectedTransactions] =
     useState<Transaction[]>([]);
   console.log({ reconciledDataRow });
-=======
-  const [selectedTransaction, setSelectedTransaction] =
-    useState<Transaction | null>(null);
   // console.log({ reconciledDataRow });
->>>>>>> dev
 
   // Reset state when modal opens
   useEffect(() => {
@@ -229,19 +224,6 @@ export function DesktopFindPossibleMatchModal({
 
           {/* Search Input */}
           {!isMatched && (
-<<<<<<< HEAD
-            <div className="relative max-w-md">
-              <Search className="absolute right-3 top-[14px] size-5 text-gray-400" />
-              <Input
-                className="pr-10 h-12 text-base placeholder:text-base rounded-xl placeholder:text-gray-400"
-                placeholder="Search by description, date, or amount"
-                value={searchTerm}
-                onChange={(e) => {
-                  setSelectedTransactionIndexes([]);
-                  setSearchTerm(e.target.value);
-                }}
-              />
-=======
             <div className="w-full flex justify-end">
               <div className="relative w-full max-w-[460px] mt-3">
                 <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 size-8" />
@@ -250,12 +232,11 @@ export function DesktopFindPossibleMatchModal({
                   placeholder="Search by description, date, or amount"
                   value={searchTerm}
                   onChange={(e) => {
-                    setSelectedTransactionIndex(null);
+                    setSelectedTransactionIndexes([]);
                     setSearchTerm(e.target.value);
                   }}
                 />
               </div>
->>>>>>> dev
             </div>
           )}
 
@@ -288,13 +269,8 @@ export function DesktopFindPossibleMatchModal({
                             : ""
                         }`}
                         onClick={() =>
-<<<<<<< HEAD
                           setSelectedTransactionIndexes((prev) =>
                             isSelectedIndex ? prev?.filter((i) => i !== index) : [...prev, index]
-=======
-                          setSelectedTransactionIndex((prev) =>
-                            prev === index ? null : index,
->>>>>>> dev
                           )
                         }
                       >
