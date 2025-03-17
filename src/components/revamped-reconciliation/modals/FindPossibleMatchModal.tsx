@@ -30,6 +30,7 @@ import type {
   ReconciliationItem,
   Transaction,
 } from "../types/frontendResponseTypes";
+import { DateRange } from "react-day-picker";
 
 interface FindPossibleMatchModalProps {
   isOpen: boolean;
@@ -38,7 +39,7 @@ interface FindPossibleMatchModalProps {
   potentialMatches: Transaction[];
   onMatch: (
     bankTransaction: Transaction,
-    ledgerTransaction: Transaction
+    ledgerTransaction: Transaction,
   ) => void;
 }
 
@@ -60,6 +61,7 @@ export function FindPossibleMatchModal({
   const [isMatched, setIsMatched] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   console.log({ selectedRange });
 
@@ -70,24 +72,67 @@ export function FindPossibleMatchModal({
       setSelectedTransactionIndex(null);
       setIsMatched(false);
       setSelectedTransaction(null);
+      setDateRange(undefined);
+      setSelectedRange(null);
     }
   }, [isOpen]);
 
   // Improved search filter function to handle multiple search terms
   const filteredTransactions = potentialMatches?.filter((transaction) => {
-    if (!searchTerm.trim()) {
-      return true; // Show all when search is empty
+    let matchesSearch = true;
+    let matchesDateRange = true;
+    let matchesAmountRange = true;
+
+    // Search term filter (description)
+    if (searchTerm.trim()) {
+      const description = transaction.description.toLowerCase();
+      const searchTerms = searchTerm
+        .toLowerCase()
+        .split(/\s+/)
+        .filter((term) => term.length > 0);
+
+      matchesSearch = searchTerms.some((term) => description.includes(term));
     }
 
-    const description = transaction.description.toLowerCase();
-    // Split search terms and filter out empty strings
-    const searchTerms = searchTerm
-      .toLowerCase()
-      .split(/\s+/)
-      .filter((term) => term.length > 0);
+    // Date range filter
+    if (dateRange?.from && dateRange?.to) {
+      try {
+        const transactionDate = new Date(transaction.date);
+        const fromDate = new Date(dateRange.from);
+        const toDate = new Date(dateRange.to);
 
-    // Check if ANY of the search terms are found in the description (more inclusive search)
-    return searchTerms.some((term) => description.includes(term));
+        // Set all dates to midnight for comparison
+        transactionDate.setHours(0, 0, 0, 0);
+        fromDate.setHours(0, 0, 0, 0);
+        toDate.setHours(0, 0, 0, 0);
+
+        // Adjust toDate to end of day for inclusive comparison
+        toDate.setHours(23, 59, 59, 999);
+
+        matchesDateRange =
+          transactionDate >= fromDate && transactionDate <= toDate;
+      } catch (error) {
+        console.error("Error parsing date:", error);
+        matchesDateRange = false;
+      }
+    }
+
+    // Amount range filter
+    if (selectedRange) {
+      try {
+        const amount = parseFloat(
+          String(transaction.amount).replace(/[^0-9.-]+/g, ""),
+        );
+        matchesAmountRange =
+          amount >= selectedRange.min &&
+          (selectedRange.max === null || amount <= selectedRange.max);
+      } catch (error) {
+        console.error("Error parsing amount:", error);
+        matchesAmountRange = false;
+      }
+    }
+
+    return matchesSearch && matchesDateRange && matchesAmountRange;
   });
 
   console.log({ filteredTransactions });
@@ -183,7 +228,7 @@ export function FindPossibleMatchModal({
                     className={cn(
                       isDefaultMatch || isMatched
                         ? "bg-[#F3FEFA] hover:bg-[#F3FEFA]"
-                        : "bg-[#FFF4F0] hover:bg-[#FFF4F0]"
+                        : "bg-[#FFF4F0] hover:bg-[#FFF4F0]",
                     )}
                   >
                     <TableCell className="text-center h-[64px]">
@@ -226,84 +271,88 @@ export function FindPossibleMatchModal({
                 <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 size-6" />
               </div>
 
-              <DatePickerWithRange />
+              <DatePickerWithRange
+                date={dateRange}
+                onDateChange={setDateRange}
+              />
 
               <AmountRangeSelector onRangeChange={handleAmountRangeChange} />
             </div>
           )}
 
           {/* Potential Matches List */}
-          {!isMatched && searchTerm.trim() !== "" && (
-            <div className="border rounded-lg overflow-hidden">
-              <Table>
-                <TableHeader className="bg-[#F9FAFB] h-[52px] border-b">
-                  <TableRow>
-                    <TableHead className="text-left px-6 border-r w-10"></TableHead>
-                    <TableHead className="text-left px-6 border-r">
-                      Date
-                    </TableHead>
-                    <TableHead className="text-left px-6 border-r">
-                      Description
-                    </TableHead>
-                    <TableHead className="text-left px-6">Amount</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody className="max-h-[35vh] h-full">
-                  {filteredTransactions?.length > 0 ? (
-                    filteredTransactions?.map((transaction, index) => (
-                      <TableRow
-                        key={transaction.id}
-                        className={`cursor-pointer h-[52px] ${
-                          selectedTransactionIndex === index
-                            ? "bg-gray-100"
-                            : ""
-                        }`}
-                        onClick={() =>
-                          setSelectedTransactionIndex((prev) =>
-                            prev === index ? null : index
-                          )
-                        }
-                      >
-                        <TableCell className="border-r w-10">
-                          <div className="flex justify-center">
-                            <div
-                              className={`w-5 h-5 rounded-sm flex items-center justify-center border-2 ${
-                                selectedTransactionIndex === index
-                                  ? "border-[#297B65]"
-                                  : "border-gray-300"
-                              }`}
-                            >
-                              {selectedTransactionIndex === index && (
-                                <Check
-                                  strokeWidth={3}
-                                  className="h-4 w-4 text-[#297B65]"
-                                />
-                              )}
+          {!isMatched &&
+            (searchTerm.trim() !== "" || dateRange || selectedRange) && (
+              <div className="border rounded-lg overflow-hidden">
+                <Table>
+                  <TableHeader className="bg-[#F9FAFB] h-[52px] border-b">
+                    <TableRow>
+                      <TableHead className="text-left px-6 border-r w-10"></TableHead>
+                      <TableHead className="text-left px-6 border-r">
+                        Date
+                      </TableHead>
+                      <TableHead className="text-left px-6 border-r">
+                        Description
+                      </TableHead>
+                      <TableHead className="text-left px-6">Amount</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="max-h-[35vh] h-full">
+                    {filteredTransactions?.length > 0 ? (
+                      filteredTransactions?.map((transaction, index) => (
+                        <TableRow
+                          key={transaction.id}
+                          className={`cursor-pointer h-[52px] ${
+                            selectedTransactionIndex === index
+                              ? "bg-gray-100"
+                              : ""
+                          }`}
+                          onClick={() =>
+                            setSelectedTransactionIndex((prev) =>
+                              prev === index ? null : index,
+                            )
+                          }
+                        >
+                          <TableCell className="border-r w-10">
+                            <div className="flex justify-center">
+                              <div
+                                className={`w-5 h-5 rounded-sm flex items-center justify-center border-2 ${
+                                  selectedTransactionIndex === index
+                                    ? "border-[#297B65]"
+                                    : "border-gray-300"
+                                }`}
+                              >
+                                {selectedTransactionIndex === index && (
+                                  <Check
+                                    strokeWidth={3}
+                                    className="h-4 w-4 text-[#297B65]"
+                                  />
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="px-6 border-r">
-                          {transaction.date}
-                        </TableCell>
-                        <TableCell className="px-6 border-r">
-                          {transaction.description}
-                        </TableCell>
-                        <TableCell className="px-6">
-                          {transaction.amount}
+                          </TableCell>
+                          <TableCell className="px-6 border-r">
+                            {transaction.date}
+                          </TableCell>
+                          <TableCell className="px-6 border-r">
+                            {transaction.description}
+                          </TableCell>
+                          <TableCell className="px-6">
+                            {transaction.amount}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={4} className="text-center py-4">
+                          No transactions found
                         </TableCell>
                       </TableRow>
-                    ))
-                  ) : (
-                    <TableRow>
-                      <TableCell colSpan={4} className="text-center py-4">
-                        No transactions found
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          )}
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
         </div>
 
         {/* Mobile View */}
@@ -312,7 +361,7 @@ export function FindPossibleMatchModal({
           <div
             className={cn(
               "flex flex-col gap-3 p-4 rounded-lg border",
-              isDefaultMatch || isMatched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]"
+              isDefaultMatch || isMatched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
             )}
           >
             {!isMatched && isDefaultMatch && (
@@ -471,7 +520,10 @@ export function FindPossibleMatchModal({
           {/* Search Input - Only show if not matched */}
           {!isMatched && (
             <div className="w-full flex flex-col gap-2">
-              <DatePickerWithRange />
+              <DatePickerWithRange
+                date={dateRange}
+                onDateChange={setDateRange}
+              />
 
               <div className="relative">
                 <Input
@@ -503,11 +555,11 @@ export function FindPossibleMatchModal({
                       "p-3 border rounded-lg cursor-pointer",
                       selectedTransactionIndex === index
                         ? "border-[#007A55] bg-primary/5"
-                        : "border-gray-200"
+                        : "border-gray-200",
                     )}
                     onClick={() =>
                       setSelectedTransactionIndex(
-                        index === selectedTransactionIndex ? null : index
+                        index === selectedTransactionIndex ? null : index,
                       )
                     }
                   >
@@ -550,14 +602,20 @@ export function FindPossibleMatchModal({
         <DialogFooter className="sticky bottom-0 left-0 right-0 bg-white py-4">
           {isMatched ? (
             <>
-              <Button variant="outline" onClick={handleCancelMatch}>
+              <Button
+                variant="outline"
+                className="cursor-pointer"
+                onClick={handleCancelMatch}
+              >
                 Cancel Match
               </Button>
-              <Button onClick={handleFinishClick}>Confirm Match</Button>
+              <Button onClick={handleFinishClick} className="cursor-pointer">
+                Confirm Match
+              </Button>
             </>
           ) : (
             <Button
-              className="w-full md:w-fit"
+              className="w-full md:w-fit cursor-pointer"
               disabled={
                 selectedTransactionIndex === null ||
                 (!!reconciledDataRow.bank_txn && !!reconciledDataRow.ledger_txn)
