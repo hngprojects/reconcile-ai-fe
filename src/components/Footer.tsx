@@ -14,43 +14,39 @@ const Footer = () => {
   const PRODUCTS_SUBNAVS = [
     {
       name: "Contact Us",
-      link: "/contact"
+      link: "/contact",
     },
     {
       name: "Features list",
-      link: "/"
+      link: "/features",
     },
     {
       name: "Careers",
-      link: "/careers"
+      link: "/careers",
     },
     {
       name: "Partner with Us",
-      link: "/partner"
+      link: "/partners",
     },
     {
       name: "Releases",
-      link: "/"
-    }
-  ]
+      link: "/changelog",
+    },
+  ];
   const RESOURCES_SUBNAVS = [
     {
       name: "Blog",
-      link: "/blog"
-    },
-    {
-      name: "Newsletter",
-      link: "/"
+      link: "/blog",
     },
     {
       name: "Demo",
-      link: "/demo"
+      link: "/demo",
     },
     {
       name: "Help centre",
-      link: "/"
-    }
-  ]
+      link: "/customer-support",
+    },
+  ];
   return (
     <footer className="bg-primary">
       <Container className="w-full overflow-x-hidden pt-[64px] pb-[48px] lg:px-[48px] flex flex-col gap-[64px]">
@@ -100,32 +96,53 @@ const Footer = () => {
             <div className="space-y-3">
               <h3 className="text-[#D0D5DD] font-semibold">Product</h3>
               <div className="flex flex-col gap-[12px]">
-                {
-                  PRODUCTS_SUBNAVS.map(subnavs => <Link key={subnavs.name} href={subnavs.link} className="text-[#EAECF0] hover:text-white">{subnavs.name}</Link>)
-                }
+                {PRODUCTS_SUBNAVS.map((subnavs) => (
+                  <Link
+                    key={subnavs.name}
+                    href={subnavs.link}
+                    className="text-[#EAECF0] hover:text-white"
+                  >
+                    {subnavs.name}
+                  </Link>
+                ))}
               </div>
             </div>
             <div className="space-y-3">
               <h3 className="text-[#D0D5DD] font-semibold">Resources</h3>
               <div className="flex flex-col gap-[12px]">
-                {
-                  RESOURCES_SUBNAVS.map(subnavs => <Link key={subnavs.name} href={subnavs.link} className="text-[#EAECF0] hover:text-white">{subnavs.name}</Link>)
-                }
+                {RESOURCES_SUBNAVS.map((subnavs) => (
+                  <Link
+                    key={subnavs.name}
+                    href={subnavs.link}
+                    className="text-[#EAECF0] hover:text-white"
+                  >
+                    {subnavs.name}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
 
           <div className="text-white">
-          <FooterEmailForm />
+            <FooterEmailForm />
           </div>
         </div>
 
         <div className="border-t border-gray-400 pt-[32px] flex flex-wrap gap-4 items-center justify-between">
-          <p className="text-[#FFFFFF]">© 2025 ReconXi Ltd. All rights reserved.</p>
+          <p className="text-[#FFFFFF]">
+            © 2025 ReconXi Ltd. All rights reserved.
+          </p>
 
           <div className="flex gap-[16px]">
-            <Link href="/terms-conditions" className="text-[#D0D5DD] hover:text-white">Terms</Link>
-            <Link href="/privacy" className="text-[#D0D5DD] hover:text-white">Privacy</Link>
+            <Link
+              href="/terms-conditions"
+              className="text-[#D0D5DD] hover:text-white"
+            >
+              Terms
+            </Link>
+            <Link href="/privacy" className="text-[#D0D5DD] hover:text-white">
+              Privacy
+            </Link>
           </div>
         </div>
       </Container>
