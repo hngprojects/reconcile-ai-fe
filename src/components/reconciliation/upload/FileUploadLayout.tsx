@@ -9,10 +9,10 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-// import { checkRateLimit, incrementAttempts } from "@/src/u qtils/rateLimit";
-// import { useAuth } from "@/src/components/context/AuthContext";
 import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
 import { transformReconciliationData } from "../../revamped-reconciliation/helpers/transformReconciliationData";
+import { useAuth } from "@/src/components/context/AuthContext";
+import { countCsvRows } from "@/src/utils/csvHelpers";
 
 interface ReconciliationError extends Error {
   code?: number;
@@ -21,7 +21,7 @@ interface ReconciliationError extends Error {
 
 const validateFileHeaders = async (
   file: File,
-  type: "bankStatement" | "companyLedger"
+  type: "bankStatement" | "companyLedger",
 ): Promise<boolean> => {
   const text = await file.text();
   const headers = text
@@ -29,14 +29,14 @@ const validateFileHeaders = async (
     .split(",")
     .map((h) => h.trim());
   return REQUIRED_HEADERS[type].every((required) =>
-    headers.some((h) => h.toLowerCase() === required.toLowerCase())
+    headers.some((h) => h.toLowerCase() === required.toLowerCase()),
   );
 };
 
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
-  // const { isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [bankStatement, setBankStatement] = useState<File | null>(null);
   const [companyLedger, setCompanyLedger] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState({ bank: 0, ledger: 0 });
@@ -79,7 +79,7 @@ export default function FileUploadLayout({
           JSON.stringify({
             name: file.name,
             content: await file.text(),
-          })
+          }),
         );
       } else {
         localStorage.removeItem(key);
@@ -134,10 +134,31 @@ export default function FileUploadLayout({
     setUploadProgress((prev) => ({ ...prev, [type]: 0 }));
   };
 
+  const validateRowCount = async (file: File): Promise<boolean> => {
+    if (isAuthenticated) return true;
+
+    const rowCount = await countCsvRows(file);
+    return rowCount <= 100;
+  };
+
   const handleReconciliation = async () => {
     if (!bankStatement || !companyLedger) return;
 
     try {
+      // Check row count for guest users
+      if (!isAuthenticated) {
+        const [bankRows, ledgerRows] = await Promise.all([
+          validateRowCount(bankStatement),
+          validateRowCount(companyLedger),
+        ]);
+
+        if (!bankRows || !ledgerRows) {
+          setErrorCode(403);
+          setShowErrorModal(true);
+          return;
+        }
+      }
+
       // Validate headers before proceeding
       const [isBankValid, isLedgerValid] = await Promise.all([
         validateFileHeaders(bankStatement, "bankStatement"),
@@ -162,7 +183,7 @@ export default function FileUploadLayout({
       const result = await reconcileFiles(
         bankStatement,
         companyLedger,
-        "amount"
+        "amount",
       );
 
       if (result.status === "error") {
@@ -181,14 +202,14 @@ export default function FileUploadLayout({
       if (result.status === "success") {
         localStorage.setItem(
           "reconciliation",
-          JSON.stringify(result.data.data)
+          JSON.stringify(result.data.data),
         );
         const reconciliationData = transformReconciliationData(
-          result.data.data
+          result.data.data,
         );
         localStorage.setItem(
           "reconciliation",
-          JSON.stringify(reconciliationData)
+          JSON.stringify(reconciliationData),
         );
 
         clearUploadedFiles();
@@ -211,7 +232,7 @@ export default function FileUploadLayout({
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
-    Boolean
+    Boolean,
   ) as string[];
   const isAnyFileUploading = isUploading.bank || isUploading.ledger;
 
