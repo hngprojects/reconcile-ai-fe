@@ -58,7 +58,11 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
           <h2 className="font-bold text-3xl md:text-4xl text-center">
             {config.title}
           </h2>
-          <p id="error-description" className="text-[#475569] text-center">
+          <p
+            id="error-description"
+            className="text-[#475569] text-center"
+            aria-hidden={!config.message}
+          >
             {config.message}
           </p>
           <button

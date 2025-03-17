@@ -11,15 +11,18 @@ export default function BlogDetail() {
   const params = useParams();
   const id = params.id;
   const blog = blogData.find((b) => b.id === Number(id));
-  
+
   if (!blog) {
     return <p className="text-center mt-10 text-xl">Blog not found</p>;
   }
 
-  const hasContent = (sectionHeading?: string, sectionContent?: string): boolean => {
+  const hasContent = (
+    sectionHeading?: string,
+    sectionContent?: string,
+  ): boolean => {
     return !!sectionHeading && !!sectionContent;
   };
-  
+
   return (
     <>
       <Container className="py-8 md:py-12">
@@ -72,13 +75,13 @@ export default function BlogDetail() {
                 </div>
               </div>
             </div>
-            
+
             {/* Blog Title */}
             <h1 className="leading-[140%] lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24">
               {blog.title}
             </h1>
           </div>
-          
+
           {/* Featured Image */}
           <div className="">
             <Image
@@ -91,7 +94,7 @@ export default function BlogDetail() {
               priority
             />
           </div>
-          
+
           {/* Blog Content */}
           <div className="lg:px-10">
             {/* Intro Text - Always show if available */}
@@ -111,7 +114,7 @@ export default function BlogDetail() {
                   {blog.introText3}
                 </p>
               )}
-                {blog.introText4 && (
+              {blog.introText4 && (
                 <p className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText4}
                 </p>
@@ -126,32 +129,32 @@ export default function BlogDetail() {
                   {blog.introText6}
                 </p>
               )}
-               {blog.introText7 && (
+              {blog.introText7 && (
                 <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText7}
                 </p>
               )}
-                {blog.introText8 && (
+              {blog.introText8 && (
                 <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText8}
                 </p>
               )}
-               {blog.introText9 && (
+              {blog.introText9 && (
                 <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText9}
                 </p>
               )}
-               {blog.introText10 && (
+              {blog.introText10 && (
                 <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText10}
                 </p>
               )}
-                {blog.introText11 && (
+              {blog.introText11 && (
                 <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText11}
                 </p>
               )}
-               {blog.introText12 && (
+              {blog.introText12 && (
                 <p className=" font-normal lg:text-lg text-[#333333] lg:leading-[140%]">
                   {blog.introText12}
                 </p>
@@ -183,11 +186,9 @@ export default function BlogDetail() {
                   <p className="text-[#5C5C5C] leading-relaxed">
                     {blog.section5Text}
                   </p>
-                  
-                 
                 </section>
               )}
-              
+
               {hasContent(blog.sectionTwoHeading, blog.sectionTwoText) && (
                 <section>
                   <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
@@ -198,7 +199,7 @@ export default function BlogDetail() {
                   </p>
                 </section>
               )}
-              
+
               {hasContent(blog.categoryOneHeading, blog.categoryOneContent) && (
                 <section>
                   <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
@@ -209,7 +210,7 @@ export default function BlogDetail() {
                   </div>
                 </section>
               )}
-              
+
               {hasContent(blog.categoryTwoHeading, blog.categoryTwoContent) && (
                 <section>
                   <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
@@ -220,8 +221,11 @@ export default function BlogDetail() {
                   </div>
                 </section>
               )}
-              
-              {hasContent(blog.categoryThreeHeading, blog.categoryThreeContent) && (
+
+              {hasContent(
+                blog.categoryThreeHeading,
+                blog.categoryThreeContent,
+              ) && (
                 <section>
                   <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
                     {blog.categoryThreeHeading}

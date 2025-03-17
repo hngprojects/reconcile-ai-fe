@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky"
+    "lint": "next lint --max-warnings=0",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit",
+    "commit-check": "npx --no -- commitlint --edit"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",

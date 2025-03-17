@@ -56,8 +56,13 @@ const ContactUsForm = () => {
 
   useEffect(() => {
     const loadCountries = async () => {
-      const countryData = await fetchCountryCodes();
-      setCountries(countryData as Country[]);
+      try {
+        const countryData = await fetchCountryCodes();
+        setCountries(countryData as Country[]);
+      } catch (error) {
+        console.error("Failed to fetch country codes:", error);
+        toast.error("Failed to load country codes. Please refresh.");
+      }
     };
     loadCountries();
   }, []);
@@ -105,7 +110,7 @@ const ContactUsForm = () => {
         <FormField
           control={form.control}
           name="name"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <label htmlFor="name" className="text-sm text-[#717171]">
                 Name
@@ -116,9 +121,12 @@ const ContactUsForm = () => {
                   id="name"
                   placeholder="Enter full name"
                   {...field}
+                  aria-describedby={
+                    fieldState?.error ? "name-error" : undefined
+                  }
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage id="name-error" />
             </FormItem>
           )}
         />
@@ -127,7 +135,7 @@ const ContactUsForm = () => {
         <FormField
           control={form.control}
           name="email"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <label htmlFor="email" className="text-sm text-[#717171]">
                 Email
@@ -139,9 +147,12 @@ const ContactUsForm = () => {
                   type="email"
                   placeholder="Enter email address"
                   {...field}
+                  aria-describedby={
+                    fieldState?.error ? `${field.name}-error` : undefined
+                  }
                 />
               </FormControl>
-              <FormMessage />
+              <FormMessage id="name-error" />
             </FormItem>
           )}
         />
@@ -150,7 +161,7 @@ const ContactUsForm = () => {
         <FormField
           control={form.control}
           name="phone_number"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <label htmlFor="phone_number" className="text-sm text-[#717171]">
                 Phone Number
@@ -164,10 +175,13 @@ const ContactUsForm = () => {
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer">
+                      <SelectTrigger
+                        className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer"
+                        aria-controls="country-code-dropdown"
+                      >
                         <SelectValue placeholder="+234" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent id="country-code-dropdown">
                         {countries.map((country: Country) => (
                           <SelectItem
                             key={`${country.code}-${country.name}`}
@@ -194,10 +208,13 @@ const ContactUsForm = () => {
                     id="phone_number"
                     placeholder="Enter phone number"
                     {...field}
+                    aria-describedby={
+                      fieldState?.error ? `${field.name}-error` : undefined
+                    }
                   />
                 </FormControl>
               </div>
-              <FormMessage />
+              <FormMessage id="name-error" />
             </FormItem>
           )}
         />
