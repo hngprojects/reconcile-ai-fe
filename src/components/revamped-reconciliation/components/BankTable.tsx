@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/src/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +22,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { MoreVertical } from "lucide-react";
 import { useState } from "react";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import {
@@ -36,14 +34,20 @@ import {
 } from "../types/frontendResponseTypes";
 import { DesktopFindPossibleMatchModal } from "./DesktopFindPossibleMatchModal";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
+import { useAuth } from "../../context/AuthContext";
 
 export function BankTable() {
+  const { isAuthenticated } = useAuth();
+
   const {
     pagination,
     setPagination,
     paginatedData,
     unmatchedLedgerTransactions,
     handleMatch: onMatch,
+    setSelectedRow,
+    setShowUnlinkModal,
   } = useReconciliation();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransactionRow, setSelectedTransactionRow] =
@@ -52,61 +56,78 @@ export function BankTable() {
     unmatchedLedgerTransactions
   );
 
-  const bankColumns: ColumnDef<ReconciliationItem>[] = [
+  // Base columns that are always visible
+  const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
       accessorKey: "bank_txn.date",
       header: "Date",
-      cell: ({ row }) => {
-        const item = row.original;
-        return item.bank_txn ? item.bank_txn.date : null;
-      },
+      cell: ({ row }) => row.original.bank_txn?.date,
     },
     {
       accessorKey: "bank_txn.description",
       header: "Description",
-      cell: ({ row }) => {
-        const item = row.original;
-        return item.bank_txn ? item.bank_txn.description : null;
-      },
+      cell: ({ row }) => row.original.bank_txn?.description,
     },
     {
       accessorKey: "bank_txn.amount",
       header: "Amount",
-      cell: ({ row }) => {
-        const item = row.original;
-        return item.bank_txn ? item.bank_txn.amount : null;
-      },
+      cell: ({ row }) => row.original.bank_txn?.amount,
     },
-    {
-      id: "action",
-      header: "Action",
-      cell: ({ row }) => {
-        const reconciledDataRow = row.original;
+  ];
 
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="size-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreVertical className="h-4 w-4 text-gray-600" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {row.original.bank_txn && (
-                <DropdownMenuItem
-                  onClick={() => {
-                    setSelectedTransactionRow(reconciledDataRow);
-                    setModalOpen(true);
-                  }}
-                >
-                  Find possible match
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        );
-      },
+  // Conditional action column
+  const actionColumn: ColumnDef<ReconciliationItem> = {
+    id: "action",
+    header: "Action",
+    cell: ({ row }) => {
+      const reconciledDataRow = row.original;
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="cursor-pointer flex justify-center items-center">
+              <span className="sr-only">Open menu</span>
+              <VerticalDotsIcon className="h-5 w-5" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {reconciledDataRow.matched ? (
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedRow(row.original);
+                  setShowUnlinkModal(true);
+                }}
+                className="gap-0.5"
+              >
+                <CheckIcon className="text-[#333333] h-7 w-7" />
+                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                  Unlink Matched
+                </span>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                className="gap-0.5"
+                onClick={() => {
+                  setSelectedTransactionRow(reconciledDataRow);
+                  setModalOpen(true);
+                }}
+              >
+                <CheckIcon className="text-[#333333] h-7 w-7" />
+                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                  Find Possible Match
+                </span>
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
     },
+  };
+
+  // Combine columns based on authentication
+  const bankColumns = [
+    ...baseColumns,
+    ...(isAuthenticated ? [actionColumn] : []),
   ];
 
   const table = useReactTable({
@@ -145,7 +166,7 @@ export function BankTable() {
                     key={header.id}
                     className={
                       header.column.id === "action"
-                        ? "w-[60px] px-6 h-12"
+                        ? "w-16 max-w-16 text-end px-2 h-12"
                         : "px-6 h-12"
                     }
                   >
@@ -242,20 +263,38 @@ export function BankTable() {
                       <TableCell className="px-6 py-0 h-[3.5rem] flex items-center justify-center">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="size-8 p-0">
+                            <button className="cursor-pointer flex justify-center items-center">
                               <span className="sr-only">Open menu</span>
-                              <MoreVertical className="h-4 w-4 text-gray-600" />
-                            </Button>
+                              <VerticalDotsIcon className="h-5 w-5" />
+                            </button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            {row.original.ledger_txn && (
+                            {reconciledDataRow.matched ? (
                               <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedRow(row.original);
+                                  setShowUnlinkModal(true);
+                                }}
+                                className="gap-0.5"
+                              >
+                                <CheckIcon className="text-[#333333] h-7 w-7" />
+                                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                  Unlink Matched
+                                </span>
+                              </DropdownMenuItem>
+                            ) : (
+                              <DropdownMenuItem
+                                className="gap-0.5"
                                 onClick={() => {
                                   setSelectedTransactionRow(reconciledDataRow);
                                   setModalOpen(true);
                                 }}
                               >
-                                Find possible match
+                                <CheckIcon className="text-[#333333] h-7 w-7" />
+                                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                  Find Possible Match
+                                </span>
                               </DropdownMenuItem>
                             )}
                           </DropdownMenuContent>

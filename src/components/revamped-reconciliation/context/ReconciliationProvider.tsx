@@ -65,6 +65,12 @@ interface ReconciliationContextProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isMatching: boolean;
   setIsMatching: React.Dispatch<React.SetStateAction<boolean>>;
+
+  //Unlink Data
+  selectedRow: ReconciliationItem | null;
+  setSelectedRow: React.Dispatch<
+    React.SetStateAction<ReconciliationItem | null>
+  >;
 }
 
 const ReconciliationContext = createContext<
@@ -82,6 +88,9 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
+    null
+  );
 
   useEffect(() => {
     const localData = localStorage.getItem("reconciliation") as string;
@@ -257,6 +266,10 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         setIsLoading,
         isMatching,
         setIsMatching,
+
+        // Unlink data
+        selectedRow,
+        setSelectedRow,
       }}
     >
       {children}
