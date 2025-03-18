@@ -105,8 +105,7 @@ export function FindPossibleMatchModal({
         transactionDate.setHours(0, 0, 0, 0);
         fromDate.setHours(0, 0, 0, 0);
 
-        matchesDateRange =
-          transactionDate >= fromDate;
+        matchesDateRange = transactionDate >= fromDate;
       } catch (error) {
         console.error("Error parsing date:", error);
         matchesDateRange = false;
@@ -122,12 +121,8 @@ export function FindPossibleMatchModal({
         // Set all dates to midnight for comparison
         transactionDate.setHours(0, 0, 0, 0);
         fromDate.setHours(0, 0, 0, 0);
-        toDate.setHours(0, 0, 0, 0);
+        toDate.setHours(0, 0, 0, 999);
 
-        // Adjust toDate to end of day for inclusive comparison
-        toDate.setHours(23, 59, 59, 999);
-
-        
         matchesDateRange =
           transactionDate >= fromDate && transactionDate <= toDate;
       } catch (error) {
@@ -208,7 +203,13 @@ export function FindPossibleMatchModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-7xl max-h-[85vh] overflow-y-auto py-0">
+      <DialogContent
+        className="sm:max-w-7xl max-h-[85vh] overflow-y-auto py-0"
+        aria-describedby="find-match-description"
+      >
+        <div className="sr-only" id="find-match-description">
+          Modal for finding and matching possible transactions
+        </div>
         <DialogHeader className="mt-3">
           <DialogTitle className="text-left">Find possible match</DialogTitle>
           <DialogDescription className="sr-only" id="unlink-description">
@@ -563,54 +564,52 @@ export function FindPossibleMatchModal({
 
           {/* Search Results - Only show if not matched */}
           {!isMatched &&
-            (searchTerm.trim() !== "" || selectedRange || dateRange?.from) ? (
-              filteredTransactions.length > 0 ? (
-                <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                  {filteredTransactions.map((transaction, index) => (
-                    <div
-                      key={transaction.id}
-                      className={cn(
-                        "p-3 border rounded-lg cursor-pointer",
-                        selectedTransactionIndex === index
-                          ? "border-[#007A55] bg-primary/5"
-                          : "border-gray-200",
-                      )}
-                      onClick={() =>
-                        setSelectedTransactionIndex(
-                          index === selectedTransactionIndex ? null : index,
-                        )
-                      }
-                    >
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1 text-gray-600">
-                          <div className="text-sm font-medium">
-                            {possibleMatchTitle}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {transaction.date}
-                          </div>
-                          <div className="text-sm mt-1">
-                            {transaction.description}
-                          </div>
+          (searchTerm.trim() !== "" || selectedRange || dateRange?.from) ? (
+            filteredTransactions.length > 0 ? (
+              <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                {filteredTransactions.map((transaction, index) => (
+                  <div
+                    key={transaction.id}
+                    className={cn(
+                      "p-3 border rounded-lg cursor-pointer",
+                      selectedTransactionIndex === index
+                        ? "border-[#007A55] bg-primary/5"
+                        : "border-gray-200",
+                    )}
+                    onClick={() =>
+                      setSelectedTransactionIndex(
+                        index === selectedTransactionIndex ? null : index,
+                      )
+                    }
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1 text-gray-600">
+                        <div className="text-sm font-medium">
+                          {possibleMatchTitle}
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm font-medium">
-                            {transaction.amount}
-                          </div>
+                        <div className="text-xs text-gray-500">
+                          {transaction.date}
+                        </div>
+                        <div className="text-sm mt-1">
+                          {transaction.description}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-medium">
+                          {transaction.amount}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              ) : 
-              (
-                <div className="text-center text-gray-600 space-y-4">
-                  <hr />
-                  <p>No matching transactions found.</p>
-                </div>
-              )
-            ) : null
-          }
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-gray-600 space-y-4">
+                <hr />
+                <p>No matching transactions found.</p>
+              </div>
+            )
+          ) : null}
         </div>
 
         {/* Footer */}
