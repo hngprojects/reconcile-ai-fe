@@ -95,6 +95,23 @@ export function FindPossibleMatchModal({
     }
 
     // Date range filter
+    // filter potential transactions if only from value is selected
+    if (dateRange?.from && !dateRange?.to) {
+      try {
+        const transactionDate = new Date(transaction.date);
+        const fromDate = new Date(dateRange.from);
+
+        // Set all dates to midnight for comparison
+        transactionDate.setHours(0, 0, 0, 0);
+        fromDate.setHours(0, 0, 0, 0);
+
+        matchesDateRange = transactionDate >= fromDate;
+      } catch (error) {
+        console.error("Error parsing date:", error);
+        matchesDateRange = false;
+      }
+    }
+    // filter potential transactions if both from and to values are selected
     if (dateRange?.from && dateRange?.to) {
       try {
         const transactionDate = new Date(transaction.date);
@@ -104,10 +121,7 @@ export function FindPossibleMatchModal({
         // Set all dates to midnight for comparison
         transactionDate.setHours(0, 0, 0, 0);
         fromDate.setHours(0, 0, 0, 0);
-        toDate.setHours(0, 0, 0, 0);
-
-        // Adjust toDate to end of day for inclusive comparison
-        toDate.setHours(23, 59, 59, 999);
+        toDate.setHours(0, 0, 0, 999);
 
         matchesDateRange =
           transactionDate >= fromDate && transactionDate <= toDate;
@@ -190,7 +204,13 @@ export function FindPossibleMatchModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-7xl max-h-[85vh] overflow-y-auto py-0">
+      <DialogContent
+        className="sm:max-w-7xl max-h-[85vh] overflow-y-auto py-0"
+        aria-describedby="find-match-description"
+      >
+        <div className="sr-only" id="find-match-description">
+          Modal for finding and matching possible transactions
+        </div>
         <DialogHeader className="mt-3">
           <DialogTitle className="text-left">Find possible match</DialogTitle>
           <DialogDescription className="sr-only" id="unlink-description">
@@ -323,7 +343,7 @@ export function FindPossibleMatchModal({
 
           {/* Potential Matches List */}
           {!isMatched &&
-            (searchTerm.trim() !== "" || dateRange || selectedRange) && (
+            (searchTerm.trim() !== "" || dateRange?.from || selectedRange) && (
               <div className="border rounded-lg overflow-hidden">
                 <Table>
                   <TableHeader className="bg-[#F9FAFB] h-[52px] border-b">
@@ -638,9 +658,8 @@ export function FindPossibleMatchModal({
 
           {/* Search Results - Only show if not matched */}
           {!isMatched &&
-            searchTerm.trim() !== "" &&
-            filteredTransactions &&
-            filteredTransactions.length > 0 && (
+          (searchTerm.trim() !== "" || selectedRange || dateRange?.from) ? (
+            filteredTransactions.length > 0 ? (
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
                 {filteredTransactions.map((transaction, index) => {
                   const isSelectedIndex = selectedTransactionIndexes.some((transactionIndex) => transactionIndex === index)
@@ -678,18 +697,13 @@ export function FindPossibleMatchModal({
                     </div>
                   )})}
               </div>
-            )}
-
-          {!isMatched &&
-            searchTerm.trim() !== "" &&
-            filteredTransactions &&
-            filteredTransactions.length === 0 && (
+            ) : (
               <div className="text-center text-gray-600 space-y-4">
                 <hr />
-
                 <p>No matching transactions found.</p>
               </div>
-            )}
+            )
+          ) : null}
         </div>
 
         {/* Footer */}

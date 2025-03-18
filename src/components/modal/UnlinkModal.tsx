@@ -1,14 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { DangerIcon } from "../Icon/Icons";
 import { Button } from "../ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogFooter } from "../ui/dialog";
 
 interface UnlinkModalProps {
   isOpen: boolean;
@@ -27,14 +20,11 @@ const UnlinkModal = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
         className="sm:max-w-[425px]"
-        aria-describedby="unlink-description"
+        aria-describedby="unlink-modal-description"
       >
-        <DialogHeader className="sr-only">
-          <DialogTitle>Unlink Transaction</DialogTitle>
-          <DialogDescription id="unlink-description">
-            Unlink transaction that was previously matched by the AI
-          </DialogDescription>
-        </DialogHeader>
+        <div className="sr-only" id="unlink-modal-description">
+          Confirm unlinking of matched transactions
+        </div>
 
         <div className="flex flex-col justify-center items-center gap-4">
           <div className="flex justify-center items-center w-16 h-16 rounded-full self-start bg-[#FEE4E2] border-10 border-[#FEF3F2] ">
