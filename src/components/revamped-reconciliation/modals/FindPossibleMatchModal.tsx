@@ -144,7 +144,6 @@ export function FindPossibleMatchModal({
       (!reconciledDataRow.bank_txn || !reconciledDataRow.ledger_txn)
     ) {
       setSelectedTransactions(selectedTransactionIndexes.map((_, index) => filteredTransactions[index]))
-      // setSelectedTransactions(filteredTransactions[selectedTransactionIndex]);
       setIsMatched(true);
     }
   };
@@ -158,10 +157,10 @@ export function FindPossibleMatchModal({
   const handleFinishClick = () => {
     if (selectedTransactions.length) {
       if (reconciledDataRow.bank_txn) {
-        // onMatch(reconciledDataRow.bank_txn, selectedTransaction);
+        onMatch(reconciledDataRow.bank_txn, selectedTransactions[0]);
         onClose();
       } else if (reconciledDataRow.ledger_txn) {
-        // onMatch(selectedTransaction, reconciledDataRow.ledger_txn);
+        onMatch(selectedTransactions[0], reconciledDataRow.ledger_txn);
         onClose();
       }
     }
