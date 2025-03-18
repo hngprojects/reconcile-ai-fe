@@ -44,7 +44,7 @@ const Footer = () => {
     },
     {
       name: "Help centre",
-      link: "/customer-support",
+      link: "/customer-support-form",
     },
   ];
   return (
