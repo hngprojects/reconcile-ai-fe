@@ -215,7 +215,7 @@ export async function updateReconciliation(
     const resData = await response.json();
 
     if (!response.ok) {
-      return { error: resData.message || "Failed to add to newsletter" };
+      return { error: resData.message || "Failed to add to newsletter" };//TODO: Correct this
     }
 
     return resData;
