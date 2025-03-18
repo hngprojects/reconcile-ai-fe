@@ -55,12 +55,12 @@ export function FindPossibleMatchModal({
     max: number | null;
   } | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTransactionIndex, setSelectedTransactionIndex] = useState<
-    number | null
-  >(null);
+  const [selectedTransactionIndexes, setSelectedTransactionIndexes] = useState<
+    number[]
+  >([]);
   const [isMatched, setIsMatched] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] =
-    useState<Transaction | null>(null);
+  const [selectedTransactions, setSelectedTransactions] =
+    useState<Transaction[]>([]);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
 
   console.log({ selectedRange });
@@ -69,9 +69,9 @@ export function FindPossibleMatchModal({
   useEffect(() => {
     if (isOpen) {
       setSearchTerm("");
-      setSelectedTransactionIndex(null);
+      setSelectedTransactionIndexes([]);
       setIsMatched(false);
-      setSelectedTransaction(null);
+      setSelectedTransactions([]);
       setDateRange(undefined);
       setSelectedRange(null);
     }
@@ -138,28 +138,30 @@ export function FindPossibleMatchModal({
   console.log({ filteredTransactions });
 
   const handleMatchClick = () => {
+    // This condition only matches if one transaction is missing (null)
     if (
-      selectedTransactionIndex !== null &&
+      selectedTransactionIndexes.length &&
       (!reconciledDataRow.bank_txn || !reconciledDataRow.ledger_txn)
     ) {
-      setSelectedTransaction(filteredTransactions[selectedTransactionIndex]);
+      setSelectedTransactions(selectedTransactionIndexes.map((_, index) => filteredTransactions[index]))
+      // setSelectedTransactions(filteredTransactions[selectedTransactionIndex]);
       setIsMatched(true);
     }
   };
 
   const handleCancelMatch = () => {
     setIsMatched(false);
-    setSelectedTransaction(null);
-    setSelectedTransactionIndex(null);
+    setSelectedTransactions([]);
+    setSelectedTransactionIndexes([]);
   };
 
   const handleFinishClick = () => {
-    if (selectedTransaction) {
+    if (selectedTransactions.length) {
       if (reconciledDataRow.bank_txn) {
-        onMatch(reconciledDataRow.bank_txn, selectedTransaction);
+        // onMatch(reconciledDataRow.bank_txn, selectedTransaction);
         onClose();
       } else if (reconciledDataRow.ledger_txn) {
-        onMatch(selectedTransaction, reconciledDataRow.ledger_txn);
+        // onMatch(selectedTransaction, reconciledDataRow.ledger_txn);
         onClose();
       }
     }
@@ -198,22 +200,41 @@ export function FindPossibleMatchModal({
         </DialogHeader>
 
         {/* Desktop View */}
-        <div className="hidden md:block space-y-6 mt-2 lg:mx-4">
+        <div className="hidden md:block space-y-6 mt-2 lg:mx-4    ">
           <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-4">
             {/* Bank Transaction Details */}
-            <TransactionTable
-              transaction={reconciledDataRow.bank_txn || selectedTransaction}
-              status={
-                !isMatched &&
-                !isDefaultMatch &&
-                !selectedTransaction &&
-                !reconciledDataRow.bank_txn
-                  ? "empty"
-                  : isMatched || isDefaultMatch
-                    ? "matched"
-                    : "unmatched"
-              }
-            />
+            {
+              reconciledDataRow.bank_txn ? (
+                <TransactionTable
+                  transactions={[reconciledDataRow.bank_txn]}
+                  status={
+                    !isMatched &&
+                    !isDefaultMatch &&
+                    !selectedTransactions.length &&
+                    !reconciledDataRow.bank_txn
+                      ? "empty"
+                      : isMatched || isDefaultMatch
+                        ? "matched"
+                        : "unmatched"
+                  }
+                  NoOfMatchedData={selectedTransactions.length}
+                />
+              ) : (
+                <TransactionTable
+                  transactions={selectedTransactions}
+                  status={
+                    !isMatched &&
+                    !isDefaultMatch &&
+                    !selectedTransactions.length &&
+                    !reconciledDataRow.bank_txn
+                      ? "empty"
+                      : isMatched || isDefaultMatch
+                        ? "matched"
+                        : "unmatched"
+                  }
+                />
+              )
+            }
 
             {/* Status */}
             <div className="rounded-lg border overflow-hidden">
@@ -231,7 +252,9 @@ export function FindPossibleMatchModal({
                         : "bg-[#FFF4F0] hover:bg-[#FFF4F0]",
                     )}
                   >
-                    <TableCell className="text-center h-[64px]">
+                    <TableCell style={{
+                      height: `${selectedTransactions.length ? selectedTransactions.length*64 : 64}px`
+                    }} className="text-center">
                       <StatusBadge matched={isDefaultMatch || isMatched} />
                     </TableCell>
                   </TableRow>
@@ -240,19 +263,38 @@ export function FindPossibleMatchModal({
             </div>
 
             {/* Company Ledger Details */}
-            <TransactionTable
-              transaction={reconciledDataRow.ledger_txn || selectedTransaction}
-              status={
-                !isMatched &&
-                !isDefaultMatch &&
-                !selectedTransaction &&
-                !reconciledDataRow.ledger_txn
-                  ? "empty"
-                  : isMatched || isDefaultMatch
-                    ? "matched"
-                    : "unmatched"
+            {
+                reconciledDataRow.ledger_txn ?(
+                  <TransactionTable
+                    transactions={[reconciledDataRow.ledger_txn]}
+                    status={
+                      !isMatched &&
+                      !isDefaultMatch &&
+                      !selectedTransactions.length &&
+                      !reconciledDataRow.ledger_txn
+                        ? "empty"
+                        : isMatched || isDefaultMatch
+                          ? "matched"
+                          : "unmatched"
+                    }
+                    NoOfMatchedData={selectedTransactions.length}
+                  />
+                ) :(
+                  <TransactionTable
+                  transactions={selectedTransactions}
+                  status={
+                    !isMatched &&
+                    !isDefaultMatch &&
+                    !selectedTransactions.length &&
+                    !reconciledDataRow.ledger_txn
+                      ? "empty"
+                      : isMatched || isDefaultMatch
+                        ? "matched"
+                        : "unmatched"
+                  }
+                />
+                )
               }
-            />
           </div>
 
           {/* Search Input */}
@@ -264,7 +306,7 @@ export function FindPossibleMatchModal({
                   placeholder="Search by description"
                   value={searchTerm}
                   onChange={(e) => {
-                    setSelectedTransactionIndex(null);
+                    setSelectedTransactionIndexes([]);
                     setSearchTerm(e.target.value);
                   }}
                 />
@@ -297,59 +339,61 @@ export function FindPossibleMatchModal({
                       <TableHead className="text-left px-6">Amount</TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody className="max-h-[35vh] h-full">
-                    {filteredTransactions?.length > 0 ? (
-                      filteredTransactions?.map((transaction, index) => (
-                        <TableRow
-                          key={transaction.id}
-                          className={`cursor-pointer h-[52px] ${
-                            selectedTransactionIndex === index
-                              ? "bg-gray-100"
-                              : ""
-                          }`}
-                          onClick={() =>
-                            setSelectedTransactionIndex((prev) =>
-                              prev === index ? null : index,
-                            )
-                          }
-                        >
-                          <TableCell className="border-r w-10">
-                            <div className="flex justify-center">
-                              <div
-                                className={`w-5 h-5 rounded-sm flex items-center justify-center border-2 ${
-                                  selectedTransactionIndex === index
-                                    ? "border-[#297B65]"
-                                    : "border-gray-300"
-                                }`}
-                              >
-                                {selectedTransactionIndex === index && (
-                                  <Check
-                                    strokeWidth={3}
-                                    className="h-4 w-4 text-[#297B65]"
-                                  />
-                                )}
-                              </div>
+                <TableBody className="max-h-[35vh] h-full">
+                  {filteredTransactions?.length > 0 ? (
+                    filteredTransactions?.map((transaction, index) => {
+                      const isSelectedIndex = selectedTransactionIndexes?.some((transactionIndex) => transactionIndex === index)
+                      return (
+                      <TableRow
+                        key={transaction.id}
+                        className={`cursor-pointer h-[52px] ${
+                          isSelectedIndex
+                            ? "bg-gray-100"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          setSelectedTransactionIndexes((prev) =>
+                            isSelectedIndex ? prev?.filter((i) => i !== index) : [...prev, index]
+                          )
+                        }
+                      >
+                        <TableCell className="px-6 border-r w-10">
+                          <div className="flex justify-center">
+                            <div
+                              className={`w-5 h-5 rounded-sm flex items-center justify-center border-2 ${
+                                isSelectedIndex
+                                  ? "border-[#297B65]"
+                                  : "border-gray-300"
+                              }`}
+                            >
+                              {isSelectedIndex && (
+                                <Check
+                                  strokeWidth={3}
+                                  className="h-4 w-4 text-[#297B65]"
+                                />
+                              )}
                             </div>
-                          </TableCell>
-                          <TableCell className="px-6 border-r">
-                            {transaction.date}
-                          </TableCell>
-                          <TableCell className="px-6 border-r">
-                            {transaction.description}
-                          </TableCell>
-                          <TableCell className="px-6">
-                            {transaction.amount}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={4} className="text-center py-4">
-                          No transactions found
+                          </div>
+                        </TableCell>
+                        <TableCell className="px-6 border-r">
+                          {transaction.date}
+                        </TableCell>
+                        <TableCell className="px-6 border-r">
+                          {transaction.description}
+                        </TableCell>
+                        <TableCell className="px-6">
+                          {transaction.amount}
                         </TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
+                    )})
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center py-4">
+                        No transactions found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
                 </Table>
               </div>
             )}
@@ -364,7 +408,7 @@ export function FindPossibleMatchModal({
               isDefaultMatch || isMatched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
             )}
           >
-            {!isMatched && isDefaultMatch && (
+            {/* {!isMatched && isDefaultMatch && (
               <>
                 <div className="space-y-2">
                   <div className="flex justify-between">
@@ -422,7 +466,7 @@ export function FindPossibleMatchModal({
                   </div>
                 </div>
               </>
-            )}
+            )} */}
 
             {!isMatched && !isDefaultMatch && (
               <>
@@ -451,14 +495,40 @@ export function FindPossibleMatchModal({
                 </div>
 
                 <div className="self-start inline-block border-[0.5px] p-2 rounded-3xl">
-                  <StatusBadge matched={!!selectedTransaction} />
+                  <StatusBadge matched={!!selectedTransactions.length} />
                 </div>
               </>
             )}
 
+
             {isMatched && (
               <>
-                <div className="space-y-2">
+              {
+                !reconciledDataRow.bank_txn ? (
+                  selectedTransactions.map((transaction) => (
+                    <div key={transaction.id} className="space-y-2">
+                      <div className="flex justify-between">
+                        <div className="flex flex-col">
+                          <div className="text-sm font-semibold text-gray-900">
+                            Bank Statement
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-sm text-gray-700">
+                              {transaction.date}
+                            </div>
+                            <div className="text-base text-gray-700">
+                              {transaction.description}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="font-medium text-gray-600">
+                          {transaction.amount}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="space-y-2">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-sm font-semibold text-gray-900">
@@ -466,31 +536,56 @@ export function FindPossibleMatchModal({
                       </div>
                       <div className="space-y-1">
                         <div className="text-sm text-gray-700">
-                          {reconciledDataRow.bank_txn?.date ||
-                            selectedTransaction?.date}
+                          {reconciledDataRow.bank_txn.date}
                         </div>
                         <div className="text-base text-gray-700">
-                          {reconciledDataRow.bank_txn?.description ||
-                            selectedTransaction?.description}
+                          {reconciledDataRow.bank_txn?.description}
                         </div>
                       </div>
                     </div>
                     <div className="font-medium text-gray-600">
-                      {reconciledDataRow.bank_txn?.amount ||
-                        selectedTransaction?.amount}
+                      {reconciledDataRow.bank_txn?.amount}
                     </div>
                   </div>
                 </div>
+                )
+              }
+
 
                 <div className="flex items-center gap-3">
                   <div className="inline-block border-[0.5px] p-2 rounded-3xl">
-                    <StatusBadge matched={!!selectedTransaction} />
+                    <StatusBadge matched={!!selectedTransactions.length} />
                   </div>
 
                   <hr className="border border-gray-200/70 flex-1" />
                 </div>
 
-                <div className="space-y-2">
+              {
+                !reconciledDataRow.ledger_txn ? (
+                  selectedTransactions.map((transaction) => (
+                    <div key={transaction.id} className="space-y-2">
+                      <div className="flex justify-between">
+                        <div className="flex flex-col">
+                          <div className="text-sm font-semibold text-gray-900">
+                            Company Ledger
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-sm text-gray-700">
+                              {transaction.date}
+                            </div>
+                            <div className="text-base text-gray-700">
+                              {transaction.description}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="font-medium text-gray-600">
+                          {transaction.amount}
+                        </div>
+                      </div>
+                    </div>
+                    ))
+                ) : (
+                  <div className="space-y-2">
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-sm font-semibold text-gray-900">
@@ -498,21 +593,21 @@ export function FindPossibleMatchModal({
                       </div>
                       <div className="space-y-1">
                         <div className="text-sm text-gray-700">
-                          {reconciledDataRow.ledger_txn?.date ||
-                            selectedTransaction?.date}
+                          {reconciledDataRow.ledger_txn.date}
                         </div>
                         <div className="text-base text-gray-700">
-                          {reconciledDataRow.ledger_txn?.description ||
-                            selectedTransaction?.description}
+                          {reconciledDataRow.ledger_txn.description}
                         </div>
                       </div>
                     </div>
                     <div className="font-medium text-gray-600">
-                      {reconciledDataRow.ledger_txn?.amount ||
-                        selectedTransaction?.amount}
+                      {reconciledDataRow.ledger_txn.amount}
                     </div>
                   </div>
                 </div>
+                )
+              }
+
               </>
             )}
           </div>
@@ -531,7 +626,7 @@ export function FindPossibleMatchModal({
                   placeholder="Search by description"
                   value={searchTerm}
                   onChange={(e) => {
-                    setSelectedTransactionIndex(null);
+                    setSelectedTransactionIndexes([]);
                     setSearchTerm(e.target.value);
                   }}
                 />
@@ -548,41 +643,41 @@ export function FindPossibleMatchModal({
             filteredTransactions &&
             filteredTransactions.length > 0 && (
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                {filteredTransactions.map((transaction, index) => (
-                  <div
-                    key={transaction.id}
-                    className={cn(
-                      "p-3 border rounded-lg cursor-pointer",
-                      selectedTransactionIndex === index
-                        ? "border-[#007A55] bg-primary/5"
-                        : "border-gray-200",
-                    )}
-                    onClick={() =>
-                      setSelectedTransactionIndex(
-                        index === selectedTransactionIndex ? null : index,
-                      )
-                    }
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 text-gray-600">
-                        <div className="text-sm font-medium">
-                          {possibleMatchTitle}
+                {filteredTransactions.map((transaction, index) => {
+                  const isSelectedIndex = selectedTransactionIndexes.some((transactionIndex) => transactionIndex === index)
+                  return (
+                    <div
+                      key={transaction.id}
+                      className={cn(
+                        "p-3 border rounded-lg cursor-pointer",
+                        isSelectedIndex
+                          ? "border-[#007A55] bg-primary/5"
+                          : "border-gray-200"
+                      )}
+                      onClick={() =>
+                        setSelectedTransactionIndexes((prev) => isSelectedIndex ? prev?.filter((i) => i !== index) : [...prev, index])
+                      }
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 text-gray-600">
+                          <div className="text-sm font-medium">
+                            {possibleMatchTitle}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {transaction.date}
+                          </div>
+                          <div className="text-sm mt-1">
+                            {transaction.description}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {transaction.date}
-                        </div>
-                        <div className="text-sm mt-1">
-                          {transaction.description}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-medium">
-                          {transaction.amount}
+                        <div className="text-right">
+                          <div className="text-sm font-medium">
+                            {transaction.amount}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  )})}
               </div>
             )}
 
@@ -617,7 +712,7 @@ export function FindPossibleMatchModal({
             <Button
               className="w-full md:w-fit cursor-pointer"
               disabled={
-                selectedTransactionIndex === null ||
+                !selectedTransactionIndexes.length ||
                 (!!reconciledDataRow.bank_txn && !!reconciledDataRow.ledger_txn)
               }
               onClick={handleMatchClick}
