@@ -39,10 +39,12 @@ const CTASection = () => {
             className="space-y-3 text-center sm:text-left sm:space-y-4 md:w-2/3"
             variants={childVariants}
           >
-            <p className="font-bold text-gray-900 text-3xl">Try it for Free</p>
+            <p className="font-bold text-gray-900 text-3xl">
+              Try ReconXi for free!
+            </p>
             <p className="text-[#475467] text-xl sm:text-lg max-w-[43rem]">
-              Experience faster, automated bank reconciliation with our powerful
-              AI solution.
+              Unlock faster and smarter financial reconciliation today - free
+              for a limited time.
             </p>
           </motion.div>
           <motion.div variants={childVariants}>

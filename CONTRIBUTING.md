@@ -60,7 +60,7 @@ Our repository uses two primary branches:
    - Create a new feature branch:
 
      ```bash
-     git checkout -b feature/FAQ section creation
+     git checkout -b feature/your-feature-name
      ```
 
 2. **Commit and Push:**

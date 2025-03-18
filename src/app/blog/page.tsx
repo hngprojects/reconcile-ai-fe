@@ -33,14 +33,23 @@ export default function BlogPage() {
         <div className="sm:w-11/12 mx-auto">
           <div>
             <div className="">
-              <p className="flex justify-center items-center">
+              <nav className="flex justify-center items-center">
                 <Link
                   href="/"
                   className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
                 >
-                  HOME / BLOG
+                  HOME
                 </Link>
-              </p>
+                <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
+                  /
+                </span>
+                <Link
+                  href="/blog"
+                  className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
+                >
+                  BLOG
+                </Link>
+              </nav>
             </div>
             {/* Blog Header */}
             <div className="text-center mb-12 mx-auto flex flex-col justify-center items-center">
@@ -124,7 +133,7 @@ export default function BlogPage() {
                       currentPage === 1
                         ? "opacity-0 cursor-default"
                         : "text-[#2A5743] hover:underline"
-                    }`
+                    }`,
                   )}
                 >
                   <ArrowLeftIcon className="w-5 h-5" />
@@ -151,7 +160,7 @@ export default function BlogPage() {
                 <button
                   onClick={() =>
                     paginate(
-                      currentPage < totalPages ? currentPage + 1 : totalPages
+                      currentPage < totalPages ? currentPage + 1 : totalPages,
                     )
                   }
                   disabled={currentPage === totalPages}
@@ -160,7 +169,7 @@ export default function BlogPage() {
                       currentPage === totalPages
                         ? "opacity-0 cursor-default"
                         : "text-[#2A5743] hover:underline"
-                    }`
+                    }`,
                   )}
                 >
                   <span className="hidden sm:block">Next</span>

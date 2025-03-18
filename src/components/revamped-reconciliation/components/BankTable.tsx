@@ -23,19 +23,19 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
+import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
+import { useAuth } from "../../context/AuthContext";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
 } from "../helpers/searchComboxOptionExpander";
+import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   ReconciliationItem,
   Transaction,
 } from "../types/frontendResponseTypes";
-import { DesktopFindPossibleMatchModal } from "./DesktopFindPossibleMatchModal";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
-import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
-import { useAuth } from "../../context/AuthContext";
 
 export function BankTable() {
   const { isAuthenticated } = useAuth();
@@ -53,7 +53,7 @@ export function BankTable() {
   const [selectedTransactionRow, setSelectedTransactionRow] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
-    unmatchedLedgerTransactions,
+    unmatchedLedgerTransactions
   );
 
   // Base columns that are always visible
@@ -150,7 +150,7 @@ export function BankTable() {
     return transactionOptions.filter(
       (transaction) =>
         transaction.description.toLowerCase().includes(query.toLowerCase()) ||
-        transaction.date.toLowerCase().includes(query.toLowerCase()),
+        transaction.date.toLowerCase().includes(query.toLowerCase())
     );
   };
 
@@ -174,7 +174,7 @@ export function BankTable() {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext(),
+                          header.getContext()
                         )}
                   </TableHead>
                 ))}
@@ -194,7 +194,7 @@ export function BankTable() {
                       ? "bg-green-50 hover:bg-green-50"
                       : row.original.bank_txn
                         ? "bg-red-50 hover:bg-red-50"
-                        : "hover:bg-white",
+                        : "hover:bg-white"
                   )}
                 >
                   {row.original.bank_txn ? (
@@ -211,7 +211,7 @@ export function BankTable() {
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
-                          cell.getContext(),
+                          cell.getContext()
                         )}
                       </TableCell>
                     ))
@@ -250,7 +250,7 @@ export function BankTable() {
                             if (reconciledDataRow.ledger_txn) {
                               onMatch(
                                 selectedOption,
-                                reconciledDataRow.ledger_txn,
+                                reconciledDataRow.ledger_txn
                               );
                             }
                           }}
@@ -293,7 +293,7 @@ export function BankTable() {
                                   className="gap-0.5"
                                   onClick={() => {
                                     setSelectedTransactionRow(
-                                      reconciledDataRow,
+                                      reconciledDataRow
                                     );
                                     setModalOpen(true);
                                   }}
@@ -317,7 +317,7 @@ export function BankTable() {
         </Table>
       </div>
 
-      <DesktopFindPossibleMatchModal
+      <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransactionRow}
