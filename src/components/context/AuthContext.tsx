@@ -55,8 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      const res = await fetch(
-        "https://api-dev.reconxi.com/api/v1/auth/logout",
+      const res = await fetch(LOGOUT_API_URL,
         {
           method: "POST",
           headers: {
@@ -71,9 +70,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("user");
         toast.error("Something went wrong!");
-        return
+        setUser(null);
+        return;
       }
-
       // Remove access token and user data from localStorage
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
