@@ -95,6 +95,24 @@ export function FindPossibleMatchModal({
     }
 
     // Date range filter
+    // filter potential transactions if only from value is selected
+    if (dateRange?.from && !dateRange?.to) {
+      try {
+        const transactionDate = new Date(transaction.date);
+        const fromDate = new Date(dateRange.from);
+
+        // Set all dates to midnight for comparison
+        transactionDate.setHours(0, 0, 0, 0);
+        fromDate.setHours(0, 0, 0, 0);
+
+        matchesDateRange =
+          transactionDate >= fromDate;
+      } catch (error) {
+        console.error("Error parsing date:", error);
+        matchesDateRange = false;
+      }
+    }
+    // filter potential transactions if both from and to values are selected
     if (dateRange?.from && dateRange?.to) {
       try {
         const transactionDate = new Date(transaction.date);
@@ -109,6 +127,7 @@ export function FindPossibleMatchModal({
         // Adjust toDate to end of day for inclusive comparison
         toDate.setHours(23, 59, 59, 999);
 
+        
         matchesDateRange =
           transactionDate >= fromDate && transactionDate <= toDate;
       } catch (error) {
@@ -282,7 +301,7 @@ export function FindPossibleMatchModal({
 
           {/* Potential Matches List */}
           {!isMatched &&
-            (searchTerm.trim() !== "" || dateRange || selectedRange) && (
+            (searchTerm.trim() !== "" || dateRange?.from || selectedRange) && (
               <div className="border rounded-lg overflow-hidden">
                 <Table>
                   <TableHeader className="bg-[#F9FAFB] h-[52px] border-b">
@@ -544,64 +563,54 @@ export function FindPossibleMatchModal({
 
           {/* Search Results - Only show if not matched */}
           {!isMatched &&
-            (searchTerm.trim() !== "" || selectedRange || dateRange) &&
-            filteredTransactions.length > 0 ? (
-              <div className="space-y-2 max-h-[300px] overflow-y-auto">
-                {filteredTransactions.map((transaction, index) => (
-                  <div
-                    key={transaction.id}
-                    className={cn(
-                      "p-3 border rounded-lg cursor-pointer",
-                      selectedTransactionIndex === index
-                        ? "border-[#007A55] bg-primary/5"
-                        : "border-gray-200",
-                    )}
-                    onClick={() =>
-                      setSelectedTransactionIndex(
-                        index === selectedTransactionIndex ? null : index,
-                      )
-                    }
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 text-gray-600">
-                        <div className="text-sm font-medium">
-                          {possibleMatchTitle}
+            (searchTerm.trim() !== "" || selectedRange || dateRange?.from) ? (
+              filteredTransactions.length > 0 ? (
+                <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                  {filteredTransactions.map((transaction, index) => (
+                    <div
+                      key={transaction.id}
+                      className={cn(
+                        "p-3 border rounded-lg cursor-pointer",
+                        selectedTransactionIndex === index
+                          ? "border-[#007A55] bg-primary/5"
+                          : "border-gray-200",
+                      )}
+                      onClick={() =>
+                        setSelectedTransactionIndex(
+                          index === selectedTransactionIndex ? null : index,
+                        )
+                      }
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1 text-gray-600">
+                          <div className="text-sm font-medium">
+                            {possibleMatchTitle}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {transaction.date}
+                          </div>
+                          <div className="text-sm mt-1">
+                            {transaction.description}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {transaction.date}
-                        </div>
-                        <div className="text-sm mt-1">
-                          {transaction.description}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-medium">
-                          {transaction.amount}
+                        <div className="text-right">
+                          <div className="text-sm font-medium">
+                            {transaction.amount}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : 
-            (
-              <div className="text-center text-gray-600 space-y-4">
-                <hr />
-                <p>No matching transactions found.</p>
-              </div>
-            )
+                  ))}
+                </div>
+              ) : 
+              (
+                <div className="text-center text-gray-600 space-y-4">
+                  <hr />
+                  <p>No matching transactions found.</p>
+                </div>
+              )
+            ) : null
           }
-
-          {/* {!isMatched &&
-            searchTerm.trim() !== "" &&
-            filteredTransactions &&
-            filteredTransactions.length === 0 && (
-              <div className="text-center text-gray-600 space-y-4">
-                <hr />
-
-                <p>No matching transactions found.</p>
-              </div>
-            )} */}
         </div>
 
         {/* Footer */}
