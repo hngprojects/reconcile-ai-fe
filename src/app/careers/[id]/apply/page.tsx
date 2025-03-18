@@ -160,7 +160,7 @@ export default function Home() {
                   id="linkedinProfile"
                   name="linkedinProfile"
                   type="url"
-                  placeholder="https://www.linkedin.com/in/you"
+                  placeholder="https://www.linkedin.com/in/your_profile"
                   required
                   aria-required="true"
                   className="h-12 bg-white !text-base"

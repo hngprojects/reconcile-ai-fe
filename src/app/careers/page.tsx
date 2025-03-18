@@ -3,9 +3,9 @@
 import Container from "@/src/components/Container";
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
+import { useRouter } from "next/navigation";
 
 const hiringSteps = [
   "Explore available roles that match your skills and experience.",
@@ -67,6 +67,7 @@ const jobListings = [
 ];
 
 export default function Careers() {
+  const router = useRouter();
   const [steps] = useState(hiringSteps);
   const [jobs] = useState(jobListings);
 
@@ -192,11 +193,12 @@ export default function Careers() {
                               {job.salary}
                             </p>
                           </div>
-                          <Link href={`/careers/${job.id}`}>
-                            <Button className="cursor-pointer w-full">
-                              View details
-                            </Button>
-                          </Link>
+                          <Button
+                            className="cursor-pointer w-fit"
+                            onClick={() => router.push(`/careers/${job.id}`)}
+                          >
+                            View details
+                          </Button>
                         </div>
                       </div>
                     ))}
