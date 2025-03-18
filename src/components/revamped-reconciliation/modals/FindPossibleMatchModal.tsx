@@ -544,9 +544,8 @@ export function FindPossibleMatchModal({
 
           {/* Search Results - Only show if not matched */}
           {!isMatched &&
-            searchTerm.trim() !== "" &&
-            filteredTransactions &&
-            filteredTransactions.length > 0 && (
+            (searchTerm.trim() !== "" || selectedRange || dateRange) &&
+            filteredTransactions.length > 0 ? (
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
                 {filteredTransactions.map((transaction, index) => (
                   <div
@@ -584,9 +583,16 @@ export function FindPossibleMatchModal({
                   </div>
                 ))}
               </div>
-            )}
+            ) : 
+            (
+              <div className="text-center text-gray-600 space-y-4">
+                <hr />
+                <p>No matching transactions found.</p>
+              </div>
+            )
+          }
 
-          {!isMatched &&
+          {/* {!isMatched &&
             searchTerm.trim() !== "" &&
             filteredTransactions &&
             filteredTransactions.length === 0 && (
@@ -595,7 +601,7 @@ export function FindPossibleMatchModal({
 
                 <p>No matching transactions found.</p>
               </div>
-            )}
+            )} */}
         </div>
 
         {/* Footer */}
