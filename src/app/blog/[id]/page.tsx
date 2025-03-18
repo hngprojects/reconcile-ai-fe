@@ -5,7 +5,6 @@ import Link from "next/link";
 import { blogData } from "@/src/data/blogSampleData";
 import Footer from "@/src/components/Footer";
 import CTASection from "@/src/components/CTASection";
-import Container from "@/src/components/Container";
 
 export default function BlogDetail() {
   const params = useParams();
@@ -25,44 +24,33 @@ export default function BlogDetail() {
 
   return (
     <>
-      <Container className="py-8 md:py-12">
-        <div className="px-4">
+      <div>
+        <div className="pb-8 md:pb-12">
+          <div className="bg-[#F9FAFB] md:bg-white pb-[40px] md:pb-0 pt-8 md:pt-12 px-4 w-full">
           {/* Breadcrumbs */}
           <div className="lg:px-10">
-            <nav className="flex mb-6 text-sm md:text-base text-[#5C5C5C]">
+            <nav className="flex justify-center items-center">
               <Link
                 href="/"
-                className="font-normal text-xs leading-4 text-[#333333]"
+                className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
               >
-                Home
+                HOME
               </Link>
               <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
-                &gt;
+                /
               </span>
               <Link
                 href="/blog"
-                className="font-normal text-xs leading-4 text-[#333333]"
+                className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
               >
-                Blogs
+                BLOG
               </Link>
-              <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
-                &gt;
-              </span>
-              <span className="font-normal text-xs leading-4 text-[#333333]">
-                Blog Post
-              </span>
             </nav>
 
             {/* Author Info and Metadata */}
-            <div className="flex items-center gap-4 pt-6 mb-6">
-              <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 pt-16">
-                <Image
-                  src={blog.authorProfilePicture}
-                  alt={blog.authorName}
-                  fill
-                  className="rounded-full object-cover"
-                  sizes="(max-width: 1000px) 48px, 56px"
-                />
+            <div className="flex items-center gap-4 pt-6 mb-6 justify-center">
+              <div className="relative w-[56px] h-[56px] bg-[#2E604A] rounded-full flex items-center justify-center text-2xl text-white">
+              {blog.authorName.charAt(0).toUpperCase()}
               </div>
               <div>
                 <p className="text-base md:text-lg font-medium">
@@ -77,11 +65,11 @@ export default function BlogDetail() {
             </div>
 
             {/* Blog Title */}
-            <h1 className="leading-[140%] lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24">
+            <h1 className="leading-[140%] text-center lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24">
               {blog.title}
             </h1>
           </div>
-
+          <hr className="h-[1px] hidden md:block mb-[64px]"/>
           {/* Featured Image */}
           <div className="">
             <Image
@@ -94,9 +82,10 @@ export default function BlogDetail() {
               priority
             />
           </div>
+          </div>
 
           {/* Blog Content */}
-          <div className="lg:px-10">
+          <div className="px-6 lg:px-10 ">
             {/* Intro Text - Always show if available */}
             <div className="flex flex-col lg:gap-y-5 gap-y-4 my-6 lg:my-5 lg:mt-16">
               {blog.introText1 && (
@@ -238,7 +227,7 @@ export default function BlogDetail() {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
       <CTASection />
       <Footer />
     </>

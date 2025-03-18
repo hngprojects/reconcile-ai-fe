@@ -6,7 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
-// import Link from "next/link";
 
 const hiringSteps = [
   "Explore available roles that match your skills and experience.",
@@ -88,20 +87,20 @@ export default function Careers() {
 
   return (
     <>
-      <Container className="h-full w-full flex items-center justify-center py-8">
+      <Container className="h-full w-full flex items-center justify-center py-8 mb-10">
         <div className="inline-flex flex-col items-center">
-          <div className="flex w-[1200px] p-[14px_0px_5px_0px] flex-col justify-center items-center gap-[24px]">
-            <div className="flex w-[996px] py-[10px] flex-col justify-center items-center gap-[24px]">
+          <div className="flex w-full max-w-[1200px] p-[14px_0px_5px_0px] flex-col justify-center items-center gap-[24px]">
+            <div className="flex w-full max-w-[996px] py-[10px] flex-col justify-center items-center gap-[24px]">
               <div className="flex items-center p-[4px_12px] rounded-[16px] bg-[#E6FFF2] mix-blend-multiply">
                 <p className="text-[#2E604A] text-center font-inter text-[20px] font-normal leading-normal">
                   Careers
                 </p>
               </div>
-              <h1 className="self-stretch text-[#0A0A0A] text-center font-inter text-[60px] font-semibold leading-normal">
+              <h1 className="self-stretch text-[#0A0A0A] text-center font-inter text-[40px] md:text-[60px] font-semibold leading-normal">
                 Careers at ReconXi – Build the Future of Financial
                 Reconciliation
               </h1>
-              <p className="text-[#525252] text-center font-inter text-[20px] font-normal leading-normal">
+              <p className="text-[#525252] text-center font-inter text-[16px] md:text-[20px] font-normal leading-normal">
                 Explore job opportunities across various fields that fit for
                 your skills and career aspirations.
               </p>
@@ -109,13 +108,13 @@ export default function Careers() {
           </div>
 
           <div className="flex flex-col items-center gap-[64px] self-stretch bg-white py-[64px]">
-            <div className="flex w-[1200px] justify-center items-center gap-[64px]">
+            <div className="flex flex-col lg:flex-row w-full max-w-[1200px] justify-center items-center gap-[64px]">
               <div className="flex flex-col justify-center items-start gap-[64px] flex-[1_0_0]">
                 <div className="flex flex-col items-start gap-[32px] self-stretch">
-                  <h1 className="self-stretch text-[#101828] font-inter text-[36px] font-semibold leading-[44px] tracking-[-0.72px]">
+                  <h1 className="self-stretch text-[#101828] font-inter text-[28px] md:text-[36px] font-semibold leading-[36px] md:leading-[44px] tracking-[-0.72px]">
                     Our Hiring Process
                   </h1>
-                  <p className="self-stretch text-[#475467] font-inter text-[20px] font-normal leading-[30px]">
+                  <p className="self-stretch text-[#475467] font-inter text-[16px] md:text-[20px] font-normal leading-[24px] md:leading-[30px]">
                     We believe in a transparent, structured, and engaging hiring
                     process to ensure the best fit for both you and our team.
                   </p>
@@ -130,8 +129,9 @@ export default function Careers() {
                           alt="Star Icon"
                           width={32}
                           height={32}
+                          className="w-5 h-5 md:w-8 md:h-8"
                         />
-                        <p className="text-[#475467] font-inter text-[16px] font-normal leading-[24px]">
+                        <p className="text-[#475467] font-inter text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px]">
                           {step}
                         </p>
                       </li>
@@ -140,13 +140,13 @@ export default function Careers() {
                 </div>
               </div>
 
-              <div className="flex w-[634px] flex-col items-start gap-[64px] shrink-0">
+              <div className="w-full max-w-lg sm:max-w-[534px] flex flex-col items-center sm:items-start">
                 <Image
                   src="/assets/images/Image10.png"
                   alt="Group pic"
                   width={634}
                   height={400}
-                  className="self-stretch"
+                  className="w-full"
                 />
               </div>
             </div>
@@ -154,10 +154,10 @@ export default function Careers() {
 
           <div className="flex flex-col items-center gap-[24px] self-stretch">
             <div className="flex flex-col items-center gap-[20px]">
-              <h1 className="self-stretch text-center text-[#101828] font-inter text-[36px] font-semibold leading-[44px] tracking-[-0.72px]">
+              <h1 className="self-stretch text-center text-[#101828] font-inter text-[28px] md:text-[36px] font-semibold leading-[36px] md:leading-[44px] tracking-[-0.72px]">
                 Open positions
               </h1>
-              <p className="w-[1200px] text-center text-[#333] font-inter text-[20px] font-normal leading-[30px]">
+              <p className="w-full max-w-[1200px] text-center text-[#333] font-inter text-[16px] md:text-[20px] font-normal leading-[24px] md:leading-[30px]">
                 Want to work with some of the best global talent and build
                 software used by all the companies you know and love? Join the
                 team — we’re hiring!
@@ -165,73 +165,98 @@ export default function Careers() {
             </div>
 
             <div className="flex flex-col justify-center items-center gap-[29px] self-stretch">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-[29px] w-[1200px]">
-                {selectedJobs.map((job) => (
-                  <div
-                    key={job.id}
-                    className="flex flex-col justify-center items-start gap-[24px] p-[24px] rounded-[6px] border border-[#CBD5E1]"
-                  >
-                    <div className="flex flex-col items-start gap-[24px] self-stretch">
-                      <div className="flex flex-col items-start gap-[12px]">
-                        <h3 className="text-[#0A0A0A] font-inter text-[20px] font-medium leading-normal">
-                          {job.title}
-                        </h3>
-                        <p className="text-[#525252] font-inter text-[16px] font-normal leading-normal">
-                          {job.location}
-                        </p>
+              {jobs.length > 0 ? (
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-[29px] w-full max-w-[1200px]">
+                    {selectedJobs.map((job) => (
+                      <div
+                        key={job.id}
+                        className="flex flex-col justify-center items-start gap-[24px] p-[24px] rounded-[6px] border border-[#CBD5E1]"
+                      >
+                        <div className="flex flex-col items-start gap-[24px] self-stretch">
+                          <div className="flex flex-col items-start gap-[12px]">
+                            <h3 className="text-[#0A0A0A] font-inter text-[18px] md:text-[20px] font-medium leading-normal">
+                              {job.title}
+                            </h3>
+                            <p className="text-[#525252] font-inter text-[14px] md:text-[16px] font-normal leading-normal">
+                              {job.location}
+                            </p>
+                          </div>
+                          <p className="self-stretch text-[#525252] font-inter text-[16px] md:text-[18px] font-normal leading-normal">
+                            {job.description}
+                          </p>
+                        </div>
+                        <div className="flex flex-col md:flex-row gap-[16px] justify-between self-stretch">
+                          <div className="flex items-center gap-2">
+                            <p className="text-[#525252] font-inter text-[14px] md:text-[16px] font-semibold leading-normal">
+                              {job.salary}
+                            </p>
+                          </div>
+                          <Link href={`/careers/${job.id}`}>
+                            <Button className="cursor-pointer w-full">
+                              View details
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
-                      <p className="self-stretch text-[#525252] font-inter text-[18px] font-normal leading-normal">
-                        {job.description}
+                    ))}
+                  </div>
+                  {/* Pagination Controls */}
+                  <div className="hidden md:flex w-full max-w-[1200px] pt-4 pb-2 justify-between items-center border-t border-[#EFF1F3]">
+                    <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
+                      Rows per page
+                      <select
+                        className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3]"
+                        value={rowsPerPage}
+                        onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                      >
+                        <option value={2}>2</option>
+                        <option value={4}>4</option>
+                        <option value={6}>6</option>
+                      </select>
+                    </p>
+                    <div className="flex items-center gap-4">
+                      <button
+                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed" : "bg-green-600 text-white "}`}
+                        onClick={handlePrev}
+                        disabled={currentPage === 1}
+                      >
+                        Previous
+                      </button>
+                      <p>
+                        {currentPage} of {totalPages}
                       </p>
-                    </div>
-                    <div className="flex justify-between items-center self-stretch">
-                      <div className="flex items-center gap-2">
-                        <p className="text-[#525252] font-inter text-[16px] font-semibold leading-normal">
-                          {job.salary}
-                        </p>
-                      </div>
-                      <Link href={`/careers/${job.id}`}>
-                        <Button>View details</Button>
-                      </Link>
+                      <button
+                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed" : "bg-green-600 text-white"}`}
+                        onClick={handleNext}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          {/* Pagination Controls */}
-
-          <div className="flex w-[1280px] pt-4 pb-2 justify-between items-center border-t border-[#EFF1F3]">
-            <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
-              Rows per page
-              <select
-                className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3]"
-                value={rowsPerPage}
-                onChange={(e) => setRowsPerPage(Number(e.target.value))}
-              >
-                <option value={2}>2</option>
-                <option value={4}>4</option>
-                <option value={6}>6</option>
-              </select>
-            </p>
-            <div className="flex items-center gap-4">
-              <button
-                className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed" : "bg-green-600 text-white "}`}
-                onClick={handlePrev}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-              <p>
-                {currentPage} of {totalPages}
-              </p>
-              <button
-                className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed" : "bg-green-600 text-white"}`}
-                onClick={handleNext}
-                disabled={currentPage === totalPages}
-              >
-                Next
-              </button>
+                </div>
+              ) : (
+                // If there are no open positions
+                <div className="flex flex-col items-center gap-[2px] w-full max-w-[557px]">
+                  <Image
+                    src="/assets/images/Content.png"
+                    alt="No Jobs Icon"
+                    width={355}
+                    height={271}
+                    style={{ width: "auto", height: "auto" }}
+                    className="justify-center items-center "
+                  />
+                  <div className="flex flex-col items-center gap-6 self-stretch">
+                    <h2 className="text-[#0A0A0A] text-center font-inter text-[28px] md:text-[28px] font-medium leading-normal">
+                      No available Jobs at the moment
+                    </h2>
+                    <p className="text-[#525252] text-center font-inter text-[16px] md:text-[20px] font-normal leading-normal">
+                      Come back later!
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

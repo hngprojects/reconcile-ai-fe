@@ -61,7 +61,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 2,
     image: "/assets/images/Image2.svg",
-    authorName: " Karen Brown",
+    authorName: "Karen Brown",
     publishedDate: "March 6, 2025",
     title: "The Future of Automated Reconciliation: How AI is Changing Finance",
     description:
@@ -78,7 +78,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 3,
     image: "/assets/images/Image3.svg",
-    authorName: " Felix Coopers",
+    authorName: "Felix Coopers",
     publishedDate: "March 8, 2025",
     title: "Top 5 Challenges in Financial Reconciliation and How to Solve Them",
     description:
@@ -104,7 +104,7 @@ export const blogData: BlogDetails[] = [
     id: 4,
     image: "/assets/images/Image4.svg",
     authorName: "Tolu Adebayo",
-    publishedDate: " Date: Feb 11, 2025",
+    publishedDate: "Feb 11, 2025",
     title:
       "Affordable vs. Advanced Reconciliation: Finding the Right Fit for Your Business",
     description:
@@ -123,7 +123,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 5,
     image: "/assets/images/Image5.svg",
-    authorName: " Cynthia May",
+    authorName: "Cynthia May",
     publishedDate: " March 13, 2025",
     title: "Choosing the Best Reconciliation Software: What to Look For",
     description: "Learn the latest marketing strategies that drive results.",
@@ -149,7 +149,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 6,
     image: "/assets/images/Image6.svg",
-    authorName: " Michael John",
+    authorName: "Michael John",
     publishedDate: "Jan 15, 2025",
     title:
       "Automated Reconciliation vs. Spreadsheets: Which Saves More Time & Money?",
@@ -218,7 +218,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 9,
     image: "/assets/images/Image8.svg",
-    authorName: "  Olivia Allwell",
+    authorName: "Olivia Allwell",
     publishedDate: " Feb 22, 2025",
     title:
       "Best Practices for Automating Bank Reconciliation in Large Enterprises",
@@ -297,7 +297,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 12,
     image: "/assets/images/Image3.svg",
-    authorName: " Jane Smith",
+    authorName: "Jane Smith",
     publishedDate: "March 15, 2025",
     title: "How ReconXi Eliminates Errors & Saves Hours on Bank Reconciliation",
     description:
@@ -330,7 +330,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 13,
     image: "/assets/images/Image4.svg",
-    authorName: " Michael Johnson",
+    authorName: "Michael Johnson",
     publishedDate: "March 12, 2025",
     title: "Struggling with Ledger Matching? Here’s How ReconXi Can Help",
     description:
@@ -399,7 +399,7 @@ export const blogData: BlogDetails[] = [
   {
     id: 15,
     image: "/assets/images/Image6.svg",
-    authorName: " Chris Wilson",
+    authorName: "Chris Wilson",
     publishedDate: "February 22, 2026",
     title: "Reconciliation Troubles? Here’s How ReconXi Fixes Them in Seconds",
     description:
