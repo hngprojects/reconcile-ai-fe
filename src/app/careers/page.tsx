@@ -3,9 +3,9 @@
 import Container from "@/src/components/Container";
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
+import { useRouter } from "next/navigation";
 
 const hiringSteps = [
   "Explore available roles that match your skills and experience.",
@@ -67,6 +67,7 @@ const jobListings = [
 ];
 
 export default function Careers() {
+  const router = useRouter();
   const [steps] = useState(hiringSteps);
   const [jobs] = useState(jobListings);
 
@@ -192,11 +193,12 @@ export default function Careers() {
                               {job.salary}
                             </p>
                           </div>
-                          <Link href={`/careers/${job.id}`}>
-                            <Button className="cursor-pointer w-full">
-                              View details
-                            </Button>
-                          </Link>
+                          <Button
+                            className="cursor-pointer w-fit"
+                            onClick={() => router.push(`/careers/${job.id}`)}
+                          >
+                            View details
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -206,7 +208,7 @@ export default function Careers() {
                     <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
                       Rows per page
                       <select
-                        className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3]"
+                        className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3] cursor-pointer"
                         value={rowsPerPage}
                         onChange={(e) => setRowsPerPage(Number(e.target.value))}
                       >
@@ -216,23 +218,23 @@ export default function Careers() {
                       </select>
                     </p>
                     <div className="flex items-center gap-4">
-                      <button
-                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed" : "bg-green-600 text-white "}`}
+                      <Button
+                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
                         onClick={handlePrev}
                         disabled={currentPage === 1}
                       >
                         Previous
-                      </button>
+                      </Button>
                       <p>
                         {currentPage} of {totalPages}
                       </p>
-                      <button
-                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed" : "bg-green-600 text-white"}`}
+                      <Button
+                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
                         onClick={handleNext}
                         disabled={currentPage === totalPages}
                       >
                         Next
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>

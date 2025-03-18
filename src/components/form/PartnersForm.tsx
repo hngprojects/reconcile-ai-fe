@@ -171,29 +171,35 @@ export default function PartnerForm() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="serviceInterested" className="text-sm text-black">
+          <Label htmlFor="service-interest" className="text-sm text-black">
             What are you interested in?
           </Label>
           <Select
             value={formData.serviceInterested}
             onValueChange={handleServiceChange}
           >
-            <SelectTrigger className="w-full h-16 bg-white !text-base cursor-pointer p-4">
+            <SelectTrigger
+              id="service-interest"
+              className="w-full h-16 bg-white !text-base cursor-pointer p-4"
+              aria-label="Select service interest"
+            >
               <SelectValue placeholder="Select Interest" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Reseller Partner">
-                Reseller Partners
-              </SelectItem>
-              <SelectItem value="Referral Partner">
-                Referral Partners
-              </SelectItem>
+              <div role="listbox" id="service-options">
+                <SelectItem value="Reseller Partner">
+                  Reseller Partners
+                </SelectItem>
+                <SelectItem value="Referral Partner">
+                  Referral Partners
+                </SelectItem>
+              </div>
             </SelectContent>
           </Select>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phoneNumber" className="text-sm text-black">
+          <Label htmlFor="phone-input" className="text-sm text-black">
             Phone Number
           </Label>
           <div className="flex gap-2">
@@ -201,30 +207,36 @@ export default function PartnerForm() {
               value={formData.countryCode}
               onValueChange={handleCountryCodeChange}
             >
-              <SelectTrigger className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer">
+              <SelectTrigger
+                id="country-code"
+                className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer"
+                aria-label="Select country code"
+              >
                 <SelectValue placeholder="+234" />
               </SelectTrigger>
               <SelectContent>
-                {countries.map((country: Country) => (
-                  <SelectItem
-                    key={`${country.code}-${country.name}`}
-                    value={country.code}
-                    className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
-                  >
-                    <Image
-                      src={country.flag}
-                      alt={country.name}
-                      width={16}
-                      height={16}
-                      className="object-contain"
-                    />
-                    <span>{country.code}</span>
-                  </SelectItem>
-                ))}
+                <div role="listbox" id="country-codes">
+                  {countries.map((country: Country) => (
+                    <SelectItem
+                      key={`${country.code}-${country.name}`}
+                      value={country.code}
+                      className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
+                    >
+                      <Image
+                        src={country.flag}
+                        alt={country.name}
+                        width={16}
+                        height={16}
+                        className="object-contain"
+                      />
+                      <span>{country.code}</span>
+                    </SelectItem>
+                  ))}
+                </div>
               </SelectContent>
             </Select>
             <Input
-              id="phoneNumber"
+              id="phone-input"
               name="phoneNumber"
               type="tel"
               value={formData.phoneNumber}

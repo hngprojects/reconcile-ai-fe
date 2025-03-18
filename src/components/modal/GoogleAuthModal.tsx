@@ -31,6 +31,9 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
         closeButton={false}
         aria-describedby="google-auth-description"
       >
+        <div className="sr-only" id="google-auth-description">
+          Sign in with your Google account to access ReconXi
+        </div>
         <button
           onClick={onClose}
           className="absolute right-4 md:right-6 top-4 md:top-6 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer"

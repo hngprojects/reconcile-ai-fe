@@ -54,7 +54,7 @@ const AccordionItem = ({
           <span className="text-lg font-medium text-[#101828]">
             {faq.question}
           </span>
-          <div>{isOpen ? <Minus size={20} /> : <Plus size={20} />}</div>
+          <span>{isOpen ? <Minus size={20} /> : <Plus size={20} />}</span>
         </button>
 
         <AnimatePresence>

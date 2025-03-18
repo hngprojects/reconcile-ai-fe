@@ -121,12 +121,13 @@ const ContactUsForm = () => {
                   id="name"
                   placeholder="Enter full name"
                   {...field}
+                  aria-invalid={!!fieldState?.error}
                   aria-describedby={
-                    fieldState?.error ? "name-error" : undefined
+                    fieldState?.error ? `name-error` : undefined
                   }
                 />
               </FormControl>
-              <FormMessage id="name-error" />
+              {fieldState?.error && <FormMessage id="name-error" />}
             </FormItem>
           )}
         />
@@ -147,12 +148,13 @@ const ContactUsForm = () => {
                   type="email"
                   placeholder="Enter email address"
                   {...field}
+                  aria-invalid={!!fieldState?.error}
                   aria-describedby={
-                    fieldState?.error ? `${field.name}-error` : undefined
+                    fieldState?.error ? `email-error` : undefined
                   }
                 />
               </FormControl>
-              <FormMessage id="name-error" />
+              {fieldState?.error && <FormMessage id="email-error" />}
             </FormItem>
           )}
         />
@@ -177,27 +179,30 @@ const ContactUsForm = () => {
                     >
                       <SelectTrigger
                         className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer"
-                        aria-controls="country-code-dropdown"
+                        id="country-code-select"
+                        aria-label="Select country code"
                       >
                         <SelectValue placeholder="+234" />
                       </SelectTrigger>
-                      <SelectContent id="country-code-dropdown">
-                        {countries.map((country: Country) => (
-                          <SelectItem
-                            key={`${country.code}-${country.name}`}
-                            value={country.code}
-                            className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
-                          >
-                            <Image
-                              src={country.flag}
-                              alt={country.name}
-                              width={16}
-                              height={16}
-                              className="object-contain"
-                            />
-                            <span>{country.code}</span>
-                          </SelectItem>
-                        ))}
+                      <SelectContent>
+                        <div role="listbox" id="country-code-list">
+                          {countries.map((country: Country) => (
+                            <SelectItem
+                              key={`${country.code}-${country.name}`}
+                              value={country.code}
+                              className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
+                            >
+                              <Image
+                                src={country.flag}
+                                alt={country.name}
+                                width={16}
+                                height={16}
+                                className="object-contain"
+                              />
+                              <span>{country.code}</span>
+                            </SelectItem>
+                          ))}
+                        </div>
                       </SelectContent>
                     </Select>
                   )}
@@ -208,13 +213,14 @@ const ContactUsForm = () => {
                     id="phone_number"
                     placeholder="Enter phone number"
                     {...field}
+                    aria-invalid={!!fieldState?.error}
                     aria-describedby={
-                      fieldState?.error ? `${field.name}-error` : undefined
+                      fieldState?.error ? `phone-error` : undefined
                     }
                   />
                 </FormControl>
               </div>
-              <FormMessage id="name-error" />
+              {fieldState?.error && <FormMessage id="phone-error" />}
             </FormItem>
           )}
         />
@@ -223,7 +229,7 @@ const ContactUsForm = () => {
         <FormField
           control={form.control}
           name="message"
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <label htmlFor="message" className="text-sm text-[#717171]">
                 Message
@@ -234,9 +240,13 @@ const ContactUsForm = () => {
                   className="bg-white h-32 !text-base"
                   placeholder="Message..."
                   {...field}
+                  aria-invalid={!!fieldState?.error}
+                  aria-describedby={
+                    fieldState?.error ? `message-error` : undefined
+                  }
                 />
               </FormControl>
-              <FormMessage />
+              {fieldState?.error && <FormMessage id="message-error" />}
             </FormItem>
           )}
         />

@@ -71,13 +71,24 @@ export default function ReconXiReleases() {
       setOpenItems([...openItems, id]);
     }
   };
+
+  // Find the latest release based on date "new tag"
+  const latestReleaseId = releases.reduce((latest, current) => {
+    if (!latest) return current.id;
+    const latestDate = new Date(
+      releases.find((r) => r.id === latest)?.date || "",
+    );
+    const currentDate = new Date(current.date);
+    return currentDate > latestDate ? current.id : latest;
+  }, "");
+
   return (
     <>
       <Container className="w-full mx-auto">
         <Accordion
           type="multiple"
           value={openItems}
-          className="space-y-4 mt-9 md:mt-16"
+          className="space-y-4 mt-9 md:mt-16 mb-9 md:mb-16"
         >
           {releases.map((release) => (
             <AccordionItem
@@ -91,7 +102,7 @@ export default function ReconXiReleases() {
                     {release.date}
                   </span>
                   <div className="flex flex-col gap-[12px] md:gap-6 mt-1">
-                    {release.isNew && (
+                    {release.id === latestReleaseId && (
                       <div className="flex items-center bg-[#DFFAE0] px-1 py-0.5 rounded-full h-6 w-14 text-sm">
                         <span className="text-xs bg-[#F3FEFA] text-center px-2 py-0.5 rounded-xl w-14">
                           New
@@ -105,15 +116,18 @@ export default function ReconXiReleases() {
                 </div>
                 <AccordionTrigger
                   onClick={() => handleToggle(release.id)}
-                  className="p-0 hover:no-underline hover:bg-[#2E604A]"
+                  className="h-6 w-6 md:h-[50px] md:w-[50px] rounded-[5px] p-[3px] md:p-[5px] border border-[#2E604A] flex items-center justify-center text-[#2E604A] hover:border-white hover:text-white hover:bg-[#2E604A] cursor-pointer"
+                  aria-label={
+                    openItems.includes(release.id)
+                      ? "Collapse section"
+                      : "Expand section"
+                  }
                 >
-                  <div className="h-6 w-6 md:h-[50px] md:w-[50px] rounded-[5px] p-[3px] md:p-[5px] border border-[#2E604A] flex items-center justify-center text-[#2E604A]  hover:border-white hover:text-white cursor-pointer">
-                    {openItems.includes(release.id) ? (
-                      <Minus className="h-5 w-5" />
-                    ) : (
-                      <Plus className="h-5 w-5" />
-                    )}
-                  </div>
+                  {openItems.includes(release.id) ? (
+                    <Minus className="h-5 w-5" aria-hidden="true" />
+                  ) : (
+                    <Plus className="h-5 w-5" aria-hidden="true" />
+                  )}
                 </AccordionTrigger>
               </div>
               <AccordionContent className="pt-0 lg:pl-62">
