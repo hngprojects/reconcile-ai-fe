@@ -213,9 +213,7 @@ export default function PartnershipPage() {
                     imagePath: "support_agent.svg",
                   },
                   {
-                    title: (
-                      <div className="flex text-left">Marketing Resources</div>
-                    ),
+                    title: "Marketing Resources",
                     desc: "Ready-to-use collateral, case studies, and tailored campaigns to amplify your outreach.",
                     imagePath: "marketing.svg",
                   },
