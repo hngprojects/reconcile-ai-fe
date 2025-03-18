@@ -234,7 +234,9 @@ export function LedgerTable() {
                             ? ledgerColumns.length - 1
                             : ledgerColumns.length
                         }
-                        className="px-4 py-[11px] !h-[0px] border-r"
+                        className={cn("px-4 py-[11px] !h-[0px]", {
+                          "border-r": isAuthenticated,
+                        })}
                       >
                         <QuickFindAndMatchComboBox
                           commandProps={{

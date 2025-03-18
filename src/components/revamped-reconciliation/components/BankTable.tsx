@@ -227,7 +227,9 @@ export function BankTable() {
                             ? bankColumns.length - 1
                             : bankColumns.length
                         }
-                        className="px-4 py-[11px] !h-[0px] border-r"
+                        className={cn("px-4 py-[11px] !h-[0px]", {
+                          "border-r": isAuthenticated,
+                        })}
                       >
                         <QuickFindAndMatchComboBox
                           commandProps={{
