@@ -2,13 +2,13 @@
 import { useParams } from "next/navigation";
 import Footer from "@/src/components/Footer";
 import { Button } from "@/src/components/ui/button";
-import { jobListings} from "@/src/data/jobDetails";
+import { jobListings } from "@/src/data/jobDetails";
 import Link from "next/link";
 
 const JobDetails = () => {
-  const params = useParams<{ id: string }>(); 
+  const params = useParams<{ id: string }>();
   const jobId = parseInt(params.id, 10);
-  const job = jobListings.find((job) => job.id === jobId); 
+  const job = jobListings.find((job) => job.id === jobId);
 
   if (!job) {
     return <div>Job not found</div>;
@@ -78,7 +78,9 @@ const JobDetails = () => {
                 <h5 className="leading-[24px] mb-[5px] font-medium text-[#0A0A0A]">
                   Experience level
                 </h5>
-                <p className="text-[18px] text-[#525252]">{job.experienceLevel}</p>
+                <p className="text-[18px] text-[#525252]">
+                  {job.experienceLevel}
+                </p>
               </div>
               <div>
                 <h5 className="leading-[24px] mb-[5px] font-medium text-[#0A0A0A]">
@@ -100,11 +102,10 @@ const JobDetails = () => {
           </div>
         </div>
         <Link href={`/careers/${jobId}/apply`}>
-        <Button className="w-full sm:w-[253px] h-[64px] mb-4 md:mb-[64px]">
-          Apply Now
-        </Button>
+          <Button className="w-full sm:w-[253px] h-[64px] mb-4 md:mb-[64px] cursor-pointer">
+            Apply Now
+          </Button>
         </Link>
-        
       </div>
       <Footer />
     </div>

@@ -206,7 +206,7 @@ export default function Careers() {
                     <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
                       Rows per page
                       <select
-                        className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3]"
+                        className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3] cursor-pointer"
                         value={rowsPerPage}
                         onChange={(e) => setRowsPerPage(Number(e.target.value))}
                       >
@@ -216,23 +216,23 @@ export default function Careers() {
                       </select>
                     </p>
                     <div className="flex items-center gap-4">
-                      <button
-                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed" : "bg-green-600 text-white "}`}
+                      <Button
+                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
                         onClick={handlePrev}
                         disabled={currentPage === 1}
                       >
                         Previous
-                      </button>
+                      </Button>
                       <p>
                         {currentPage} of {totalPages}
                       </p>
-                      <button
-                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed" : "bg-green-600 text-white"}`}
+                      <Button
+                        className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
                         onClick={handleNext}
                         disabled={currentPage === totalPages}
                       >
                         Next
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
