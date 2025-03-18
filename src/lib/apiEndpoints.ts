@@ -32,3 +32,5 @@ export const RECONCILE_EXPORT_API_URL = `${BASE_URL}/reconcile/export`;
 // LOGOUT API
 export const LOGOUT_API_URL = `${BASE_URL}/auth/logout`;
 
+// PARTNERS API
+export const PARTNER_API_URL = `${BASE_URL}/partners`;

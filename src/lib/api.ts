@@ -5,6 +5,7 @@ import {
   WAITLIST_API_URL,
   MANUAL_API_URL,
   MARKETING_DEMO_API_URL,
+  PARTNER_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -19,6 +20,26 @@ interface MarketingDemoData {
   business_name: string;
   email: string;
   phone_number: string;
+}
+
+export interface PartnerFormData {
+  full_name: string;
+  business_name: string;
+  service_interested: string; // Changed from interest to match API
+  email: string;
+  phone_number: string;
+}
+
+export interface PartnerResponse {
+  success: boolean;
+  message?: string;
+  errors?: {
+    full_name?: string[];
+    business_name?: string[];
+    service_interested?: string[];
+    email?: string[];
+    phone_number?: string[];
+  };
 }
 
 export async function reconcileFiles(
@@ -194,7 +215,7 @@ export async function updateReconciliation(
     const resData = await response.json();
 
     if (!response.ok) {
-      return { error: resData.message || "Failed to add to newsletter" };
+      return { error: resData.message || "Failed to add to newsletter" };//TODO: Correct this
     }
 
     return resData;
@@ -228,3 +249,41 @@ export async function handleMarketingDemo(data: MarketingDemoData) {
     };
   }
 }
+
+export const handlePartnerSubmission = async (
+  data: PartnerFormData,
+): Promise<PartnerResponse> => {
+  try {
+    const response = await fetch(PARTNER_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 422) {
+        return {
+          success: false,
+          errors: result.errors,
+        };
+      }
+      throw new Error(result.message || "Failed to submit partnership request");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Partner submission error:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to submit partnership request. Please try again.",
+    };
+  }
+};
