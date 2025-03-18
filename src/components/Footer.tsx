@@ -100,7 +100,7 @@ const Footer = () => {
                   <Link
                     key={subnavs.name}
                     href={subnavs.link}
-                    className="text-[#EAECF0] hover:text-white"
+                    className="text-white hover:underline"
                   >
                     {subnavs.name}
                   </Link>
@@ -114,7 +114,7 @@ const Footer = () => {
                   <Link
                     key={subnavs.name}
                     href={subnavs.link}
-                    className="text-[#EAECF0] hover:text-white"
+                    className="text-white hover:underline"
                   >
                     {subnavs.name}
                   </Link>
