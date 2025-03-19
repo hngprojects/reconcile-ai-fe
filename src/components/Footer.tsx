@@ -21,6 +21,10 @@ const Footer = () => {
       link: "/features",
     },
     {
+      name: "Pricing",
+      link: "/pricing",
+    },
+    {
       name: "Careers",
       link: "/careers",
     },
@@ -60,7 +64,11 @@ const Footer = () => {
                 </span>
               </div>
             </Link>
-            <div className="flex gap-4 text-white">
+            <div
+              className="flex gap-4 text-white"
+              role="navigation"
+              aria-label="Social Media Links"
+            >
               <Link
                 href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
@@ -92,34 +100,52 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-[32px]">
-            <div className="space-y-3">
-              <h3 className="text-[#D0D5DD] font-semibold">Product</h3>
-              <div className="flex flex-col gap-[12px]">
+          <div
+            className="flex flex-wrap gap-[32px]"
+            role="navigation"
+            aria-label="Footer Navigation"
+          >
+            <div
+              className="space-y-3"
+              role="region"
+              aria-labelledby="product-nav"
+            >
+              <h3 id="product-nav" className="text-[#D0D5DD] font-semibold">
+                Product
+              </h3>
+              <nav className="flex flex-col gap-[12px]">
                 {PRODUCTS_SUBNAVS.map((subnavs) => (
                   <Link
                     key={subnavs.name}
                     href={subnavs.link}
-                    className="text-white hover:underline"
+                    className="relative text-white transition-all duration-300 hover:text-gray-300 group"
                   >
                     {subnavs.name}
+                    <span className="absolute left-0 bottom-[-2px] h-[2px] bg-white w-0 transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                 ))}
-              </div>
+              </nav>
             </div>
-            <div className="space-y-3">
-              <h3 className="text-[#D0D5DD] font-semibold">Resources</h3>
-              <div className="flex flex-col gap-[12px]">
+            <div
+              className="space-y-3"
+              role="region"
+              aria-labelledby="resources-nav"
+            >
+              <h3 id="resources-nav" className="text-[#D0D5DD] font-semibold">
+                Resources
+              </h3>
+              <nav className="flex flex-col gap-[12px]">
                 {RESOURCES_SUBNAVS.map((subnavs) => (
                   <Link
                     key={subnavs.name}
                     href={subnavs.link}
-                    className="text-white hover:underline"
+                    className="relative text-white transition-all duration-300 hover:text-gray-300 group"
                   >
                     {subnavs.name}
+                    <span className="absolute left-0 bottom-[-2px] h-[2px] bg-white w-0 transition-all duration-300 group-hover:w-full"></span>
                   </Link>
                 ))}
-              </div>
+              </nav>
             </div>
           </div>
 
@@ -136,11 +162,11 @@ const Footer = () => {
           <div className="flex gap-[16px]">
             <Link
               href="/terms-conditions"
-              className="text-[#D0D5DD] hover:text-white"
+              className="text-white hover:text-[#D0D5DD]"
             >
               Terms
             </Link>
-            <Link href="/privacy" className="text-[#D0D5DD] hover:text-white">
+            <Link href="/privacy" className="text-white hover:text-[#D0D5DD]">
               Privacy
             </Link>
           </div>

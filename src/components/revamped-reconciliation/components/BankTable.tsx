@@ -84,7 +84,10 @@ export function BankTable() {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="cursor-pointer flex justify-center items-center">
+            <button
+              type="button"
+              className="cursor-pointer flex justify-center items-center"
+            >
               <span className="sr-only">Open menu</span>
               <VerticalDotsIcon className="h-5 w-5" />
             </button>
@@ -166,7 +169,7 @@ export function BankTable() {
                     key={header.id}
                     className={
                       header.column.id === "action"
-                        ? "w-16 max-w-16 text-end px-2 h-12"
+                        ? "w-16 max-w-16 text-center px-2 h-12"
                         : "px-6 h-12"
                     }
                   >
@@ -202,10 +205,10 @@ export function BankTable() {
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
-                        className={cn("px-6 py-0 h-[3.5rem]", {
+                        className={cn("px-6 py-5 !h-[0px]", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
-                          "flex items-center justify-center":
+                          "flex items-center justify-center !h-[60.4px]":
                             cell.column.id === "action",
                         })}
                       >
@@ -224,12 +227,10 @@ export function BankTable() {
                             ? bankColumns.length - 1
                             : bankColumns.length
                         }
-                        className="px-4 py-0 h-[3.5rem] border-r"
+                        className={cn("px-4 py-[11px] !h-[0px]", {
+                          "border-r": isAuthenticated,
+                        })}
                       >
-                        {/* <TableCell
-                        colSpan={bankColumns.length}
-                        className="px-4 h-[3.5rem]"
-                      > */}
                         <QuickFindAndMatchComboBox
                           commandProps={{
                             label: "Select possible match",
@@ -259,16 +260,16 @@ export function BankTable() {
                               No transactions found
                             </p>
                           }
-                          onChange={(option) => {
-                            console.log("Changed:", option);
-                          }}
                         />
                       </TableCell>
                       {isAuthenticated && (
-                        <TableCell className="px-6 py-0 h-[3.5rem] flex items-center justify-center">
+                        <TableCell className="px-6 py-5 !h-[60.4px] flex items-center justify-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <button className="cursor-pointer flex justify-center items-center">
+                              <button
+                                type="button"
+                                className="cursor-pointer flex justify-center items-center"
+                              >
                                 <span className="sr-only">Open menu</span>
                                 <VerticalDotsIcon className="h-5 w-5" />
                               </button>

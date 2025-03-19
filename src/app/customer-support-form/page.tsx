@@ -7,8 +7,22 @@ import { Label } from "@/src/components/ui/label";
 import { FileCheck } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function ContactUs() {
+  const textVariants = {
+    hidden: {
+      opacity: 0,
+    },
+    visible: (i: number) => ({
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+        delay: i * 0.1,
+      },
+    }),
+  };
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -72,16 +86,35 @@ export default function ContactUs() {
     <main className="min-h-screen flex flex-col">
       <div className="flex-1 flex items-center justify-center py-[59px] px-4">
         <Container>
-          <div className="w-full max-w-3xl mx-auto flex flex-col items-center text-center">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#333] mb-4">
+          <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.8,
+            ease: "easeOut",
+          }} className="w-full max-w-3xl mx-auto flex flex-col items-center text-center">
+            <motion.h2 initial="hidden"
+            animate="visible"
+            custom={1}
+            variants={textVariants} className="text-4xl md:text-5xl font-bold text-[#333] mb-4">
               Give us your feedback
-            </h2>
-            <p className="text-lg text-[#475467] mb-12 max-w-2xl">
+            </motion.h2>
+            <motion.p initial="hidden"
+            animate="visible"
+            custom={2}
+            variants={textVariants} className="text-lg text-[#475467] mb-12 max-w-2xl">
               Thank you for reaching out! Please fill out the form below, and
               our team will reach out to you.
-            </p>
+            </motion.p>
 
-            <form
+            <motion.form
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 1,
+              ease: "easeOut",
+              delay: 0.5,
+            }}
               onSubmit={handleSubmit}
               className="w-full md:w-[650px] bg-white border border-gray-200 rounded-md p-6"
               aria-labelledby="form-heading"
@@ -216,8 +249,8 @@ export default function ContactUs() {
                   Submit
                 </Button>
               </div>
-            </form>
-          </div>
+            </motion.form>
+          </motion.div>
         </Container>
       </div>
       <Footer />

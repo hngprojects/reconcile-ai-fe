@@ -10,15 +10,13 @@ const Contact = () => {
   const textVariants = {
     hidden: { 
       opacity: 0, 
-      y: 10 
     },
     visible: (i: number) => ({ 
       opacity: 1, 
-      y: 0,
       transition: { 
-        duration: 0.8, 
+        duration: 0.6, 
         ease: "easeOut", 
-        delay: i * 0.2 
+        delay: i * 0.1 
       }
     })
   };
@@ -27,8 +25,8 @@ const Contact = () => {
     <div>
       <div className="md:bg-[#FAFAFA] pt-[47px] px-[24px] md:py-14">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ 
             duration: 0.8, 
             ease: "easeOut" 
@@ -38,7 +36,7 @@ const Contact = () => {
           <motion.p 
             initial="hidden"
             animate="visible"
-            custom={1}
+            custom={0}
             variants={textVariants}
             className="bg-[#E6FFF2] rounded-[16px] py-2 px-3 text-[20px] text-[#009A49]"
           >
@@ -47,7 +45,7 @@ const Contact = () => {
           <motion.h1 
             initial="hidden"
             animate="visible"
-            custom={2}
+            custom={0.5}
             variants={textVariants}
             className="my-2 font-medium text-[28px] sm:text-[35px] md:text-[45px] lg:text-[64px] text-[#0A0A0A]"
           >
@@ -56,7 +54,7 @@ const Contact = () => {
           <motion.p 
             initial="hidden"
             animate="visible"
-            custom={3}
+            custom={1}
             variants={textVariants}
             className="text-center text-[18px] max-w-[694px] mx-auto"
           >
@@ -67,12 +65,12 @@ const Contact = () => {
         </motion.div>
         <div className="max-w-[1261px] mx-auto flex justify-center">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ 
-              duration: 1, 
+              duration: 0.4, 
               ease: "easeOut", 
-              delay: 0.6 
+              delay: 0.5 
             }}
             className="w-full rounded-lg md:border md:border-[rgba(82,82,82,0.2)] max-w-[663px] md:p-8"
           >
