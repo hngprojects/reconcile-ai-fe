@@ -3,12 +3,16 @@
 import { FC, useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
+import LoginModal from "@/src/components/modal/LoginModal";
 import UserDetails from "@/src/components/UserDetails";
-import { Button } from "./ui/button";
+import { Menu } from "lucide-react";
+import MobileMenu from "./MobileMenu";
 
 const UserAction: FC = () => {
   const { user, setUser } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -17,26 +21,82 @@ const UserAction: FC = () => {
     }
   }, [setUser]);
 
+  const handleSwitchToSignup = () => {
+    setShowLoginModal(false);
+    setShowAuthModal(true);
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowAuthModal(false);
+    setShowLoginModal(true);
+  };
+
+  if (user) {
+    return <UserDetails />;
+  }
+
   return (
     <>
       {user ? (
         <UserDetails />
       ) : (
-        <Button
-          type="button"
-          className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
-                     rounded-md font-semibold justify-center items-center h-12 
-                     sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
-          onClick={() => setShowAuthModal(true)}
-        >
-          Get Started
-        </Button>
-      )}
+        <>
+          <div className="hidden sm:flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setShowLoginModal(true)}
+              className="h-[44px] px-6 py-3 border-2 border-[#2E604A] text-[#2E604A] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/10 cursor-pointer"
+              aria-label="Open login modal"
+            >
+              <span className="relative bottom-0.5">Login</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowAuthModal(true)}
+              className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+              aria-label="Open signup modal"
+            >
+              Sign up
+            </button>
+          </div>
 
-      <GoogleAuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-      />
+          <button
+            type="button"
+            onClick={() => setShowMobileMenu(true)}
+            className="sm:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+            aria-label="Open mobile menu"
+            aria-expanded={showMobileMenu}
+            aria-controls="mobile-menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+
+          <MobileMenu
+            isOpen={showMobileMenu}
+            onClose={() => setShowMobileMenu(false)}
+            onLogin={() => {
+              setShowMobileMenu(false);
+              setShowLoginModal(true);
+            }}
+            onSignup={() => {
+              setShowMobileMenu(false);
+              setShowAuthModal(true);
+            }}
+          />
+
+          <LoginModal
+            isOpen={showLoginModal}
+            onClose={() => setShowLoginModal(false)}
+            onSwitchToSignup={handleSwitchToSignup}
+          />
+
+          <GoogleAuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            onSwitchToLogin={handleSwitchToLogin}
+          />
+        </>
+      )}
     </>
   );
 };
