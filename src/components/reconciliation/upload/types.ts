@@ -1,22 +1,24 @@
 export interface UploadCardProps {
   title: string;
-  fileUploaded: boolean;
-  fileName?: string;
-  onFileSelect: (file: File) => void;
-  onFileDelete: () => void;
-  error?: string;
-  uploadProgress?: number;
-  isUploading?: boolean;
+  type: "bank" | "ledger";
+  files: File[];
+  onFilesSelect: (files: File[]) => void;
+  onFileDelete: (fileName: string) => void;
   existingFiles?: string[];
 }
 
 export interface FileUploadLayoutProps {
-  onReconcile: (file1: File, file2: File) => Promise<void>;
+  onReconcile: (bankFiles: File[], ledgerFiles: File[]) => Promise<void>;
 }
 
-export interface FilePreviewProps {
-  fileName: string;
-  onDelete: () => void;
+export interface FileItemProps {
+  file: File;
+  onDelete: (fileName: string) => void;
+}
+
+export interface UploadModalProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export interface ErrorMessageProps {
