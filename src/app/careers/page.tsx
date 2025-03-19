@@ -1,11 +1,11 @@
 "use client";
-
 import Container from "@/src/components/Container";
 import { useState } from "react";
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import {
   Select,
   SelectContent,
@@ -41,10 +41,10 @@ const jobListings = [
   },
   {
     id: 3,
-    title: "Product designer",
+    title: "Product Designer",
     location: "London, United Kingdom",
     description:
-      "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
+      "As a Product Designer at ReconXi, you will play a critical role in shaping the user experience of our products.",
     salary: "$500K - $900K / month",
   },
   {
@@ -52,7 +52,7 @@ const jobListings = [
     title: "Product Manager",
     location: "London, United Kingdom",
     description:
-      "As a Product Manager, you will oversee product strategy, roadmap execution, design and engineering teams.",
+      "As a Product Manager, you will oversee product strategy, roadmap execution, design, and engineering teams.",
     salary: "$500K - $900K / month",
   },
   {
@@ -60,7 +60,7 @@ const jobListings = [
     title: "Backend Engineer",
     location: "London, United Kingdom",
     description:
-      "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
+      "As a Backend Engineer, you will develop and maintain the core systems that power our products.",
     salary: "$500K - $900K / month",
   },
   {
@@ -100,6 +100,7 @@ export default function Careers() {
       setCurrentPage(currentPage - 1);
     }
   };
+
   const handleRowsPerPageChange = (value: string) => {
     setRowsPerPage(Number(value));
     setCurrentPage(1);
@@ -109,25 +110,49 @@ export default function Careers() {
     <>
       <Container className="h-full w-full flex items-center justify-center py-8 mb-10">
         <div className="inline-flex flex-col items-center">
-          <div className="flex w-full max-w-[1200px] p-[14px_0px_5px_0px] flex-col justify-center items-center gap-[24px]">
-            <div className="flex w-full max-w-[996px] py-[10px] flex-col justify-center items-center gap-[24px]">
-              <div className="flex items-center p-[4px_12px] rounded-[16px] bg-[#E6FFF2] mix-blend-multiply">
-                <p className="text-[#2E604A] text-center font-inter text-[20px] font-normal leading-normal">
-                  Careers
-                </p>
-              </div>
-              <h1 className="self-stretch text-[#0A0A0A] text-center font-inter text-[40px] md:text-[60px] font-semibold leading-normal">
-                Careers at ReconXi – Build the Future of Financial
-                Reconciliation
-              </h1>
-              <p className="text-[#525252] text-center font-inter text-[16px] md:text-[20px] font-normal leading-normal">
-                Explore job opportunities across various fields that fit for
-                your skills and career aspirations.
-              </p>
-            </div>
-          </div>
+          {/* Header Section */}
+          <motion.div
+            className="py-[10px] md:py-[14px] w-full flex flex-col items-center mb-[40px] md:mb-[64px]"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.p
+              className="bg-[#E6FFF2] rounded-[16px] py-1 px-3 text-[20px] text-[#2E604A] mb-6"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+            >
+              Careers
+            </motion.p>
 
-          <div className="flex flex-col items-center gap-[64px] self-stretch bg-white py-[64px]">
+            <motion.h1
+              className="text-[28px] md:text-[42px] lg:text-[60px] font-semibold max-w-[1084px] text-center mb-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Careers at ReconXi – Build the Future of Financial Reconciliation
+            </motion.h1>
+
+            <motion.p
+              className="text-[18px] text-center text-[#525252]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Explore job opportunities across various fields that fit your
+              skills and career aspirations.
+            </motion.p>
+          </motion.div>
+
+            {/* Hiring Process Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex flex-col items-center gap-[64px] self-stretch bg-white py-[64px]"
+          >
             <div className="flex flex-col lg:flex-row w-full max-w-[1200px] justify-center items-center gap-[64px]">
               <div className="flex flex-col justify-center items-start gap-[64px] flex-[1_0_0]">
                 <div className="flex flex-col items-start gap-[32px] self-stretch">
@@ -140,8 +165,11 @@ export default function Careers() {
                   </p>
                   <ul className="flex flex-col items-start gap-[30px] self-stretch">
                     {steps.map((step, index) => (
-                      <li
+<motion.li
                         key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
                         className="flex items-center gap-[16px] self-stretch"
                       >
                         <Image
@@ -154,13 +182,17 @@ export default function Careers() {
                         <p className="text-[#475467] font-inter text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px]">
                           {step}
                         </p>
-                      </li>
+</motion.li>
                     ))}
                   </ul>
                 </div>
               </div>
-
-              <div className="w-full max-w-lg sm:max-w-[534px] flex flex-col items-center sm:items-start">
+ <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                className="w-full max-w-lg sm:max-w-[534px] flex flex-col items-center sm:items-start"
+              >
                 <Image
                   src="/assets/images/Image10.png"
                   alt="Group pic"
@@ -168,11 +200,16 @@ export default function Careers() {
                   height={400}
                   className="w-full"
                 />
-              </div>
+  </motion.div>
             </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-[24px] self-stretch">
+</motion.div>
+   {/* Open Positions Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="flex flex-col items-center gap-[24px] self-stretch"
+          >
             <div className="flex flex-col items-center gap-[20px]">
               <h1 className="self-stretch text-center text-[#101828] font-inter text-[28px] md:text-[36px] font-semibold leading-[36px] md:leading-[44px] tracking-[-0.72px]">
                 Open positions
@@ -183,14 +220,16 @@ export default function Careers() {
                 team — we’re hiring!
               </p>
             </div>
-
             <div className="flex flex-col justify-center items-center gap-[29px] self-stretch">
               {jobs.length > 0 ? (
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[29px] w-full max-w-[1200px]">
                     {selectedJobs.map((job) => (
-                      <div
+   <motion.div
                         key={job.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.7 }}
                         className="flex flex-col justify-center items-start gap-[24px] p-[24px] rounded-[6px] border border-[#CBD5E1]"
                       >
                         <div className="flex flex-col items-start gap-[24px] self-stretch">
@@ -219,39 +258,30 @@ export default function Careers() {
                             View details
                           </Button>
                         </div>
-                      </div>
+   </motion.div>
                     ))}
                   </div>
                   {/* Pagination Controls */}
-                  <div className="hidden md:flex w-full max-w-[1200px] pt-4 pb-2 justify-between items-center border-t border-[#EFF1F3]">
-                    <div className="flex items-center gap-4">
-                      <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
-                        Rows per page
-                      </p>
+  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                    className="hidden md:flex w-full max-w-[1200px] pt-4 pb-2 justify-between items-center border-t border-[#EFF1F3]"
+                  >
+                    <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
+                      Rows per page
+                        <Select onValueChange={handleRowsPerPageChange}>
+              <SelectTrigger className="w-[80px]">
+                <SelectValue placeholder={`${rowsPerPage}`} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="6">6</SelectItem>
+                <SelectItem value="12">12</SelectItem>
+                <SelectItem value="18">18</SelectItem>
+              </SelectContent>
+            </Select>
 
-                      <Select
-                        // value={rowsPerPage.toString()}
-                        onValueChange={handleRowsPerPageChange}
-                      >
-                        <SelectTrigger className=" flex justify-center items-center p-2 gap-[10px] rounded-[4px] border border-[#EFF1F3]">
-                          <SelectValue placeholder={`${rowsPerPage}`} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {[2, 4, 6].map((value) => (
-                            <SelectItem
-                              key={value}
-                              value={value.toString()}
-                              className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer text-[#344054] text-[14px]"
-                            >
-                              {value}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <p className="text-[14px] font-medium leading-[20px] text-[#344054] font-inter">
-                        {startRow}-{endRow} of {totalRows} rows
-                      </p>
-                    </div>
+     </p>
                     <div className="flex items-center gap-4">
                       <Button
                         className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
@@ -271,18 +301,22 @@ export default function Careers() {
                         Next
                       </Button>
                     </div>
-                  </div>
+  </motion.div>
                 </div>
               ) : (
-                // If there are no open positions
-                <div className="flex flex-col items-center gap-[2px] w-full max-w-[557px]">
+  <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.7 }}
+                  className="flex flex-col items-center gap-[2px] w-full max-w-[557px]"
+                >
                   <Image
                     src="/assets/images/Content.png"
                     alt="No Jobs Icon"
                     width={355}
                     height={271}
                     style={{ width: "auto", height: "auto" }}
-                    className="justify-center items-center "
+  className="justify-center items-center"
                   />
                   <div className="flex flex-col items-center gap-6 self-stretch">
                     <h2 className="text-[#0A0A0A] text-center font-inter text-[28px] md:text-[28px] font-medium leading-normal">
@@ -292,10 +326,11 @@ export default function Careers() {
                       Come back later!
                     </p>
                   </div>
-                </div>
+ </motion.div>
               )}
             </div>
-          </div>
+
+            </motion.div>
         </div>
       </Container>
       <Footer />
