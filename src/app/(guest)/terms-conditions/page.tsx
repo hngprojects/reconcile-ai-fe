@@ -13,9 +13,9 @@ export default function TermsConditionPage() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.4,
         ease: "easeOut",
-        delay: i * 0.2,
+        delay: i * 0.1,
       },
     }),
   };
@@ -26,9 +26,9 @@ export default function TermsConditionPage() {
     visible: (i: number) => ({
       opacity: 1,
       transition: {
-        duration: 0.7,
+        duration: 0.6,
         ease: "easeOut",
-        delay: 0.2 + i * 0.15,
+        delay: i * 0.1,
       },
     }),
   };
@@ -45,7 +45,7 @@ export default function TermsConditionPage() {
           <motion.p
             initial="hidden"
             animate="visible"
-            custom={1}
+            custom={0}
             variants={textVariants}
             className="bg-[#E6FFF2] rounded-lg py-2 px-3 text-[1rem]"
           >
@@ -54,7 +54,7 @@ export default function TermsConditionPage() {
           <motion.h1
             initial="hidden"
             animate="visible"
-            custom={2}
+            custom={0.5}
             variants={textVariants}
             className="my-2 font-bold text-[1.5rem] lg:text-[2rem]"
           >
@@ -63,7 +63,7 @@ export default function TermsConditionPage() {
           <motion.p
             initial="hidden"
             animate="visible"
-            custom={3}
+            custom={1}
             variants={textVariants}
             className="text-center text-sm"
           >

@@ -71,21 +71,36 @@ const EmailSubscribeForm = () => {
                 <FormControl>
                   <div className="flex w-full justify-end">
                     <div className="flex flex-col gap-4 w-full md:w-fit">
-                      <p className="text-[16px] self-start">Stay up to date</p>
+                      <p
+                        id="newsletter-description"
+                        className="text-[16px] self-start"
+                      >
+                        Stay up to date
+                      </p>
                       <div className="flex md:flex-row flex-col w-full gap-4">
                         <div className="">
                           <Input
                             placeholder="Enter your email"
-                            className=" bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:min-w-72"
+                            className="bg-white px-3.5 h-12 text-black rounded-lg outline-none border-none w-full md:min-w-72"
+                            aria-label="Email subscription"
+                            aria-describedby="newsletter-description"
                             {...field}
                           />
-                          <FormMessage className="text-sm text-left text-red-500 mt-0.5 whitespace-normal" />
+                          <FormMessage
+                            className="text-sm text-left text-red-500 mt-0.5 whitespace-normal"
+                            role="alert"
+                          />
                         </div>
                         <Button
                           type="submit"
                           variant="outline"
                           className={`border-primary text-primary font-semibold cursor-pointer h-12 md:w-[115px]`}
                           disabled={isSubmitting}
+                          aria-label={
+                            isSubmitting
+                              ? "Submitting subscription"
+                              : "Subscribe to newsletter"
+                          }
                         >
                           {isSubmitting ? "Submitting..." : "Subscribe"}
                         </Button>
