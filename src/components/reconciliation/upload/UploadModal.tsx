@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
 import { StarsIcon } from "../../Icon/Icons";
@@ -7,16 +6,6 @@ import { UploadModalProps } from "./types";
 export function UploadModal({ isOpen, onClose }: UploadModalProps) {
   const { user } = useAuth();
   const isAuthenticated = Boolean(user?.email);
-
-  useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        onClose();
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, onClose]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

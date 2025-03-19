@@ -45,11 +45,13 @@ export interface PartnerResponse {
 
 export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
   const formData = new FormData();
-  bankFiles.forEach((file) => formData.append("bank_files", file));
-  ledgerFiles.forEach((file) => formData.append("ledger_files", file));
+  bankFiles.forEach((file) => formData.append("bank_statements[]", file));
+  ledgerFiles.forEach((file) => formData.append("ledgers[]", file));
 
   const token = localStorage.getItem("access_token");
-  const headers: HeadersInit = {};
+  const headers: HeadersInit = {
+    "Accept": "application/json"
+  };
 
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;

@@ -8,8 +8,6 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-import { REQUIRED_HEADERS } from "@/src/types/reconciliation";
-import { transformReconciliationData } from "../../revamped-reconciliation/helpers/transformReconciliationData";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { countCsvRows } from "@/src/utils/csvHelpers";
 
@@ -17,20 +15,6 @@ interface ReconciliationError extends Error {
   code?: number;
   status?: number;
 }
-
-const validateFileHeaders = async (
-  file: File,
-  type: "bankStatement" | "companyLedger",
-): Promise<boolean> => {
-  const text = await file.text();
-  const headers = text
-    .split("\n")[0]
-    .split(",")
-    .map((h) => h.trim());
-  return REQUIRED_HEADERS[type].every((required) =>
-    headers.some((h) => h.toLowerCase() === required.toLowerCase()),
-  );
-};
 
 export default function FileUploadLayout({
   onReconcile,
@@ -75,24 +59,6 @@ export default function FileUploadLayout({
         }
       }
 
-      // Validate headers for all files
-      const bankHeadersValid = await Promise.all(
-        bankFiles.map((file) => validateFileHeaders(file, "bankStatement")),
-      );
-
-      const ledgerHeadersValid = await Promise.all(
-        ledgerFiles.map((file) => validateFileHeaders(file, "companyLedger")),
-      );
-
-      if (
-        !bankHeadersValid.every(Boolean) ||
-        !ledgerHeadersValid.every(Boolean)
-      ) {
-        setErrorCode(422);
-        setShowErrorModal(true);
-        return;
-      }
-
       setShowUploadModal(true);
 
       const result = await reconcileFiles(bankFiles, ledgerFiles);
@@ -105,21 +71,12 @@ export default function FileUploadLayout({
       }
 
       if (result.status === "success") {
-        const reconciliationData = transformReconciliationData(
-          result.data.data,
-        );
-        localStorage.setItem(
-          "reconciliation",
-          JSON.stringify(reconciliationData),
-        );
-
         // Clear files after successful reconciliation
         setBankFiles([]);
         setLedgerFiles([]);
       }
 
       setTimeout(() => {
-        setShowUploadModal(false);
         onReconcile(bankFiles, ledgerFiles);
       }, 1000);
     } catch (error) {
