@@ -102,7 +102,7 @@ export default function Careers() {
   };
   const handleRowsPerPageChange = (value: string) => {
     setRowsPerPage(Number(value));
-    setCurrentPage(1); 
+    setCurrentPage(1);
   };
 
   return (
@@ -236,7 +236,7 @@ export default function Careers() {
                         <SelectTrigger className=" flex justify-center items-center p-2 gap-[10px] rounded-[4px] border border-[#EFF1F3]">
                           <SelectValue placeholder={`${rowsPerPage}`} />
                         </SelectTrigger>
-                        <SelectContent >
+                        <SelectContent>
                           {[2, 4, 6].map((value) => (
                             <SelectItem
                               key={value}
