@@ -6,6 +6,13 @@ import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
 
 const hiringSteps = [
   "Explore available roles that match your skills and experience.",
@@ -73,17 +80,29 @@ export default function Careers() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(6);
+  const totalRows = jobs.length;
+
+  const startRow = (currentPage - 1) * rowsPerPage + 1;
+  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
 
   const totalPages = Math.ceil(jobs.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const selectedJobs = jobs.slice(startIndex, startIndex + rowsPerPage);
 
   const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    if (currentPage < Math.ceil(totalRows / rowsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  const handleRowsPerPageChange = (value: string) => {
+    setRowsPerPage(Number(value));
+    setCurrentPage(1);
   };
 
   return (
@@ -205,18 +224,34 @@ export default function Careers() {
                   </div>
                   {/* Pagination Controls */}
                   <div className="hidden md:flex w-full max-w-[1200px] pt-4 pb-2 justify-between items-center border-t border-[#EFF1F3]">
-                    <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
-                      Rows per page
-                      <select
-                        className=" justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3] cursor-pointer"
-                        value={rowsPerPage}
-                        onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                    <div className="flex items-center gap-4">
+                      <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
+                        Rows per page
+                      </p>
+
+                      <Select
+                        // value={rowsPerPage.toString()}
+                        onValueChange={handleRowsPerPageChange}
                       >
-                        <option value={2}>2</option>
-                        <option value={4}>4</option>
-                        <option value={6}>6</option>
-                      </select>
-                    </p>
+                        <SelectTrigger className=" flex justify-center items-center p-2 gap-[10px] rounded-[4px] border border-[#EFF1F3]">
+                          <SelectValue placeholder={`${rowsPerPage}`} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[2, 4, 6].map((value) => (
+                            <SelectItem
+                              key={value}
+                              value={value.toString()}
+                              className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer text-[#344054] text-[14px]"
+                            >
+                              {value}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-[14px] font-medium leading-[20px] text-[#344054] font-inter">
+                        {startRow}-{endRow} of {totalRows} rows
+                      </p>
+                    </div>
                     <div className="flex items-center gap-4">
                       <Button
                         className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
