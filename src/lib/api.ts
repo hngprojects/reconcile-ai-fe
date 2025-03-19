@@ -10,10 +10,10 @@ import {
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
 
-interface ApiError extends Error {
-  code?: number;
-  status?: number;
-}
+// interface ApiError extends Error {
+//   code?: number;
+//   status?: number;
+// }
 
 interface MarketingDemoData {
   full_name: string;
@@ -25,7 +25,7 @@ interface MarketingDemoData {
 export interface PartnerFormData {
   full_name: string;
   business_name: string;
-  service_interested: string; // Changed from interest to match API
+  service_interested: string;
   email: string;
   phone_number: string;
 }
@@ -42,15 +42,10 @@ export interface PartnerResponse {
   };
 }
 
-export async function reconcileFiles(
-  file1: File,
-  file2: File,
-  keyColumn: string,
-) {
+export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
   const formData = new FormData();
-  formData.append("file1", file1);
-  formData.append("file2", file2);
-  formData.append("key_column", keyColumn);
+  bankFiles.forEach((file) => formData.append("bank_files", file));
+  ledgerFiles.forEach((file) => formData.append("ledger_files", file));
 
   const token = localStorage.getItem("access_token");
   const headers: HeadersInit = {};
@@ -58,12 +53,6 @@ export async function reconcileFiles(
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-
-  console.log("Sending files for reconciliation:", {
-    file1: file1.name,
-    file2: file2.name,
-    keyColumn,
-  });
 
   try {
     const response = await fetch(RECONCILE_API_URL, {
@@ -73,9 +62,7 @@ export async function reconcileFiles(
     });
 
     const data = await response.json();
-    console.log("Raw API Response:", data);
 
-    // Handle specific status codes
     if (response.status === 429) {
       return {
         status: "error",
@@ -105,13 +92,12 @@ export async function reconcileFiles(
       status: "success",
       data: data,
     };
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Reconciliation error:", error);
-    const err = error as ApiError;
     return {
       status: "error",
-      code: err.status || 500,
-      message: err.message || "An unexpected error occurred",
+      code: 500,
+      message: "An unexpected error occurred",
     };
   }
 }
@@ -215,7 +201,7 @@ export async function updateReconciliation(
     const resData = await response.json();
 
     if (!response.ok) {
-      return { error: resData.message || "Failed to add to newsletter" };//TODO: Correct this
+      return { error: resData.message || "Failed to add to newsletter" }; //TODO: Correct this
     }
 
     return resData;
