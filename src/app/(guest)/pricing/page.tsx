@@ -69,7 +69,9 @@ export default function PricingPage() {
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-center gap-2">
                           <CheckCircle2Icon className={`mr-3 w-6 h-6 ${index === 1 ? "text-white" : "text-[#297B65]"}`} />
-                          {feature}
+                          <span className="text-sm sm:text-base">
+                            {feature}
+                          </span>
                         </li>
                       ))}
                     </ul>
