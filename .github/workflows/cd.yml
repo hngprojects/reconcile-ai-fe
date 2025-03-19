@@ -76,9 +76,8 @@ jobs:
 
             echo "Extracting build artifact..."
             cp ~/build-artifact/build-artifact.tar .
-            rm -rf .next/
             tar -xvf build-artifact.tar
-            rm -f build-artifact.tar
+            rm -rf build-artifact.tar
 
             echo "Installing dependencies..."
             npm ci
