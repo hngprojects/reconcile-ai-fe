@@ -6,6 +6,7 @@ import Footer from "@/src/components/Footer";
 import { useState } from "react";
 import { CircleCheck } from "lucide-react";
 import CTASection from "@/src/components/CTASection";
+import { motion } from "framer-motion";
 
 export default function PricingPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
@@ -50,19 +51,39 @@ export default function PricingPage() {
   return (
     <>
       <Container className="py-24">
-        <div className="text-center">
-          <h1 className="font-[600] text-[48px] leading-[100%] mb-6 font-inter break-words text-center max-w-full sm:max-w-[90%] lg:max-w-[60%] mx-auto">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="font-[600] text-[48px] leading-[100%] mb-6 font-inter break-words text-center max-w-full sm:max-w-[90%] lg:max-w-[60%] mx-auto"
+          >
             Flexible Pricing Plans for Every Business
-          </h1>
+          </motion.h1>
 
-          <p className="font-normal text-[16px] sm:text-[18px] md:text-[20px] leading-[150%] max-w-[90%] md:max-w-[1216px] mx-auto text-center font-inter">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="font-normal text-[16px] sm:text-[18px] md:text-[20px] leading-[150%] max-w-[90%] md:max-w-[1216px] mx-auto text-center font-inter"
+          >
             Find the perfect financial reconciliation plan for your business.
             From freelancers to large enterprises, ReconXi makes AI-powered
             reconciliation fast, accurate, and affordable.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="mt-[111px] flex flex-col lg:flex-row justify-between gap-8 px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-[111px] flex flex-col lg:flex-row justify-between gap-8 px-4"
+        >
           {pricingPlans.map((plan) => (
             <div
               key={plan.id}
@@ -71,7 +92,7 @@ export default function PricingPage() {
                 activeCard === plan.id
                   ? "bg-[#2E604A] scale-105"
                   : "border-2 border-[#38B43C] hover:scale-105",
-                activeCard !== null && activeCard !== plan.id && "opacity-50",
+                activeCard !== null && activeCard !== plan.id && "opacity-50"
               )}
               onMouseEnter={() => setActiveCard(plan.id)}
               onMouseLeave={() => setActiveCard(null)}
@@ -82,7 +103,7 @@ export default function PricingPage() {
                 <h3
                   className={cn(
                     "font-[500] text-[16px] leading-[100%] font-inter",
-                    activeCard === plan.id ? "text-white" : "text-black",
+                    activeCard === plan.id ? "text-white" : "text-black"
                   )}
                 >
                   {plan.name}
@@ -93,7 +114,7 @@ export default function PricingPage() {
                 <p
                   className={cn(
                     "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black",
+                    activeCard === plan.id ? "text-white" : "text-black"
                   )}
                 >
                   <span className="text-2xl">$</span>
@@ -111,7 +132,7 @@ export default function PricingPage() {
                           "w-5 h-5 mt-0.5",
                           activeCard === plan.id
                             ? "text-white"
-                            : "text-[#39B057]",
+                            : "text-[#39B057]"
                         )}
                       />
                       <span
@@ -119,7 +140,7 @@ export default function PricingPage() {
                           "font-[400] text-[13px] leading-[100%] font-inter my-auto",
                           activeCard === plan.id
                             ? "text-white"
-                            : "text-[#333333]",
+                            : "text-[#333333]"
                         )}
                       >
                         {feature}
@@ -133,7 +154,7 @@ export default function PricingPage() {
                     "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
                     activeCard === plan.id
                       ? "bg-white text-[#2A5743] border-white"
-                      : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                      : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]"
                   )}
                 >
                   Get Started
@@ -141,14 +162,20 @@ export default function PricingPage() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-[111px]">
-          <h3 className="text-2xl text-center sm:text-3xl md:text-4xl font-semibold mb-4 sm:mb-6 lg:mb-[42px] text-[#101828] leading-tight tracking-tight">
+        <motion.div initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }} className="mt-[111px]">
+          <motion.h3 initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1 }} className="text-2xl text-center sm:text-3xl md:text-4xl font-semibold mb-4 sm:mb-6 lg:mb-[42px] text-[#101828] leading-tight tracking-tight">
             Why Choose ReconXi?
-          </h3>
+          </motion.h3>
 
-          <div className="flex flex-col w-full">
+          <motion.div initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 1.2 }} className="flex flex-col w-full">
             <div className="flex justify-between  flex-col md:flex-row gap-4 md:gap-6 lg:gap-[38px] w-full">
               {["SME-Friendly Pricing", "Secure & Reliable"].map((title, i) => (
                 <div
@@ -206,11 +233,11 @@ export default function PricingPage() {
                       {i === 1 && "Helps to reduce errors."}
                     </p>
                   </div>
-                ),
+                )
               )}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </Container>
       <CTASection />
       <Footer />
