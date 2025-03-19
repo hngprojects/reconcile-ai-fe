@@ -6,6 +6,7 @@ import {
   MANUAL_API_URL,
   MARKETING_DEMO_API_URL,
   PARTNER_API_URL,
+  CUSTOMER_FEEDBACK_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -287,3 +288,30 @@ export const handlePartnerSubmission = async (
     };
   }
 };
+//CUSTOMER_FEEDBACK_API_URL
+export async function handleCustomerFeedback(userInfo: {
+  name: string;
+  email: string;
+  message: string;
+  request_type: string;
+}) {
+  try {
+    const response = await fetch(CUSTOMER_FEEDBACK_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send customer message");
+    }
+
+    return { success: data.message };
+  } catch (error) {
+    console.error("Customer feedback error:", error);
+    return { error: "Something went wrong. Please try again later." };
+  }
+}

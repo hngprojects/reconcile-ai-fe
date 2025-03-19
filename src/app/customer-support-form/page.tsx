@@ -7,11 +7,13 @@ import { Label } from "@/src/components/ui/label";
 import { FileCheck } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { handleCustomerFeedback } from "@/src/lib/api";
 
 export default function ContactUs() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -62,10 +64,42 @@ export default function ContactUs() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const resetForm = () => {
+    setFormData({
+      fullName: "",
+      email: "",
+      subject: "",
+      message: "",
+      file: null,
+    });
+    setSelectedFile(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    // TODO: Send data to API
+    setIsSubmitting(true);
+    
+    try {
+      // Transform the form data to match the API's expected structure
+      const apiData = {
+        name: formData.fullName,
+        email: formData.email,
+        message: formData.message,
+        request_type: formData.subject || "Feedback" // Using subject as request_type or defaulting to "Feedback"
+      };
+      
+      // Call the API function
+      const result = await handleCustomerFeedback(apiData);
+      
+      if (result.success) {
+        resetForm();
+      } else if (result.error) {
+      }
+    } catch (error) {
+      console.error("Exception when submitting feedback:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -122,7 +156,7 @@ export default function ContactUs() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-sm text-[#717171]">
+                  <Label htmlFor="subject" className="text-sm text-[#717171]">
                     Subject
                   </Label>
                   <Input
@@ -139,7 +173,7 @@ export default function ContactUs() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="fullName" className="text-sm text-[#717171]">
+                  <Label htmlFor="message" className="text-sm text-[#717171]">
                     Message
                   </Label>
                   <Input
@@ -212,8 +246,9 @@ export default function ContactUs() {
                 <Button
                   type="submit"
                   className="w-full bg-[#2E604A] text-white font-semibold py-6 text-[18px] cursor-pointer mt-6"
+                  disabled={isSubmitting}
                 >
-                  Submit
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </Button>
               </div>
             </form>
