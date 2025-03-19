@@ -6,14 +6,15 @@ import {
   MANUAL_API_URL,
   MARKETING_DEMO_API_URL,
   PARTNER_API_URL,
+  CUSTOMER_FEEDBACK_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
 
-interface ApiError extends Error {
-  code?: number;
-  status?: number;
-}
+// interface ApiError extends Error {
+//   code?: number;
+//   status?: number;
+// }
 
 interface MarketingDemoData {
   full_name: string;
@@ -25,7 +26,7 @@ interface MarketingDemoData {
 export interface PartnerFormData {
   full_name: string;
   business_name: string;
-  service_interested: string; // Changed from interest to match API
+  service_interested: string;
   email: string;
   phone_number: string;
 }
@@ -42,28 +43,19 @@ export interface PartnerResponse {
   };
 }
 
-export async function reconcileFiles(
-  file1: File,
-  file2: File,
-  keyColumn: string,
-) {
+export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
   const formData = new FormData();
-  formData.append("file1", file1);
-  formData.append("file2", file2);
-  formData.append("key_column", keyColumn);
+  bankFiles.forEach((file) => formData.append("bank_statements[]", file));
+  ledgerFiles.forEach((file) => formData.append("ledgers[]", file));
 
   const token = localStorage.getItem("access_token");
-  const headers: HeadersInit = {};
+  const headers: HeadersInit = {
+    "Accept": "application/json"
+  };
 
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
-
-  console.log("Sending files for reconciliation:", {
-    file1: file1.name,
-    file2: file2.name,
-    keyColumn,
-  });
 
   try {
     const response = await fetch(RECONCILE_API_URL, {
@@ -73,9 +65,7 @@ export async function reconcileFiles(
     });
 
     const data = await response.json();
-    console.log("Raw API Response:", data);
 
-    // Handle specific status codes
     if (response.status === 429) {
       return {
         status: "error",
@@ -105,13 +95,12 @@ export async function reconcileFiles(
       status: "success",
       data: data,
     };
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Reconciliation error:", error);
-    const err = error as ApiError;
     return {
       status: "error",
-      code: err.status || 500,
-      message: err.message || "An unexpected error occurred",
+      code: 500,
+      message: "An unexpected error occurred",
     };
   }
 }
@@ -215,7 +204,7 @@ export async function updateReconciliation(
     const resData = await response.json();
 
     if (!response.ok) {
-      return { error: resData.message || "Failed to add to newsletter" };//TODO: Correct this
+      return { error: resData.message || "Failed to add to newsletter" }; //TODO: Correct this
     }
 
     return resData;
@@ -287,3 +276,30 @@ export const handlePartnerSubmission = async (
     };
   }
 };
+//CUSTOMER_FEEDBACK_API_URL
+export async function handleCustomerFeedback(userInfo: {
+  name: string;
+  email: string;
+  message: string;
+  request_type: string;
+}) {
+  try {
+    const response = await fetch(CUSTOMER_FEEDBACK_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send customer message");
+    }
+
+    return { success: data.message };
+  } catch (error) {
+    console.error("Customer feedback error:", error);
+    return { error: "Something went wrong. Please try again later." };
+  }
+}

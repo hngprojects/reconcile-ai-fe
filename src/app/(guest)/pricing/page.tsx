@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link"; // Add this import
 import { cn } from "@/src/lib/utils";
 import Container from "@/src/components/Container";
 import Footer from "@/src/components/Footer";
@@ -16,6 +17,7 @@ export default function PricingPage() {
       id: 1,
       name: "Basic",
       price: "Free",
+      link: "/file-upload",
       features: [
         "Free financial reconciliation for 7 days",
         "Upload CSV files",
@@ -27,26 +29,54 @@ export default function PricingPage() {
       id: 2,
       name: "Starter Plan",
       price: "10",
+      link: "https://buy.stripe.com/00g9Ez9c42XW9mo14q",
       features: [
-        "Reconcile up to 20 transaction/month",
-        "Basic AI matching (date, amount, description)",
+        "Reconcile up to 20 reconciliations/month",
+        "Basic AI matching and reconciliation (date, amount, description, small data set)",
         "Export results to CSV",
-        "Manual adjustments (unlink and match errors)",
+        "Manual adjustments (search by description only)",
+        "Unlink, and match records",
       ],
     },
     {
       id: 3,
       name: "Business Plan",
       price: "25",
+      link: "https://buy.stripe.com/6oEdUPag8dCAbuw14r",
       features: [
-        "All feature from the starter plan",
-        "Advanced AI reconciliation",
-        "Merging multiple records",
+        "Unlimited reconciliation/month",
+        "Advanced adjustments  (search and filter by description, date and amount range, unlink and match errors)",
+        "Advanced AI matching and reconciliation (Large data set: up to 3000 rows)",
+        "Merging multiple records/Merging multiple files",
         "Email notification for reconciled results",
-        "Merging multiple files",
       ],
     },
   ];
+
+  const renderFeaturesList = (features: string[], isActive: boolean) => (
+    <ul className="space-y-4">
+      {features.map((feature, index) => (
+        <li key={index} className="flex items-start gap-2" role="listitem">
+          <span className="flex-shrink-0 my-auto">
+            <CircleCheck
+              className={cn(
+                "w-5 h-5",
+                isActive ? "text-white" : "text-[#39B057]",
+              )}
+            />
+          </span>
+          <span
+            className={cn(
+              "font-[400] text-[13px] leading-[150%] font-inter",
+              isActive ? "text-white" : "text-[#333333]",
+            )}
+          >
+            {feature}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
 
   return (
     <>
@@ -92,7 +122,7 @@ export default function PricingPage() {
                 activeCard === plan.id
                   ? "bg-[#2E604A] scale-105"
                   : "border-2 border-[#38B43C] hover:scale-105",
-                activeCard !== null && activeCard !== plan.id && "opacity-50"
+                activeCard !== null && activeCard !== plan.id && "opacity-50",
               )}
               onMouseEnter={() => setActiveCard(plan.id)}
               onMouseLeave={() => setActiveCard(null)}
@@ -103,7 +133,7 @@ export default function PricingPage() {
                 <h3
                   className={cn(
                     "font-[500] text-[16px] leading-[100%] font-inter",
-                    activeCard === plan.id ? "text-white" : "text-black"
+                    activeCard === plan.id ? "text-white" : "text-black",
                   )}
                 >
                   {plan.name}
@@ -114,68 +144,67 @@ export default function PricingPage() {
                 <p
                   className={cn(
                     "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black"
+                    activeCard === plan.id ? "text-white" : "text-black",
                   )}
                 >
                   <span className="text-2xl">$</span>
                   {plan.price}
                 </p>
-                <ul className="space-y-4">
-                  {plan.features.map((feature, index) => (
-                    <li
-                      key={index}
-                      className="flex items-start gap-2"
-                      role="listitem"
-                    >
-                      <CircleCheck
-                        className={cn(
-                          "w-5 h-5 mt-0.5",
-                          activeCard === plan.id
-                            ? "text-white"
-                            : "text-[#39B057]"
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          "font-[400] text-[13px] leading-[100%] font-inter my-auto",
-                          activeCard === plan.id
-                            ? "text-white"
-                            : "text-[#333333]"
-                        )}
-                      >
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                {renderFeaturesList(plan.features, activeCard === plan.id)}
 
-                <button
-                  className={cn(
-                    "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                    activeCard === plan.id
-                      ? "bg-white text-[#2A5743] border-white"
-                      : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]"
-                  )}
-                >
-                  Get Started
-                </button>
+                {plan.id === 1 ? (
+                  <Link href={plan.link}>
+                    <button
+                      className={cn(
+                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
+                        activeCard === plan.id
+                          ? "bg-white text-[#2A5743] border-white"
+                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                      )}
+                    >
+                      Get Started
+                    </button>
+                  </Link>
+                ) : (
+                  <a href={plan.link} target="_blank" rel="noopener noreferrer">
+                    <button
+                      className={cn(
+                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
+                        activeCard === plan.id
+                          ? "bg-white text-[#2A5743] border-white"
+                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                      )}
+                    >
+                      Get Started
+                    </button>
+                  </a>
+                )}
               </div>
             </div>
           ))}
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }} className="mt-[111px]">
-          <motion.h3 initial={{ opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="mt-[111px]"
+        >
+          <motion.h3
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1 }} className="text-2xl text-center sm:text-3xl md:text-4xl font-semibold mb-4 sm:mb-6 lg:mb-[42px] text-[#101828] leading-tight tracking-tight">
+            transition={{ duration: 0.6, delay: 1 }}
+            className="text-2xl text-center sm:text-3xl md:text-4xl font-semibold mb-4 sm:mb-6 lg:mb-[42px] text-[#101828] leading-tight tracking-tight"
+          >
             Why Choose ReconXi?
           </motion.h3>
 
-          <motion.div initial={{ opacity: 0 }}
+          <motion.div
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 1.2 }} className="flex flex-col w-full">
+            transition={{ duration: 0.6, delay: 1.2 }}
+            className="flex flex-col w-full"
+          >
             <div className="flex justify-between  flex-col md:flex-row gap-4 md:gap-6 lg:gap-[38px] w-full">
               {["SME-Friendly Pricing", "Secure & Reliable"].map((title, i) => (
                 <div
@@ -233,7 +262,7 @@ export default function PricingPage() {
                       {i === 1 && "Helps to reduce errors."}
                     </p>
                   </div>
-                )
+                ),
               )}
             </div>
           </motion.div>
