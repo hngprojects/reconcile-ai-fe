@@ -2,41 +2,48 @@
 
 import { FC, useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
-import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
+import LoginModal from "@/src/components/modal/LoginModal";
+import SignupModal from "@/src/components/modal/SignupModal";
 import UserDetails from "@/src/components/UserDetails";
 import { Button } from "./ui/button";
 
+type AuthMode = "login" | "signup";
 const UserAction: FC = () => {
   const { user, setUser } = useAuth();
-  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<AuthMode>("signup");
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
+    const localUser = localStorage.getItem("user");
+    if (localUser) {
+      setUser(JSON.parse(localUser));
     }
   }, [setUser]);
 
+  if (user) return <UserDetails />;
+
+  const openModal = (mode: AuthMode) => {
+    setAuthMode(mode);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => setModalOpen(false);
+
   return (
     <>
-      {user ? (
-        <UserDetails />
-      ) : (
-        <Button
-          type="button"
-          className="bg-[#297B65] cursor-pointer py-2 px-4 text-nowrap 
-                     rounded-md font-semibold justify-center items-center h-12 
-                     sm:w-56 text-sm text-white hover:bg-[#297B65]/90 flex"
-          onClick={() => setShowAuthModal(true)}
-        >
-          Get Started
+      <div className="flex items-center space-x-4">
+        <Button onClick={() => openModal("login")}>
+          Login Now
         </Button>
+        <Button onClick={() => openModal("signup")}>
+          Sign Up
+        </Button>
+      </div>
+      {authMode === "login" ? (
+        <LoginModal isOpen={isModalOpen} onClose={closeModal} />
+      ) : (
+        <SignupModal isOpen={isModalOpen} onClose={closeModal} />
       )}
-
-      <GoogleAuthModal
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-      />
     </>
   );
 };

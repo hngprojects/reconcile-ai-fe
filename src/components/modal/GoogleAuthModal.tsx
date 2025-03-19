@@ -7,9 +7,26 @@ import { GoogleIcon, LogoIcon } from "../Icon/Icons";
 interface GoogleAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
+  heading: string;
+  intro: string;
+  description: string;
+  ctaText: string;
+  footerText?: string;
+  footerLinkText?: string;
+  onFooterLinkClick?: () => void;
 }
 
-const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
+const GoogleAuthModal = ({
+  isOpen,
+  onClose,
+  heading,
+  intro,
+  description,
+  ctaText,
+  footerText,
+  footerLinkText,
+  onFooterLinkClick,
+}: GoogleAuthModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { signInWithGoogle } = useAuth();
 
@@ -27,12 +44,12 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[90%] md:!max-w-[535px] h-auto rounded-[12px] bg-white p-0 border-none mx-auto"
+        className="flex w-[614px] h-[504px] p-[34px_32px] justify-center items-center rounded-[12px] bg-white border-none mx-auto"
         closeButton={false}
         aria-describedby="google-auth-description"
       >
         <div className="sr-only" id="google-auth-description">
-          Sign in with your Google account to access ReconXi
+          {description}
         </div>
         <button
           onClick={onClose}
@@ -40,34 +57,41 @@ const GoogleAuthModal = ({ isOpen, onClose }: GoogleAuthModalProps) => {
         >
           <X className="h-4 w-4 text-gray-500" />
         </button>
-
         <div className="px-4 md:px-6 py-8 md:py-[76px] flex flex-col items-center justify-center gap-6">
-          <div className="flex flex-col items-center gap-4">
-            <LogoIcon className="w-9 h-9 sm:w-12 sm:h-12" />
-            <h2 className="font-baloo font-extrabold text-2xl md:text-[28px] leading-none text-[#2E604A] -mt-4">
-              ReconXi
-            </h2>
-            <p
-              id="google-auth-description"
-              className="font-openSans text-xs md:text-sm leading-[140%] text-[#475569] text-center px-2 md:px-0"
-            >
-              Use your Google account to get started quickly
-            </p>
-          </div>
-
+          <LogoIcon className="w-9 h-9 sm:w-12 sm:h-12" />
+          <h2 className="font-baloo font-extrabold text-2xl md:text-[28px] leading-none text-[#2E604A] -mt-4">
+            {heading}
+          </h2>
+          <h2 className="font-inter font-semibold text-[24px] leading-[120%] text-[#141414] text-center">
+            {intro}
+          </h2>
+          <p
+            id="google-auth-description"
+            className="font-openSans text-xs md:text-sm leading-[140%] text-[#475569] text-center px-2 md:px-0"
+          >
+            {description}
+          </p>
           <button
             onClick={handleGoogleSignIn}
             disabled={isLoading}
-            className="w-full md:w-[487px] h-[48px] md:h-[64px] cursor-pointer rounded-[8px] 
-                     border border-[#CBD5E1] flex items-center justify-center gap-[10px] 
-                     px-4 py-2 hover:bg-gray-50 transition-colors disabled:opacity-50
-                     max-w-[90%] md:max-w-none mx-auto"
+            className="flex h-[64px] px-8 py-2 justify-center items-center gap-[10px] flex-shrink-0 w-full md:w-[487px] rounded-[8px] border border-[#CBD5E1] hover:bg-gray-50 transition-colors disabled:opacity-50 max-w-[90%] md:max-w-none mx-auto"
           >
             <GoogleIcon className="w-5 h-5 sm:w-6 sm:h-6" />
             <span className="text-[#475569] font-medium text-sm md:text-base">
-              {isLoading ? "Loading..." : "Continue with Google"}
+              {isLoading ? "Loading..." : ctaText}
             </span>
           </button>
+          {footerText && footerLinkText && (
+            <div className="text-sm md:text-base text-[#475569] mt-4">
+              {footerText}{" "}
+              <button
+                onClick={onFooterLinkClick}
+                className="text-[#2E604A] font-semibold hover:underline cursor-pointer"
+              >
+                {footerLinkText}
+              </button>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
