@@ -1,4 +1,5 @@
 "use client";
+
 import Container from "@/src/components/Container";
 import { useState } from "react";
 import Image from "next/image";
@@ -6,13 +7,6 @@ import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
 
 const hiringSteps = [
   "Explore available roles that match your skills and experience.",
@@ -41,10 +35,10 @@ const jobListings = [
   },
   {
     id: 3,
-    title: "Product Designer",
+    title: "Product designer",
     location: "London, United Kingdom",
     description:
-      "As a Product Designer at ReconXi, you will play a critical role in shaping the user experience of our products.",
+      "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
     salary: "$500K - $900K / month",
   },
   {
@@ -52,7 +46,7 @@ const jobListings = [
     title: "Product Manager",
     location: "London, United Kingdom",
     description:
-      "As a Product Manager, you will oversee product strategy, roadmap execution, design, and engineering teams.",
+      "As a Product Manager, you will oversee product strategy, roadmap execution, design and engineering teams.",
     salary: "$500K - $900K / month",
   },
   {
@@ -60,7 +54,7 @@ const jobListings = [
     title: "Backend Engineer",
     location: "London, United Kingdom",
     description:
-      "As a Backend Engineer, you will develop and maintain the core systems that power our products.",
+      "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
     salary: "$500K - $900K / month",
   },
   {
@@ -80,30 +74,17 @@ export default function Careers() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(6);
-  const totalRows = jobs.length;
-
-  const startRow = (currentPage - 1) * rowsPerPage + 1;
-  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
 
   const totalPages = Math.ceil(jobs.length / rowsPerPage);
   const startIndex = (currentPage - 1) * rowsPerPage;
   const selectedJobs = jobs.slice(startIndex, startIndex + rowsPerPage);
 
   const handleNext = () => {
-    if (currentPage < Math.ceil(totalRows / rowsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   const handlePrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleRowsPerPageChange = (value: string) => {
-    setRowsPerPage(Number(value));
-    setCurrentPage(1);
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
   return (
@@ -146,7 +127,7 @@ export default function Careers() {
             </motion.p>
           </motion.div>
 
-            {/* Hiring Process Section */}
+          {/* Hiring Process Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -165,7 +146,7 @@ export default function Careers() {
                   </p>
                   <ul className="flex flex-col items-start gap-[30px] self-stretch">
                     {steps.map((step, index) => (
-<motion.li
+                      <motion.li
                         key={index}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -182,12 +163,13 @@ export default function Careers() {
                         <p className="text-[#475467] font-inter text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px]">
                           {step}
                         </p>
-</motion.li>
+                      </motion.li>
                     ))}
                   </ul>
                 </div>
               </div>
- <motion.div
+
+              <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -200,10 +182,11 @@ export default function Careers() {
                   height={400}
                   className="w-full"
                 />
-  </motion.div>
+              </motion.div>
             </div>
-</motion.div>
-   {/* Open Positions Section */}
+          </motion.div>
+
+          {/* Open Positions Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -220,12 +203,13 @@ export default function Careers() {
                 team — we’re hiring!
               </p>
             </div>
+
             <div className="flex flex-col justify-center items-center gap-[29px] self-stretch">
               {jobs.length > 0 ? (
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[29px] w-full max-w-[1200px]">
                     {selectedJobs.map((job) => (
-   <motion.div
+                      <motion.div
                         key={job.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -258,11 +242,11 @@ export default function Careers() {
                             View details
                           </Button>
                         </div>
-   </motion.div>
+                      </motion.div>
                     ))}
                   </div>
                   {/* Pagination Controls */}
-  <motion.div
+                  <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.8 }}
@@ -270,18 +254,16 @@ export default function Careers() {
                   >
                     <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
                       Rows per page
-                        <Select onValueChange={handleRowsPerPageChange}>
-              <SelectTrigger className="w-[80px]">
-                <SelectValue placeholder={`${rowsPerPage}`} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="6">6</SelectItem>
-                <SelectItem value="12">12</SelectItem>
-                <SelectItem value="18">18</SelectItem>
-              </SelectContent>
-            </Select>
-
-     </p>
+                      <select
+                        className="justify-center items-center p-[8px] m-[8px] rounded-[4px] border border-[#EFF1F3] cursor-pointer"
+                        value={rowsPerPage}
+                        onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                      >
+                        <option value={2}>2</option>
+                        <option value={4}>4</option>
+                        <option value={6}>6</option>
+                      </select>
+                    </p>
                     <div className="flex items-center gap-4">
                       <Button
                         className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed text-black" : "bg-[#297B65] text-white cursor-pointer"}`}
@@ -301,10 +283,11 @@ export default function Careers() {
                         Next
                       </Button>
                     </div>
-  </motion.div>
+                  </motion.div>
                 </div>
               ) : (
-  <motion.div
+                // If there are no open positions
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.7 }}
@@ -316,7 +299,7 @@ export default function Careers() {
                     width={355}
                     height={271}
                     style={{ width: "auto", height: "auto" }}
-  className="justify-center items-center"
+                    className="justify-center items-center"
                   />
                   <div className="flex flex-col items-center gap-6 self-stretch">
                     <h2 className="text-[#0A0A0A] text-center font-inter text-[28px] md:text-[28px] font-medium leading-normal">
@@ -326,11 +309,10 @@ export default function Careers() {
                       Come back later!
                     </p>
                   </div>
- </motion.div>
+                </motion.div>
               )}
             </div>
-
-            </motion.div>
+          </motion.div>
         </div>
       </Container>
       <Footer />
