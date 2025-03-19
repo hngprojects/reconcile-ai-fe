@@ -47,9 +47,8 @@ export default function PricingPage() {
         "Unlimited reconciliation/month",
         "Advanced adjustments  (search and filter by description, date and amount range, unlink and match errors)",
         "Advanced AI matching and reconciliation (Large data set: up to 3000 rows)",
-        "Merging multiple records",
+        "Merging multiple records/Merging multiple files",
         "Email notification for reconciled results",
-        "Merging multiple records",
       ],
     },
   ];
