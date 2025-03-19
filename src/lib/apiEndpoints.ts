@@ -36,4 +36,4 @@ export const LOGOUT_API_URL = `${BASE_URL}/auth/logout`;
 export const PARTNER_API_URL = `${BASE_URL}/partners`;
 
 // CUSTOMER-FEEDBACK API
-export const CUSTOMER_FEEDBACK_API_URL = `${BASE_URL}/customer-feed`;
+export const CUSTOMER_FEEDBACK_API_URL = `${BASE_URL}/customer-feedback`;
