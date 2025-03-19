@@ -8,7 +8,6 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-import { transformReconciliationData } from "../../revamped-reconciliation/helpers/transformReconciliationData";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { countCsvRows } from "@/src/utils/csvHelpers";
 
