@@ -9,13 +9,15 @@ export default function Home() {
   const textVariants = {
     hidden: {
       opacity: 0,
+      y: 10,
     },
     visible: (i: number) => ({
       opacity: 1,
+      y: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.8,
         ease: "easeOut",
-        delay: i * 0.1,
+        delay: i * 0.2,
       },
     }),
   };
@@ -24,8 +26,8 @@ export default function Home() {
     <main className="min-h-screen flex flex-col ">
       <div className=" flex flex-col items-center">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: 0.8,
             ease: "easeOut",
@@ -63,12 +65,12 @@ export default function Home() {
           </motion.p>
 
           <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 1,
               ease: "easeOut",
-              delay: 0.5,
+              delay: 0.6,
             }}
             className="w-full"
           >

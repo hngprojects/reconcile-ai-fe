@@ -15,9 +15,9 @@ const PrivacyPage = () => {
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.4, 
+        duration: 0.8, 
         ease: "easeOut", 
-        delay: i * 0.1 
+        delay: i * 0.2 
       }
     })
   };
@@ -47,7 +47,7 @@ const PrivacyPage = () => {
           <motion.p 
             initial="hidden"
             animate="visible"
-            custom={0}
+            custom={1}
             variants={textVariants}
             className="text-[#009A49] bg-[#E6FFF2] px-3 py-1 text-sm rounded-2xl inline-block w-fit mb-6 mx-auto"
           >
@@ -57,7 +57,7 @@ const PrivacyPage = () => {
           <motion.h1 
             initial="hidden"
             animate="visible"
-            custom={0.5}
+            custom={2}
             variants={textVariants}
             className="md:text-[60px] text-4xl font-semibold mb-6"
           >
@@ -68,7 +68,7 @@ const PrivacyPage = () => {
           <motion.p 
             initial="hidden"
             animate="visible"
-            custom={1}
+            custom={3}
             variants={textVariants}
             className="text-md text-[#525252]"
           >

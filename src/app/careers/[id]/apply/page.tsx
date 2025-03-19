@@ -1,5 +1,4 @@
 "use client";
-
 import Footer from "@/src/components/Footer";
 import { Input } from "@/src/components/ui/input";
 import { Label } from "@/src/components/ui/label";
@@ -7,27 +6,11 @@ import { Button } from "@/src/components/ui/button";
 import { useRef, useState } from "react";
 import { FileCheck } from "lucide-react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 export default function Home() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
-  // Text animation variants for smoother transitions
-  const textVariants = {
-    hidden: {
-      opacity: 0,
-    },
-    visible: (i: number) => ({
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-        delay: i * 0.1,
-      },
-    }),
-  };
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -64,47 +47,20 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
       <div className="flex-1 flex items-center justify-center py-[59px] px-4">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-          }}
-          className="w-full max-w-3xl flex flex-col items-center text-center"
-        >
-          <motion.h1
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            variants={textVariants}
-            className="text-4xl md:text-5xl font-bold text-[#333333] mb-4"
-          >
+        <div className="w-full max-w-3xl flex flex-col items-center text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#333333] mb-4">
             Apply today!
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            variants={textVariants}
-            className="text-lg text-[#333333] mb-12 max-w-2xl flex flex-col"
-          >
+          <p className="text-lg text-[#333333] mb-12 max-w-2xl flex flex-col">
             <span>Thank you for your interest!</span>
             <span>
               Please fill out the form below, and our team will reach out to
               you.
             </span>
-          </motion.p>
+          </p>
 
-          <motion.form
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 1,
-              ease: "easeOut",
-              delay: 0.5,
-            }}
+          <form
             className="w-full md:w-[650px] bg-white border border-gray-200 rounded-md p-6 mx-auto"
             aria-labelledby="form-heading"
           >
@@ -255,8 +211,8 @@ export default function Home() {
                 />
               </Button>
             </div>
-          </motion.form>
-        </motion.div>
+          </form>
+        </div>
       </div>
       <Footer />
     </main>
