@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 
 export default function FileUploadPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const { getUserDetails } = useAuth();
 
   const handleReconcile = async (
@@ -25,7 +25,8 @@ export default function FileUploadPage() {
       );
 
       // Navigate to results page or handle as needed
-      router.push("/reconciliation");
+      // router.push("/reconciliation");
+
     } catch (error) {
       console.error("Error handling reconciliation:", error);
     }
@@ -41,7 +42,7 @@ export default function FileUploadPage() {
         getUserDetails(token);
       }
     }
-  }, [getUserDetails]);
+  }, []);
 
   return <FileUploadLayout onReconcile={handleReconcile} />;
 }
