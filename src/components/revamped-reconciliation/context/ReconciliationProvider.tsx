@@ -118,7 +118,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
      }
    }
     fetch();
-  }, []); // Removed `data` from dependency array to prevent infinite re-rendering
+  }, [path]); // Removed `data` from dependency array to prevent infinite re-rendering
 
   const reconciliationData = useMemo(
     () => data.reconciliation_data ?? [],
