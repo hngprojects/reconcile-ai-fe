@@ -66,12 +66,12 @@ export default function PricingPage() {
     }
   };
 
-  const handleAuthSuccess = () => {
-    setShowAuthModal(false);
-    if (selectedPlanLink) {
-      window.location.href = selectedPlanLink;
-    }
-  };
+  // const handleAuthSuccess = () => {
+  //   setShowAuthModal(false);
+  //   if (selectedPlanLink) {
+  //     window.location.href = selectedPlanLink;
+  //   }
+  // };
 
   const renderFeaturesList = (features: string[], isActive: boolean) => (
     <ul className="space-y-4">
