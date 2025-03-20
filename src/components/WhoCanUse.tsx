@@ -11,7 +11,7 @@ const whoCanUseContent = [
         id: 1,
         title: "Startups & SMEs",
         content: "ReconXi helps small businesses streamline their financial reconciliation process, reducing errors and ensuring more reliable accounting records.",
-        linkUrl: "/"
+        linkUrl: "/small-business"
     },
     {
         id: 2,
@@ -23,7 +23,7 @@ const whoCanUseContent = [
         id: 3,
         title: "Enterprises",
         content: "For large organizations dealing with a high volume of transactions, ReconXi provides a solution to handle complex reconciliations.",
-        linkUrl: "/"
+        linkUrl: "/enterprise"
     },
     {
         id: 4,
@@ -65,9 +65,9 @@ const WhoCanUse = () => {
                         )}>
                             <h2 className="font-bold  md:text-xl">{title}</h2>
                             <p className='text-sm md:text-lg text-[#3B3E45] mt-4 mb-8'>{content}</p>
-                            <Link className='flex items-center gap-2 text-[#2E604A] font-semibold' href={linkUrl}>
+                            <Link className='flex items-center gap-2 text-[#2E604A] font-semibold group' href={linkUrl}>
                                 <span>Learn more</span>
-                                <ArrowRight className='size-4' />
+                                <ArrowRight className='size-4 group-hover:translate-x-2 transition duration-500' />
                             </Link>
                         </motion.article>
                     ))

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export default function HeroSection() {
   return (
     <section className="w-screen overflow-x-hidden pt-8 md:pt-0">
-      <div className="flex flex-col md:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-10 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
+      <div className="flex flex-col lg:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-10 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
         <motion.div
           className="flex flex-col items-center md:items-start w-full"
           initial={{ opacity: 0, x: -50 }}
@@ -21,7 +21,7 @@ export default function HeroSection() {
             ReconXi is the perfect solution for small and medium-sized businesses, schools, financial professionals, freelancers that need quick and affordable financial reconciliation.
           </p>
           <motion.div
-            className="flex flex-col items-center justify-center w-[245px] md:w-full gap-6 my-6 sm:flex-row mt-8"
+            className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -39,7 +39,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="md:flex items-center w-full relative h-full hidden"
+          className="lg:flex items-center w-full relative h-full hidden"
         >
           <Image
             src="/assets/images/iPhone_mockup.png"
@@ -77,7 +77,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}          
-          className="md:hidden w-full flex justify-center">
+          className="lg:hidden w-full flex justify-center">
           <Image
               src="/assets/images/screen-mockup-for-mobile.png"
               alt="Big screen mockup"
