@@ -1,46 +1,14 @@
-import { useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { Dialog, DialogContent } from "@/src/components/ui/dialog";
-import { Progress } from "@/src/components/ui/progress";
-import { StarsIcon, CheckIcon } from "../../Icon/Icons"; // Ensure CheckIcon is imported
-import { toast } from "sonner";
+import { StarsIcon } from "../../Icon/Icons";
+import { UploadModalProps } from "./types";
 
-interface UploadModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  progress: number;
-}
-
-export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
+export function UploadModal({ isOpen, onClose }: UploadModalProps) {
   const { user } = useAuth();
-  const [emailSent, setEmailSent] = useState(false);
-  const [toastShown, setToastShown] = useState(false);
   const isAuthenticated = Boolean(user?.email);
 
-  useEffect(() => {
-    if (isAuthenticated && progress >= 100 && !emailSent && !toastShown) {
-      if (user?.email) {
-        toast.success(`Reconciliation result has been sent to ${user.email}.`, {
-          icon: <CheckIcon className="w-5 h-5" />,
-          style: { background: "#EEFFEE" },
-          action: {
-            label: <p className="bg-inherit">Close</p>,
-            onClick: () => toast.dismiss(),
-          },
-        });
-        setEmailSent(true);
-      }
-      setToastShown(true);
-    }
-  }, [isAuthenticated, progress, emailSent, user, toastShown]);
-
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={() => {
-        if (progress >= 100) onClose();
-      }}
-    >
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
         className="max-w-[400px] flex flex-col h-auto items-center justify-center"
         closeButton={false}
@@ -66,16 +34,12 @@ export function UploadModal({ isOpen, onClose, progress }: UploadModalProps) {
             </>
           ) : (
             <>
-              <p className="text-sm text-[#475569] text-center">
-                Please wait while AI does the magic
-              </p>
-              <p className="text-[#47556999] text-xs">
-                Matching records, it will be with you shortly.
+              <p className="text-gray-600 text-sm text-center">
+                Your files are being processed. You can continue browsing while
+                we work on it.
               </p>
             </>
           )}
-          <Progress value={progress} className="w-full" />
-          <p className="text-sm text-gray-500">{progress}% Complete</p>
         </div>
       </DialogContent>
     </Dialog>

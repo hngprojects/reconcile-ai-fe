@@ -56,7 +56,7 @@ jobs:
 
             BRANCH=$(basename "${{ github.ref }}")
             if [[ "$BRANCH" == "main" ]]; then
-              FE_PATH="/home/Reconcile/reconcile-ai-fe"
+              FE_PATH="/home/Reconcile/fe-main"
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
@@ -76,7 +76,6 @@ jobs:
 
             echo "Extracting build artifact..."
             cp ~/build-artifact/build-artifact.tar .
-            rm -rf .next/
             tar -xvf build-artifact.tar
             rm -f build-artifact.tar
 

@@ -23,7 +23,13 @@ interface Country {
   flag: string;
 }
 
-export default function DemoForm() {
+interface DemoFormProps {
+  buttonText?: string;
+}
+
+export default function DemoForm({
+  buttonText = "Get Your Free Demo Now",
+}: DemoFormProps) {
   const [countries, setCountries] = useState<Country[]>([]);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -65,7 +71,7 @@ export default function DemoForm() {
 
       if (result.success) {
         toast.success(
-          "Demo request submitted successfully! We'll be in touch soon."
+          "Demo request submitted successfully! We'll be in touch soon.",
         );
         setFormData({
           fullName: "",
@@ -81,7 +87,7 @@ export default function DemoForm() {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to submit demo request. Please try again."
+          : "Failed to submit demo request. Please try again.",
       );
     } finally {
       setIsSubmitting(false);
@@ -201,7 +207,7 @@ export default function DemoForm() {
           disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
-          {isSubmitting ? "Processing..." : "Get Your Free Demo Now"}
+          {isSubmitting ? "Processing..." : buttonText}
         </Button>
       </div>
     </form>
