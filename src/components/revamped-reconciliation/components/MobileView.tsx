@@ -78,7 +78,7 @@ export function MobileView() {
       }
 
       const parsedData = JSON.parse(
-        reconciliationData,
+        reconciliationData
       ) as ReconciliationResponse;
 
       const reconciledData = revertToBackendFormat(parsedData);
@@ -102,13 +102,13 @@ export function MobileView() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: formattedData }),
-        },
+        }
       );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         throw new Error(
-          errorData?.message || `Export failed with status: ${response.status}`,
+          errorData?.message || `Export failed with status: ${response.status}`
         );
       }
 
@@ -127,7 +127,7 @@ export function MobileView() {
     } catch (error: unknown) {
       console.error("Export error:", error);
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data",
+        error instanceof Error ? error.message : "Failed to export data"
       );
     } finally {
       setIsExporting(false);
@@ -235,7 +235,7 @@ export function MobileView() {
               transaction.description
                 .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              transaction.date.toLowerCase().includes(query.toLowerCase()),
+              transaction.date.toLowerCase().includes(query.toLowerCase())
           );
         };
 
@@ -247,7 +247,7 @@ export function MobileView() {
               item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
               {
                 "rounded-t-lg": index === 0,
-              },
+              }
             )}
           >
             {/* Column Headers */}
@@ -285,23 +285,22 @@ export function MobileView() {
                           {stmt.bank_txn?.amount}
                         </div>
                       </div>
-                      
+
                       {item.matched && (
                         <div className="flex gap-3 items-center">
-                                                  {hasPlanAccess("unlink") && (
-
-                          <button
-                            type="button"
-                            title="Unlink matching transactions"
-                            className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
-                            onClick={() => {
-                              setShowUnlinkModalMobile(true);
-                              setSelectedTransactionRow(item);
-                            }}
-                          >
-                            <StatusBadge matched={item.matched} />
-                          </button>
-                                                    )}
+                          {hasPlanAccess("unlink") && (
+                            <button
+                              type="button"
+                              title="Unlink matching transactions"
+                              className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
+                              onClick={() => {
+                                setShowUnlinkModalMobile(true);
+                                setSelectedTransactionRow(item);
+                              }}
+                            >
+                              <StatusBadge matched={item.matched} />
+                            </button>
+                          )}
 
                           <hr className="border border-gray-200/70 flex-1" />
                         </div>
@@ -375,47 +374,48 @@ export function MobileView() {
                   </div>
 
                   <div className="flex justify-between items-center gap-3 w-full">
-   {hasPlanAccess("match") && (
+                    {hasPlanAccess("match") && (
                       <QuickFindAndMatchComboBox
-                      commandProps={{
-                        label: "Select possible match",
-                      }}
-                      defaultOptions={transactionOptions}
-                      onSearchSync={handleSearch}
-                      placeholder="Find possible match"
-                      hidePlaceholderWhenSelected
-                      onConfirm={(option) => {
-                        const selectedOption: FrontendTransaction = {
-                          id: `${option.id}-${Date.now()}`,
-                          description: option.description,
-                          date: option.date,
-                          amount: option.amount,
-                        };
-                        console.log("Confirmed:", { selectedOption, option });
+                        commandProps={{
+                          label: "Select possible match",
+                        }}
+                        defaultOptions={transactionOptions}
+                        onSearchSync={handleSearch}
+                        placeholder="Find possible match"
+                        hidePlaceholderWhenSelected
+                        onConfirm={(option) => {
+                          const selectedOption: FrontendTransaction = {
+                            id: `${option.id}-${Date.now()}`,
+                            description: option.description,
+                            date: option.date,
+                            amount: option.amount,
+                          };
+                          console.log("Confirmed:", { selectedOption, option });
 
-                        if (item.ledgers) {
-                          onMatch(
-                            [
+                          if (item.ledgers) {
+                            onMatch(
+                              [
+                                {
+                                  bank_txn: { ...selectedOption },
+                                  match_score: "0",
+                                },
+                              ],
+                              item.ledgers
+                            );
+                          }
+
+                          if (item.statements) {
+                            onMatch(item.statements, [
                               {
-                                bank_txn: { ...selectedOption },
+                                ledger_txn: { ...selectedOption },
                                 match_score: "0",
                               },
-                            ],
-                            item.ledgers
-                          );
-                        }
-
-                        if (item.statements) {
-                          onMatch(item.statements, [
-                            {
-                              ledger_txn: { ...selectedOption },
-                              match_score: "0",
-                            },
-                          ]);
+                            ]);
+                          }
                         }}
                       />
                     )}
-                        
+
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="size-8 p-0">
@@ -481,27 +481,26 @@ export function MobileView() {
 
       {hasPlanAccess("unlink") && (
         <UnlinkModal
-        isOpen={showUnlinkModalMobile}
-        isLoading={isLoading}
-        onClose={() => {
-          setShowUnlinkModalMobile(false);
-        }}
-        onConfirm={async () => {
-          if (!selectedTransactionRow) return;
+          isOpen={showUnlinkModalMobile}
+          isLoading={isLoading}
+          onClose={() => {
+            setShowUnlinkModalMobile(false);
+          }}
+          onConfirm={async () => {
+            if (!selectedTransactionRow) return;
 
-          if (
-            selectedTransactionRow.statements &&
-            selectedTransactionRow.ledgers
-          ) {
-            await onUnlink(
-              selectedTransactionRow.statements,
+            if (
+              selectedTransactionRow.statements &&
               selectedTransactionRow.ledgers
-            );
-          }
-        }}
-      />
-                          )}
-
+            ) {
+              await onUnlink(
+                selectedTransactionRow.statements,
+                selectedTransactionRow.ledgers
+              );
+            }
+          }}
+        />
+      )}
     </div>
   );
 }
