@@ -6,7 +6,7 @@ import { LedgerTable } from "./LedgerTable";
 import { PaginationControls } from "./PaginationControls";
 import { StatusTable } from "./StatusTable";
 
-// import { DownloadCloudIcon, Loader2 } from "lucide-react";
+import { DownloadCloudIcon, Loader2 } from "lucide-react";
 import { SuccessToast } from "../../reconciliation/SuccessToast";
 // import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
 // import { ReconciliationResponse } from "../types/frontendResponseTypes";
