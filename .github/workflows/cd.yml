@@ -23,10 +23,12 @@ jobs:
       # - name: Install Dependencies
       #   run: npm install
 
-      - name: Remove Node.js Tool Cache
+      - name: Remove GitHub Actions Cache
         run: |
-          rm -rf ~/.npm ~/.cache ~/.nvm
-          sudo rm -rf /home/reconcile/_work/_tool/node || true
+          sudo rm -rf /home/runner/.npm
+          sudo rm -rf /home/runner/.cache
+          sudo rm -rf /home/runner/_work/_tool/node
+          npm cache clean --force
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
