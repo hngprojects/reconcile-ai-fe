@@ -40,7 +40,7 @@ const UploadCard = ({
       setError("");
       onFilesSelect([...files, file]);
 
-      toast.success("File Added", {
+      toast.success("File Uploaded Successfully", {
         duration: 3000,
       });
     },
