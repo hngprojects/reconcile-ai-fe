@@ -65,6 +65,12 @@ const MobileMenu = ({
                 <DropdownMenuItem>
                   <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/enterprise" && "text-white")} href="/enterprise">Enterprise</Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/financial-professionals" && "text-white")} href="/financial-professionals">Financial Professionals</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/school-and-education" && "text-white")} href="/school-and-education">Schools & Educational Institutions</Link>
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             </div>
