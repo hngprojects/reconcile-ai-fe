@@ -29,7 +29,7 @@ const features = [
 
 export default function WhyReconXi() {
   return (
-    <section className="py-10 md:py-20" aria-labelledby="why-reconxi-title">
+    <section className="py-10 md:py-20 px-0 lg:px-20 " aria-labelledby="why-reconxi-title">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,7 +41,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-            Why Small Business Owners Need ReconXi
+            Why Startups and SMEs Need ReconXi
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">

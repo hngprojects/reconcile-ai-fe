@@ -8,6 +8,7 @@ import {
   PARTNER_API_URL,
   CUSTOMER_FEEDBACK_API_URL,
   RECONCILIATION_RESULT_API_URL
+  PAYMENT_PLAN_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -42,6 +43,24 @@ export interface PartnerResponse {
     email?: string[];
     phone_number?: string[];
   };
+}
+
+interface PaymentPlanData {
+  price: number;
+  plan: string;
+}
+
+interface PaymentPlanResponse {
+  status: boolean;
+  message: string;
+  data: {
+    id: number;
+    user_id: number;
+    price: number;
+    plan: string;
+    created_at: string;
+    updated_at: string;
+  } | null;
 }
 
 export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
@@ -324,3 +343,31 @@ export const fetchReconciliation = async(reconciliationId: string) => {
     };
   }
 };
+export async function updatePaymentPlan(
+  data: PaymentPlanData,
+): Promise<PaymentPlanResponse> {
+  const token = localStorage.getItem("access_token");
+
+  try {
+    const response = await fetch(PAYMENT_PLAN_API_URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to update payment plan");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Payment plan update error:", error);
+    throw error;
+  }
+}

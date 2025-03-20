@@ -29,7 +29,7 @@ const benefits = [
 export default function Benefits() {
   return (
     <section
-      className="bg-[#F5F5F5] py-10 md:py-20"
+      className="bg-[#F5F5F5] py-10 px-0 lg:px-20 md:py-20"
       aria-labelledby="benefits-title"
     >
       <Container>
