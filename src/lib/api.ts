@@ -289,19 +289,11 @@ export const handlePartnerSubmission = async (
   }
 };
 //CUSTOMER_FEEDBACK_API_URL
-export async function handleCustomerFeedback(userInfo: {
-  name: string;
-  email: string;
-  message: string;
-  request_type: string;
-}) {
+export async function handleCustomerFeedback(formData: FormData) {
   try {
     const response = await fetch(CUSTOMER_FEEDBACK_API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userInfo),
+      body: formData, 
     });
     const data = await response.json();
 

@@ -8,6 +8,7 @@ import { FileCheck } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { handleCustomerFeedback } from "@/src/lib/api";
+import { toast } from "sonner";
 
 export default function ContactUs() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -58,7 +59,7 @@ export default function ContactUs() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -74,29 +75,39 @@ export default function ContactUs() {
     });
     setSelectedFile(null);
   };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+  
     try {
-      // Transform the form data to match the API's expected structure
-      const apiData = {
-        name: formData.fullName,
-        email: formData.email,
-        message: formData.message,
-        request_type: formData.subject || "Feedback" // Using subject as request_type or defaulting to "Feedback"
-      };
+      // Create FormData object for multipart/form-data request
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.fullName);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('message', formData.message);
+      formDataToSend.append('request_type', formData.subject);
+      if (formData.file) {
+        formDataToSend.append('file', formData.file);
+      }
       
-      // Call the API function
-      const result = await handleCustomerFeedback(apiData);
-      
+      // You'll need to modify the handleCustomerFeedback function to accept FormData
+      const result = await handleCustomerFeedback(formDataToSend);
+  
       if (result.success) {
+        toast.success("Feedback submitted successfully!", {
+          description: "Thank you for your feedback. We'll get back to you soon.",
+        });
         resetForm();
       } else if (result.error) {
+        toast.error("Failed to submit feedback", {
+          description: result.error || "Please try again later.",
+        });
       }
     } catch (error) {
       console.error("Exception when submitting feedback:", error);
+      toast.error("Failed to submit feedback", {
+        description: error instanceof Error ? error.message : "Please try again later.",
+      });
     } finally {
       setIsSubmitting(false);
     }
