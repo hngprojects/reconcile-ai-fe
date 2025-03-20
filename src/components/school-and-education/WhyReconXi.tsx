@@ -42,7 +42,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-            Why Schools and Educational Institutions Need ReconXi
+           How can ReconXi make reconciliation easier for your school?
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
@@ -79,7 +79,7 @@ export default function WhyReconXi() {
               className="flex-1"
             >
               <Image
-                src="/assets/images/small-business-ft.svg"
+                src="/assets/images/small-education.svg"
                 alt="Visual representation of ReconXi features"
                 width={580}
                 height={400}

@@ -24,7 +24,7 @@ export default function StartReconcile() {
           >
             <div className="w-full">
               <Image
-                src="/assets/images/ready-smallbusiness.svg"
+                src="/assets/images/education-contact.svg"
                 alt="Visual representation of ReconXi's reconciliation process"
                 width={536}
                 height={410}
@@ -72,3 +72,4 @@ export default function StartReconcile() {
     </section>
   );
 }
+

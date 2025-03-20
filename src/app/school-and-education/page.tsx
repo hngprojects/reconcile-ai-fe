@@ -1,12 +1,8 @@
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
-// Dynamic imports
 const HeroSection = dynamic(
   () => import("@/src/components/school-and-education/hero-sect"),
-);
-const Features1 = dynamic(
-  () => import("@/src/components/school-and-education/Features"),
 );
 const VideoFeature = dynamic(
   () => import("@/src/components/school-and-education/VideoFeature"),
@@ -30,13 +26,10 @@ export default function HomePage() {
         <HeroSection />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <Features1 />
+        <WhyReconXi />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <VideoFeature />
-      </Suspense>
-      <Suspense fallback={<div className="min-h-[200px]" />}>
-        <WhyReconXi />
       </Suspense>
       <Suspense fallback={<div className="min-h-[400px]" />}>
         <Benefits />
