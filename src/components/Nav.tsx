@@ -5,6 +5,8 @@ import Container from "./Container";
 import { LogoIcon } from "./Icon/Icons";
 import UserAction from "./UserAction";
 import { usePathname } from 'next/navigation'
+import Links from "./links";
+
 
 const Nav = () => {
   const pathname = usePathname();
@@ -20,7 +22,7 @@ const Nav = () => {
             </span>
           </div>
         </Link>
-        
+        <Links />
         { pathname !== "/demo" && (<UserAction/>)}
       </Container>
     </nav>
