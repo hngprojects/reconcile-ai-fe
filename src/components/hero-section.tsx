@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
-    <section className="w-screen overflow-x-hidden pt-8 md:pt-0">
+    <section className=" overflow-x-hidden pt-8 md:pt-0">
       <div className="flex flex-col lg:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-10 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
         <motion.div
           className="flex flex-col items-center md:items-start w-full"

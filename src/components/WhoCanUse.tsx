@@ -17,7 +17,7 @@ const whoCanUseContent = [
         id: 2,
         title: "Financial Professionals",
         content: "Accountants, auditors, and financial analysts rely on ReconXi to reconcile financial data, and minimizing manual effort.",
-        linkUrl: "/"
+        linkUrl: "/financial-pro"
     },
     {
         id: 3,
@@ -29,7 +29,7 @@ const whoCanUseContent = [
         id: 4,
         title: "Schools & Educational Institutions",
         content: "Educational institutions use ReconXi to automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors",
-        linkUrl: "/"
+        linkUrl: "/school-and-education"
     },
 ]
 
@@ -64,7 +64,7 @@ const WhoCanUse = () => {
 
                         )}>
                             <h2 className="font-bold  md:text-xl">{title}</h2>
-                            <p className='text-sm md:text-lg text-[#3B3E45] mt-4 mb-8'>{content}</p>
+                            <p className='text-sm md:text-base text-[#3B3E45] mt-4 mb-8'>{content}</p>
                             <Link className='flex items-center gap-2 text-[#2E604A] font-semibold group' href={linkUrl}>
                                 <span>Learn more</span>
                                 <ArrowRight className='size-4 group-hover:translate-x-2 transition duration-500' />

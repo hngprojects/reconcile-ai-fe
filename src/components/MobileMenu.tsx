@@ -51,7 +51,7 @@ const MobileMenu = ({
 
         <div className="flex flex-col justify-between flex-1 gap-4">
           <nav className="gap-6 flex flex-col">
-            <Link className={cn("font-medium text-2xl text-white/80", pathname === "/" && "text-white")} href="/">Home</Link>
+            <Link onClick={onClose} className={cn("font-medium text-2xl text-white/80", pathname === "/" && "text-white")} href="/">Home</Link>
             <div className="">
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer">
@@ -60,16 +60,22 @@ const MobileMenu = ({
               </DropdownMenuTrigger>
               <DropdownMenuContent className="text-white/80 text-2xl bg-[#214435]">
                 <DropdownMenuItem>
-                  <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/small-business" && "text-white")} href="/small-business">Small Business owner</Link>
+                  <Link onClick={onClose} className={cn("font-medium text-white/80 text-2xl", pathname === "/small-business" && "text-white")} href="/small-business">Small Business owner</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/enterprise" && "text-white")} href="/enterprise">Enterprise</Link>
+                  <Link onClick={onClose} className={cn("font-medium text-white/80 text-2xl", pathname === "/enterprise" && "text-white")} href="/enterprise">Enterprise</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link onClick={onClose} className={cn("font-medium text-white/80 text-2xl", pathname === "/financial-professionals" && "text-white")} href="/financial-professionals">Financial Professionals</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link onClick={onClose} className={cn("font-medium text-white/80 text-2xl", pathname === "/school-and-education" && "text-white")} href="/school-and-education">Schools & Educational Institutions</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             </div>
-            <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/blog" && "text-white")} href="/blog">Blog</Link>
-            <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/pricing" && "text-white")} href="/pricing">Pricing</Link>
+            <Link onClick={onClose} className={cn("font-medium text-white/80 text-2xl", pathname === "/blog" && "text-white")} href="/blog">Blog</Link>
+            <Link onClick={onClose} className={cn("font-medium text-white/80 text-2xl", pathname === "/pricing" && "text-white")} href="/pricing">Pricing</Link>
           </nav>
 
         <div className="flex items-center gap-4 w-full">
