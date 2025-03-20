@@ -8,12 +8,14 @@ interface GoogleAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSwitchToLogin: () => void;
+  onSuccess?: () => void;
 }
 
 const GoogleAuthModal = ({
   isOpen,
   onClose,
   onSwitchToLogin,
+  onSuccess,
 }: GoogleAuthModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { signInWithGoogle } = useAuth();
@@ -22,6 +24,7 @@ const GoogleAuthModal = ({
     try {
       setIsLoading(true);
       await signInWithGoogle();
+      onSuccess?.(); // Call the success callback if provided
     } catch (error) {
       console.error("Failed to initialize Google Sign In:", error);
     } finally {
