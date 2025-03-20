@@ -89,6 +89,16 @@ const MobileMenu = ({
                       Small Business owner
                     </Link>
                     <Link
+                      href="/financial-pro"
+                      className={cn(
+                        "text-xl hover:text-white transition-colors",
+                        pathname === "/financial-pro" && "text-white",
+                      )}
+                      onClick={handleLinkClick}
+                    >
+                      Financial Professionals
+                    </Link>
+                    <Link
                       href="/enterprise"
                       className={cn(
                         "text-xl hover:text-white transition-colors",
@@ -97,6 +107,16 @@ const MobileMenu = ({
                       onClick={handleLinkClick}
                     >
                       Enterprise
+                    </Link>
+                    <Link
+                      href="/school-and-education"
+                      className={cn(
+                        "text-xl hover:text-white transition-colors",
+                        pathname === "/school-and-education" && "text-white",
+                      )}
+                      onClick={handleLinkClick}
+                    >
+                      Schools & Educational Institutions
                     </Link>
                   </div>
                 </AccordionContent>

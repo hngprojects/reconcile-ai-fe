@@ -71,10 +71,28 @@ const Nav = () => {
                 <DropdownMenuItem className="hover:bg-[#2E604A]/10">
                   <Link
                     className="font-medium text-[#333333] w-full hover:text-[#2E604A]"
+                    href="/financial-pro"
+                    onClick={handleDropdownClick}
+                  >
+                    Financial Professionals
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-[#2E604A]/10">
+                  <Link
+                    className="font-medium text-[#333333] w-full hover:text-[#2E604A]"
                     href="/enterprise"
                     onClick={handleDropdownClick}
                   >
                     Enterprise
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-[#2E604A]/10">
+                  <Link
+                    className="font-medium text-[#333333] w-full hover:text-[#2E604A]"
+                    href="/school-and-education"
+                    onClick={handleDropdownClick}
+                  >
+                    Schools & Educational Institutions
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>

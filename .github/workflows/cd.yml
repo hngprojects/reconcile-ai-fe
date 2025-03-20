@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: reconcile
+    runs-on: hng12interns
     timeout-minutes: 10
 
     steps:
@@ -20,17 +20,14 @@ jobs:
         with:
           node-version: "20"
 
-      # - name: Install Dependencies
-      #   run: npm install
-
       - name: Remove GitHub Actions Cache
         run: |
-           rm -rf /home/runner/.npm
-           rm -rf /home/runner/.cache
-           rm -rf /home/runner/_work/_tool/node
-           npm cache clean --force
+          rm -rf /home/runner/.npm
+          rm -rf /home/runner/.cache
+          rm -rf /home/runner/_work/_tool/node
+          npm cache clean --force
 
-      - name: Setup Node.js
+      - name: Setup Node.js (Again)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -46,10 +43,6 @@ jobs:
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
-
-    # - name: Create .env file
-    #   run: |
-    #     echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" > .env
 
       - name: Build Next.js App
         run: npm run build
@@ -71,11 +64,11 @@ jobs:
 
             BRANCH=$(basename "${{ github.ref }}")
             if [[ "$BRANCH" == "main" ]]; then
-              FE_PATH="/home/reconcile/fe-main"
+              FE_PATH="/home/reconxi/frontend/main"
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
-              FE_PATH="/home/reconcile/fe"
+              FE_PATH="/home/reconxi/frontend/staging"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi
