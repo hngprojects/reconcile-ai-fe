@@ -6,23 +6,27 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "Completely Free to Start",
+    title: "Faster & more accurate",
     description:
-      "Get started with free bank reconciliation software, no upfront costs.",
+      "AI-driven financial reconciliation in minutes with reduced error.",
   },
   {
-    title: "No More Spreadsheets",
+    title: "Instant and detailed reporting",
     description:
-      "AI-driven automated reconciliation software simplifies your workflow.",
+      "ReconXi records the details of the reconciliation process and allows you to export the reconciliation reports in the CSV file format",
   },
   {
-    title: "Easy for Any Business",
+    title: "Easy to use",
     description:
-      "Whether you're a freelancer, startup, or small business, enjoy free online bank reconciliation with ease.",
+      "This accounting software online is designed for accountants at all experience levels. More powerful than spreadsheets, simpler than complex accounting tools.",
   },
   {
-    title: "Scales as You Grow",
-    description: "Upgrade to affordable plans as your business needs increase.",
+    title: "Highly secure",
+    description: "Encrypted cloud storage ensures financial data is always protected and accessible only to authorized users.",
+  },
+  {
+    title: "Affordable and efficient",
+    description: "This easy accounting software offers an affordable pricing plan that starts with a free trial.",
   },
 ];
 export default function WhyReconXi() {
@@ -45,7 +49,22 @@ export default function WhyReconXi() {
             Why Financial Professionals Need ReconXi
           </h2>
 
+
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
+          <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="flex-1"
+            >
+              <Image
+                src="/assets/images/small-business-ft.svg"
+                alt="Visual representation of ReconXi features"
+                width={580}
+                height={400}
+                className="w-full h-auto"
+              />
+            </motion.div>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -61,8 +80,8 @@ export default function WhyReconXi() {
                     <Image
                       src="/assets/images/check-icon.svg"
                       alt="Check icon"
-                      width={28}
-                      height={28}
+                      width={23}
+                      height={23}
                       className="w-[23px] h-[23px] lg:w-7 lg:h-7"
                     />
                   </div>
@@ -78,20 +97,7 @@ export default function WhyReconXi() {
               ))}
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="flex-1"
-            >
-              <Image
-                src="/assets/images/small-business-ft.svg"
-                alt="Visual representation of ReconXi features"
-                width={580}
-                height={400}
-                className="w-full h-auto rounded-lg"
-              />
-            </motion.div>
+           
           </div>
         </motion.div>
       </Container>

@@ -5,9 +5,7 @@ import { Suspense } from "react";
 const HeroSection = dynamic(
   () => import("@/src/components/financial-pro/hero-section"),
 );
-const Features1 = dynamic(
-  () => import("@/src/components/financial-pro/Features"),
-);
+
 const VideoFeature = dynamic(
   () => import("@/src/components/financial-pro/Video"),
 );
@@ -30,17 +28,15 @@ export default function HomePage() {
         <HeroSection />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <Features1 />
-      </Suspense>
-      <Suspense fallback={<div className="min-h-[200px]" />}>
         <VideoFeature />
-      </Suspense>
-      <Suspense fallback={<div className="min-h-[200px]" />}>
-        <WhyReconXi />
       </Suspense>
       <Suspense fallback={<div className="min-h-[400px]" />}>
         <Benefits />
       </Suspense>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <WhyReconXi />
+      </Suspense>
+      
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <StartReconcile />
       </Suspense>

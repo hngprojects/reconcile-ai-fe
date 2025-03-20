@@ -8,66 +8,59 @@ import { motion } from "framer-motion";
 export default function FinancialHero() {
   return (
     <section
-      className="w-full py-8 lg:pb-[29px] lg:pt-[143px] bg-gray-100 overflow-hidden"
-      aria-labelledby="hero-heading"
+      className="w-full py-10 px-0 lg:px-20 md:py-20 pb-0 bg-gray-50"
+      aria-labelledby="hero-title"
     >
       <Container>
-        <div className="flex flex-col lg:flex-row items-center gap-[64px] lg:gap-4">
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="flex-1 max-w-[780px]"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col items-center gap-4 md:gap-6"
+        >
+          <h1
+            id="hero-title"
+            className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
           >
-            <div className="space-y-6">
-              <h1
-                id="hero-heading"
-                className="font-inter text-[32px] text-center lg:text-left sm:text-[45px] md:text-[48px] leading-[1.2] tracking-[-0.02em] font-semibold text-[#101828]"
-              >
-                Best Account Reconciliation Software
-              </h1>
+            Prepare bank reconciliation statements in minutes with minimal error
+          </h1>
 
-              <p className="font-inter text-base text-center lg:text-left sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                The best financial platform to automate transactions, spot
-                errors, and keep your books balanced.
-              </p>
+          <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
+          Say goodbye to backlogs of financial records waiting to be closed! Boost your efficiency and build confidence in your accounting career with ReconXi, an AI-powered accounting software online.
+          </p>
 
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-fit mt-7 mx-auto lg:mx-0"
-              >
-                <Link
-                  href="/file-upload"
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-[#2E604A] rounded-lg hover:bg-[#2E604A]/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E604A]"
-                  aria-label="Start enterprise reconciliation"
-                >
-                  Start Reconciliation
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Right Image */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className=" flex items-center"
+            className="flex flex-col items-center justify-center w-full gap-4 md:gap-6 my-4 md:my-6 sm:flex-row"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
-            <div className="w-full max-w-[570px] lg:h-[417px] -my-4">
-              <Image
-                src="/assets/images/financial-hero.svg"
-                alt="Financial reconciliation visualization"
-                width={460}
-                height={640}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
+            <Link
+              href="/file-upload"
+              aria-label="Start your free reconciliation trial"
+              className="bg-[#297B65] py-3 px-6 rounded-md font-semibold inline-flex justify-center items-center min-h-[48px] w-full sm:w-auto text-base text-white hover:bg-[#297B65]/90 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#297B65] focus:outline-none transition-colors"
+            >
+              Start Reconciliation
+            </Link>
           </motion.div>
-        </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          className="mt-8 md:mt-16 w-full max-w-[1200px] mx-auto"
+        >
+          <div className="relative w-full aspect-[2/1]">
+            <Image
+              src="/assets/images/financial-pro-heroImg.svg"
+              alt="Demonstration of ReconXi's reconciliation software interface"
+              fill
+              className="w-full h-auto object-contain"
+              sizes="(max-width: 1200px) 100vw, 1200px"
+              priority
+            />
+          </div>
+        </motion.div>
       </Container>
     </section>
   );

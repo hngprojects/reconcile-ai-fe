@@ -5,24 +5,24 @@ import { motion } from "framer-motion";
 
 const benefits = [
   {
-    title: "AI-Powered Accuracy",
+    title: "AI-Powered matching",
     description:
-      "No more human errors! Our intelligent matching system ensures that every transaction is correctly reconciled.",
+      "Transactions are automatically matched with bank statements, reducing manual work and improving accuracy.",
   },
   {
-    title: "Saves Hours of Work",
+    title: "Error detection and prevention",
     description:
-      "Automate reconciliation and focus on growing your business instead of wasting time on spreadsheets.",
+      "Flags duplicate transactions, missing records, and mismatches to prevent costly reporting mistakes.",
   },
   {
-    title: "Cost-Effective Solution",
+    title: "Manual override for adjustments",
     description:
-      "Get reconciliation features at an affordable price—starting with a free trial.",
+      "Gives you control to review and correct flagged discrepancies, ensuring 100% accuracy.",
   },
   {
-    title: "Scalable & Reliable",
+    title: "One-Click Report Export",
     description:
-      "Whether you're handling a few transactions or thousands, ReconXi grows with your business.",
+      "Quickly generate and download reconciliation statements/reports in CSV formats for easy sharing.",
   },
 ];
 

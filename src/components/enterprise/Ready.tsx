@@ -14,7 +14,7 @@ export default function StartReconcile() {
       aria-labelledby="ready-section-title"
     >
       <Container>
-        <div className="flex flex-col w-full lg:flex-row gap-8 lg:gap-16 items-center">
+        <div className="flex flex-col w-full lg:flex-row gap-8 lg:gap-10 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -25,7 +25,7 @@ export default function StartReconcile() {
             <Image
               src="/assets/images/ready-smallbusiness.svg"
               alt="Visual representation of ReconXi's reconciliation process"
-              width={680}
+              width={520}
               height={850}
               className="w-full h-auto rounded-lg"
             />
@@ -38,17 +38,14 @@ export default function StartReconcile() {
             transition={{ duration: 0.6 }}
             className="flex-1 w-full items-center space-y-6 md:space-y-8"
           >
-            <div className="space-y-3 md:space-y-4">
+            <div className="space-y-3 md:space-y-4 w-full">
               <h2
                 id="ready-section-title"
-                className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
+                className="font-inter text-[27px] w-full text-center sm:text-[32px] md:text-[36px] font-semibold text-[#101828]"
               >
-                Ready to Reconcile Smarter?
+                Get a Personalized Walkthrough
               </h2>
-              <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Join thousands of small businesses using ReconXi&apos;s free
-                bank reconciliation software to simplify accounting.
-              </p>
+             
             </div>
 
             <div
@@ -61,7 +58,7 @@ export default function StartReconcile() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <DemoForm buttonText="Start your free trial Now" />
+                <DemoForm buttonText="Schedule Your Free Enterprise Demo Today" />
               </motion.div>
             </div>
           </motion.div>
