@@ -281,6 +281,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 // Add plan to the context
 export const useReconciliation = () => {
   const context = useContext(ReconciliationContext);
+  const { user } = useAuth();
 
   if (!context) {
     throw new Error(
@@ -288,8 +289,7 @@ export const useReconciliation = () => {
     );
   }
 
-  const { user } = useAuth();
-  const userPlan = user?.plan?.toLowerCase() || "basic";
+  const userPlan = user?.payment_plan?.plan?.toLowerCase() || "basic";
 
   return {
     ...context,

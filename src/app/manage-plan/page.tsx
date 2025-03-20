@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/src/lib/utils";
@@ -9,30 +8,43 @@ import { useState, useEffect } from "react";
 import { CircleCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
+import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
+
+interface PlanMap {
+  [key: string]: number;
+  Basic: number;
+  Starter: number;
+  Business: number;
+}
 
 export default function ManagePlanPage() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
-    // Redirect if not logged in
-    if (!user) {
-      router.push("/login");
+    // Show auth modal if not logged in
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
       return;
     }
 
-    // Set active card based on user's current plan
-    if (user?.plan) {
-      const planMap = {
-        basic: 1,
-        starter: 2,
-        business: 3,
-      } as const;
-      const plan = user.plan.toLowerCase() as keyof typeof planMap;
-      setActiveCard(planMap[plan] || null);
+    // Set active card based on user's current plan from payment_plan
+    if (user?.payment_plan?.plan) {
+      const planMap: PlanMap = {
+        Basic: 1,
+        Starter: 2,
+        Business: 3,
+      };
+
+      const currentPlan = user.payment_plan.plan;
+      if (currentPlan in planMap) {
+        setActiveCard(planMap[currentPlan]);
+      }
     }
-  }, [user, router]);
+  }, [user, isAuthenticated]);
 
   const pricingPlans = [
     {
@@ -100,6 +112,14 @@ export default function ManagePlanPage() {
     </ul>
   );
 
+  const handlePlanClick = (planLink: string) => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+    window.location.href = planLink;
+  };
+
   return (
     <>
       <Container className="py-8 pb-[100px]">
@@ -132,7 +152,7 @@ export default function ManagePlanPage() {
         >
           {pricingPlans.map((plan) => {
             const isCurrentPlan = activeCard === plan.id;
-            const buttonDisabled = isCurrentPlan;
+            const isHovered = hoveredCard === plan.id;
 
             return (
               <div
@@ -142,10 +162,11 @@ export default function ManagePlanPage() {
                   isCurrentPlan
                     ? "bg-[#2E604A] scale-105"
                     : "border-2 border-[#38B43C] hover:scale-105",
-                  activeCard !== null && !isCurrentPlan && "opacity-50",
+                  !isCurrentPlan && activeCard !== null && "opacity-50",
+                  isHovered && !isCurrentPlan && "opacity-100",
                 )}
-                onMouseEnter={() => !isCurrentPlan && setActiveCard(plan.id)}
-                onMouseLeave={() => !isCurrentPlan && setActiveCard(null)}
+                onMouseEnter={() => setHoveredCard(plan.id)}
+                onMouseLeave={() => setHoveredCard(null)}
                 tabIndex={0}
                 aria-label={`${plan.name} pricing plan`}
               >
@@ -172,43 +193,25 @@ export default function ManagePlanPage() {
                   </p>
                   {renderFeaturesList(plan.features, activeCard === plan.id)}
 
-                  {buttonDisabled ? (
+                  {isCurrentPlan ? (
                     <button
                       disabled
                       className="w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] bg-gray-400 text-white cursor-not-allowed"
                     >
                       Current Plan
                     </button>
-                  ) : plan.id === 1 ? (
-                    <Link href={plan.link}>
-                      <button
-                        className={cn(
-                          "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                          activeCard === plan.id
-                            ? "bg-white text-[#2A5743] border-white"
-                            : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
-                        )}
-                      >
-                        Get Started
-                      </button>
-                    </Link>
                   ) : (
-                    <a
-                      href={plan.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => handlePlanClick(plan.link)}
+                      className={cn(
+                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",
+                        isHovered
+                          ? "bg-[#eaf5f1] text-[#2A5743] border-[#2E604A]"
+                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]",
+                      )}
                     >
-                      <button
-                        className={cn(
-                          "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                          activeCard === plan.id
-                            ? "bg-white text-[#2A5743] border-white"
-                            : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
-                        )}
-                      >
-                        Get Started
-                      </button>
-                    </a>
+                      Choose Plan
+                    </button>
                   )}
                 </div>
               </div>
@@ -216,6 +219,14 @@ export default function ManagePlanPage() {
           })}
         </motion.div>
       </Container>
+
+      <GoogleAuthModal
+        isOpen={showAuthModal}
+        onClose={() => !isAuthenticated && router.push("/")}
+        onSwitchToLogin={() => setShowAuthModal(false)}
+        onSuccess={() => setShowAuthModal(false)}
+      />
+
       <Footer />
     </>
   );

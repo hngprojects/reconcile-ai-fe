@@ -36,20 +36,14 @@ export default function UserDetails() {
         )}
       </div>
       <div>
-        <DropdownMenu>
+        <DropdownMenu onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
-            <p
-              onClick={() => setOpen(true)}
-              className="text-[#297b65] cursor-pointer"
-            >
+            <p className="text-[#297b65] cursor-pointer">
               {open ? <ChevronUp /> : <ChevronDown />}
             </p>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="absolute right-[-28px] top-[12px] min-w-[180px]">
-            <DropdownMenuItem
-              className="hover:bg-gray-100 cursor-pointer px-4 py-3"
-              onSelect={(e) => e.preventDefault()}
-            >
+            <DropdownMenuItem className="hover:bg-[#eaf5f1] cursor-pointer px-4 py-3 transition-colors">
               <Link
                 href="/manage-plan"
                 className="flex gap-3 items-center text-[#101828] w-full"
@@ -58,12 +52,9 @@ export default function UserDetails() {
                 <p>Manage Plan</p>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="hover:bg-red-300 cursor-pointer"
-              onSelect={(e) => e.preventDefault()}
-            >
+            <DropdownMenuItem className="hover:bg-red-100 cursor-pointer px-4 py-3 transition-colors">
               <div
-                className="text-red-600 flex gap-2 items-center"
+                className="text-red-600 flex gap-2 items-center w-full"
                 onClick={logout}
               >
                 <LogOut className="text-red-600" />
