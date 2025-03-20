@@ -50,7 +50,7 @@ export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
 
   const token = localStorage.getItem("access_token");
   const headers: HeadersInit = {
-    "Accept": "application/json"
+    Accept: "application/json",
   };
 
   if (token) {
@@ -277,29 +277,27 @@ export const handlePartnerSubmission = async (
   }
 };
 //CUSTOMER_FEEDBACK_API_URL
-export async function handleCustomerFeedback(userInfo: {
-  name: string;
-  email: string;
-  message: string;
-  request_type: string;
-}) {
+export const handleCustomerFeedback = async (formData: FormData) => {
   try {
     const response = await fetch(CUSTOMER_FEEDBACK_API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userInfo),
+      body: formData,
     });
+
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Failed to send customer message");
+      throw new Error(data.message || "Something went wrong");
     }
 
-    return { success: data.message };
+    return {
+      success: true,
+      data: data.data,
+    };
   } catch (error) {
-    console.error("Customer feedback error:", error);
-    return { error: "Something went wrong. Please try again later." };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
   }
-}
+};

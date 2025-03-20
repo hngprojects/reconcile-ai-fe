@@ -1,4 +1,4 @@
-import { ChevronUp, ChevronDown } from "lucide-react";
+import { ChevronUp, ChevronDown, CreditCard } from "lucide-react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { User } from "@/src/types/auth";
 
 export default function UserDetails() {
@@ -37,11 +38,26 @@ export default function UserDetails() {
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <p onClick={() => setOpen(true)} className="text-[#297b65] cursor-pointer">
+            <p
+              onClick={() => setOpen(true)}
+              className="text-[#297b65] cursor-pointer"
+            >
               {open ? <ChevronUp /> : <ChevronDown />}
             </p>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="absolute right-[-28px] top-[12px]">
+            <DropdownMenuItem
+              className="hover:bg-gray-100 cursor-pointer"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <Link
+                href="/manage-plan"
+                className="flex gap-2 items-center text-[#101828]"
+              >
+                <CreditCard className="w-4 h-4" />
+                <p>Manage Plan</p>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               className="hover:bg-red-300 cursor-pointer"
               onSelect={(e) => e.preventDefault()}

@@ -290,7 +290,7 @@ export default function PricingPage() {
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
         onSwitchToLogin={() => setShowAuthModal(false)}
-        onSucess={handleAuthSuccess}
+        onSuccess={handleAuthSuccess}
       />
       <CTASection />
       <Footer />

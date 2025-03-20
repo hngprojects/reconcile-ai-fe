@@ -9,7 +9,8 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { handleCustomerFeedback } from "@/src/lib/api";
 import { motion } from "framer-motion";
-
+import { Textarea } from "@/src/components/ui/textarea";
+import { toast } from "sonner";
 
 export default function ContactUs() {
   const textVariants = {
@@ -93,25 +94,30 @@ export default function ContactUs() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
-      // Transform the form data to match the API's expected structure
-      const apiData = {
-        name: formData.fullName,
-        email: formData.email,
-        message: formData.message,
-        request_type: formData.subject || "Feedback" // Using subject as request_type or defaulting to "Feedback"
-      };
-      
-      // Call the API function
-      const result = await handleCustomerFeedback(apiData);
-      
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.fullName);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("subject", formData.subject);
+      formDataToSend.append("message", formData.message);
+      formDataToSend.append("request_type", formData.subject || "Feedback");
+
+      if (formData.file) {
+        formDataToSend.append("file", formData.file);
+      }
+
+      const result = await handleCustomerFeedback(formDataToSend);
+
       if (result.success) {
+        toast.success("Feedback submitted successfully!");
         resetForm();
       } else if (result.error) {
+        toast.error("Error submitting feedback: " + result.error);
       }
     } catch (error) {
       console.error("Exception when submitting feedback:", error);
+      toast.error("An error occurred while submitting feedback");
     } finally {
       setIsSubmitting(false);
     }
@@ -122,34 +128,42 @@ export default function ContactUs() {
       <div className="flex-1 flex items-center justify-center py-[59px] px-4">
         <Container>
           <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.8,
-            ease: "easeOut",
-          }} className="w-full max-w-3xl mx-auto flex flex-col items-center text-center">
-            <motion.h2 initial="hidden"
-            animate="visible"
-            custom={1}
-            variants={textVariants} className="text-4xl md:text-5xl font-bold text-[#333] mb-4">
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              ease: "easeOut",
+            }}
+            className="w-full max-w-3xl mx-auto flex flex-col items-center text-center"
+          >
+            <motion.h2
+              initial="hidden"
+              animate="visible"
+              custom={1}
+              variants={textVariants}
+              className="text-4xl md:text-5xl font-bold text-[#333] mb-4"
+            >
               Give us your feedback
             </motion.h2>
-            <motion.p initial="hidden"
-            animate="visible"
-            custom={2}
-            variants={textVariants} className="text-lg text-[#475467] mb-12 max-w-2xl">
+            <motion.p
+              initial="hidden"
+              animate="visible"
+              custom={2}
+              variants={textVariants}
+              className="text-lg text-[#475467] mb-12 max-w-2xl"
+            >
               Thank you for reaching out! Please fill out the form below, and
               our team will reach out to you.
             </motion.p>
 
             <motion.form
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 1,
-              ease: "easeOut",
-              delay: 0.5,
-            }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 1,
+                ease: "easeOut",
+                delay: 0.5,
+              }}
               onSubmit={handleSubmit}
               className="w-full md:w-[650px] bg-white border border-gray-200 rounded-md p-6"
               aria-labelledby="form-heading"
@@ -210,16 +224,15 @@ export default function ContactUs() {
                   <Label htmlFor="message" className="text-sm text-[#717171]">
                     Message
                   </Label>
-                  <Input
+                  <Textarea
                     id="message"
                     name="message"
-                    type="text"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Message..."
+                    placeholder="Type your message here..."
                     required
                     aria-required="true"
-                    className="h-25 bg-white !text-base"
+                    className="w-full min-h-[120px] p-3 rounded-md border border-input bg-white text-base resize-none focus:outline-none focus:ring-2"
                   />
                 </div>
 
