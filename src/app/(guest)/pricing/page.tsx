@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/src/lib/utils";
 import Container from "@/src/components/Container";
@@ -10,7 +9,7 @@ import CTASection from "@/src/components/CTASection";
 import { motion } from "framer-motion";
 
 export default function PricingPage() {
-  const [currentPlan, setCurrentPlan] = useState("Free"); // "Free", "10", or "25"
+  const [currentPlan] = useState("Free"); //  "Free", "10", or "25"
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   const pricingPlans = [
@@ -82,7 +81,6 @@ export default function PricingPage() {
   return (
     <>
       <Container className="py-24">
-        {/* ... other components and motion animations ... */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -92,7 +90,6 @@ export default function PricingPage() {
           {pricingPlans.map((plan) => {
             // Determine if the current plan matches this pricing plan
             const isCurrentPlan = currentPlan === plan.price;
-
             return (
               <div
                 key={plan.id}
@@ -168,7 +165,6 @@ export default function PricingPage() {
             );
           })}
         </motion.div>
-        {/* ... rest of your code ... */}
       </Container>
       <CTASection />
       <Footer />
