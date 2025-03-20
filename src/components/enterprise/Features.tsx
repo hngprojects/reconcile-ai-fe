@@ -24,7 +24,7 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="w-full py-20" aria-labelledby="features-heading">
+    <section className="w-full py-20 px-0 lg:px-20" aria-labelledby="features-heading">
       <Container>
         <div className="flex flex-col gap-12">
           {/* Image - Moves to top on mobile */}

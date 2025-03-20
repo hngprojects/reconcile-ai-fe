@@ -10,29 +10,25 @@ const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
 export default function StartReconcile() {
   return (
     <section
-      className="py-10 md:py-20 bg-white"
+      className="py-10 md:py-20 px-0 lg:px-20 bg-white"
       aria-labelledby="ready-section-title"
     >
       <Container>
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
+        <div className="flex flex-col w-full lg:flex-row gap-8 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex-1 w-full"
+            className="flex-1 w-full min-w-[300px]"
           >
-            <div className="w-full">
-              <Image
-                src="/assets/images/ready-smallbusiness.svg"
-                alt="Visual representation of ReconXi's reconciliation process"
-                width={536}
-                height={410}
-                className="rounded-lg shadow-lg object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 580px"
-                priority={false}
-              />
-            </div>
+            <Image
+              src="/assets/images/ready-smallbusiness.svg"
+              alt="Visual representation of ReconXi's reconciliation process"
+              width={680}
+              height={850}
+              className="w-full h-auto rounded-lg"
+            />
           </motion.div>
 
           <motion.div
@@ -40,7 +36,7 @@ export default function StartReconcile() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex-1 space-y-6 md:space-y-8"
+            className="flex-1 w-full space-y-6 md:space-y-8 justify-center"
           >
             <div className="space-y-3 md:space-y-4">
               <h2
@@ -55,12 +51,16 @@ export default function StartReconcile() {
               </p>
             </div>
 
-            <div className="rounded-lg" aria-label="Start free trial form">
+            <div
+              className="rounded-lg  mx-auto"
+              aria-label="Start free trial form"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
+                className="w-full"
               >
                 <DemoForm buttonText="Start your free trial Now" />
               </motion.div>

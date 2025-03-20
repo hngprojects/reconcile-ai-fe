@@ -33,9 +33,10 @@ import {
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   ReconciliationItem,
-  Transaction,
+  FrontendTransaction,
 } from "../types/frontendResponseTypes";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+import useRowHeights from "../hooks/useRowHeights";
 
 export function LedgerTable() {
   const { isAuthenticated } = useAuth();
@@ -55,30 +56,79 @@ export function LedgerTable() {
   const transactionOptions: TransactionOption[] = addValueAndLabel(
     unmatchedBankTransactions
   );
+  const rowHeights = useRowHeights(paginatedData);
 
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
       accessorKey: "ledger_txn.date",
       header: "Date",
       cell: ({ row }) => {
-        const item = row.original;
-        return item.ledger_txn ? item.ledger_txn.date : null;
+        const ledgers = row.original.ledgers;
+        if (!ledgers || ledgers.length === 0) return null;
+
+        return (
+          <div className="flex flex-col px-1">
+            {ledgers.map((ledger, index) => (
+              <div
+                key={`${ledger.ledger_txn.id}-${index}`}
+                className={cn(
+                  "px-3 py-5",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                {ledger.ledger_txn.date}
+              </div>
+            ))}
+          </div>
+        );
       },
     },
     {
       accessorKey: "ledger_txn.description",
       header: "Description",
       cell: ({ row }) => {
-        const item = row.original;
-        return item.ledger_txn ? item.ledger_txn.description : null;
+        const ledgers = row.original.ledgers;
+        if (!ledgers || ledgers.length === 0) return null;
+
+        return (
+          <div className="flex flex-col px-1">
+            {ledgers.map((ledger, index) => (
+              <div
+                key={`${ledger.ledger_txn.id}-${index}`}
+                className={cn(
+                  "px-3 py-5",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                {ledger.ledger_txn.description}
+              </div>
+            ))}
+          </div>
+        );
       },
     },
     {
       accessorKey: "ledger_txn.amount",
       header: "Amount",
       cell: ({ row }) => {
-        const item = row.original;
-        return item.ledger_txn ? item.ledger_txn.amount : null;
+        const ledgers = row.original.ledgers;
+        if (!ledgers || ledgers.length === 0) return null;
+
+        return (
+          <div className="flex flex-col px-1">
+            {ledgers.map((ledger, index) => (
+              <div
+                key={`${ledger.ledger_txn.id}-${index}`}
+                className={cn(
+                  "px-3 py-5",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                {ledger.ledger_txn.amount}
+              </div>
+            ))}
+          </div>
+        );
       },
     },
   ];
@@ -192,7 +242,7 @@ export function LedgerTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => {
+            {table.getRowModel().rows.map((row, index) => {
               const reconciledDataRow = row.original;
 
               return (
@@ -202,20 +252,21 @@ export function LedgerTable() {
                     "transition-colors",
                     row.original.matched
                       ? "bg-green-50 hover:bg-green-50"
-                      : row.original.ledger_txn
+                      : row.original.ledgers
                         ? "bg-red-50 hover:bg-red-50"
                         : "hover:bg-white"
                   )}
+                  style={{ height: `${rowHeights[index]}px` }}
                 >
-                  {row.original.ledger_txn ? (
-                    // If ledger transaction exists, render normal cells
+                  {row.original.ledgers ? (
+                    // If ledger transactions exist, render normal cells
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
-                        className={cn("px-6 py-5 !h-[0px]", {
+                        className={cn("py-0", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
-                          "flex items-center justify-center !h-[60.4px]":
+                          "flex items-center justify-center":
                             cell.column.id === "action",
                         })}
                       >
@@ -234,7 +285,7 @@ export function LedgerTable() {
                             ? ledgerColumns.length - 1
                             : ledgerColumns.length
                         }
-                        className={cn("px-4 py-[11px] !h-[0px]", {
+                        className={cn("px-4 !h-[0px]", {
                           "border-r": isAuthenticated,
                         })}
                       >
@@ -247,7 +298,7 @@ export function LedgerTable() {
                           placeholder="Find possible match"
                           hidePlaceholderWhenSelected
                           onConfirm={(option) => {
-                            const selectedOption: Transaction = {
+                            const selectedOption: FrontendTransaction = {
                               id: `bank_txn_${Date.now()}`,
                               description: option.description,
                               date: option.date,
@@ -255,11 +306,16 @@ export function LedgerTable() {
                             };
                             console.log("Confirmed:", option);
 
-                            if (reconciledDataRow.bank_txn) {
-                              onMatch(
-                                reconciledDataRow.bank_txn,
-                                selectedOption
-                              );
+                            if (
+                              reconciledDataRow.statements &&
+                              reconciledDataRow.statements[0]?.bank_txn
+                            ) {
+                              onMatch(reconciledDataRow.statements, [
+                                {
+                                  ledger_txn: { ...selectedOption },
+                                  match_score: "0",
+                                },
+                              ]);
                             }
                           }}
                           emptyIndicator={
@@ -270,7 +326,7 @@ export function LedgerTable() {
                         />
                       </TableCell>
                       {isAuthenticated && (
-                        <TableCell className="px-6 py-5 !h-[60.4px] flex items-center justify-center">
+                        <TableCell className="py-5 flex items-center justify-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <button
