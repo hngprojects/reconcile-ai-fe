@@ -1,5 +1,14 @@
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { cn } from "@/src/lib/utils";
+import Link from "next/link";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/src/components/ui/dropdown-menu"
+import { usePathname } from "next/navigation";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -14,6 +23,11 @@ const MobileMenu = ({
   onLogin,
   onSignup,
 }: MobileMenuProps) => {
+
+  const pathname = usePathname();
+
+  console.log("pathname", pathname)
+
   return (
     <div
       id="mobile-menu"
@@ -35,7 +49,31 @@ const MobileMenu = ({
           <X className="h-12 w-12" />
         </button>
 
-        <div className="flex flex-col items-center justify-center flex-1 gap-4">
+        <div className="flex flex-col justify-between flex-1 gap-4">
+          <nav className="gap-6 flex flex-col">
+            <Link className={cn("font-medium text-2xl text-white/80", pathname === "/" && "text-white")} href="/">Home</Link>
+            <div className="">
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 cursor-pointer">
+                <span className="text-white/80 text-2xl">Industries</span>
+                <ChevronDown className="w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="text-white/80 text-2xl bg-[#214435]">
+                <DropdownMenuItem>
+                  <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/small-business" && "text-white")} href="/small-business">Small Business owner</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/enterprise" && "text-white")} href="/enterprise">Enterprise</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            </div>
+            <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/blog" && "text-white")} href="/blog">Blog</Link>
+            <Link className={cn("font-medium text-white/80 text-2xl", pathname === "/pricing" && "text-white")} href="/pricing">Pricing</Link>
+          </nav>
+
+        <div className="flex items-center gap-4 w-full">
+
           <button
             type="button"
             onClick={onLogin}
@@ -52,6 +90,7 @@ const MobileMenu = ({
           >
             Sign up
           </button>
+        </div>
         </div>
       </div>
     </div>
