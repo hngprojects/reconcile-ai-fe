@@ -17,7 +17,7 @@ const whoCanUseContent = [
         id: 2,
         title: "Financial Professionals",
         content: "Accountants, auditors, and financial analysts rely on ReconXi to reconcile financial data, and minimizing manual effort.",
-        linkUrl: "/financial-professionals"
+        linkUrl: "/financial-pro"
     },
     {
         id: 3,

@@ -46,7 +46,7 @@ const Nav = () => {
                 <Link className={cn("font-medium text-[#333333] w-full", pathname === "/small-business" && "text-[#2E604A]")} href="/small-business">Small Business owner</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link className={cn("font-medium text-[#333333] w-full", pathname === "/financial-professionals" && "text-[#2E604A]")} href="/financial-professionals">Financial Professionals</Link>
+                <Link className={cn("font-medium text-[#333333] w-full", pathname === "/financial-pro" && "text-[#2E604A]")} href="/financial-pro">Financial Professionals</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link className={cn("font-medium text-[#333333] w-full", pathname === "/enterprise" && "text-[#2E604A]")} href="/enterprise">Enterprise</Link>
