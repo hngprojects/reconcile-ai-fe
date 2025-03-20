@@ -8,13 +8,14 @@ on:
 
 jobs:
   check-storage:
-    runs-on: ubuntu-latest
+    runs-on: reconcile
     steps:
       - name: Check available storage
         run: df -h
 
   deploy:
     runs-on: reconcile
+    needs: check-storage  # Ensures check-storage runs first
     timeout-minutes: 10
 
     steps:
