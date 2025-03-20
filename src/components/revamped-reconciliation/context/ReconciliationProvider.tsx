@@ -17,12 +17,12 @@ import {
   LedgerWithScore,
 } from "../types/frontendResponseTypes";
 // import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
-import { updateReconciliation } from "@/src/lib/api";
+import { updateReconciliation, fetchReconciliation } from "@/src/lib/api";
 import { ManualRequestBody } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { transformReconciliationData } from "../helpers/transformReconciliationData";
-import { dummyBackendResponseData } from "../types/dummyBackendResponseData";
 import { useAuth } from "@/src/components/context/AuthContext";
+import { usePathname } from 'next/navigation'
 
 interface ReconciliationContextProps {
   data: ReconciliationResponse;
@@ -95,24 +95,29 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
     null,
   );
+  const path = usePathname();
 
   useEffect(() => {
-    const reconciliationData = transformReconciliationData(
+    /* const reconciliationData = transformReconciliationData(
       dummyBackendResponseData
-    );
+    ); */
+   const reconciliationId = path.split('/')[2];
+   console.log(reconciliationId);
+   const fetch = async() => {
+     try {
+        const response = await fetchReconciliation(reconciliationId as string);
 
-    // const localData = localStorage.getItem("reconciliation") as string;
-    // const parsedData: ReconciliationResponse = localData
-    //   ? JSON.parse(localData)
-    //   : ({} as ReconciliationResponse);
-    // const reconciliationData = parsedData;
+        if(response.success){
+           const reconciliationData = transformReconciliationData(response.data);
+           console.log({ reconciliationData });
 
-    // const revertedData = revertToBackendFormat(parsedData);
-    // console.log({ reconciliationData, revertedData });
-
-    console.log({ reconciliationData });
-
-    setData(reconciliationData);
+            setData(reconciliationData);
+        }
+     } catch (e) {
+        console.error('Error: ', e);
+     }
+   }
+    fetch();
   }, []); // Removed `data` from dependency array to prevent infinite re-rendering
 
   const reconciliationData = useMemo(

@@ -7,7 +7,7 @@ import {
   MARKETING_DEMO_API_URL,
   PARTNER_API_URL,
   CUSTOMER_FEEDBACK_API_URL,
-  RECONCILIATION_RESULT_API_URL
+  RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
 } from "./apiEndpoints";
 
@@ -85,6 +85,7 @@ export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
     });
 
     const data = await response.json();
+    localStorage.setItem('reconciliation_id', data.data.reconciliation_id);
 
     if (response.status === 429) {
       return {
