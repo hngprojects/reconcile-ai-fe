@@ -7,15 +7,8 @@ on:
       - dev
 
 jobs:
-  check-storage:
-    runs-on: reconcile
-    steps:
-      - name: Check available storage
-        run: df -h
-
   deploy:
     runs-on: hng12interns
-    needs: check-storage  # Ensures check-storage runs first
     timeout-minutes: 10
 
     steps:
@@ -71,11 +64,11 @@ jobs:
 
             BRANCH=$(basename "${{ github.ref }}")
             if [[ "$BRANCH" == "main" ]]; then
-              FE_PATH="/home/reconcile/fe-main"
+              FE_PATH="/home/reconxi/frontend/main"
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
-              FE_PATH="/home/reconcile/fe"
+              FE_PATH="/home/reconxi/frontend/staging"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi

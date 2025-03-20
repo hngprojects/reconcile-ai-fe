@@ -27,6 +27,7 @@ export default function PricingPage() {
         "Upload CSV files",
         "Basic AI reconciliation",
         "Manually match transactions detected as unmatched",
+        "Email notification for reconciled results",
       ],
     },
     {
@@ -40,6 +41,7 @@ export default function PricingPage() {
         "Export results to CSV",
         "Manual adjustments (search by description only)",
         "Unlink, and match records",
+        "Email notification for reconciled results",
       ],
     },
     {
@@ -81,14 +83,14 @@ export default function PricingPage() {
             <CircleCheck
               className={cn(
                 "w-5 h-5",
-                isActive ? "text-white" : "text-[#39B057]"
+                isActive ? "text-white" : "text-[#39B057]",
               )}
             />
           </span>
           <span
             className={cn(
               "font-[400] text-[13px] leading-[150%] font-inter",
-              isActive ? "text-white" : "text-[#333333]"
+              isActive ? "text-white" : "text-[#333333]",
             )}
           >
             {feature}
@@ -142,7 +144,7 @@ export default function PricingPage() {
                 activeCard === plan.id
                   ? "bg-[#2E604A] scale-105"
                   : "border-2 border-[#38B43C] hover:scale-105",
-                activeCard !== null && activeCard !== plan.id && "opacity-50"
+                activeCard !== null && activeCard !== plan.id && "opacity-50",
               )}
               onMouseEnter={() => setActiveCard(plan.id)}
               onMouseLeave={() => setActiveCard(null)}
@@ -153,7 +155,7 @@ export default function PricingPage() {
                 <h3
                   className={cn(
                     "font-[500] text-[16px] leading-[100%] font-inter",
-                    activeCard === plan.id ? "text-white" : "text-black"
+                    activeCard === plan.id ? "text-white" : "text-black",
                   )}
                 >
                   {plan.name}
@@ -164,7 +166,7 @@ export default function PricingPage() {
                 <p
                   className={cn(
                     "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black"
+                    activeCard === plan.id ? "text-white" : "text-black",
                   )}
                 >
                   <span className="text-2xl">$</span>
@@ -179,7 +181,7 @@ export default function PricingPage() {
                       "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
                       activeCard === plan.id
                         ? "bg-white text-[#2A5743] border-white"
-                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]"
+                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
                     )}
                   >
                     Get Started
@@ -191,7 +193,7 @@ export default function PricingPage() {
                       "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
                       activeCard === plan.id
                         ? "bg-white text-[#2A5743] border-white"
-                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]"
+                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
                     )}
                   >
                     Get Started
@@ -280,7 +282,7 @@ export default function PricingPage() {
                       {i === 1 && "Helps to reduce errors."}
                     </p>
                   </div>
-                )
+                ),
               )}
             </div>
           </motion.div>

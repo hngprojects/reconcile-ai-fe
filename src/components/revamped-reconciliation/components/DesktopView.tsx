@@ -27,7 +27,22 @@ export default function DesktopView() {
     isLoading,
     selectedRow,
     setSelectedRow,
+    userPlan,
   } = useReconciliation();
+
+  // Add plan validation helper
+  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
+    if (!featureType) return false;
+
+    switch (userPlan) {
+      case "starter":
+        return true;
+      case "basic":
+        return false;
+      default:
+        return true; // business plan has all features
+    }
+  };
 
   // Show CSV structure error toast
   useEffect(() => {
@@ -157,25 +172,27 @@ export default function DesktopView() {
         </div>
       )}
 
-      {/* header section */}
+      {/* header section with conditional export button */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
-        <button
-          className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
-          onClick={handleExport}
-          disabled={isExporting}
-        >
-          {isExporting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
-            </>
-          ) : (
-            <>
-              <DownloadCloudIcon className="mr-2 w-5 h-5" />
-              Export
-            </>
-          )}
-        </button>
+        {hasPlanAccess("export") && (
+          <button
+            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+            onClick={handleExport}
+            disabled={isExporting}
+          >
+            {isExporting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+              </>
+            ) : (
+              <>
+                <DownloadCloudIcon className="mr-2 w-5 h-5" />
+                Export
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2">
@@ -199,23 +216,26 @@ export default function DesktopView() {
 
       <PaginationControls />
 
-      <UnlinkModal
-        isOpen={showUnlinkModal}
-        isLoading={isLoading}
-        onClose={() => {
-          setShowUnlinkModal(false);
-          setSelectedRow(null);
-        }}
-        onConfirm={async () => {
-          if (!selectedRow) return;
-
-          if (selectedRow.bank_txn && selectedRow.ledger_txn) {
-            await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
-
+      {/* Conditionally render unlink modal based on plan */}
+      {hasPlanAccess("unlink") && (
+        <UnlinkModal
+          isOpen={showUnlinkModal}
+          isLoading={isLoading}
+          onClose={() => {
+            setShowUnlinkModal(false);
             setSelectedRow(null);
-          }
-        }}
-      />
+          }}
+          onConfirm={async () => {
+            if (!selectedRow) return;
+
+            if (selectedRow.bank_txn && selectedRow.ledger_txn) {
+              await onUnlink(selectedRow.bank_txn, selectedRow.ledger_txn);
+
+              setSelectedRow(null);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -45,14 +45,14 @@ export default function UserDetails() {
               {open ? <ChevronUp /> : <ChevronDown />}
             </p>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="absolute right-[-28px] top-[12px]">
+          <DropdownMenuContent className="absolute right-[-28px] top-[12px] min-w-[180px]">
             <DropdownMenuItem
-              className="hover:bg-gray-100 cursor-pointer"
+              className="hover:bg-gray-100 cursor-pointer px-4 py-3"
               onSelect={(e) => e.preventDefault()}
             >
               <Link
                 href="/manage-plan"
-                className="flex gap-2 items-center text-[#101828]"
+                className="flex gap-3 items-center text-[#101828] w-full"
               >
                 <CreditCard className="w-4 h-4" />
                 <p>Manage Plan</p>

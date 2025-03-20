@@ -5,31 +5,34 @@ import { ArrowLeft } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import Container from "@/src/components/Container";
 import Footer from "@/src/components/Footer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CircleCheck } from "lucide-react";
 import { motion } from "framer-motion";
-// import { useAuth } from "@/src/components/context/AuthContext";
-// import { redirect } from "next/navigation";
+import { useAuth } from "@/src/components/context/AuthContext";
 
 export default function ManagePlanPage() {
   const router = useRouter();
-  //   const { user } = useAuth();
+  const { user } = useAuth();
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
-  //   useEffect(() => {
-  //     // Redirect if not logged in
-  //     if (!user) {
-  //       redirect("/login");
-  //     }
+  useEffect(() => {
+    // Redirect if not logged in
+    if (!user) {
+      router.push("/login");
+      return;
+    }
 
-  //     // Set active card based on user's current plan
-  //     if (user?.plan) {
-  //       const planIndex = pricingPlans.findIndex(
-  //         (plan) => plan.name === user.plan
-  //       );
-  //       setActiveCard(planIndex + 1);
-  //     }
-  //   }, [user]);
+    // Set active card based on user's current plan
+    if (user?.plan) {
+      const planMap = {
+        basic: 1,
+        starter: 2,
+        business: 3,
+      } as const;
+      const plan = user.plan.toLowerCase() as keyof typeof planMap;
+      setActiveCard(planMap[plan] || null);
+    }
+  }, [user, router]);
 
   const pricingPlans = [
     {
@@ -127,74 +130,90 @@ export default function ManagePlanPage() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="mt-8 flex flex-col lg:flex-row justify-between gap-8 px-4"
         >
-          {pricingPlans.map((plan) => (
-            <div
-              key={plan.id}
-              className={cn(
-                "relative w-full lg:w-[383px] h-[563px] rounded-[13px] p-[60px_24px] md:p-[80px_28px] lg:p-[94.7px_32px_94.7px_32px] transition-all duration-300",
-                activeCard === plan.id
-                  ? "bg-[#2E604A] scale-105"
-                  : "border-2 border-[#38B43C] hover:scale-105",
-                activeCard !== null && activeCard !== plan.id && "opacity-50",
-              )}
-              onMouseEnter={() => setActiveCard(plan.id)}
-              onMouseLeave={() => setActiveCard(null)}
-              tabIndex={0}
-              aria-label={`${plan.name} pricing plan`}
-            >
-              <div className="border-b border-[#BFB8B8] pb-5">
-                <h3
-                  className={cn(
-                    "font-[500] text-[16px] leading-[100%] font-inter",
-                    activeCard === plan.id ? "text-white" : "text-black",
-                  )}
-                >
-                  {plan.name}
-                </h3>
-              </div>
+          {pricingPlans.map((plan) => {
+            const isCurrentPlan = activeCard === plan.id;
+            const buttonDisabled = isCurrentPlan;
 
-              <div className="mt-11 space-y-6 -mx-3">
-                <p
-                  className={cn(
-                    "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black",
-                  )}
-                >
-                  <span className="text-2xl">$</span>
-                  {plan.price}
-                </p>
-                {renderFeaturesList(plan.features, activeCard === plan.id)}
-
-                {plan.id === 1 ? (
-                  <Link href={plan.link}>
-                    <button
-                      className={cn(
-                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                        activeCard === plan.id
-                          ? "bg-white text-[#2A5743] border-white"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
-                      )}
-                    >
-                      Get Started
-                    </button>
-                  </Link>
-                ) : (
-                  <a href={plan.link} target="_blank" rel="noopener noreferrer">
-                    <button
-                      className={cn(
-                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                        activeCard === plan.id
-                          ? "bg-white text-[#2A5743] border-white"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
-                      )}
-                    >
-                      Get Started
-                    </button>
-                  </a>
+            return (
+              <div
+                key={plan.id}
+                className={cn(
+                  "relative w-full lg:w-[383px] h-[563px] rounded-[13px] p-[60px_24px] md:p-[80px_28px] lg:p-[94.7px_32px_94.7px_32px] transition-all duration-300",
+                  isCurrentPlan
+                    ? "bg-[#2E604A] scale-105"
+                    : "border-2 border-[#38B43C] hover:scale-105",
+                  activeCard !== null && !isCurrentPlan && "opacity-50",
                 )}
+                onMouseEnter={() => !isCurrentPlan && setActiveCard(plan.id)}
+                onMouseLeave={() => !isCurrentPlan && setActiveCard(null)}
+                tabIndex={0}
+                aria-label={`${plan.name} pricing plan`}
+              >
+                <div className="border-b border-[#BFB8B8] pb-5">
+                  <h3
+                    className={cn(
+                      "font-[500] text-[16px] leading-[100%] font-inter",
+                      activeCard === plan.id ? "text-white" : "text-black",
+                    )}
+                  >
+                    {plan.name}
+                  </h3>
+                </div>
+
+                <div className="mt-11 space-y-6 -mx-3">
+                  <p
+                    className={cn(
+                      "font-[600] text-[32px] leading-[100%]",
+                      activeCard === plan.id ? "text-white" : "text-black",
+                    )}
+                  >
+                    <span className="text-2xl">$</span>
+                    {plan.price}
+                  </p>
+                  {renderFeaturesList(plan.features, activeCard === plan.id)}
+
+                  {buttonDisabled ? (
+                    <button
+                      disabled
+                      className="w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] bg-gray-400 text-white cursor-not-allowed"
+                    >
+                      Current Plan
+                    </button>
+                  ) : plan.id === 1 ? (
+                    <Link href={plan.link}>
+                      <button
+                        className={cn(
+                          "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
+                          activeCard === plan.id
+                            ? "bg-white text-[#2A5743] border-white"
+                            : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                        )}
+                      >
+                        Get Started
+                      </button>
+                    </Link>
+                  ) : (
+                    <a
+                      href={plan.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <button
+                        className={cn(
+                          "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
+                          activeCard === plan.id
+                            ? "bg-white text-[#2A5743] border-white"
+                            : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                        )}
+                      >
+                        Get Started
+                      </button>
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </motion.div>
       </Container>
       <Footer />
