@@ -17,7 +17,7 @@ const whoCanUseContent = [
         id: 2,
         title: "Financial Professionals",
         content: "Accountants, auditors, and financial analysts rely on ReconXi to reconcile financial data, and minimizing manual effort.",
-        linkUrl: "/"
+        linkUrl: "/financial-professionals"
     },
     {
         id: 3,
@@ -29,7 +29,7 @@ const whoCanUseContent = [
         id: 4,
         title: "Schools & Educational Institutions",
         content: "Educational institutions use ReconXi to automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors",
-        linkUrl: "/"
+        linkUrl: "/school-and-education"
     },
 ]
 
