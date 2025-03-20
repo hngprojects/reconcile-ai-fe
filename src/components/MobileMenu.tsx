@@ -1,5 +1,6 @@
 import { X } from "lucide-react";
 import { cn } from "@/src/lib/utils";
+import Link from "next/link";
 import { 
   DropdownMenu, 
   DropdownMenuTrigger, 
@@ -44,7 +45,8 @@ const MobileMenu = ({
 
         <div className="flex flex-col gap-2">
         <div className="items-center gap-x-[17px] ">
-                <a href="/" className="text-white">Home</a>
+                
+                <Link href="/" className="text-white">Home</Link>
                 
                 <DropdownMenu>
                     <DropdownMenuTrigger className="cursor-pointer flex items-center gap-1">
@@ -59,16 +61,17 @@ const MobileMenu = ({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuItem>
-                            <a href="/small-business" className="text-[#333333]">Small Business Owner</a>
+                        <Link href="/small-businesses">Small Business Owner</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <a href="/enterprise" className="text-[#333333]">Enterprise</a>
+                        <Link href="/enterprise">Enterprise</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <a href="/blog" className="text-white">Blog</a>
-                <a href="/pricing" className="text-white">Pricing</a>
+                <Link href="/blog" className="text-white">Blog</Link>
+                <Link href="/pricing" className="text-white">Pricing</Link>
+
             </div>
           <button
             type="button"
