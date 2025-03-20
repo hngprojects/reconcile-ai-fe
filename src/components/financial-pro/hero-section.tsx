@@ -59,7 +59,7 @@ export default function FinancialHero() {
             <div className="w-full max-w-[570px] lg:h-[417px] -my-4">
               <Image
                 src="/assets/images/financial-hero.svg"
-                alt="Enterprise reconciliation visualization"
+                alt="Financial reconciliation visualization"
                 width={460}
                 height={640}
                 className="w-full h-auto"
