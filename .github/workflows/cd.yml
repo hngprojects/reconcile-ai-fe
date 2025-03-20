@@ -23,11 +23,24 @@ jobs:
       # - name: Install Dependencies
       #   run: npm install
 
-      - name: Install Dependencies
+      - name: Remove Node.js Tool Cache
+        run: |
+          rm -rf ~/.npm ~/.cache ~/.nvm
+          sudo rm -rf /home/reconcile/_work/_tool/node || true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Clear npm Cache and Dependencies
         run: |
           rm -rf node_modules package-lock.json
           npm cache clean --force
-          npm install
+
+      - name: Install Dependencies
+        run: npm install
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
