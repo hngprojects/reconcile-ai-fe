@@ -49,6 +49,7 @@ export function BankTable() {
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
+    userPlan,
   } = useReconciliation();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransactionRow, setSelectedTransactionRow] =
@@ -57,6 +58,20 @@ export function BankTable() {
     unmatchedLedgerTransactions
   );
   const rowHeights = useRowHeights(paginatedData);
+
+  // Add plan validation helper
+  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
+    if (!featureType) return false;
+
+    switch (userPlan) {
+      case "starter":
+        return true;
+      case "basic":
+        return false;
+      default:
+        return true; // business plan has all features
+    }
+  };
 
   // Base columns that are always visible
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
@@ -189,7 +204,7 @@ export function BankTable() {
   // Combine columns based on authentication
   const bankColumns = [
     ...baseColumns,
-    ...(isAuthenticated ? [actionColumn] : []),
+    ...(isAuthenticated && hasPlanAccess("match") ? [actionColumn] : []),
   ];
 
   const table = useReactTable({
@@ -330,7 +345,7 @@ export function BankTable() {
                           }
                         />
                       </TableCell>
-                      {isAuthenticated && (
+                      {isAuthenticated && hasPlanAccess("match") && (
                         <TableCell className="py-5 flex items-center justify-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
