@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export default function Features1() {
   return (
     <section className="w-full py-12 md:py-20" aria-labelledby="features-title">
-      <Container>
+      <Container className="overflow-x-hidden">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
