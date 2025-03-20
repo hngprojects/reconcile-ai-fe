@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: hng12interns
     timeout-minutes: 10
 
     steps:
