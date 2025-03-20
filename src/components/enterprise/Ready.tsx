@@ -9,22 +9,25 @@ const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
 
 export default function StartReconcile() {
   return (
-    <section className="py-20 bg-white">
+    <section
+      className="py-10 px-0 lg:px-20 md:py-20 bg-white"
+      aria-labelledby="ready-section-title"
+    >
       <Container>
-        <div className="flex flex-col lg:flex-row gap-16 items-center">
+        <div className="flex flex-col w-full lg:flex-row gap-8 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex-1"
+            className="flex-1 w-full min-w-[300px]"
           >
             <Image
               src="/assets/images/ready-smallbusiness.svg"
-              alt="Reconciliation Demo"
-              width={580}
-              height={400}
-              className="w-full h-auto rounded-lg shadow-lg"
+              alt="Visual representation of ReconXi's reconciliation process"
+              width={680}
+              height={850}
+              className="w-full h-auto rounded-lg"
             />
           </motion.div>
 
@@ -33,26 +36,32 @@ export default function StartReconcile() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="flex-1 space-y-8"
+            className="flex-1 w-full items-center space-y-6 md:space-y-8"
           >
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <h2
                 id="ready-section-title"
                 className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
               >
-                Get a Personalized Walkthrough
+                Ready to Reconcile Smarter?
               </h2>
+              <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
+                Join thousands of small businesses using ReconXi&apos;s free
+                bank reconciliation software to simplify accounting.
+              </p>
             </div>
 
-            {/* Demo Form Section */}
-            <div className=" rounded-lg">
+            <div
+              className="rounded-lg mx-auto"
+              aria-label="Start free trial form"
+            >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <DemoForm buttonText="Schedule Your Free Enterprise Demo Today" />
+                <DemoForm buttonText="Start your free trial Now" />
               </motion.div>
             </div>
           </motion.div>

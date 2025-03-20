@@ -29,7 +29,7 @@ const features = [
 
 export default function WhyReconXi() {
   return (
-    <section className="py-10 md:py-20" aria-labelledby="why-reconxi-title">
+    <section className="py-10 md:py-20 px-0 lg:px-20 " aria-labelledby="why-reconxi-title">
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -97,7 +97,7 @@ export default function DemoForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full md:w-[650px] bg-white border border-gray-200 rounded-md p-6"
+      className="w-full md:max-w-[650px] mx-auto bg-white border border-gray-200 rounded-md p-6"
       aria-labelledby="form-heading"
     >
       <h2 id="form-heading" className="sr-only">
