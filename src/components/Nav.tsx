@@ -48,6 +48,9 @@ const Nav = () => {
               <DropdownMenuItem>
                 <Link className={cn("font-medium text-[#333333]", pathname === "/enterprise" && "text-[#2E604A]")} href="/enterprise">Enterprise</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link className={cn("font-medium text-[#333333]", pathname === "/financial-pro" && "text-[#2E604A]")} href="/enterprise">Financial Provision</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           </div>
