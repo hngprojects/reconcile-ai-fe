@@ -412,9 +412,10 @@ export function MobileView() {
                               match_score: "0",
                             },
                           ]);
-                        }
+                        }}
                       />
                     )}
+                        
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="size-8 p-0">
