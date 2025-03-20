@@ -7,15 +7,15 @@ import { motion } from "framer-motion";
 export default function HeroSection() {
   return (
     <section className="w-screen overflow-x-hidden pt-8 md:pt-0">
-      <div className="flex flex-col md:flex-row items-center md:h-[642px] w-screen max-md:p-4 md:pl-10 max-w-[90rem] mx-auto overflow-hidden max-md:text-center">
+      <div className="flex flex-col md:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-10 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
         <motion.div
           className="flex flex-col items-center md:items-start w-full"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7 }}
         >
-          <h1 className="font-semibold text-[28px] sm:text-5xl text-[#101828] max-w-[1024px] flex-wrap lg:leading-[3.5rem] lg:text-6xl leading-[-2]">
-            Reconcile Your Finances with ReconXi 
+          <h1 className="font-semibold text-[28px] md:text-4xl text-[#101828] max-w-[1024px] flex-wrap lg:leading-[3.5rem] lg:text-5xl leading-[-2]">
+            Reconcile Your<br className="hidden md:block" /> Finances with ReconXi 
           </h1>
           <p className="text-[#475467] text-sm sm:text-xl max-w-[620px] text-left mt-6 md:pr-8 max-md:text-center">
             ReconXi is the perfect solution for small and medium-sized businesses, schools, financial professionals, freelancers that need quick and affordable financial reconciliation.
@@ -34,6 +34,7 @@ export default function HeroSection() {
             </Link>
           </motion.div>
         </motion.div>
+        {/* Hero Image for desktop */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,7 +72,12 @@ export default function HeroSection() {
               }}
             />
         </motion.div>
-        <div className="md:hidden w-full flex justify-center">
+                {/* Hero Image for mobile */}
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}          
+          className="md:hidden w-full flex justify-center">
           <Image
               src="/assets/images/screen-mockup-for-mobile.png"
               alt="Big screen mockup"
@@ -87,7 +93,7 @@ export default function HeroSection() {
                 maxWidth: "100%",
               }}
             />
-        </div>
+        </motion.div>
       </div>
     </section>
   );
