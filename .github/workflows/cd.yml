@@ -25,10 +25,10 @@ jobs:
 
       - name: Remove GitHub Actions Cache
         run: |
-          sudo rm -rf /home/runner/.npm
-          sudo rm -rf /home/runner/.cache
-          sudo rm -rf /home/runner/_work/_tool/node
-          npm cache clean --force
+           rm -rf /home/runner/.npm
+           rm -rf /home/runner/.cache
+           rm -rf /home/runner/_work/_tool/node
+           npm cache clean --force
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
