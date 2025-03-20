@@ -41,7 +41,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-            Why Small Business Owners Need ReconXi
+            Why Startups and SMEs Need ReconXi
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">

@@ -37,3 +37,6 @@ export const PARTNER_API_URL = `${BASE_URL}/partners`;
 
 // CUSTOMER-FEEDBACK API
 export const CUSTOMER_FEEDBACK_API_URL = `${BASE_URL}/customer-feedback`;
+
+// PAYMENT PLAN
+export const PAYMENT_PLAN_API_URL = `${BASE_URL}/payment-plan`;
