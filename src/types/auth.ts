@@ -2,7 +2,7 @@ export interface PaymentPlan {
   id: number;
   user_id: number;
   price: string;
-  plan: "Basic" | "Starter" | "Business";
+  plan: "Basic" | "Starter Plan" | "Business Plan";
   created_at: string;
   updated_at: string;
 }
