@@ -6,6 +6,8 @@ import {
   MANUAL_API_URL,
   MARKETING_DEMO_API_URL,
   PARTNER_API_URL,
+  CUSTOMER_FEEDBACK_API_URL,
+  PAYMENT_PLAN_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -42,13 +44,33 @@ export interface PartnerResponse {
   };
 }
 
+interface PaymentPlanData {
+  price: number;
+  plan: string;
+}
+
+interface PaymentPlanResponse {
+  status: boolean;
+  message: string;
+  data: {
+    id: number;
+    user_id: number;
+    price: number;
+    plan: string;
+    created_at: string;
+    updated_at: string;
+  } | null;
+}
+
 export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
   const formData = new FormData();
-  bankFiles.forEach((file) => formData.append("bank_files", file));
-  ledgerFiles.forEach((file) => formData.append("ledger_files", file));
+  bankFiles.forEach((file) => formData.append("bank_statements[]", file));
+  ledgerFiles.forEach((file) => formData.append("ledgers[]", file));
 
   const token = localStorage.getItem("access_token");
-  const headers: HeadersInit = {};
+  const headers: HeadersInit = {
+    Accept: "application/json",
+  };
 
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
@@ -273,3 +295,57 @@ export const handlePartnerSubmission = async (
     };
   }
 };
+//CUSTOMER_FEEDBACK_API_URL
+export const handleCustomerFeedback = async (formData: FormData) => {
+  try {
+    const response = await fetch(CUSTOMER_FEEDBACK_API_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return {
+      success: true,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};
+
+export async function updatePaymentPlan(
+  data: PaymentPlanData,
+): Promise<PaymentPlanResponse> {
+  const token = localStorage.getItem("access_token");
+
+  try {
+    const response = await fetch(PAYMENT_PLAN_API_URL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to update payment plan");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Payment plan update error:", error);
+    throw error;
+  }
+}

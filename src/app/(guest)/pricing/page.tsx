@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link"; // Add this import
 import { cn } from "@/src/lib/utils";
 import Container from "@/src/components/Container";
 import Footer from "@/src/components/Footer";
@@ -8,9 +7,14 @@ import { useState } from "react";
 import { CircleCheck } from "lucide-react";
 import CTASection from "@/src/components/CTASection";
 import { motion } from "framer-motion";
+import { useAuth } from "@/src/components/context/AuthContext";
+import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 
 export default function PricingPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [selectedPlanLink, setSelectedPlanLink] = useState("");
+  const { isAuthenticated } = useAuth();
 
   const pricingPlans = [
     {
@@ -23,6 +27,7 @@ export default function PricingPage() {
         "Upload CSV files",
         "Basic AI reconciliation",
         "Manually match transactions detected as unmatched",
+        "Email notification for reconciled results",
       ],
     },
     {
@@ -36,6 +41,7 @@ export default function PricingPage() {
         "Export results to CSV",
         "Manual adjustments (search by description only)",
         "Unlink, and match records",
+        "Email notification for reconciled results",
       ],
     },
     {
@@ -47,11 +53,27 @@ export default function PricingPage() {
         "Unlimited reconciliation/month",
         "Advanced adjustments  (search and filter by description, date and amount range, unlink and match errors)",
         "Advanced AI matching and reconciliation (Large data set: up to 3000 rows)",
-        "Merging multiple records/Merging multiple files",
+        "Merging multiple records/files",
         "Email notification for reconciled results",
       ],
     },
   ];
+
+  const handleGetStarted = (planLink: string) => {
+    if (!isAuthenticated) {
+      setSelectedPlanLink(planLink);
+      setShowAuthModal(true);
+    } else {
+      window.location.href = planLink;
+    }
+  };
+
+  const handleAuthSuccess = () => {
+    setShowAuthModal(false);
+    if (selectedPlanLink) {
+      window.location.href = selectedPlanLink;
+    }
+  };
 
   const renderFeaturesList = (features: string[], isActive: boolean) => (
     <ul className="space-y-4">
@@ -153,31 +175,29 @@ export default function PricingPage() {
                 {renderFeaturesList(plan.features, activeCard === plan.id)}
 
                 {plan.id === 1 ? (
-                  <Link href={plan.link}>
-                    <button
-                      className={cn(
-                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                        activeCard === plan.id
-                          ? "bg-white text-[#2A5743] border-white"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
-                      )}
-                    >
-                      Get Started
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => handleGetStarted(plan.link)}
+                    className={cn(
+                      "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
+                      activeCard === plan.id
+                        ? "bg-white text-[#2A5743] border-white"
+                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                    )}
+                  >
+                    Get Started
+                  </button>
                 ) : (
-                  <a href={plan.link} target="_blank" rel="noopener noreferrer">
-                    <button
-                      className={cn(
-                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
-                        activeCard === plan.id
-                          ? "bg-white text-[#2A5743] border-white"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
-                      )}
-                    >
-                      Get Started
-                    </button>
-                  </a>
+                  <button
+                    onClick={() => handleGetStarted(plan.link)}
+                    className={cn(
+                      "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-colors cursor-pointer",
+                      activeCard === plan.id
+                        ? "bg-white text-[#2A5743] border-white"
+                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E]",
+                    )}
+                  >
+                    Get Started
+                  </button>
                 )}
               </div>
             </div>
@@ -268,6 +288,12 @@ export default function PricingPage() {
           </motion.div>
         </motion.div>
       </Container>
+      <GoogleAuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSwitchToLogin={() => setShowAuthModal(false)}
+        onSuccess={handleAuthSuccess}
+      />
       <CTASection />
       <Footer />
     </>

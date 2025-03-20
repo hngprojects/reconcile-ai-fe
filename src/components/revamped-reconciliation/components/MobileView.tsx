@@ -43,6 +43,7 @@ export function MobileView() {
     setShowUnlinkModalMobile,
     setShowUnlinkModal,
     isLoading,
+    userPlan,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   // const [isExporting, setIsExporting] = useState(false);
@@ -65,73 +66,87 @@ export function MobileView() {
   const endItem = Math.min((pageIndex + 1) * pageSize, totalItems);
 
   // Export function
-  // const handleExport = async () => {
-  //   try {
-  //     setIsExporting(true);
+  const handleExport = async () => {
+    try {
+      setIsExporting(true);
 
-  //     // Get reconciliation data from localStorage
-  //     const reconciliationData = localStorage.getItem("reconciliation");
+      // Get reconciliation data from localStorage
+      const reconciliationData = localStorage.getItem("reconciliation");
 
-  //     if (!reconciliationData) {
-  //       throw new Error("No reconciliation data found");
-  //     }
+      if (!reconciliationData) {
+        throw new Error("No reconciliation data found");
+      }
 
-  //     const parsedData = JSON.parse(
-  //       reconciliationData
-  //     ) as ReconciliationResponse;
+      const parsedData = JSON.parse(
+        reconciliationData,
+      ) as ReconciliationResponse;
 
-  //     const reconciledData = revertToBackendFormat(parsedData);
+      const reconciledData = revertToBackendFormat(parsedData);
 
-  //     // Format the data according to the API's expected structure
-  //     const formattedData = {
-  //       matches: (reconciledData.matches || []).map((match: Matched) => ({
-  //         ...match,
-  //         status: match.status || "matched",
-  //       })),
-  //       unmatched: reconciledData.unmatched || {},
-  //       only_in_file1: reconciledData.only_in_file1 || [],
-  //       only_in_file2: reconciledData.only_in_file2 || [],
-  //     };
+      // Format the data according to the API's expected structure
+      const formattedData = {
+        matches: (reconciledData.matches || []).map((match: Matched) => ({
+          ...match,
+          status: match.status || "matched",
+        })),
+        unmatched: reconciledData.unmatched || {},
+        only_in_file1: reconciledData.only_in_file1 || [],
+        only_in_file2: reconciledData.only_in_file2 || [],
+      };
 
-  //     const response = await fetch(
-  //       "https://api-dev.reconxi.com/api/v1/reconcile/export",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ data: formattedData }),
-  //       }
-  //     );
+      const response = await fetch(
+        "https://api-dev.reconxi.com/api/v1/reconcile/export",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ data: formattedData }),
+        },
+      );
 
-  //     if (!response.ok) {
-  //       const errorData = await response.json().catch(() => null);
-  //       throw new Error(
-  //         errorData?.message || `Export failed with status: ${response.status}`
-  //       );
-  //     }
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(
+          errorData?.message || `Export failed with status: ${response.status}`,
+        );
+      }
 
-  //     const blob = await response.blob();
-  //     const url = window.URL.createObjectURL(blob);
-  //     const a = document.createElement("a");
-  //     a.href = url;
-  //     a.download = `reconciliation_export_${new Date().toISOString().split("T")[0]}.csv`;
-  //     document.body.appendChild(a);
-  //     a.click();
-  //     window.URL.revokeObjectURL(url);
-  //     document.body.removeChild(a);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `reconciliation_export_${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
 
-  //     setToastMessage("Your data has been exported successfully!");
-  //     setShowSuccessToast(true);
-  //   } catch (error: unknown) {
-  //     console.error("Export error:", error);
-  //     setToastMessage(
-  //       error instanceof Error ? error.message : "Failed to export data"
-  //     );
-  //   } finally {
-  //     setIsExporting(false);
-  //   }
-  // };
+      setToastMessage("Your data has been exported successfully!");
+      setShowSuccessToast(true);
+    } catch (error: unknown) {
+      console.error("Export error:", error);
+      setToastMessage(
+        error instanceof Error ? error.message : "Failed to export data",
+      );
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // Add plan validation helper
+  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
+    if (!featureType) return false;
+
+    switch (userPlan) {
+      case "starter":
+        return true;
+      case "basic":
+        return false;
+      default:
+        return true; // business plan has all features
+    }
+  };
 
   useEffect(() => {
     if (showSuccessToast) {
@@ -178,25 +193,27 @@ export function MobileView() {
         </div>
       )}
 
+      {/* Conditional export button */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
-        {/* <button
-          type="button"
-          className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
-          // onClick={handleExport}
-          disabled={isExporting}
-        >
-          {isExporting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
-            </>
-          ) : (
-            <>
-              <DownloadCloudIcon className="mr-2 w-5 h-5" />
-              Export
-            </>
-          )}
-        </button> */}
+        {hasPlanAccess("export") && (
+          <button
+            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+            onClick={handleExport}
+            disabled={isExporting}
+          >
+            {isExporting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+              </>
+            ) : (
+              <>
+                <DownloadCloudIcon className="mr-2 w-5 h-5" />
+                Export
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {/* Transaction Cards */}
@@ -218,7 +235,7 @@ export function MobileView() {
               transaction.description
                 .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              transaction.date.toLowerCase().includes(query.toLowerCase())
+              transaction.date.toLowerCase().includes(query.toLowerCase()),
           );
         };
 
@@ -230,7 +247,7 @@ export function MobileView() {
               item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
               {
                 "rounded-t-lg": index === 0,
-              }
+              },
             )}
           >
             {/* Column Headers */}
@@ -268,9 +285,11 @@ export function MobileView() {
                           {stmt.bank_txn?.amount}
                         </div>
                       </div>
-
+                      
                       {item.matched && (
                         <div className="flex gap-3 items-center">
+                                                  {hasPlanAccess("unlink") && (
+
                           <button
                             type="button"
                             title="Unlink matching transactions"
@@ -282,6 +301,8 @@ export function MobileView() {
                           >
                             <StatusBadge matched={item.matched} />
                           </button>
+                                                    )}
+
                           <hr className="border border-gray-200/70 flex-1" />
                         </div>
                       )}
@@ -354,7 +375,8 @@ export function MobileView() {
                   </div>
 
                   <div className="flex justify-between items-center gap-3 w-full">
-                    <QuickFindAndMatchComboBox
+   {hasPlanAccess("match") && (
+                      <QuickFindAndMatchComboBox
                       commandProps={{
                         label: "Select possible match",
                       }}
@@ -391,13 +413,8 @@ export function MobileView() {
                             },
                           ]);
                         }
-                      }}
-                      emptyIndicator={
-                        <p className="text-center text-sm">
-                          No transactions found
-                        </p>
-                      }
-                    />
+                      />
+                    )}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="size-8 p-0">
@@ -461,7 +478,8 @@ export function MobileView() {
         onMatch={onMatch}
       />
 
-      <UnlinkModal
+      {hasPlanAccess("unlink") && (
+        <UnlinkModal
         isOpen={showUnlinkModalMobile}
         isLoading={isLoading}
         onClose={() => {
@@ -481,6 +499,8 @@ export function MobileView() {
           }
         }}
       />
+                          )}
+
     </div>
   );
 }

@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { User, Response } from "@/src/types/auth";
 import { toast } from "sonner";
 import { GOOGLE_API_URL, LOGOUT_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
-// import { USER_API_URL } from "@/src/lib/apiEndpoints";
 
 interface AuthContextType {
   user: User | null;
