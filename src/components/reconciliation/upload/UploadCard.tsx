@@ -33,7 +33,13 @@ const UploadCard = ({
 
       // Check if file already exists in either upload box
       if (existingFiles.includes(file.name)) {
-        setError("This file has already been uploaded");
+        setError("This file has already been uploaded in another section");
+        return;
+      }
+
+      // Check if file already exists in this upload box
+      if (files.some(existingFile => existingFile.name === file.name)) {
+        setError("This file has already been uploaded in this section");
         return;
       }
 
@@ -56,6 +62,12 @@ const UploadCard = ({
     },
     [handleFile],
   );
+
+  // remove error when file is removed
+  const handleFileDelete = useCallback((fileName: string) => {
+    setError("");  // Clear any error message when a file is deleted
+    onFileDelete(fileName);
+  }, [onFileDelete]);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -113,11 +125,17 @@ const UploadCard = ({
           </div>
         </div>
       </div>
+      
+      {error && (
+        <div className="text-[#C50700] text-xs sm:text-sm md:text-base">
+          {error}
+        </div>
+      )}
 
       {files.length > 0 && (
         <div className="flex flex-col gap-4">
           {files.map((file) => (
-            <FileItem key={file.name} file={file} onDelete={onFileDelete} />
+            <FileItem key={file.name} file={file} onDelete={handleFileDelete} />
           ))}
         </div>
       )}
