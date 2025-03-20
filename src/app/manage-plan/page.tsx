@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { CircleCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 interface PlanMap {
   [key: string]: number;
@@ -23,12 +24,6 @@ export default function ManagePlanPage() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
-    // Redirect if not authenticated
-    if (!isAuthenticated) {
-      router.push("/");
-      return;
-    }
-
     // Set active card based on user's current plan
     if (user?.payment_plan?.plan) {
       const planMap: PlanMap = {
@@ -42,7 +37,7 @@ export default function ManagePlanPage() {
         setActiveCard(planMap[currentPlan]);
       }
     }
-  }, [user, isAuthenticated, router]);
+  }, [user]);
 
   const pricingPlans = [
     {
@@ -93,14 +88,14 @@ export default function ManagePlanPage() {
             <CircleCheck
               className={cn(
                 "w-5 h-5",
-                isActive ? "text-white" : "text-[#39B057]",
+                isActive ? "text-white" : "text-[#39B057]"
               )}
             />
           </span>
           <span
             className={cn(
               "font-[400] text-[13px] leading-[150%] font-inter",
-              isActive ? "text-white" : "text-[#333333]",
+              isActive ? "text-white" : "text-[#333333]"
             )}
           >
             {feature}
@@ -115,7 +110,7 @@ export default function ManagePlanPage() {
   };
 
   return (
-    <>
+    <ProtectedRoute>
       <Container className="py-8 pb-[100px]">
         {/* Back button and Header */}
         <div className="pb-8 px-4 border-b border-[#EAECF0]">
@@ -157,7 +152,7 @@ export default function ManagePlanPage() {
                     ? "bg-[#2E604A] scale-105"
                     : "border-2 border-[#38B43C] hover:scale-105",
                   !isCurrentPlan && activeCard !== null && "opacity-50",
-                  isHovered && !isCurrentPlan && "opacity-100",
+                  isHovered && !isCurrentPlan && "opacity-100"
                 )}
                 onMouseEnter={() => setHoveredCard(plan.id)}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -168,7 +163,7 @@ export default function ManagePlanPage() {
                   <h3
                     className={cn(
                       "font-[500] text-[16px] leading-[100%] font-inter",
-                      activeCard === plan.id ? "text-white" : "text-black",
+                      activeCard === plan.id ? "text-white" : "text-black"
                     )}
                   >
                     {plan.name}
@@ -179,7 +174,7 @@ export default function ManagePlanPage() {
                   <p
                     className={cn(
                       "font-[600] text-[32px] leading-[100%]",
-                      activeCard === plan.id ? "text-white" : "text-black",
+                      activeCard === plan.id ? "text-white" : "text-black"
                     )}
                   >
                     <span className="text-2xl">$</span>
@@ -201,7 +196,7 @@ export default function ManagePlanPage() {
                         "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",
                         isHovered
                           ? "bg-[#eaf5f1] text-[#2A5743] border-[#2E604A]"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]",
+                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]"
                       )}
                     >
                       Choose Plan
@@ -215,6 +210,6 @@ export default function ManagePlanPage() {
       </Container>
 
       <Footer />
-    </>
+    </ProtectedRoute>
   );
 }
