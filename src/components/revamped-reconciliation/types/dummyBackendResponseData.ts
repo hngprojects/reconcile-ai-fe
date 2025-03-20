@@ -1,86 +1,145 @@
-export const dummyBackendResponseData = {
+import { UpdateResponseData } from "./backendResponseTypes";
+
+export const dummyBackendResponseData: UpdateResponseData = {
+  reconciliation_id: "rec-2025-03-20-001",
   matches: [
     {
-      file1_transaction: {
-        Date: "12/02/24",
-        Description: "Naza",
-        Amount: "50,000",
-      },
-      file2_transaction: {
-        Date: "12/02/24",
-        Description: "Naza",
-        Amount: "50,000",
-      },
-      match_score: 100,
+      statements: [
+        {
+          statement: {
+            Date: "2025-03-01",
+            Description: "Office Supplies Inc",
+            Amount: "245.60",
+          },
+          score: "95",
+        },
+      ],
+      ledgers: [
+        {
+          ledger: {
+            Date: "2025-03-01",
+            Description: "Office Supplies",
+            Amount: "245.60",
+          },
+          score: "95",
+        },
+      ],
     },
     {
-      file1_transaction: {
-        Date: "12/02/24",
-        Description: "Tunde",
-        Amount: "40,000",
-      },
-      file2_transaction: {
-        Date: "12/02/24",
-        Description: "Tunde",
-        Amount: "40,000",
-      },
-      match_score: 100,
+      statements: [
+        {
+          statement: {
+            Date: "2025-03-05",
+            Description: "Amazon Purchase",
+            Amount: "129.99",
+          },
+          score: "100",
+        },
+        {
+          statement: {
+            Date: "2025-03-05",
+            Description: "Amazon Prime",
+            Amount: "14.99",
+          },
+          score: "100",
+        },
+      ],
+      ledgers: [
+        {
+          ledger: {
+            Date: "2025-03-05",
+            Description: "Amazon - Office Equipment",
+            Amount: "144.98",
+          },
+          score: "92",
+        },
+      ],
     },
     {
-      file1_transaction: {
-        Date: "13/02/24",
-        Description: "Joy",
-        Amount: "30,000",
-      },
-      file2_transaction: {
-        Date: "13/02/24",
-        Description: "Joy",
-        Amount: "30,000",
-      },
-      match_score: 100,
+      statements: [
+        {
+          statement: {
+            Date: "2025-03-05",
+            Description: "Amazon Purchase",
+            Amount: "144.98",
+          },
+          score: "100",
+        },
+      ],
+      ledgers: [
+        {
+          ledger: {
+            Date: "2025-03-05",
+            Description: "Amazon - Office Equipment",
+            Amount: "129.99",
+          },
+          score: "92",
+        },
+        {
+          ledger: {
+            Date: "2025-03-05",
+            Description: "Amazon Prime",
+            Amount: "14.99",
+          },
+          score: "100",
+        },
+      ],
     },
     {
-      file1_transaction: {
-        Date: "14/02/24",
-        Description: "Samson",
-        Amount: "25,000",
-      },
-      file2_transaction: {
-        Date: "14/02/24",
-        Description: "Samson",
-        Amount: "25,000",
-      },
-      match_score: 100,
+      statements: [
+        {
+          statement: {
+            Date: "2025-03-10",
+            Description: "Electricity Bill",
+            Amount: "341.75",
+          },
+          score: "98",
+        },
+      ],
+      ledgers: [
+        {
+          ledger: {
+            Date: "2025-03-10",
+            Description: "Utility Payment - Electric",
+            Amount: "341.75",
+          },
+          score: "98",
+        },
+      ],
     },
   ],
-  only_in_file1: [
-    { Date: "12/02/24", Description: "Bola", Amount: "60,000" },
-    { Date: "12/02/24", Description: "Beau", Amount: "90,000" },
-    { Date: "15/02/24", Description: "Mike", Amount: "45,000" },
-    { Date: "16/02/24", Description: "Ada", Amount: "70,000" },
+  unmatched_statements: [
+    {
+      Date: "2025-03-15",
+      Description: "Unknown Vendor Payment",
+      Amount: "125.00",
+    },
+    {
+      Date: "2025-03-18",
+      Description: "Parking Fee",
+      Amount: "45.00",
+    },
   ],
-  only_in_file2: [
-    { Date: "12/02/24", Description: "Muyiwa", Amount: "60,000" },
-    { Date: "12/02/24", Description: "Beau", Amount: "100,000" },
-    { Date: "17/02/24", Description: "Elvis", Amount: "20,000" },
-    { Date: "18/02/24", Description: "Chidi", Amount: "35,000" },
+  unmatched_ledgers: [
+    {
+      Date: "2025-03-12",
+      Description: "Software License",
+      Amount: "299.99",
+    },
+    {
+      Date: "2025-03-17",
+      Description: "Contractor Payment",
+      Amount: "1200.00",
+    },
+    {
+      Date: "2025-03-19",
+      Description: "Office Cleaning Service",
+      Amount: "150.00",
+    },
   ],
-  unmatched: {
-    unmatched_file1: [
-      { Date: "12/02/24", Description: "Bola", Amount: "60,000" },
-      { Date: "12/02/24", Description: "Beau", Amount: "90,000" },
-      { Date: "15/02/24", Description: "Mike", Amount: "45,000" },
-      { Date: "16/02/24", Description: "Ada", Amount: "70,000" },
-    ],
-    unmatched_file2: [
-      { Date: "12/02/24", Description: "Muyiwa", Amount: "60,000" },
-      { Date: "12/02/24", Description: "Beau", Amount: "100,000" },
-      { Date: "17/02/24", Description: "Elvis", Amount: "20,000" },
-      { Date: "18/02/24", Description: "Chidi", Amount: "35,000" },
-    ],
-  },
-  matchSummary: {
-    totalMatched: 4,
-    totalUnmatched: 8,
+  summary: {
+    totalMatched: 3,
+    totalUnmatched: 5,
+    total: 8,
   },
 };
