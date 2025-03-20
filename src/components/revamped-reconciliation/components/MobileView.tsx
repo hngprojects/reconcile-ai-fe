@@ -2,7 +2,7 @@
 
 import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
-import { MoreVertical } from "lucide-react";
+import { DownloadCloudIcon, Loader2, MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../../Icon/Icons";
 import UnlinkModal from "../../modal/UnlinkModal";
