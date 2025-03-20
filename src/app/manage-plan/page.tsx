@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 import { CircleCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
-import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 
 interface PlanMap {
   [key: string]: number;
@@ -21,17 +20,16 @@ export default function ManagePlanPage() {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
   const [activeCard, setActiveCard] = useState<number | null>(null);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
-    // Show auth modal if not logged in
+    // Redirect if not authenticated
     if (!isAuthenticated) {
-      setShowAuthModal(true);
+      router.push("/");
       return;
     }
 
-    // Set active card based on user's current plan from payment_plan
+    // Set active card based on user's current plan
     if (user?.payment_plan?.plan) {
       const planMap: PlanMap = {
         Basic: 1,
@@ -44,7 +42,7 @@ export default function ManagePlanPage() {
         setActiveCard(planMap[currentPlan]);
       }
     }
-  }, [user, isAuthenticated]);
+  }, [user, isAuthenticated, router]);
 
   const pricingPlans = [
     {
@@ -113,10 +111,6 @@ export default function ManagePlanPage() {
   );
 
   const handlePlanClick = (planLink: string) => {
-    if (!isAuthenticated) {
-      setShowAuthModal(true);
-      return;
-    }
     window.location.href = planLink;
   };
 
@@ -219,13 +213,6 @@ export default function ManagePlanPage() {
           })}
         </motion.div>
       </Container>
-
-      <GoogleAuthModal
-        isOpen={showAuthModal}
-        onClose={() => !isAuthenticated && router.push("/")}
-        onSwitchToLogin={() => setShowAuthModal(false)}
-        onSuccess={() => setShowAuthModal(false)}
-      />
 
       <Footer />
     </>

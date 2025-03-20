@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import UploadCard from "./UploadCard";
-import UploadModal from "./UploadModal";
+import { toast } from "sonner";
 import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
@@ -22,7 +22,6 @@ export default function FileUploadLayout({
   const { isAuthenticated } = useAuth();
   const [bankFiles, setBankFiles] = useState<File[]>([]);
   const [ledgerFiles, setLedgerFiles] = useState<File[]>([]);
-  const [showUploadModal, setShowUploadModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorCode, setErrorCode] = useState<number>();
 
@@ -59,19 +58,34 @@ export default function FileUploadLayout({
         }
       }
 
-      setShowUploadModal(true);
+      // Show processing toast
+      const toastId = toast.info(
+        <div className="flex flex-col gap-2">
+          <h2 className="font-semibold">Processing Reconciliation</h2>
+          <p className="text-sm text-gray-600">
+            {isAuthenticated
+              ? "You will get an email notification when it's ready"
+              : "Your files are being processed"}
+          </p>
+        </div>,
+        {
+          duration: 20000, // 20 seconds
+          dismissible: true,
+        },
+      );
 
       const result = await reconcileFiles(bankFiles, ledgerFiles);
 
       if (result.status === "error") {
+        toast.dismiss(toastId);
         setErrorCode(result.code);
         setShowErrorModal(true);
-        setShowUploadModal(false);
         return;
       }
 
       if (result.status === "success") {
-        // Clear files after successful reconciliation
+        toast.dismiss(toastId);
+        toast.success("Reconciliation started successfully");
         setBankFiles([]);
         setLedgerFiles([]);
       }
@@ -81,7 +95,6 @@ export default function FileUploadLayout({
       }, 1000);
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
-      setShowUploadModal(false);
       const reconciliationError = error as ReconciliationError;
       setErrorCode(reconciliationError.code || reconciliationError.status);
       setShowErrorModal(true);
@@ -120,11 +133,6 @@ export default function FileUploadLayout({
       >
         Reconcile
       </Button>
-
-      <UploadModal
-        isOpen={showUploadModal}
-        onClose={() => setShowUploadModal(false)}
-      />
 
       {showErrorModal && (
         <ErrorModal
