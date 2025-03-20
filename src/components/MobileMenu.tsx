@@ -21,7 +21,7 @@ const MobileMenu = ({
       aria-modal="true"
       aria-label="Mobile navigation menu"
       className={cn(
-        "fixed inset-0 bg-white z-50 transform transition-transform duration-300",
+        "fixed inset-0 bg-[#2E604A] z-50 transform transition-transform duration-300",
         isOpen ? "translate-y-0" : "-translate-y-full",
       )}
     >
@@ -29,17 +29,17 @@ const MobileMenu = ({
         <button
           type="button"
           onClick={onClose}
-          className="self-end p-2 hover:bg-gray-100 rounded-full cursor-pointer"
+          className="self-end p-2 text-white hover:bg-gray-100 rounded-full cursor-pointer"
           aria-label="Close mobile menu"
         >
-          <X className="h-6 w-6" />
+          <X className="h-12 w-12" />
         </button>
 
         <div className="flex flex-col items-center justify-center flex-1 gap-4">
           <button
             type="button"
             onClick={onLogin}
-            className="w-full max-w-[280px] h-[44px] border-2 border-[#2E604A] text-[#2E604A] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/10 cursor-pointer"
+            className="w-full max-w-[280px] h-[44px] border-2 border-[#EAEFED] text-[#EAEFED] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/10 cursor-pointer"
             aria-label="Login"
           >
             Login
@@ -47,7 +47,7 @@ const MobileMenu = ({
           <button
             type="button"
             onClick={onSignup}
-            className="w-full max-w-[280px] h-[44px] bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+            className="w-full max-w-[280px] h-[44px] bg-white text-[#2E604A] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
             aria-label="Sign up"
           >
             Sign up
