@@ -56,11 +56,11 @@ jobs:
 
             BRANCH=$(basename "${{ github.ref }}")
             if [[ "$BRANCH" == "main" ]]; then
-              FE_PATH="/home/Reconcile/fe-main"
+              FE_PATH="/home/reconcile/fe-main"
               PORT=3005
               PM2_NAME="reconcile-fe"
             else
-              FE_PATH="/home/Reconcile/reconcile-ai-fe-dev"
+              FE_PATH="/home/reconcile/fe"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
             fi
