@@ -5,16 +5,17 @@ import {
     DropdownMenuItem 
 } from "./ui/dropdown-menu";
 import Image from "next/image";
+import Link from "next/link";
 
 const Links = () => {
     return ( 
         <div>
             <div className="md:flex items-center gap-x-[17px] hidden">
-                <a href="/" className="text-[#2E604A]">Home</a>
+            <Link href="/" className="text-white">Home</Link>
                 
                 <DropdownMenu>
                     <DropdownMenuTrigger className="cursor-pointer flex items-center gap-1">
-                        <p className="text-[#333333]">Solution</p>
+                        <p className="text-white">Solution</p>
                         <Image
                                     src="/assets/images/linkscopy.svg"
                                     className=""
@@ -25,14 +26,16 @@ const Links = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuItem>
-                            <a href="/small-business" className="text-[#333333]">Small Business Owner</a>
+                        <Link href="/small-businesses">Small Business Owner</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <a href="/enterprise" className="text-[#333333]">Enterprise</a>
+                        <Link href="/enterprise">Enterprise</Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
+                <Link href="/blog" className="text-white">Blog</Link>
+                <Link href="/pricing" className="text-white">Pricing</Link>
                 <a href="/blog" className="text-[#333333]">Blog</a>
                 <a href="/pricing" className="text-[#333333]">Pricing</a>
             </div>
