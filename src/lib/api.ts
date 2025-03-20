@@ -6,6 +6,7 @@ import {
   MANUAL_API_URL,
   MARKETING_DEMO_API_URL,
   PARTNER_API_URL,
+  CUSTOMER_FEEDBACK_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -49,7 +50,7 @@ export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
 
   const token = localStorage.getItem("access_token");
   const headers: HeadersInit = {
-    "Accept": "application/json"
+    Accept: "application/json",
   };
 
   if (token) {
@@ -272,6 +273,31 @@ export const handlePartnerSubmission = async (
         error instanceof Error
           ? error.message
           : "Failed to submit partnership request. Please try again.",
+    };
+  }
+};
+//CUSTOMER_FEEDBACK_API_URL
+export const handleCustomerFeedback = async (formData: FormData) => {
+  try {
+    const response = await fetch(CUSTOMER_FEEDBACK_API_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return {
+      success: true,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
     };
   }
 };

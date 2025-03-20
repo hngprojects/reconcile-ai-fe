@@ -44,6 +44,7 @@ export function MobileView() {
     showUnlinkModalMobile,
     setShowUnlinkModalMobile,
     isLoading,
+    userPlan,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -78,7 +79,7 @@ export function MobileView() {
       }
 
       const parsedData = JSON.parse(
-        reconciliationData
+        reconciliationData,
       ) as ReconciliationResponse;
 
       const reconciledData = revertToBackendFormat(parsedData);
@@ -102,13 +103,13 @@ export function MobileView() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ data: formattedData }),
-        }
+        },
       );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         throw new Error(
-          errorData?.message || `Export failed with status: ${response.status}`
+          errorData?.message || `Export failed with status: ${response.status}`,
         );
       }
 
@@ -127,10 +128,24 @@ export function MobileView() {
     } catch (error: unknown) {
       console.error("Export error:", error);
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data"
+        error instanceof Error ? error.message : "Failed to export data",
       );
     } finally {
       setIsExporting(false);
+    }
+  };
+
+  // Add plan validation helper
+  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
+    if (!featureType) return false;
+
+    switch (userPlan) {
+      case "starter":
+        return true;
+      case "basic":
+        return false;
+      default:
+        return true; // business plan has all features
     }
   };
 
@@ -179,24 +194,27 @@ export function MobileView() {
         </div>
       )}
 
+      {/* Conditional export button */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
-        <button
-          className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
-          onClick={handleExport}
-          disabled={isExporting}
-        >
-          {isExporting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
-            </>
-          ) : (
-            <>
-              <DownloadCloudIcon className="mr-2 w-5 h-5" />
-              Export
-            </>
-          )}
-        </button>
+        {hasPlanAccess("export") && (
+          <button
+            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+            onClick={handleExport}
+            disabled={isExporting}
+          >
+            {isExporting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+              </>
+            ) : (
+              <>
+                <DownloadCloudIcon className="mr-2 w-5 h-5" />
+                Export
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {/* Transaction Cards */}
@@ -218,7 +236,7 @@ export function MobileView() {
               transaction.description
                 .toLowerCase()
                 .includes(query.toLowerCase()) ||
-              transaction.date.toLowerCase().includes(query.toLowerCase())
+              transaction.date.toLowerCase().includes(query.toLowerCase()),
           );
         };
 
@@ -230,7 +248,7 @@ export function MobileView() {
               item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
               {
                 "rounded-t-lg": index === 0,
-              }
+              },
             )}
           >
             {/* Column Headers */}
@@ -269,17 +287,19 @@ export function MobileView() {
 
                   {item.matched && (
                     <div className="flex gap-3 items-center">
-                      <button
-                        type="button"
-                        title="Unlink matching transactions"
-                        className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
-                        onClick={() => {
-                          setShowUnlinkModalMobile(true);
-                          setSelectedTransactionRow(item);
-                        }}
-                      >
-                        <StatusBadge matched={item.matched} />
-                      </button>
+                      {hasPlanAccess("unlink") && (
+                        <button
+                          type="button"
+                          title="Unlink matching transactions"
+                          className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
+                          onClick={() => {
+                            setShowUnlinkModalMobile(true);
+                            setSelectedTransactionRow(item);
+                          }}
+                        >
+                          <StatusBadge matched={item.matched} />
+                        </button>
+                      )}
                       <hr className="border border-gray-200/70 flex-1" />
                     </div>
                   )}
@@ -340,37 +360,39 @@ export function MobileView() {
                   </div>
 
                   <div className="flex justify-between items-center gap-3 w-full">
-                    <QuickFindAndMatchComboBox
-                      commandProps={{
-                        label: "Select possible match",
-                      }}
-                      defaultOptions={transactionOptions}
-                      onSearchSync={handleSearch}
-                      placeholder="Find possible match"
-                      hidePlaceholderWhenSelected
-                      onConfirm={(option) => {
-                        const selectedOption: Transaction = {
-                          id: `${option.id}-${Date.now()}`,
-                          description: option.description,
-                          date: option.date,
-                          amount: option.amount,
-                        };
-                        console.log("Confirmed:", option);
+                    {hasPlanAccess("match") && (
+                      <QuickFindAndMatchComboBox
+                        commandProps={{
+                          label: "Select possible match",
+                        }}
+                        defaultOptions={transactionOptions}
+                        onSearchSync={handleSearch}
+                        placeholder="Find possible match"
+                        hidePlaceholderWhenSelected
+                        onConfirm={(option) => {
+                          const selectedOption: Transaction = {
+                            id: `${option.id}-${Date.now()}`,
+                            description: option.description,
+                            date: option.date,
+                            amount: option.amount,
+                          };
+                          console.log("Confirmed:", option);
 
-                        if (item.ledger_txn) {
-                          onMatch(selectedOption, item.ledger_txn);
-                        }
+                          if (item.ledger_txn) {
+                            onMatch(selectedOption, item.ledger_txn);
+                          }
 
-                        if (item.bank_txn) {
-                          onMatch(item.bank_txn, selectedOption);
+                          if (item.bank_txn) {
+                            onMatch(item.bank_txn, selectedOption);
+                          }
+                        }}
+                        emptyIndicator={
+                          <p className="text-center text-sm">
+                            No transactions found
+                          </p>
                         }
-                      }}
-                      emptyIndicator={
-                        <p className="text-center text-sm">
-                          No transactions found
-                        </p>
-                      }
-                    />
+                      />
+                    )}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="size-8 p-0">
@@ -430,26 +452,28 @@ export function MobileView() {
         onMatch={onMatch}
       />
 
-      <UnlinkModal
-        isOpen={showUnlinkModalMobile}
-        isLoading={isLoading}
-        onClose={() => {
-          setShowUnlinkModalMobile(false);
-        }}
-        onConfirm={async () => {
-          if (!selectedTransactionRow) return;
+      {hasPlanAccess("unlink") && (
+        <UnlinkModal
+          isOpen={showUnlinkModalMobile}
+          isLoading={isLoading}
+          onClose={() => {
+            setShowUnlinkModalMobile(false);
+          }}
+          onConfirm={async () => {
+            if (!selectedTransactionRow) return;
 
-          if (
-            selectedTransactionRow.bank_txn &&
-            selectedTransactionRow.ledger_txn
-          ) {
-            await onUnlink(
-              selectedTransactionRow.bank_txn,
+            if (
+              selectedTransactionRow.bank_txn &&
               selectedTransactionRow.ledger_txn
-            );
-          }
-        }}
-      />
+            ) {
+              await onUnlink(
+                selectedTransactionRow.bank_txn,
+                selectedTransactionRow.ledger_txn,
+              );
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

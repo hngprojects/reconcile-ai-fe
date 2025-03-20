@@ -41,7 +41,7 @@ const UserAction: FC = () => {
         <UserDetails />
       ) : (
         <>
-          <div className="hidden sm:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
             <button
               type="button"
               onClick={() => setShowLoginModal(true)}
@@ -63,7 +63,7 @@ const UserAction: FC = () => {
           <button
             type="button"
             onClick={() => setShowMobileMenu(true)}
-            className="sm:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
             aria-label="Open mobile menu"
             aria-expanded={showMobileMenu}
             aria-controls="mobile-menu"

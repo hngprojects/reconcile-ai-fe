@@ -18,31 +18,48 @@ const UploadCard = ({
   const [error, setError] = useState<string>("");
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleFile = useCallback(
-    (file: File) => {
-      if (!file.name.endsWith(".csv")) {
-        setError("File format not supported");
-        return;
+  const handleFiles = useCallback(
+    (newFiles: File[]) => {
+      const validFiles: File[] = [];
+      let currentError = "";
+
+      for (const file of newFiles) {
+        // Basic validations
+        if (!file.name.endsWith(".csv")) {
+          currentError = "Only CSV files are supported";
+          continue;
+        }
+
+        const fileSizeInMB = file.size / (1024 * 1024);
+        if (fileSizeInMB > MAX_FILE_SIZE) {
+          currentError = `File size must be less than ${MAX_FILE_SIZE}MB`;
+          continue;
+        }
+
+        // Check for duplicate file in the same card
+        if (files.some((existingFile) => existingFile.name === file.name)) {
+          currentError = "Duplicate files detected";
+          continue;
+        }
+
+        // Check for duplicate file in the other card
+        if (existingFiles.includes(file.name)) {
+          currentError = "Some files are already used in the other section";
+          continue;
+        }
+
+        validFiles.push(file);
       }
 
-      const fileSizeInMB = file.size / (1024 * 1024);
-      if (fileSizeInMB > MAX_FILE_SIZE) {
-        setError(`File size exceeds ${MAX_FILE_SIZE}MB`);
-        return;
+      if (validFiles.length > 0) {
+        setError("");
+        onFilesSelect([...files, ...validFiles]);
+        toast.success(`Successfully uploaded ${validFiles.length} file(s)`);
       }
 
-      // Check if file already exists in either upload box
-      if (existingFiles.includes(file.name)) {
-        setError("This file has already been uploaded");
-        return;
+      if (currentError) {
+        setError(currentError);
       }
-
-      setError("");
-      onFilesSelect([...files, file]);
-
-      toast.success("File Added", {
-        duration: 3000,
-      });
     },
     [existingFiles, files, onFilesSelect],
   );
@@ -50,11 +67,18 @@ const UploadCard = ({
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setIsDragging(false);
-      if (acceptedFiles.length > 0) {
-        handleFile(acceptedFiles[0]);
-      }
+      handleFiles(acceptedFiles);
     },
-    [handleFile],
+    [handleFiles],
+  );
+
+  // remove error when file is removed
+  const handleFileDelete = useCallback(
+    (fileName: string) => {
+      setError(""); // Clear any error message when a file is deleted
+      onFileDelete(fileName);
+    },
+    [onFileDelete],
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -66,7 +90,7 @@ const UploadCard = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333]">
+      <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative">
         <div
           className={cn(
             "flex flex-col gap-[12px] h-full p-3 md:p-[23.5px_47px]",
@@ -112,12 +136,18 @@ const UploadCard = ({
             </p>
           </div>
         </div>
+
+        {error && (
+          <div className="absolute left-0 -bottom-6 text-[#C50700] text-xs sm:text-sm">
+            {error}
+          </div>
+        )}
       </div>
 
       {files.length > 0 && (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mt-8">
           {files.map((file) => (
-            <FileItem key={file.name} file={file} onDelete={onFileDelete} />
+            <FileItem key={file.name} file={file} onDelete={handleFileDelete} />
           ))}
         </div>
       )}
