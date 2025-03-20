@@ -3,7 +3,11 @@ import { CSVIcon } from "../../Icon/Icons";
 
 export function UploadProgress({ progress, fileName }: UploadProgressProps) {
   return (
-    <div className="flex flex-col items-center gap-4 w-full px-4 md:px-[16px] py-[58px]">
+    // py is 58 before
+    // <div className="flex flex-col items-center gap-4 w-full px-4 md:px-[16px] py-[58px]">
+
+    // now 16
+    <div className="flex flex-col items-center gap-4 w-full px-4 md:px-[16px] py-[16px]">
       <CSVIcon className="w-10 h-10" />
       <div className="w-full space-y-2">
         <div className="flex justify-between items-center">

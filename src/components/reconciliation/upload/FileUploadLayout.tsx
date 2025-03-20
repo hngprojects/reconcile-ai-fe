@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import UploadCard from "./UploadCard";
 import UploadModal from "./UploadModal";
-
+import { UploadProgress } from "./UploadProgress";
 import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
@@ -21,7 +21,7 @@ interface ReconciliationError extends Error {
 
 const validateFileHeaders = async (
   file: File,
-  type: "bankStatement" | "companyLedger",
+  type: "bankStatement" | "companyLedger"
 ): Promise<boolean> => {
   const text = await file.text();
   const headers = text
@@ -29,7 +29,7 @@ const validateFileHeaders = async (
     .split(",")
     .map((h) => h.trim());
   return REQUIRED_HEADERS[type].every((required) =>
-    headers.some((h) => h.toLowerCase() === required.toLowerCase()),
+    headers.some((h) => h.toLowerCase() === required.toLowerCase())
   );
 };
 
@@ -79,7 +79,7 @@ export default function FileUploadLayout({
           JSON.stringify({
             name: file.name,
             content: await file.text(),
-          }),
+          })
         );
       } else {
         localStorage.removeItem(key);
@@ -183,7 +183,7 @@ export default function FileUploadLayout({
       const result = await reconcileFiles(
         bankStatement,
         companyLedger,
-        "amount",
+        "amount"
       );
 
       if (result.status === "error") {
@@ -202,14 +202,14 @@ export default function FileUploadLayout({
       if (result.status === "success") {
         localStorage.setItem(
           "reconciliation",
-          JSON.stringify(result.data.data),
+          JSON.stringify(result.data.data)
         );
         const reconciliationData = transformReconciliationData(
-          result.data.data,
+          result.data.data
         );
         localStorage.setItem(
           "reconciliation",
-          JSON.stringify(reconciliationData),
+          JSON.stringify(reconciliationData)
         );
 
         clearUploadedFiles();
@@ -232,13 +232,13 @@ export default function FileUploadLayout({
   };
 
   const existingFiles = [bankStatement?.name, companyLedger?.name].filter(
-    Boolean,
+    Boolean
   ) as string[];
   const isAnyFileUploading = isUploading.bank || isUploading.ledger;
 
   return (
     <Container className="my-10">
-      <div className="flex flex-col md:flex-row justify-center gap-[40px]">
+      {/* <div className="flex flex-col md:flex-row justify-center gap-[40px]">
         <UploadCard
           title="Upload Bank Statement"
           fileUploaded={!!bankStatement}
@@ -259,13 +259,64 @@ export default function FileUploadLayout({
           uploadProgress={uploadProgress.ledger}
           existingFiles={existingFiles}
         />
+      </div> */}
+
+      {/* Main layout with two columns */}
+      <div className="flex flex-col md:flex-row justify-center gap-[40px]">
+        {/* Bank Statement Column */}
+        <div className="md:w-[620px] flex-1 relative">
+          <UploadCard
+            title="Upload Bank Statement"
+            fileUploaded={!!bankStatement}
+            fileName={bankStatement?.name}
+            onFileSelect={(file) => handleFileUpload(file, "bank")}
+            onFileDelete={() => handleFileDelete("bank")}
+            isUploading={isUploading.bank}
+            uploadProgress={uploadProgress.bank}
+            existingFiles={existingFiles}
+          />
+
+          {/* Stacked progress indicator with absolute positioning */}
+          {isUploading.bank && (
+            <div className="mt-4 md:w-[620px] w-full rounded-[8px] border border-[#33333333]">
+              <UploadProgress
+                progress={uploadProgress.bank}
+                fileName={bankStatement?.name || "Bank Statement.csv"}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Company Ledger Column */}
+        <div className="md:w-[620px] flex-1 relative">
+          <UploadCard
+            title="Upload Company Ledger"
+            fileUploaded={!!companyLedger}
+            fileName={companyLedger?.name}
+            onFileSelect={(file) => handleFileUpload(file, "ledger")}
+            onFileDelete={() => handleFileDelete("ledger")}
+            isUploading={isUploading.ledger}
+            uploadProgress={uploadProgress.ledger}
+            existingFiles={existingFiles}
+          />
+
+          {/* Stacked progress indicator with absolute positioning */}
+          {isUploading.ledger && (
+            <div className="mt-4 md:w-[620px] w-full rounded-[8px] border border-[#33333333]">
+              <UploadProgress
+                progress={uploadProgress.ledger}
+                fileName={companyLedger?.name || "Company Ledger.csv"}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <Button
         onClick={handleReconciliation}
         disabled={!bankStatement || !companyLedger || isAnyFileUploading}
-        className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
-                  disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
+        className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A]
+                  disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px]
                   rounded-[8px] mx-auto block cursor-pointer"
       >
         Reconcile
@@ -287,3 +338,4 @@ export default function FileUploadLayout({
     </Container>
   );
 }
+

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import { UploadCardProps } from "./types";
 import { FilePreview } from "./FilePreview";
-import { UploadProgress } from "./UploadProgress";
+// import { UploadProgress } from "./UploadProgress";
 import ErrorMessage from "./ErrorMessage";
 import { toast } from "sonner";
 import { cn } from "@/src/lib/utils";
@@ -17,7 +17,7 @@ export default function UploadCard({
   onFileSelect,
   onFileDelete,
   isUploading,
-  uploadProgress = 0,
+  // uploadProgress = 0, //okayy, so lemme skip this guy for now
   existingFiles = [],
 }: UploadCardProps) {
   const [error, setError] = useState<string>("");
@@ -119,15 +119,17 @@ export default function UploadCard({
             error
               ? "border-[#C50700]"
               : isDragging
-              ? "border-[#2F855A] bg-[#2F855A]/5"
-              : "hover:bg-gray-100"
+                ? "border-[#2F855A] bg-[#2F855A]/5"
+                : "hover:bg-gray-100"
           )}
         >
           <input {...getInputProps()} />
-          {isUploading ? (
-            <UploadProgress progress={uploadProgress} fileName={fileName!} />
-          ) : !fileUploaded ? (
+          {/* {isUploading ? ( */}
+          {!fileUploaded ? (
             <>
+              {/* <UploadProgress progress={uploadProgress} fileName={fileName!} />
+          ) : !fileUploaded ? (
+             */}
               <FileUploadIcon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12" />
               <p className="text-sm sm:text-base md:text-lg font-medium text-[#4A5568] text-center px-4">
                 <span className="hidden md:inline mr-2">
