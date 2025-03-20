@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 export default function HeroSection() {
   return (
     <section
-      className="w-full py-10 md:py-20 pb-0 bg-gray-50"
+      className="w-full py-10 px-0 lg:px-20 md:py-20 pb-0 bg-gray-50"
       aria-labelledby="hero-title"
     >
       <Container>
