@@ -3,22 +3,22 @@ import { Suspense } from "react";
 
 // Dynamic imports
 const HeroSection = dynamic(
-  () => import("@/src/components/small-business/hero-sect"),
+  () => import("@/src/components/school-and-education/hero-sect"),
 );
 const Features1 = dynamic(
-  () => import("@/src/components/small-business/Features"),
+  () => import("@/src/components/school-and-education/Features"),
 );
 const VideoFeature = dynamic(
-  () => import("@/src/components/small-business/VideoFeature"),
+  () => import("@/src/components/school-and-education/VideoFeature"),
 );
 const WhyReconXi = dynamic(
-  () => import("@/src/components/small-business/WhyReconXi"),
+  () => import("@/src/components/school-and-education/WhyReconXi"),
 );
 const Benefits = dynamic(
-  () => import("@/src/components/small-business/Benefits"),
+  () => import("@/src/components/school-and-education/Benefits"),
 );
 const StartReconcile = dynamic(
-  () => import("@/src/components/small-business/Ready"),
+  () => import("@/src/components/school-and-education/Ready"),
 );
 const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
 const Footer = dynamic(() => import("@/src/components/Footer"));
