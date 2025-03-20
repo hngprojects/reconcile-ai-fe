@@ -86,9 +86,7 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      <span className="flex gap-1">
-                        <Dot /> Small Business owner
-                      </span>
+                      Startup and SMEs
                     </Link>
                     <Link
                       href="/financial-pro"

@@ -7,22 +7,22 @@ const benefits = [
   {
     title: "AI-Powered Accuracy",
     description:
-      "No more human errors! Our intelligent matching system ensures that every transaction is correctly reconciled.",
+      "No more human errors! Our intelligent system ensures all payments, fees, and other transactions are correctly matched, saving you time and preventing costly mistakes.",
   },
   {
     title: "Saves Hours of Work",
     description:
-      "Automate reconciliation and focus on growing your business instead of wasting time on spreadsheets.",
+      "Automate your reconciliation processes and spend more time focusing on your institution’s core functions.",
   },
   {
     title: "Cost-Effective Solution",
     description:
-      "Get reconciliation features at an affordable price—starting with a free trial.",
+      "Get access to advanced reconciliation features at an affordable price with a free starting plan.",
   },
   {
     title: "Scalable & Reliable",
     description:
-      "Whether you're handling a few transactions or thousands, ReconXi grows with your business.",
+      "Whether you're reconciling payments for a few students or managing financial records for a large school, ReconXi adapts to your needs.",
   },
 ];
 
