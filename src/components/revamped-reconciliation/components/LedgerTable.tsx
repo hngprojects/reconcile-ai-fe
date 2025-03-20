@@ -49,6 +49,7 @@ export function LedgerTable() {
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
+    userPlan,
   } = useReconciliation();
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
@@ -57,6 +58,20 @@ export function LedgerTable() {
     unmatchedBankTransactions
   );
   const rowHeights = useRowHeights(paginatedData);
+
+  // Add plan validation helper
+  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
+    if (!featureType) return false;
+
+    switch (userPlan) {
+      case "starter":
+        return true;
+      case "basic":
+        return false;
+      default:
+        return true; // business plan has all features
+    }
+  };
 
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
@@ -187,7 +202,7 @@ export function LedgerTable() {
 
   const ledgerColumns = [
     ...baseColumns,
-    ...(isAuthenticated ? [actionColumn] : []),
+    ...(isAuthenticated && hasPlanAccess("match") ? [actionColumn] : []),
   ];
 
   const table = useReactTable({
@@ -325,7 +340,7 @@ export function LedgerTable() {
                           }
                         />
                       </TableCell>
-                      {isAuthenticated && (
+                      {isAuthenticated && hasPlanAccess("match") && (
                         <TableCell className="py-5 flex items-center justify-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

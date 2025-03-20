@@ -25,9 +25,11 @@ import {
 } from "../types/frontendResponseTypes";
 import { StatusBadge } from "./StatusBadge";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
 
 export function MobileView() {
   const {
+    data,
     paginatedData,
     pagination,
     totalItems,
@@ -46,7 +48,7 @@ export function MobileView() {
     userPlan,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
-  // const [isExporting, setIsExporting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -70,30 +72,13 @@ export function MobileView() {
     try {
       setIsExporting(true);
 
-      // Get reconciliation data from localStorage
-      const reconciliationData = localStorage.getItem("reconciliation");
-
-      if (!reconciliationData) {
+      if (!data) {
         throw new Error("No reconciliation data found");
       }
 
-      const parsedData = JSON.parse(
-        reconciliationData
-      ) as ReconciliationResponse;
+      const reconciledData = revertToBackendFormat(data);
 
-      const reconciledData = revertToBackendFormat(parsedData);
-
-      // Format the data according to the API's expected structure
-      const formattedData = {
-        matches: (reconciledData.matches || []).map((match: Matched) => ({
-          ...match,
-          status: match.status || "matched",
-        })),
-        unmatched: reconciledData.unmatched || {},
-        only_in_file1: reconciledData.only_in_file1 || [],
-        only_in_file2: reconciledData.only_in_file2 || [],
-      };
-
+      // Send POST request to API
       const response = await fetch(
         "https://api-dev.reconxi.com/api/v1/reconcile/export",
         {
@@ -101,7 +86,9 @@ export function MobileView() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ data: formattedData }),
+          body: JSON.stringify({
+            data: reconciledData,
+          }),
         }
       );
 
