@@ -19,6 +19,7 @@ import { updateReconciliation } from "@/src/lib/api";
 import { ManualRequestBody } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { transformReconciliationData } from "../helpers/transformReconciliationData";
+import { useAuth } from "@/src/components/context/AuthContext";
 
 interface ReconciliationContextProps {
   data: ReconciliationResponse;
@@ -43,7 +44,7 @@ interface ReconciliationContextProps {
   // Actions
   handleMatch: (
     bankTransaction: Transaction,
-    ledgerTransaction: Transaction
+    ledgerTransaction: Transaction,
   ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
@@ -53,7 +54,7 @@ interface ReconciliationContextProps {
   handleSearch: (query: string) => void;
   handleUnlink: (
     bankTransaction: Transaction,
-    ledgerTransaction: Transaction
+    ledgerTransaction: Transaction,
   ) => Promise<void>;
 
   // Modals
@@ -84,12 +85,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [data, setData] = useState<ReconciliationResponse>(
-    {} as ReconciliationResponse
+    {} as ReconciliationResponse,
   );
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -107,13 +108,13 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const reconciliationData = useMemo(
     () => data.reconciliation_data ?? [],
-    [data]
+    [data],
   );
 
   const paginatedData = useMemo(() => {
     return reconciliationData.slice(
       pagination.pageIndex * pagination.pageSize,
-      (pagination.pageIndex + 1) * pagination.pageSize
+      (pagination.pageIndex + 1) * pagination.pageSize,
     );
   }, [reconciliationData, pagination.pageIndex, pagination.pageSize]);
 
@@ -133,7 +134,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const handleMatch = async (
     bankTransaction: Transaction,
-    ledgerTransaction: Transaction
+    ledgerTransaction: Transaction,
   ) => {
     const body = {
       ledger: {
@@ -154,7 +155,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       const reconciliationId = data.reconciliation_id;
       const response = await updateReconciliation(
         reconciliationId,
-        body as ManualRequestBody
+        body as ManualRequestBody,
       );
 
       if (response.status !== "success") {
@@ -166,7 +167,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       const reconciliationData = transformReconciliationData(response.data);
       localStorage.setItem(
         "reconciliation",
-        JSON.stringify(reconciliationData)
+        JSON.stringify(reconciliationData),
       );
       setData(reconciliationData);
 
@@ -180,7 +181,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const handleUnlink = async (
     bankTransaction: Transaction,
-    ledgerTransaction: Transaction
+    ledgerTransaction: Transaction,
   ) => {
     const body = {
       ledger: {
@@ -201,7 +202,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       const reconciliationId = data.reconciliation_id;
       const response = await updateReconciliation(
         reconciliationId,
-        body as ManualRequestBody
+        body as ManualRequestBody,
       );
 
       if (response.status !== "success") {
@@ -213,7 +214,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       const reconciliationData = transformReconciliationData(response.data);
       localStorage.setItem(
         "reconciliation",
-        JSON.stringify(reconciliationData)
+        JSON.stringify(reconciliationData),
       );
       setData(reconciliationData);
 
@@ -277,13 +278,21 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useReconciliation() {
+// Add plan to the context
+export const useReconciliation = () => {
   const context = useContext(ReconciliationContext);
 
   if (!context) {
     throw new Error(
-      "useReconciliation must be used within a ReconciliationProvider"
+      "useReconciliation must be used within a ReconciliationProvider",
     );
   }
-  return context;
-}
+
+  const { user } = useAuth();
+  const userPlan = user?.plan?.toLowerCase() || "basic";
+
+  return {
+    ...context,
+    userPlan,
+  };
+};
