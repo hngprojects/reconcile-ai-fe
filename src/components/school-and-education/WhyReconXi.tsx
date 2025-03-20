@@ -9,21 +9,21 @@ const features = [
   {
     title: "Completely Free to Start",
     description:
-      "Get started with free bank reconciliation software, no upfront costs.",
+      "Get started with ReconXi’s free, AI-powered reconciliation tool—no upfront fees.",
   },
   {
-    title: "No More Spreadsheets",
+    title: "Reduce Manual Work",
     description:
-      "AI-driven automated reconciliation software simplifies your workflow.",
+      "Say goodbye to tedious spreadsheets and manual reconciliation. Let AI do the heavy lifting for you.",
   },
   {
-    title: "Easy for Any Business",
+    title: "Designed for Educational Institutions",
     description:
-      "Whether you're a freelancer, startup, or small business, enjoy free online bank reconciliation with ease.",
+      "Whether it’s managing student fee payments, payroll for staff, or general accounts, ReconXi’s automated solution streamlines all your financial data.",
   },
   {
-    title: "Scales as You Grow",
-    description: "Upgrade to affordable plans as your business needs increase.",
+    title: "Easily Scalable",
+    description: "As your institution grows, ReconXi grows with you—handling increased transactions and complexity as needed.",
   },
 ];
 
@@ -41,7 +41,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-            Why Small Business Owners Need ReconXi
+            Why Schools and Educational Institutions Need ReconXi
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">

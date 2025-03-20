@@ -86,7 +86,7 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Small Business owner
+                     Startup and SMEs
                     </Link>
                     <Link
                       href="/financial-pro"

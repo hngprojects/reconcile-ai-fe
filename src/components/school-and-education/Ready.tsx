@@ -50,7 +50,7 @@ export default function StartReconcile() {
                 Ready to Reconcile Smarter?
               </h2>
               <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Join thousands of small businesses using ReconXi&apos;s free
+              Join thousands of educational institutions already using ReconXi&apos;s free
                 bank reconciliation software to simplify accounting.
               </p>
             </div>

@@ -50,11 +50,8 @@ export default function Features1() {
             </h2>
 
             <p className="font-inter text-base sm:text-lg md:text-[18px] leading-[1.5] md:leading-[28px] font-normal text-[#475467]">
-              As a startup founder or small business owner, you need to track
-              every transaction, prevent errors, and ensure your books are
-              balanced. But manual reconciliation is time-consuming,
-              error-prone, and costly. Expensive accounting software is out of
-              reach, and spreadsheets can&apos;t keep up.{" "}
+            Schools and educational institutions handle numerous transactions daily – from student fees and payroll to administrative expenses. Manual reconciliation can be time-consuming, error-prone, and tedious. <br></br>With ReconXi, you can automate the process, reduce the risk of mistakes, and focus on what truly matters: educating students and running your institution.<br></br>
+            {" "}
               <strong className="font-bold">
                 ReconXi gives you a better way!
               </strong>

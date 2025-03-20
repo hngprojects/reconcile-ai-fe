@@ -65,7 +65,7 @@ const Nav = () => {
                     href="/small-business"
                     onClick={handleDropdownClick}
                   >
-                    Small Business owner
+                   Startups and SMEs
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="hover:bg-[#2E604A]/10">

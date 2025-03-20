@@ -22,14 +22,12 @@ export default function HeroSection() {
             id="hero-title"
             className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
           >
-            Free and Affordable Reconciliation Software – Fast, Accurate &amp;
-            Hassle-Free
+           Simplify Financial Reconciliation for Your Institution
           </h1>
 
           <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
-            Get free online bank reconciliation with AI-powered accuracy. Save
-            hours, eliminate errors, and take control of your finances with the
-            best free reconciliation software for startups and small businesses.
+          Manage your school’s fees, payroll, and financial records with ease. ReconXi brings AI-powered financial reconciliation to educational institutions, helping you streamline processes, reduce errors, and save valuable time. <br></br>
+      See how ReconXi makes reconciliation easier for your school.
           </p>
 
           <motion.div
