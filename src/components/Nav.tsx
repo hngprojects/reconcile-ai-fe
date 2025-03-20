@@ -33,7 +33,7 @@ const Nav = () => {
           </div>
         </Link>
 
-        <nav className="flex items-center gap-6">
+        <nav className="items-center gap-6 hidden md:flex">
           <Link className={cn("font-medium text-[#333333]", pathname === "/" && "text-[#2E604A]")} href="/">Home</Link>
           <div className="">
           <DropdownMenu>
