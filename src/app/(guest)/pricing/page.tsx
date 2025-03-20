@@ -141,11 +141,15 @@ export default function PricingPage() {
                           isCurrentPlan && "opacity-50 cursor-not-allowed"
                         )}
                       >
-                        Get Started
+                        {isCurrentPlan ? "Current Plan" : "Upgrade"}
                       </button>
                     </Link>
                   ) : (
-                    <a href={plan.link} target="_blank" rel="noopener noreferrer">
+                    <a
+                      href={plan.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <button
                         disabled={isCurrentPlan}
                         className={cn(
@@ -156,7 +160,7 @@ export default function PricingPage() {
                           isCurrentPlan && "opacity-50 cursor-not-allowed"
                         )}
                       >
-                        Get Started
+                        Upgrade
                       </button>
                     </a>
                   )}
