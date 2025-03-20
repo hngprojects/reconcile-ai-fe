@@ -13,8 +13,8 @@ import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 interface PlanMap {
   [key: string]: number;
   Basic: number;
-  Starter: number;
-  Business: number;
+  "Starter Plan": number;
+  "Business Plan": number;
 }
 
 export default function ManagePlanPage() {
@@ -35,8 +35,8 @@ export default function ManagePlanPage() {
     if (user?.payment_plan?.plan) {
       const planMap: PlanMap = {
         Basic: 1,
-        Starter: 2,
-        Business: 3,
+        "Starter Plan": 2,
+        "Business Plan": 3,
       };
 
       const currentPlan = user.payment_plan.plan;

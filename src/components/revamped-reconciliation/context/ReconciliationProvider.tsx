@@ -22,7 +22,7 @@ import { ManualRequestBody } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { transformReconciliationData } from "../helpers/transformReconciliationData";
 import { useAuth } from "@/src/components/context/AuthContext";
-import { usePathname } from 'next/navigation'
+import { usePathname } from "next/navigation";
 
 interface ReconciliationContextProps {
   data: ReconciliationResponse;
@@ -47,7 +47,7 @@ interface ReconciliationContextProps {
   // Actions
   handleMatch: (
     bankTransaction: StatementWithScore[],
-    ledgerTransaction: LedgerWithScore[]
+    ledgerTransaction: LedgerWithScore[],
   ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
@@ -57,7 +57,7 @@ interface ReconciliationContextProps {
   handleSearch: (query: string) => void;
   handleUnlink: (
     bankTransaction: StatementWithScore[],
-    ledgerTransaction: LedgerWithScore[]
+    ledgerTransaction: LedgerWithScore[],
   ) => Promise<void>;
 
   // Modals
@@ -101,22 +101,22 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     /* const reconciliationData = transformReconciliationData(
       dummyBackendResponseData
     ); */
-   const reconciliationId = path.split('/')[2];
-   console.log(reconciliationId);
-   const fetch = async() => {
-     try {
+    const reconciliationId = path.split("/")[2];
+    console.log(reconciliationId);
+    const fetch = async () => {
+      try {
         const response = await fetchReconciliation(reconciliationId as string);
 
-        if(response.success){
-           const reconciliationData = transformReconciliationData(response.data);
-           console.log({ reconciliationData });
+        if (response.success) {
+          const reconciliationData = transformReconciliationData(response.data);
+          console.log({ reconciliationData });
 
-            setData(reconciliationData);
+          setData(reconciliationData);
         }
-     } catch (e) {
-        console.error('Error: ', e);
-     }
-   }
+      } catch (e) {
+        console.error("Error: ", e);
+      }
+    };
     fetch();
   }, [path]); // Removed `data` from dependency array to prevent infinite re-rendering
 
@@ -148,7 +148,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const handleMatch = async (
     bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[]
+    ledgerTransactions: LedgerWithScore[],
   ) => {
     const body = {
       ledgers: ledgerTransactions.map((ledgerTransaction) => ({
@@ -195,7 +195,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const handleUnlink = async (
     bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[]
+    ledgerTransactions: LedgerWithScore[],
   ) => {
     const body = {
       ledgers: ledgerTransactions.map((ledgerTransaction) => ({
@@ -303,7 +303,18 @@ export const useReconciliation = () => {
     );
   }
 
-  const userPlan = user?.payment_plan?.plan?.toLowerCase() || "basic";
+  const getUserPlan = (plan: string | undefined) => {
+    switch (plan) {
+      case "Starter Plan":
+        return "starter";
+      case "Business Plan":
+        return "business";
+      default:
+        return "basic";
+    }
+  };
+
+  const userPlan = getUserPlan(user?.payment_plan?.plan);
 
   return {
     ...context,
