@@ -1,62 +1,83 @@
 import {
+  BackendTransaction,
+  LedgerMatch,
   Matched,
-  ResponseData,
-  Transaction as BackendTransaction,
+  StatementMatch,
+  UpdateResponseData,
 } from "../types/backendResponseTypes";
 import { ReconciliationResponse } from "../types/frontendResponseTypes";
 
 export const revertToBackendFormat = (
   frontendData: ReconciliationResponse
-): ResponseData => {
+): UpdateResponseData => {
+  const reconciliation_id = frontendData.reconciliation_id;
   const matches: Matched[] = [];
-  const unmatched_file1: BackendTransaction[] = [];
-  const unmatched_file2: BackendTransaction[] = [];
+  const unmatched_ledgers: BackendTransaction[] = [];
+  const unmatched_statements: BackendTransaction[] = [];
 
-  frontendData.reconciliation_data?.forEach((row) => {
-    if (row.bank_txn && row.ledger_txn) {
-      // Matched transaction
+  // Process the reconciliation data to rebuild matches and unmatched items
+  frontendData.reconciliation_data.forEach((item) => {
+    // Handle matched items
+    if (item.matched) {
+      const statements: StatementMatch[] =
+        item.statements?.map((stmt) => ({
+          statement: {
+            Date: stmt.bank_txn.date,
+            Description: stmt.bank_txn.description,
+            Amount: String(stmt.bank_txn.amount), // Ensure amount is a string
+          },
+          score: stmt.match_score,
+        })) || [];
+
+      const ledgers: LedgerMatch[] =
+        item.ledgers?.map((ldgr) => ({
+          ledger: {
+            Date: ldgr.ledger_txn.date,
+            Description: ldgr.ledger_txn.description,
+            Amount: String(ldgr.ledger_txn.amount), // Ensure amount is a string
+          },
+          score: ldgr.match_score,
+        })) || [];
+
       matches.push({
-        file1_transaction: {
-          Date: row.bank_txn.date,
-          Description: row.bank_txn.description,
-          Amount: row.bank_txn.amount,
-        },
-        file2_transaction: {
-          Date: row.ledger_txn.date,
-          Description: row.ledger_txn.description,
-          Amount: row.ledger_txn.amount,
-        },
-        match_score: 100, // Defaulting to 100, can be adjusted based on logic
+        statements,
+        ledgers,
       });
-    } else if (row.bank_txn) {
-      // Unmatched bank transaction
-      unmatched_file1.push({
-        Date: row.bank_txn.date,
-        Description: row.bank_txn.description,
-        Amount: row.bank_txn.amount,
+    }
+    // Handle unmatched statement items
+    else if (item.statements && !item.ledgers) {
+      item.statements.forEach((stmt) => {
+        unmatched_statements.push({
+          Date: stmt.bank_txn.date,
+          Description: stmt.bank_txn.description,
+          Amount: String(stmt.bank_txn.amount),
+        });
       });
-    } else if (row.ledger_txn) {
-      // Unmatched ledger transaction
-      unmatched_file2.push({
-        Date: row.ledger_txn.date,
-        Description: row.ledger_txn.description,
-        Amount: row.ledger_txn.amount,
+    }
+    // Handle unmatched ledger items
+    else if (item.ledgers && !item.statements) {
+      item.ledgers.forEach((ldgr) => {
+        unmatched_ledgers.push({
+          Date: ldgr.ledger_txn.date,
+          Description: ldgr.ledger_txn.description,
+          Amount: String(ldgr.ledger_txn.amount),
+        });
       });
     }
   });
 
+  // Use the summary directly from frontend data
+  const summary = {
+    totalMatched: frontendData.summary.total_matched,
+    totalUnmatched: frontendData.summary.total_unmatched,
+    total: frontendData.summary.total,
+  };
+
   return {
-    reconciliation_id: frontendData.reconciliation_id,
+    reconciliation_id,
     matches,
-    only_in_file1: unmatched_file1,
-    only_in_file2: unmatched_file2,
-    unmatched: {
-      unmatched_file1,
-      unmatched_file2,
-    },
-    // matchSummary: {
-    //   totalMatched: matches.length,
-    //   totalUnmatched: unmatched_file1.length + unmatched_file2.length,
-    // },
+    unmatched_ledgers,
+    unmatched_statements,
+    summary,
   };
 };

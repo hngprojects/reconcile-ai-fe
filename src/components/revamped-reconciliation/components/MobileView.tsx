@@ -2,8 +2,9 @@
 
 import { Button } from "@/src/components/ui/button";
 import { cn } from "@/src/lib/utils";
-import { DownloadCloudIcon, Loader2, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
+import { CheckIcon } from "../../Icon/Icons";
 import UnlinkModal from "../../modal/UnlinkModal";
 import { SuccessToast } from "../../reconciliation/SuccessToast";
 import {
@@ -13,17 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import { useReconciliation } from "../context/ReconciliationProvider";
-import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
 import {
   addValueAndLabel,
   TransactionOption,
 } from "../helpers/searchComboxOptionExpander";
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
-import { Matched } from "../types/backendResponseTypes";
 import {
+  FrontendTransaction,
   ReconciliationItem,
-  ReconciliationResponse,
-  Transaction,
 } from "../types/frontendResponseTypes";
 import { StatusBadge } from "./StatusBadge";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
@@ -43,10 +41,11 @@ export function MobileView() {
     handleUnlink: onUnlink,
     showUnlinkModalMobile,
     setShowUnlinkModalMobile,
+    setShowUnlinkModal,
     isLoading,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
+  // const [isExporting, setIsExporting] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -56,7 +55,7 @@ export function MobileView() {
     useState<ReconciliationItem>({} as ReconciliationItem);
 
   const possibleMatches =
-    selectedTransactionRow.bank_txn === null
+    selectedTransactionRow.statements === null
       ? unmatchedBankTransactions
       : unmatchedLedgerTransactions;
 
@@ -66,73 +65,73 @@ export function MobileView() {
   const endItem = Math.min((pageIndex + 1) * pageSize, totalItems);
 
   // Export function
-  const handleExport = async () => {
-    try {
-      setIsExporting(true);
+  // const handleExport = async () => {
+  //   try {
+  //     setIsExporting(true);
 
-      // Get reconciliation data from localStorage
-      const reconciliationData = localStorage.getItem("reconciliation");
+  //     // Get reconciliation data from localStorage
+  //     const reconciliationData = localStorage.getItem("reconciliation");
 
-      if (!reconciliationData) {
-        throw new Error("No reconciliation data found");
-      }
+  //     if (!reconciliationData) {
+  //       throw new Error("No reconciliation data found");
+  //     }
 
-      const parsedData = JSON.parse(
-        reconciliationData
-      ) as ReconciliationResponse;
+  //     const parsedData = JSON.parse(
+  //       reconciliationData
+  //     ) as ReconciliationResponse;
 
-      const reconciledData = revertToBackendFormat(parsedData);
+  //     const reconciledData = revertToBackendFormat(parsedData);
 
-      // Format the data according to the API's expected structure
-      const formattedData = {
-        matches: (reconciledData.matches || []).map((match: Matched) => ({
-          ...match,
-          status: match.status || "matched",
-        })),
-        unmatched: reconciledData.unmatched || {},
-        only_in_file1: reconciledData.only_in_file1 || [],
-        only_in_file2: reconciledData.only_in_file2 || [],
-      };
+  //     // Format the data according to the API's expected structure
+  //     const formattedData = {
+  //       matches: (reconciledData.matches || []).map((match: Matched) => ({
+  //         ...match,
+  //         status: match.status || "matched",
+  //       })),
+  //       unmatched: reconciledData.unmatched || {},
+  //       only_in_file1: reconciledData.only_in_file1 || [],
+  //       only_in_file2: reconciledData.only_in_file2 || [],
+  //     };
 
-      const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ data: formattedData }),
-        }
-      );
+  //     const response = await fetch(
+  //       "https://api-dev.reconxi.com/api/v1/reconcile/export",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ data: formattedData }),
+  //       }
+  //     );
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(
-          errorData?.message || `Export failed with status: ${response.status}`
-        );
-      }
+  //     if (!response.ok) {
+  //       const errorData = await response.json().catch(() => null);
+  //       throw new Error(
+  //         errorData?.message || `Export failed with status: ${response.status}`
+  //       );
+  //     }
 
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `reconciliation_export_${new Date().toISOString().split("T")[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+  //     const blob = await response.blob();
+  //     const url = window.URL.createObjectURL(blob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = `reconciliation_export_${new Date().toISOString().split("T")[0]}.csv`;
+  //     document.body.appendChild(a);
+  //     a.click();
+  //     window.URL.revokeObjectURL(url);
+  //     document.body.removeChild(a);
 
-      setToastMessage("Your data has been exported successfully!");
-      setShowSuccessToast(true);
-    } catch (error: unknown) {
-      console.error("Export error:", error);
-      setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data"
-      );
-    } finally {
-      setIsExporting(false);
-    }
-  };
+  //     setToastMessage("Your data has been exported successfully!");
+  //     setShowSuccessToast(true);
+  //   } catch (error: unknown) {
+  //     console.error("Export error:", error);
+  //     setToastMessage(
+  //       error instanceof Error ? error.message : "Failed to export data"
+  //     );
+  //   } finally {
+  //     setIsExporting(false);
+  //   }
+  // };
 
   useEffect(() => {
     if (showSuccessToast) {
@@ -181,9 +180,10 @@ export function MobileView() {
 
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
-        <button
+        {/* <button
+          type="button"
           className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
-          onClick={handleExport}
+          // onClick={handleExport}
           disabled={isExporting}
         >
           {isExporting ? (
@@ -196,13 +196,13 @@ export function MobileView() {
               Export
             </>
           )}
-        </button>
+        </button> */}
       </div>
 
       {/* Transaction Cards */}
       {paginatedData.map((item, index) => {
         const possibleMatches =
-          item.bank_txn === null
+          item.statements === null
             ? unmatchedLedgerTransactions
             : unmatchedBankTransactions;
 
@@ -224,7 +224,7 @@ export function MobileView() {
 
         return (
           <div
-            key={`${item.bank_txn?.id}-${index}`}
+            key={index}
             className={cn(
               "rounded-lg border shadow-sm",
               item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
@@ -243,94 +243,108 @@ export function MobileView() {
               </div>
             )}
 
-            <div className="p-4 space-y-4">
+            <div className="p-4 space-y-4" key={item.reconciliation_pair_id}>
               {/* Bank Statement */}
-              {item.bank_txn !== null && (
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <div className="flex flex-col">
-                      <div className="text-sm font-semibold text-gray-900">
-                        Bank Statement
-                      </div>
-                      <div className="space-y-1">
-                        <div className="text-sm text-gray-700">
-                          {item.bank_txn?.date}
+              {item.statements?.map((stmt) => {
+                return (
+                  stmt.bank_txn !== null && (
+                    <div className="space-y-2" key={stmt.bank_txn.id}>
+                      <div className="flex justify-between">
+                        <div className="flex flex-col">
+                          <div className="text-sm font-semibold text-gray-900">
+                            Bank Statement
+                          </div>
+                          <div className="space-y-1">
+                            <div className="text-sm text-gray-700">
+                              {stmt.bank_txn?.date}
+                            </div>
+                            <div className="text-lg text-gray-700">
+                              {stmt.bank_txn?.description}
+                            </div>
+                          </div>
                         </div>
-                        <div className="text-lg text-gray-700">
-                          {item.bank_txn?.description}
+
+                        <div className="font-medium text-gray-600">
+                          {stmt.bank_txn?.amount}
                         </div>
                       </div>
-                    </div>
 
-                    <div className="font-medium text-gray-600">
-                      {item.bank_txn?.amount}
-                    </div>
-                  </div>
-
-                  {item.matched && (
-                    <div className="flex gap-3 items-center">
-                      <button
-                        type="button"
-                        title="Unlink matching transactions"
-                        className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
-                        onClick={() => {
-                          setShowUnlinkModalMobile(true);
-                          setSelectedTransactionRow(item);
-                        }}
-                      >
-                        <StatusBadge matched={item.matched} />
-                      </button>
-                      <hr className="border border-gray-200/70 flex-1" />
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Company Ledger - Only show if matched */}
-              {item.ledger_txn !== null && (
-                <div className="flex justify-between">
-                  <div className="flex flex-col">
-                    <div className="text-sm font-semibold text-gray-900">
-                      Company Ledger
-                    </div>
-                    <div className="space-y-1">
-                      <div className="text-sm text-gray-700">
-                        {item.ledger_txn?.date}
-                      </div>
-                      <div className="text-lg text-gray-700">
-                        {item.ledger_txn?.description}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col justify-between items-end">
-                    <div className="font-medium text-gray-600">
-                      {item.ledger_txn?.amount}
-                    </div>
-
-                    {item.bank_txn !== null && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="size-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreVertical className="h-4 w-4 text-gray-600" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem
+                      {item.matched && (
+                        <div className="flex gap-3 items-center">
+                          <button
+                            type="button"
+                            title="Unlink matching transactions"
+                            className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
                             onClick={() => {
+                              setShowUnlinkModalMobile(true);
                               setSelectedTransactionRow(item);
-                              setModalOpen(true);
                             }}
                           >
-                            Find possible match
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                  </div>
-                </div>
-              )}
+                            <StatusBadge matched={item.matched} />
+                          </button>
+                          <hr className="border border-gray-200/70 flex-1" />
+                        </div>
+                      )}
+                    </div>
+                  )
+                );
+              })}
+              {}
+
+              {/* Company Ledger - Only show if matched */}
+              {item.ledgers?.map((ldgr) => {
+                return (
+                  ldgr.ledger_txn !== null && (
+                    <div className="flex justify-between">
+                      <div className="flex flex-col">
+                        <div className="text-sm font-semibold text-gray-900">
+                          Company Ledger
+                        </div>
+                        <div className="space-y-1">
+                          <div className="text-sm text-gray-700">
+                            {ldgr.ledger_txn?.date}
+                          </div>
+                          <div className="text-lg text-gray-700">
+                            {ldgr.ledger_txn?.description}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col justify-between items-end">
+                        <div className="font-medium text-gray-600">
+                          {ldgr.ledger_txn?.amount}
+                        </div>
+
+                        {item.statements !== null && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="size-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreVertical className="h-4 w-4 text-gray-600" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSelectedTransactionRow(item);
+                                  setShowUnlinkModal(true);
+                                }}
+                                className="gap-0.5"
+                              >
+                                <CheckIcon className="text-[#333333] h-7 w-7" />
+                                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                  Unlink Matched
+                                </span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                      </div>
+                    </div>
+                  )
+                );
+              })}
 
               {/* Show Unmatched status if not matched */}
               {!item.matched && (
@@ -349,20 +363,33 @@ export function MobileView() {
                       placeholder="Find possible match"
                       hidePlaceholderWhenSelected
                       onConfirm={(option) => {
-                        const selectedOption: Transaction = {
+                        const selectedOption: FrontendTransaction = {
                           id: `${option.id}-${Date.now()}`,
                           description: option.description,
                           date: option.date,
                           amount: option.amount,
                         };
-                        console.log("Confirmed:", option);
+                        console.log("Confirmed:", { selectedOption, option });
 
-                        if (item.ledger_txn) {
-                          onMatch(selectedOption, item.ledger_txn);
+                        if (item.ledgers) {
+                          onMatch(
+                            [
+                              {
+                                bank_txn: { ...selectedOption },
+                                match_score: "0",
+                              },
+                            ],
+                            item.ledgers
+                          );
                         }
 
-                        if (item.bank_txn) {
-                          onMatch(item.bank_txn, selectedOption);
+                        if (item.statements) {
+                          onMatch(item.statements, [
+                            {
+                              ledger_txn: { ...selectedOption },
+                              match_score: "0",
+                            },
+                          ]);
                         }
                       }}
                       emptyIndicator={
@@ -380,12 +407,16 @@ export function MobileView() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
+                          className="gap-0.5"
                           onClick={() => {
                             setSelectedTransactionRow(item);
                             setModalOpen(true);
                           }}
                         >
-                          Find possible match
+                          <CheckIcon className="text-[#333333] h-7 w-7" />
+                          <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                            Find Possible Match
+                          </span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -440,12 +471,12 @@ export function MobileView() {
           if (!selectedTransactionRow) return;
 
           if (
-            selectedTransactionRow.bank_txn &&
-            selectedTransactionRow.ledger_txn
+            selectedTransactionRow.statements &&
+            selectedTransactionRow.ledgers
           ) {
             await onUnlink(
-              selectedTransactionRow.bank_txn,
-              selectedTransactionRow.ledger_txn
+              selectedTransactionRow.statements,
+              selectedTransactionRow.ledgers
             );
           }
         }}

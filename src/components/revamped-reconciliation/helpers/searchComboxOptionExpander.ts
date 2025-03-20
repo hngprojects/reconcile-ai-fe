@@ -1,10 +1,10 @@
 import { Option } from "../components/quickFind/types";
-import { Transaction } from "../types/frontendResponseTypes";
+import { FrontendTransaction } from "../types/frontendResponseTypes";
 
-export interface TransactionOption extends Option, Transaction {}
+export interface TransactionOption extends Option, FrontendTransaction {}
 
 export function addValueAndLabel(
-  transactions: Transaction[]
+  transactions: FrontendTransaction[]
 ): TransactionOption[] {
   return transactions?.map((transaction) => {
     // Ensure amount is always a string

@@ -18,10 +18,12 @@ import {
 import { CheckIcon, XIcon } from "lucide-react";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import { ReconciliationItem } from "../types/frontendResponseTypes";
+import useRowHeights from "../hooks/useRowHeights";
 
 export function StatusTable() {
   const { paginatedData, setShowUnlinkModal, setSelectedRow } =
     useReconciliation();
+  const rowHeights = useRowHeights(paginatedData);
 
   const statusColumn: ColumnDef<ReconciliationItem>[] = [
     {
@@ -29,27 +31,59 @@ export function StatusTable() {
       header: "Status",
       cell: ({ row }) => {
         const matched = row.original.matched;
+        const statementLength = row.original.statements?.length || 0;
+        const ledgerLength = row.original.ledgers?.length || 0;
+
+        // Determine the maximum number of status indicators needed
+        const maxItems = Math.max(statementLength, ledgerLength, 1);
 
         return (
-          <div
-            className={cn(
-              "flex justify-center items-center text-sm font-semibold px-1 relative",
-              matched ? "text-[#007A55]" : "text-[#C50700] "
-            )}
-          >
-            {matched ? "Matched" : "Unmatched"}
-            <div
-              className={cn(
-                "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
-                matched ? "bg-[#007A55] group-hover:hidden" : "bg-[#C50700]"
-              )}
-            >
-              {matched ? (
-                <CheckIcon className="h-3 w-3 text-white" />
-              ) : (
-                <XIcon className="h-3 w-3 text-white" />
-              )}
-            </div>
+          <div className="flex flex-col">
+            {Array.from({ length: maxItems }).map((_, index) => (
+              <div
+                key={index}
+                className={cn(
+                  "py-5 flex justify-center items-center",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                <div
+                  className={cn(
+                    "relative flex justify-center items-center text-sm font-semibold px-1",
+                    matched ? "text-[#007A55]" : "text-[#C50700] "
+                  )}
+                >
+                  {matched ? "Matched" : "Unmatched"}
+                  <div
+                    className={cn(
+                      "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
+                      matched
+                        ? "bg-[#007A55] group-hover:hidden"
+                        : "bg-[#C50700]"
+                    )}
+                  >
+                    {matched ? (
+                      <CheckIcon className="h-3 w-3 text-white" />
+                    ) : (
+                      <XIcon className="h-3 w-3 text-white" />
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    title="Unlink matching transactions"
+                    className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer -top-4 -right-8 z-20"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedRow(row.original);
+                      setShowUnlinkModal(true);
+                    }}
+                  >
+                    <XIcon className="w-4 h-4 text-[#333333]" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         );
       },
@@ -82,8 +116,9 @@ export function StatusTable() {
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
+            {table.getRowModel().rows.map((row, index) => (
               <TableRow
                 key={row.id}
                 className={cn(
@@ -92,24 +127,22 @@ export function StatusTable() {
                     ? "bg-green-50 hover:bg-green-50"
                     : "bg-red-50 hover:bg-red-50"
                 )}
+                style={{ height: `${rowHeights[index]}px` }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className={cn(
-                      "py-5 !h-[0px] relative group transition duration-200",
-                      {
-                        "hover:bg-[#CEFFED]": row.original.matched,
-                      }
-                    )}
+                    className={cn("py-0 transition duration-200", {
+                      "group hover:bg-[#CEFFED]": row.original.matched,
+                    })}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
 
-                    {cell.row.original.matched && (
+                    {/* {cell.row.original.matched && (
                       <button
                         type="button"
                         title="Unlink matching transactions"
-                        className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer top-1.5 right-1 z-50"
+                        className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer top-2 right-2 z-50"
                         onClick={(e) => {
                           e.stopPropagation();
                           setSelectedRow(cell.row.original);
@@ -118,7 +151,7 @@ export function StatusTable() {
                       >
                         <XIcon className="w-4 h-4 text-[#333333]" />
                       </button>
-                    )}
+                    )} */}
                   </TableCell>
                 ))}
               </TableRow>

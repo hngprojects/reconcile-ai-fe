@@ -58,15 +58,15 @@ export type ReconciliationTableProps = {
 };
 
 export type ManualRequestBody = {
-  ledger?: {
+  ledgers?: {
     Date?: string;
     Person?: string;
     Amount?: number;
-  };
-  statement: {
+  }[];
+  statements: {
     Date?: string;
     Person?: string;
     Amount?: number;
-  };
+  }[];
   action: string;
 };
