@@ -36,8 +36,6 @@ const Links = () => {
 
                 <Link href="/blog" className="text-white">Blog</Link>
                 <Link href="/pricing" className="text-white">Pricing</Link>
-                <a href="/blog" className="text-[#333333]">Blog</a>
-                <a href="/pricing" className="text-[#333333]">Pricing</a>
             </div>
         </div>
     );
