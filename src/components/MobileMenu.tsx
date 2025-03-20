@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Dot, X } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 import {
@@ -68,7 +68,7 @@ const MobileMenu = ({
               <AccordionItem value="industries" className="border-none">
                 <AccordionTrigger
                   className={cn(
-                    "font-medium text-2xl text-white/80 hover:no-underline",
+                    "font-medium text-2xl text-white/80 hover:no-underline py-0",
                     (pathname === "/small-business" ||
                       pathname === "/enterprise") &&
                       "text-white",
@@ -76,7 +76,7 @@ const MobileMenu = ({
                 >
                   Industries
                 </AccordionTrigger>
-                <AccordionContent className="text-white/80 pl-4">
+                <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
                   <div className="flex flex-col gap-4">
                     <Link
                       href="/small-business"
@@ -86,7 +86,9 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Small Business owner
+                      <span className="flex gap-1">
+                        <Dot /> Small Business owner
+                      </span>
                     </Link>
                     <Link
                       href="/financial-pro"
@@ -96,7 +98,10 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Financial Professionals
+                      <span className="flex gap-1">
+                        <Dot />
+                        Financial Professionals
+                      </span>
                     </Link>
                     <Link
                       href="/enterprise"
@@ -106,7 +111,9 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Enterprise
+                      <span className="flex gap-1">
+                        <Dot /> Enterprise
+                      </span>
                     </Link>
                     <Link
                       href="/school-and-education"
@@ -116,7 +123,9 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Schools & Educational Institutions
+                      <span className="flex gap-1">
+                        <Dot /> Schools & Educational Institutions
+                      </span>
                     </Link>
                   </div>
                 </AccordionContent>
