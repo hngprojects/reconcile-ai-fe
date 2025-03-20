@@ -33,9 +33,10 @@ import {
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   ReconciliationItem,
-  Transaction,
+  FrontendTransaction,
 } from "../types/frontendResponseTypes";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+import useRowHeights from "../hooks/useRowHeights";
 
 export function BankTable() {
   const { isAuthenticated } = useAuth();
@@ -55,23 +56,81 @@ export function BankTable() {
   const transactionOptions: TransactionOption[] = addValueAndLabel(
     unmatchedLedgerTransactions
   );
+  const rowHeights = useRowHeights(paginatedData);
 
   // Base columns that are always visible
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
       accessorKey: "bank_txn.date",
       header: "Date",
-      cell: ({ row }) => row.original.bank_txn?.date,
+      cell: ({ row }) => {
+        const statements = row.original.statements;
+        if (!statements || statements.length === 0) return null;
+
+        return (
+          <div className="flex flex-col px-1">
+            {statements.map((statement, index) => (
+              <div
+                key={`${statement.bank_txn.id}-${index}`}
+                className={cn(
+                  "px-3 py-5",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                {statement.bank_txn.date}
+              </div>
+            ))}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "bank_txn.description",
       header: "Description",
-      cell: ({ row }) => row.original.bank_txn?.description,
+      cell: ({ row }) => {
+        const statements = row.original.statements;
+        if (!statements || statements.length === 0) return null;
+
+        return (
+          <div className="flex flex-col px-1">
+            {statements.map((statement, index) => (
+              <div
+                key={`${statement.bank_txn.id}-${index}`}
+                className={cn(
+                  "px-3 py-5",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                {statement.bank_txn.description}
+              </div>
+            ))}
+          </div>
+        );
+      },
     },
     {
       accessorKey: "bank_txn.amount",
       header: "Amount",
-      cell: ({ row }) => row.original.bank_txn?.amount,
+      cell: ({ row }) => {
+        const statements = row.original.statements;
+        if (!statements || statements.length === 0) return null;
+
+        return (
+          <div className="flex flex-col px-1">
+            {statements.map((statement, index) => (
+              <div
+                key={`${statement.bank_txn.id}-${index}`}
+                className={cn(
+                  "px-3 py-5",
+                  index > 0 ? "border-t border-gray-200" : ""
+                )}
+              >
+                {statement.bank_txn.amount}
+              </div>
+            ))}
+          </div>
+        );
+      },
     },
   ];
 
@@ -185,7 +244,7 @@ export function BankTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => {
+            {table.getRowModel().rows.map((row, index) => {
               const reconciledDataRow = row.original;
 
               return (
@@ -195,20 +254,21 @@ export function BankTable() {
                     "transition-colors",
                     row.original.matched
                       ? "bg-green-50 hover:bg-green-50"
-                      : row.original.bank_txn
+                      : row.original.statements
                         ? "bg-red-50 hover:bg-red-50"
                         : "hover:bg-white"
                   )}
+                  style={{ height: `${rowHeights[index]}px` }}
                 >
-                  {row.original.bank_txn ? (
-                    // If bank transaction exists, render normal cells
+                  {row.original.statements ? (
+                    // If bank statements exist, render normal cells
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
-                        className={cn("px-6 py-5 !h-[0px]", {
+                        className={cn("py-0", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
-                          "flex items-center justify-center !h-[60.4px]":
+                          "flex items-center justify-center":
                             cell.column.id === "action",
                         })}
                       >
@@ -227,7 +287,7 @@ export function BankTable() {
                             ? bankColumns.length - 1
                             : bankColumns.length
                         }
-                        className={cn("px-4 py-[11px] !h-[0px]", {
+                        className={cn("px-4 !h-[0px]", {
                           "border-r": isAuthenticated,
                         })}
                       >
@@ -240,7 +300,7 @@ export function BankTable() {
                           placeholder="Find possible match"
                           hidePlaceholderWhenSelected
                           onConfirm={async (option) => {
-                            const selectedOption: Transaction = {
+                            const selectedOption: FrontendTransaction = {
                               id: `ledger_txn_${Date.now()}`,
                               description: option.description,
                               date: option.date,
@@ -248,10 +308,18 @@ export function BankTable() {
                             };
                             console.log("Confirmed:", option);
 
-                            if (reconciledDataRow.ledger_txn) {
+                            if (
+                              reconciledDataRow.ledgers &&
+                              reconciledDataRow.ledgers[0]?.ledger_txn
+                            ) {
                               onMatch(
-                                selectedOption,
-                                reconciledDataRow.ledger_txn
+                                [
+                                  {
+                                    bank_txn: { ...selectedOption },
+                                    match_score: "0",
+                                  },
+                                ],
+                                reconciledDataRow.ledgers
                               );
                             }
                           }}
@@ -263,7 +331,7 @@ export function BankTable() {
                         />
                       </TableCell>
                       {isAuthenticated && (
-                        <TableCell className="px-6 py-5 !h-[60.4px] flex items-center justify-center">
+                        <TableCell className="py-5 flex items-center justify-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <button

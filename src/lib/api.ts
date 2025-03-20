@@ -7,6 +7,7 @@ import {
   MARKETING_DEMO_API_URL,
   PARTNER_API_URL,
   CUSTOMER_FEEDBACK_API_URL,
+  RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
 } from "./apiEndpoints";
 
@@ -84,6 +85,7 @@ export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
     });
 
     const data = await response.json();
+    localStorage.setItem('reconciliation_id', data.data.reconciliation_id);
 
     if (response.status === 429) {
       return {
@@ -321,6 +323,27 @@ export const handleCustomerFeedback = async (formData: FormData) => {
   }
 };
 
+export const fetchReconciliation = async(reconciliationId: string) => {
+  try {
+    const response = await fetch(`${RECONCILIATION_RESULT_API_URL}${reconciliationId}`);
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return {
+      success: true,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};
 export async function updatePaymentPlan(
   data: PaymentPlanData,
 ): Promise<PaymentPlanResponse> {

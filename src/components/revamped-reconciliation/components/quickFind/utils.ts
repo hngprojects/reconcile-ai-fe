@@ -26,9 +26,6 @@ export function transToGroupOption(
     return {};
   }
   if (!groupBy) {
-    console.log({
-      "": options,
-    });
     return {
       "": options,
     };

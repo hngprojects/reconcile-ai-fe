@@ -1,29 +1,37 @@
-export type Transaction = {
+export type FrontendTransaction = {
   id: string;
   date: string;
   description: string;
   amount: string | number;
 };
 
+export type StatementWithScore = {
+  bank_txn: FrontendTransaction;
+  match_score: string;
+};
+
+export type LedgerWithScore = {
+  ledger_txn: FrontendTransaction;
+  match_score: string;
+};
+
 export type ReconciliationItem = {
   reconciliation_pair_id: string;
-  bank_txn: Transaction | null;
-  ledger_txn: Transaction | null;
+  statements: StatementWithScore[] | null;
+  ledgers: LedgerWithScore[] | null;
   matched: boolean;
-  match_score: number;
+};
+
+type Summary = {
+  total_matched: number;
+  total_unmatched: number;
+  total: number;
 };
 
 export type ReconciliationResponse = {
   reconciliation_id: string;
   reconciliation_data: ReconciliationItem[];
-  unmatched_bank_transactions: Transaction[];
-  unmatched_ledger_transactions: Transaction[];
-  summary: {
-    total_bank_transactions: number;
-    total_ledger_transactions: number;
-    total_matched: number;
-    total_unmatched: number;
-    auto_matched: number;
-    manual_review_needed: number;
-  };
+  unmatched_bank_transactions: FrontendTransaction[];
+  unmatched_ledger_transactions: FrontendTransaction[];
+  summary: Summary;
 };

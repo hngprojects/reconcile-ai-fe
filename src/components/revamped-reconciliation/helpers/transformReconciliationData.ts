@@ -1,110 +1,122 @@
-import type {
+import {
+  BackendTransaction,
   Matched,
-  ResponseData,
-  Transaction as backendTransaction,
+  UpdateResponseData,
 } from "../types/backendResponseTypes";
 import {
-  ReconciliationResponse,
+  FrontendTransaction,
+  LedgerWithScore,
   ReconciliationItem,
-  Transaction,
+  ReconciliationResponse,
+  StatementWithScore,
 } from "../types/frontendResponseTypes";
 
 export const transformReconciliationData = (
-  backendData: ResponseData
+  backendData: UpdateResponseData
 ): ReconciliationResponse => {
   const reconciliation_id = backendData.reconciliation_id;
   const reconciliation_data: ReconciliationItem[] = [];
-  const unmatched_bank_transactions: Transaction[] = [];
-  const unmatched_ledger_transactions: Transaction[] = [];
+  const unmatched_bank_transactions: FrontendTransaction[] = [];
+  const unmatched_ledger_transactions: FrontendTransaction[] = [];
 
-  let reconciliationCounter = Date.now(); // Start with a timestamp
+  let reconciliationCounter = Date.now(); // Start with a timestamp as base for IDs
 
-  // Processing matched transactions
-  backendData.matches.forEach((match: Matched, index: number) => {
+  // Process matched transactions
+  backendData.matches.forEach((match: Matched, matchIndex: number) => {
+    const statements: StatementWithScore[] = match.statements.map(
+      (stmt, stmtIndex) => {
+        return {
+          bank_txn: {
+            id: `bank_txn_${matchIndex + 1}_${stmtIndex + 1}`,
+            date: stmt.statement.Date,
+            description: stmt.statement.Description,
+            amount: stmt.statement.Amount,
+          },
+          match_score: stmt.score,
+        };
+      }
+    );
+
+    const ledgers: LedgerWithScore[] = match.ledgers.map((ldgr, ldgrIndex) => {
+      return {
+        ledger_txn: {
+          id: `ledger_txn_${matchIndex + 1}_${ldgrIndex + 1}`,
+          date: ldgr.ledger.Date,
+          description: ldgr.ledger.Description,
+          amount: ldgr.ledger.Amount,
+        },
+        match_score: ldgr.score,
+      };
+    });
+
     reconciliation_data.push({
       reconciliation_pair_id: (reconciliationCounter++).toString(),
-      bank_txn: {
-        id: `bank_txn_${index + 1}`,
-        date: match.file1_transaction.Date,
-        description: match.file1_transaction.Description,
-        amount: match.file1_transaction.Amount,
-      },
-      ledger_txn: {
-        id: `ledger_txn_${index + 1}`,
-        date: match.file2_transaction.Date,
-        description: match.file2_transaction.Description,
-        amount: match.file2_transaction.Amount,
-      },
+      statements: statements.length > 0 ? statements : null,
+      ledgers: ledgers.length > 0 ? ledgers : null,
       matched: true,
-      match_score: 100,
     });
   });
 
-  // Processing unmatched bank transactions
-  backendData.unmatched.unmatched_file1.forEach(
-    (txn: backendTransaction, index: number) => {
-      const bankTxn: Transaction = {
-        id: `bank_txn_unmatched_${index + 1}`,
-        date: txn.Date,
-        description: txn.Description,
-        amount: txn.Amount,
+  // Process unmatched bank transactions (statements)
+  backendData.unmatched_statements.forEach(
+    (stmt: BackendTransaction, index: number) => {
+      const bankTxn: FrontendTransaction = {
+        id: `unmatched_bank_txn_${index + 1}`,
+        date: stmt.Date,
+        description: stmt.Description,
+        amount: stmt.Amount,
       };
-
-      reconciliation_data.push({
-        reconciliation_pair_id: (reconciliationCounter++).toString(),
-        bank_txn: bankTxn,
-        ledger_txn: null,
-        matched: false,
-        match_score: 0,
-      });
 
       unmatched_bank_transactions.push(bankTxn);
-    }
-  );
-
-  // Processing unmatched ledger transactions
-  backendData.unmatched.unmatched_file2.forEach(
-    (txn: backendTransaction, index: number) => {
-      const ledgerTxn: Transaction = {
-        id: `ledger_txn_unmatched_${index + 1}`,
-        date: txn.Date,
-        description: txn.Description,
-        amount: txn.Amount,
-      };
 
       reconciliation_data.push({
         reconciliation_pair_id: (reconciliationCounter++).toString(),
-        bank_txn: null,
-        ledger_txn: ledgerTxn,
+        statements: [
+          {
+            bank_txn: bankTxn,
+            match_score: "0",
+          },
+        ],
+        ledgers: null,
         matched: false,
-        match_score: 0,
       });
-
-      unmatched_ledger_transactions.push(ledgerTxn);
     }
   );
 
-  // Constructing summary
-  const summary = {
-    total_bank_transactions:
-      backendData.matches.length + backendData.unmatched.unmatched_file1.length,
-    total_ledger_transactions:
-      backendData.matches.length + backendData.unmatched.unmatched_file2.length,
-    total_matched: backendData.matches.length,
-    total_unmatched:
-      backendData.unmatched.unmatched_file1.length +
-      backendData.unmatched.unmatched_file2.length,
-    auto_matched: backendData.matches.length, // Assuming all matches are auto-matched
-    manual_review_needed:
-      backendData.unmatched.unmatched_file1.length +
-      backendData.unmatched.unmatched_file2.length,
-  };
+  // Process unmatched ledger transactions
+  backendData.unmatched_ledgers.forEach((ldgr: BackendTransaction) => {
+    const ledgerTxn: FrontendTransaction = {
+      id: ldgr.id,
+      date: ldgr.Date,
+      description: ldgr.Description,
+      amount: ldgr.Amount,
+    };
 
+    unmatched_ledger_transactions.push(ledgerTxn);
+
+    reconciliation_data.push({
+      reconciliation_pair_id: (reconciliationCounter++).toString(),
+      statements: null,
+      ledgers: [
+        {
+          ledger_txn: ledgerTxn,
+          match_score: "0",
+        },
+      ],
+      matched: false,
+    });
+  });
+
+  // Return the transformed data with the summary directly from backend
   return {
     reconciliation_id,
     reconciliation_data,
     unmatched_bank_transactions,
     unmatched_ledger_transactions,
-    summary,
+    summary: {
+      total_matched: backendData.summary.totalMatched,
+      total_unmatched: backendData.summary.totalUnmatched,
+      total: backendData.summary.total,
+    },
   };
 };
