@@ -1,6 +1,6 @@
 "use client";
 
-import { Dot, X } from "lucide-react";
+import { ChevronDown, Dot, X } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 import {
@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
 import { usePathname } from "next/navigation";
+import { useAuth } from "./context/AuthContext";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -30,6 +31,8 @@ const MobileMenu = ({
     onClose();
   };
 
+  const {user} = useAuth()
+
   return (
     <div
       id="mobile-menu"
@@ -48,14 +51,14 @@ const MobileMenu = ({
           className="self-end p-2 text-white hover:bg-gray-100 rounded-full cursor-pointer"
           aria-label="Close mobile menu"
         >
-          <X className="h-12 w-12" />
+          <X className="h-8 w-8" />
         </button>
 
         <div className="flex flex-col justify-between flex-1 gap-4">
           <nav className="gap-6 flex flex-col">
             <Link
               className={cn(
-                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
+                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
                 pathname === "/" && "text-white after:w-full",
               )}
               href="/"
@@ -68,13 +71,14 @@ const MobileMenu = ({
               <AccordionItem value="industries" className="border-none">
                 <AccordionTrigger
                   className={cn(
-                    "font-medium text-2xl text-white/80 hover:no-underline py-0",
+                    "font-medium text-2xl text-white/80 hover:no-underline py-0 flex items-center gap-2",
                     (pathname === "/small-business" ||
                       pathname === "/enterprise") &&
                       "text-white",
                   )}
                 >
-                  Industries
+                  <span>Industries</span>
+                  <ChevronDown />
                 </AccordionTrigger>
                 <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
                   <div className="flex flex-col gap-4">
@@ -86,7 +90,10 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Startup and SMEs
+                      <span className="flex gap-1">
+                        <Dot />
+                        Startup and SMEs
+                      </span>
                     </Link>
                     <Link
                       href="/financial-pro"
@@ -114,6 +121,18 @@ const MobileMenu = ({
                       </span>
                     </Link>
                     <Link
+                      href="/freelancer"
+                      className={cn(
+                        "text-xl hover:text-white transition-colors",
+                        pathname === "/freelancer" && "text-white",
+                      )}
+                      onClick={handleLinkClick}
+                    >
+                      <span className="flex gap-1">
+                        <Dot /> Freelancer
+                      </span>
+                    </Link>
+                    <Link
                       href="/school-and-education"
                       className={cn(
                         "text-xl hover:text-white transition-colors",
@@ -132,7 +151,7 @@ const MobileMenu = ({
 
             <Link
               className={cn(
-                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
+                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
                 pathname === "/blog" && "text-white after:w-full",
               )}
               href="/blog"
@@ -143,7 +162,7 @@ const MobileMenu = ({
 
             <Link
               className={cn(
-                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
+                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
                 pathname === "/pricing" && "text-white after:w-full",
               )}
               href="/pricing"
@@ -153,7 +172,7 @@ const MobileMenu = ({
             </Link>
           </nav>
 
-          <div className="flex items-center gap-4 w-full">
+          {!user && <div className="flex items-center gap-4 w-full">
             <button
               type="button"
               onClick={onLogin}
@@ -170,7 +189,7 @@ const MobileMenu = ({
             >
               Sign up
             </button>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

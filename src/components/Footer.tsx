@@ -17,7 +17,7 @@ const Footer = () => {
       link: "/contact",
     },
     {
-      name: "Features list",
+      name: "Features List",
       link: "/features",
     },
     {
@@ -47,7 +47,7 @@ const Footer = () => {
       link: "/demo",
     },
     {
-      name: "Help centre",
+      name: "Help Centre",
       link: "/customer-support-form",
     },
   ];
@@ -91,7 +91,7 @@ const Footer = () => {
                 <LinkedinIcon className="text-inherit w-5 h-5" />
               </Link>
               <Link
-                href="https://x.com/reconxi02?s=21&t=6GEcIpxFOrczvmtrZsCzSw"
+                href="https://x.com/thereconxi"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                 aria-label="Twitter"
               >

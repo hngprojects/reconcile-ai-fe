@@ -3,9 +3,8 @@
 import Container from "@/src/components/Container";
 import { useState } from "react";
 import Image from "next/image";
-import { Button } from "@/src/components/ui/button";
 import Footer from "@/src/components/Footer";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 const hiringSteps = [
@@ -16,76 +15,74 @@ const hiringSteps = [
   "Join the Team – Successful candidates receive an offer and onboarding support.",
 ];
 
-const jobListings = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    location: "London, United Kingdom",
-    description:
-      "As a Frontend Developer at ReconXi, you will build interactive interfaces to enhance the user experience of our platform.",
-    salary: "$500K - $900K / month",
-  },
-  {
-    id: 2,
-    title: "DevOps Engineer",
-    location: "London, United Kingdom",
-    description:
-      "As a DevOps Engineer, you will ensure smooth deployment processes, infrastructure reliability, and system security.",
-    salary: "$500K - $900K / month",
-  },
-  {
-    id: 3,
-    title: "Product designer",
-    location: "London, United Kingdom",
-    description:
-      "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
-    salary: "$500K - $900K / month",
-  },
-  {
-    id: 4,
-    title: "Product Manager",
-    location: "London, United Kingdom",
-    description:
-      "As a Product Manager, you will oversee product strategy, roadmap execution, design and engineering teams.",
-    salary: "$500K - $900K / month",
-  },
-  {
-    id: 5,
-    title: "Backend Engineer",
-    location: "London, United Kingdom",
-    description:
-      "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
-    salary: "$500K - $900K / month",
-  },
-  {
-    id: 6,
-    title: "Marketing Specialist",
-    location: "London, United Kingdom",
-    description:
-      "As a Marketing Specialist, you will drive brand awareness and optimize customer engagement strategies.",
-    salary: "$500K - $900K / month",
-  },
-];
+// const jobListings = [
+//   {
+//     id: 1,
+//     title: "Frontend Developer",
+//     location: "London, United Kingdom",
+//     description:
+//       "As a Frontend Developer at ReconXi, you will build interactive interfaces to enhance the user experience of our platform.",
+//     salary: "$500K - $900K / month",
+//   },
+//   {
+//     id: 2,
+//     title: "DevOps Engineer",
+//     location: "London, United Kingdom",
+//     description:
+//       "As a DevOps Engineer, you will ensure smooth deployment processes, infrastructure reliability, and system security.",
+//     salary: "$500K - $900K / month",
+//   },
+//   {
+//     id: 3,
+//     title: "Product designer",
+//     location: "London, United Kingdom",
+//     description:
+//       "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
+//     salary: "$500K - $900K / month",
+//   },
+//   {
+//     id: 4,
+//     title: "Product Manager",
+//     location: "London, United Kingdom",
+//     description:
+//       "As a Product Manager, you will oversee product strategy, roadmap execution, design and engineering teams.",
+//     salary: "$500K - $900K / month",
+//   },
+//   {
+//     id: 5,
+//     title: "Backend Engineer",
+//     location: "London, United Kingdom",
+//     description:
+//       "As a Product designer at the ReconXi, you will play a critical role in shaping the user experience of the products",
+//     salary: "$500K - $900K / month",
+//   },
+//   {
+//     id: 6,
+//     title: "Marketing Specialist",
+//     location: "London, United Kingdom",
+//     description:
+//       "As a Marketing Specialist, you will drive brand awareness and optimize customer engagement strategies.",
+//     salary: "$500K - $900K / month",
+//   },
+// ];
 
 export default function Careers() {
-  const router = useRouter();
   const [steps] = useState(hiringSteps);
-  const [jobs] = useState(jobListings);
+  // const [jobs] = useState(jobListings);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(6);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [rowsPerPage, setRowsPerPage] = useState(6);
 
-  const totalPages = Math.ceil(jobs.length / rowsPerPage);
-  const startIndex = (currentPage - 1) * rowsPerPage;
-  const selectedJobs = jobs.slice(startIndex, startIndex + rowsPerPage);
+  // const totalPages = Math.ceil(jobs.length / rowsPerPage);
+  // const startIndex = (currentPage - 1) * rowsPerPage;
 
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
+  // const handleNext = () => {
+  //   if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  // };
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
+  // const handlePrev = () => {
+  //   if (currentPage > 1) setCurrentPage(currentPage - 1);
+  // };
 
   return (
     <>
@@ -205,7 +202,7 @@ export default function Careers() {
             </div>
 
             <div className="flex flex-col justify-center items-center gap-[29px] self-stretch">
-              {jobs.length > 0 ? (
+              {/* {jobs.length > 0 ? (
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[29px] w-full max-w-[1200px]">
                     {selectedJobs.map((job) => (
@@ -245,7 +242,6 @@ export default function Careers() {
                       </motion.div>
                     ))}
                   </div>
-                  {/* Pagination Controls */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -285,32 +281,30 @@ export default function Careers() {
                     </div>
                   </motion.div>
                 </div>
-              ) : (
-                // If there are no open positions
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                  className="flex flex-col items-center gap-[2px] w-full max-w-[557px]"
-                >
-                  <Image
-                    src="/assets/images/Content.png"
-                    alt="No Jobs Icon"
-                    width={355}
-                    height={271}
-                    style={{ width: "auto", height: "auto" }}
-                    className="justify-center items-center"
-                  />
-                  <div className="flex flex-col items-center gap-6 self-stretch">
-                    <h2 className="text-[#0A0A0A] text-center font-inter text-[28px] md:text-[28px] font-medium leading-normal">
-                      No available Jobs at the moment
-                    </h2>
-                    <p className="text-[#525252] text-center font-inter text-[16px] md:text-[20px] font-normal leading-normal">
-                      Come back later!
-                    </p>
-                  </div>
-                </motion.div>
-              )}
+              ) : ( */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                className="flex flex-col items-center gap-[2px] w-full max-w-[557px]"
+              >
+                <Image
+                  src="/assets/images/Content.png"
+                  alt="No Jobs Icon"
+                  width={355}
+                  height={271}
+                  style={{ width: "auto", height: "auto" }}
+                  className="justify-center items-center"
+                />
+                <div className="flex flex-col items-center gap-6 self-stretch">
+                  <h2 className="text-[#0A0A0A] text-center font-inter text-[28px] md:text-[28px] font-medium leading-normal">
+                    No available Jobs at the moment
+                  </h2>
+                  <p className="text-[#525252] text-center font-inter text-[16px] md:text-[20px] font-normal leading-normal">
+                    Come back later!
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

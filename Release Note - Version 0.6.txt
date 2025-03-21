@@ -1,0 +1,34 @@
+Release Note Version 0.6
+Product: AI-Powered Bank Reconciliation 
+Release Notes: Version 0.6
+Release Date: 17-03-2025
+Version 0.6: Unlink and Match
+Epic Title: Unlink and Manually Match Transactions
+Overview
+Version 0.6 introduces an important improvement to the reconciliation process, allowing users to manually manage their transaction matches. This feature empowers users to unlink incorrectly matched transactions and manually associate them with the correct records, improving data accuracy and reducing reconciliation errors.
+New Features
+Unlink Incorrectly Matched Transactions: Users can now unlink any transaction that has been incorrectly matched by the AI, resetting its status to "Unmatched."
+Manually Match Transactions: Users can select an unmatched transaction and manually link it to the correct record.
+Immediate Feedback on Re-Matching: The system provides instant confirmation when a transaction is successfully re-matched, ensuring transparency in the reconciliation process.
+
+User Benefits
+User control over transaction matching.
+Reduction of reconciliation discrepancies.
+Improved data accuracy and compliance.
+
+Limitations
+Users must manually search for the correct match, as there is no automatic suggestion system in this version.
+No bulk unlinking or matching functionality; transactions must be handled individually.
+System audit logs for manual changes are limited.
+
+How to Use
+Navigate to the reconciliation page.
+Select a transaction that has been incorrectly matched.
+Click on the "Unlink" button option to reset the status.
+Manually choose the correct transaction match.
+Confirm the match and receive an updated match on the reconciliation status.
+
+Coming Soon!
+Advanced Search and Match: This will allow Authenticated users to filter their search. They can filter based on amount range, description, and date.
+Got feedback?: Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence!

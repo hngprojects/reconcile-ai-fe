@@ -1,0 +1,21 @@
+Release Note Version 0.4
+Product: AI-Powered Bank Reconciliation 
+
+New Feature
+
+User Registration and Authentication
+
+This update introduces user accounts, allowing users to sign up and log in for a more personalized experience. New Users can now register and log in using their Google account. 
+
+What’s New?
+Sign-Up/Sign-in with Google
+New users can create an account or log in using their Google account for quick and secure access.
+
+Feature Limitations
+Currently, only Google sign-up is supported (email/password registration may come in future updates).
+
+Coming Soon!
+Basic Find and Match Unmatched Records for users to manually match records
+
+Got feedback?: Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence! 

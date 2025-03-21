@@ -331,7 +331,7 @@ export function BankTable() {
                                 [
                                   {
                                     bank_txn: { ...selectedOption },
-                                    match_score: "0",
+                                    score: "0",
                                   },
                                 ],
                                 reconciledDataRow.ledgers

@@ -3,9 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-
-const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
+import DemoForm from "@/src/app/demo/demo-form";
 
 export default function StartReconcile() {
   return (
@@ -62,7 +60,7 @@ export default function StartReconcile() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="w-full"
               >
-                <DemoForm buttonText="Start your free trial Now" />
+                <DemoForm buttonText="Get your Demo" />
               </motion.div>
             </div>
           </motion.div>

@@ -22,15 +22,11 @@ export default function HeroSection() {
             id="hero-title"
             className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
           >
-            Simplify Financial Reconciliation for Your Institution
+           Simplify School Financial Management with Automated Reconciliation
           </h1>
 
           <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
-            Manage your school’s fees, payroll, and financial records with ease.
-            ReconXi brings AI-powered financial reconciliation to educational
-            institutions, helping you streamline processes, reduce errors, and
-            save valuable time. <br></br>
-            See how ReconXi makes reconciliation easier for your school.
+          Streamline the reconciliation of diverse funding sources; grants, tuition, and donations, with a cost-effective solution tailored for educational institutions.
           </p>
 
           <motion.div
@@ -56,7 +52,7 @@ export default function HeroSection() {
         >
           <div className="relative w-full aspect-[2/1]">
             <Image
-              src="/assets/images/smallbusiness-heroImg.svg"
+              src="/assets/images/education.svg"
               alt="Demonstration of ReconXi's reconciliation software interface"
               fill
               className="w-full h-auto object-contain"

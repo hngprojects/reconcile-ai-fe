@@ -1,38 +1,26 @@
-name: Collect DORA Metrics
-
+name: Track DORA Metrics
 on:
-  schedule:
-    - cron: '0 * * * *'  # Runs every hour
-  workflow_dispatch:  # Allows manual trigger
-
+  push:
+    branches:
+      - main
+  workflow_run:
+    workflows: ["cd.yml"]
+    types:
+      - completed
 jobs:
-  collect-dora-metrics:
-    runs-on: ubuntu-latest
+  collect-metrics:
+    runs-on: reconcile
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v4
-
-      - name: Collect DORA Metrics
-        id: collect-dora-metrics  # Required to reference outputs
-        uses: DeveloperMetrics/devops-metrics-from-github@v1
+      - name: Install Python
+        uses: actions/setup-python@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      # Debug step to check if metrics were successfully collected
-      - name: Debug Collected Metrics
-        run: |
-          echo "Deployment Frequency: ${{ steps.collect-dora-metrics.outputs.deployment_frequency }}"
-          echo "Lead Time: ${{ steps.collect-dora-metrics.outputs.lead_time_for_changes }}"
-          echo "Change Failure Rate: ${{ steps.collect-dora-metrics.outputs.change_failure_rate }}"
-          echo "MTTR: ${{ steps.collect-dora-metrics.outputs.mean_time_to_recovery }}"
-
-      - name: Push DORA Metrics to Prometheus
-        uses: prom/pushgateway-action@v1
-        with:
-          job_name: "github_dora_metrics"
-          url: "http://3.73.6.29:9091"
-          metrics: |
-            deployment_frequency ${{ steps.collect-dora-metrics.outputs.deployment_frequency }}
-            lead_time ${{ steps.collect-dora-metrics.outputs.lead_time_for_changes }}
-            change_failure_rate ${{ steps.collect-dora-metrics.outputs.change_failure_rate }}
-            mttr ${{ steps.collect-dora-metrics.outputs.mean_time_to_recovery }}
+          python-version: '3.10'
+      - name: Install Dependencies
+        run: pip install requests prometheus_client
+      - name: Calculate DORA Metrics
+        run: python .github/dora_metrics.py
+        env:
+          PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,28 +1,25 @@
 "use client";
 
+import { useAuth } from "@/src/components/context/AuthContext";
+import { usePathname } from "next/navigation";
 import React, {
   createContext,
+  ReactNode,
   useContext,
-  useState,
   useEffect,
   useMemo,
-  ReactNode,
+  useState,
 } from "react";
 import { ColumnFiltersState } from "@tanstack/react-table";
 import {
   ReconciliationItem,
   ReconciliationResponse,
   FrontendTransaction,
-  StatementWithScore,
-  LedgerWithScore,
 } from "../types/frontendResponseTypes";
-import { BackendTransaction } from "../types/backendResponseTypes";
 import { updateReconciliation, fetchReconciliation } from "@/src/lib/api";
 import { ManualRequestBody } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { transformReconciliationData } from "../helpers/transformReconciliationData";
-import { useAuth } from "@/src/components/context/AuthContext";
-import { usePathname } from "next/navigation";
 
 interface ReconciliationContextProps {
   data: ReconciliationResponse;
@@ -46,8 +43,8 @@ interface ReconciliationContextProps {
 
   // Actions
   handleMatch: (
-    bankTransaction: BackendTransaction[],
-    ledgerTransaction: BackendTransaction[],
+    bankTransaction: FrontendTransaction[],
+    ledgerTransaction: FrontendTransaction[],
   ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
@@ -56,8 +53,8 @@ interface ReconciliationContextProps {
   onRowsPerPageChange: (size: number) => void;
   handleSearch: (query: string) => void;
   handleUnlink: (
-    bankTransaction: BackendTransaction[],
-    ledgerTransaction: BackendTransaction[],
+    bankTransaction: FrontendTransaction[],
+    ledgerTransaction: FrontendTransaction[],
   ) => Promise<void>;
 
   // Modals
@@ -98,9 +95,11 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const path = usePathname();
 
   useEffect(() => {
-    /* const reconciliationData = transformReconciliationData(
-      dummyBackendResponseData
-    ); */
+    // const dummyReconciliationData = transformReconciliationData(
+    //   dummyBackendResponseData
+    // );
+    // setData(dummyReconciliationData);
+
     const reconciliationId = path.split("/")[2];
     console.log(reconciliationId);
     const fetch = async () => {
@@ -119,6 +118,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     };
     fetch();
   }, [path]); // Removed `data` from dependency array to prevent infinite re-rendering
+  // }, []); // Removed `data` from dependency array to prevent infinite re-rendering
 
   const reconciliationData = useMemo(
     () => data.reconciliation_data ?? [],
@@ -290,9 +290,9 @@ export const useReconciliation = () => {
 
   const getUserPlan = (plan: string | undefined) => {
     switch (plan) {
-      case "Starter Plan":
+      case "Starter":
         return "starter";
-      case "Business Plan":
+      case "Business":
         return "business";
       default:
         return "basic";

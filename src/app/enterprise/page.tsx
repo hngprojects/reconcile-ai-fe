@@ -6,6 +6,9 @@ const HeroSection = dynamic(
   () => import("@/src/components/enterprise/hero-sect"),
 );
 const Features1 = dynamic(() => import("@/src/components/enterprise/Features"));
+const VideoFeature = dynamic(
+  () => import("@/src/components/enterprise/VideoFeature"),
+);
 const Benefits = dynamic(() => import("@/src/components/enterprise/Benefits"));
 const StartReconcile = dynamic(
   () => import("@/src/components/enterprise/Ready"),
@@ -21,6 +24,9 @@ export default function HomePage() {
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <Features1 />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <VideoFeature />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <Benefits />

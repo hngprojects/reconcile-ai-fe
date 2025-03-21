@@ -1,0 +1,29 @@
+Release Notes – Version 0.5
+
+Feature: Basic Find and Match Unmatched Records
+
+Overview
+Version 0.5 introduces the ability for users to manually search for and match unmatched transactions within the reconciliation platform. This update ensures greater accuracy and completeness in financial records by allowing users to identify and reconcile transactions that were not automatically matched.
+
+What’s New!!
+New Features & Improvements
+Manual Matching of Unmatched Records
+Users can now search for unmatched transactions using any details (e.g., a name from the record).
+Users can select an unmatched transaction and manually match it with a corresponding record from either the bank statement or the company ledger.
+Once a transaction is manually matched, the system automatically updates its status to "Matched" in the user interface.
+Users see instant visual feedback upon successful matching, such as a status change or notification.
+
+Impact & Benefits
+More accuracy in financial reconciliation. 
+Greater user control over unmatched transactions.
+Improved transparency with real-time status updates.
+
+Feature Limitations
+Filtering options are not yet available in this version.
+
+Coming Soon!
+This update sets the foundation for future improvements, including unlinking of matched result and manually matching with a new record.
+Version 0.5 is now live! Start reconciling with greater confidence.
+
+Got feedback?: Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence! 

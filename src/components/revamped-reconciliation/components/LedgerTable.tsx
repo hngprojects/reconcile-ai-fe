@@ -328,7 +328,7 @@ export function LedgerTable() {
                               onMatch(reconciledDataRow.statements, [
                                 {
                                   ledger_txn: { ...selectedOption },
-                                  match_score: "0",
+                                  score: "0",
                                 },
                               ]);
                             }

@@ -23,7 +23,7 @@ export default function PricingPage() {
       price: "Free",
       link: "/file-upload",
       features: [
-        "Free financial reconciliation for 7 days",
+        "Reconcile up to 5 reconciliations/month",
         "Upload CSV files",
         "Basic AI reconciliation",
         "Manually match transactions detected as unmatched",
@@ -37,10 +37,10 @@ export default function PricingPage() {
       link: "https://buy.stripe.com/00g9Ez9c42XW9mo14q",
       features: [
         "Reconcile up to 20 reconciliations/month",
-        "Basic AI matching and reconciliation (date, amount, description, small data set)",
+        "Basic AI matching and reconciliation",
         "Export results to CSV",
-        "Manual adjustments (search by description only)",
-        "Unlink, and match records",
+       "Manually match records detected as unmatched",
+       "Unlink records matched by AI, and match them correctly",
         "Email notification for reconciled results",
       ],
     },
@@ -50,8 +50,9 @@ export default function PricingPage() {
       price: "25",
       link: "https://buy.stripe.com/6oEdUPag8dCAbuw14r",
       features: [
+        "Everything in Starter Plan",
         "Unlimited reconciliation/month",
-        "Advanced adjustments  (search and filter by description, date and amount range, unlink and match errors)",
+        "Advanced matching of unmatched records",
         "Advanced AI matching and reconciliation (Large data set: up to 3000 rows)",
         "Merging multiple records/files",
         "Email notification for reconciled results",

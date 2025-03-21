@@ -1,0 +1,28 @@
+Release Note Version 0.10
+Product: AI-Powered Bank Reconciliation 
+Release Notes: Version 0.10
+Release Date: 17-03-2025
+Version 1.10: Merging Multiple Records
+Epic Title: Merging Multiple Transaction Records for Accurate Reconciliation
+
+
+Overview
+Version 1.0 introduces the ability to merge multiple records into a single transaction match, reducing discrepancies caused by split payments or duplicate entries.
+This version introduces the ability to merge multiple records either from the bank statement or company ledger into a single matched entry. 
+For example, if a client paid for two projects in one transaction, the system allows the user to merge two separate company ledger entries into one matched transaction from the bank statement. 
+
+New Features
+Multi-Record Selection: Users can select multiple transactions from either the bank statement or company ledger.
+Merge Button: A new "Merge" option is enabled after selecting relevant records.
+Single Transaction Creation: Merging combines selected records into one matched transaction, updating the status accordingly.
+Confirmation and Summary: Users receive confirmation and a detailed summary of the merged records.
+Limitations
+Only manual merging is supported; AI-driven merging recommendations are not yet available.
+Once merged, transactions cannot be split again (the undo function is not available in this version).
+
+What's Coming Next?
+Platform subscriptions where we introduce subscription-based models that are categorized for different users.
+Merging Multiple file records that allow users to upload more files at a go for reconciliation. This update looks to give users more control over their reconciliation process.
+Stay tuned for upcoming versions with even more improvements!
+Got feedback? Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence!
