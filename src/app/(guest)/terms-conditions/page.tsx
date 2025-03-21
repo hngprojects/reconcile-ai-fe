@@ -231,7 +231,7 @@ export default function TermsConditionPage() {
               privacy policy, please contact us at:
             </p>
             <p className="text-sm text-center lg:text-start text-[#475467] py-2">
-              Email: reconxi02@gmail.com
+              Email: support@reconxi.com
             </p>
             <p className="text-sm text-center lg:text-start text-[#475467] py-2">
               Phone Number: +1-599-654-7936
