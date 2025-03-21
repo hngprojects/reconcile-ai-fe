@@ -80,6 +80,10 @@ export default function FileUploadLayout({
         toast.dismiss(toastId);
         setErrorCode(result.code);
         setShowErrorModal(true);
+
+        toast.error("Reconciliation failed. Please try again.", {
+          id: toastId,
+        });
         return;
       }
 
@@ -91,6 +95,10 @@ export default function FileUploadLayout({
         );
         setBankFiles([]);
         setLedgerFiles([]);
+
+        toast.success("Reconciliation completed successfully! Check you mail for reconcilation result.", {
+          id: toastId,
+        });
       }
 
       setTimeout(() => {
@@ -108,7 +116,7 @@ export default function FileUploadLayout({
 
   return (
     <Container className="my-10">
-      <div className="flex flex-col md:flex-row justify-center gap-[40px]">
+      <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
         <UploadCard
           title="Upload Bank Statement"
           type="bank"
