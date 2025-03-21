@@ -84,8 +84,6 @@ export default function FileUploadLayout({
       }
 
       if (result.status === "success") {
-        toast.dismiss(toastId);
-        toast.success("Reconciliation started successfully");
         setBankFiles([]);
         setLedgerFiles([]);
       }
