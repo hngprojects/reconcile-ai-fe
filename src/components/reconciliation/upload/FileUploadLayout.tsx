@@ -58,7 +58,6 @@ export default function FileUploadLayout({
         }
       }
 
-      // Show single processing toast
       const toastId = toast.loading(
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold">Processing Reconciliation</h2>
@@ -69,8 +68,7 @@ export default function FileUploadLayout({
           </p>
         </div>,
         {
-          duration: 20000, // 20 seconds
-          dismissible: true,
+          duration: Infinity,
         },
       );
 
@@ -88,7 +86,10 @@ export default function FileUploadLayout({
       }
 
       if (result.status === "success") {
-        // Save reconciliation ID to localStorage
+        setTimeout(() => {
+          toast.dismiss(toastId); // Dismiss the loading toast after 20 seconds
+        }, 20000);
+
         localStorage.setItem(
           "reconciliation_id",
           result.data.reconciliation_id,

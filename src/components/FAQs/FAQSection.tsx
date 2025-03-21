@@ -11,7 +11,7 @@ const faqItems: FAQ[] = [
   {
     question: "Is ReconXi really free to use?",
     answer:
-      "Yes! For now, ReconXi is completely free as part of our MVP release.",
+      "Basic Reconciliation is free for Basic users. To get more features, please checkout our Starter and Business plans.",
   },
   {
     question: "What types of files can I upload to ReconXi?",
@@ -25,7 +25,7 @@ const faqItems: FAQ[] = [
   {
     question: "Can I manually update matched transactions?",
     answer:
-      "No, at present, you can't manually update matched transactions. This would come in future updates.",
+      "Yes, you can manually update matched transactions.",
   },
   {
     question:
