@@ -372,3 +372,19 @@ export async function updatePaymentPlan(
     throw error;
   }
 }
+
+export const exportReconciliation = async (reconciliationId: string) => {
+      const response = await fetch(`${RECONCILIATION_RESULT_API_URL}${reconciliationId}/export`);
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `reconciliation_export_${
+        new Date().toISOString().split("T")[0]
+      }.csv`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+}

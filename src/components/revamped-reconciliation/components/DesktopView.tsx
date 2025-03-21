@@ -10,7 +10,7 @@ import { DownloadCloudIcon, Loader2 } from "lucide-react";
 import { SuccessToast } from "../../reconciliation/SuccessToast";
 import UnlinkModal from "../../modal/UnlinkModal";
 import { useReconciliation } from "../context/ReconciliationProvider";
-import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
+import { exportReconciliation } from "@/src/lib/api";
 
 export default function DesktopView() {
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -20,7 +20,6 @@ export default function DesktopView() {
   const [toastMessage, setToastMessage] = useState("");
 
   const {
-    data,
     handleUnlink: onUnlink,
     showUnlinkModal,
     setShowUnlinkModal,
@@ -73,50 +72,13 @@ export default function DesktopView() {
   const handleExport = async () => {
     try {
       setIsExporting(true);
+      const reconciliationId = localStorage.getItem('reconciliation_id');
 
-      if (!data) {
-        throw new Error("No reconciliation data found");
+      if (!reconciliationId) {
+        throw new Error("No reconciliation id found");
       }
 
-      const reconciledData = revertToBackendFormat(data);
-
-      // Send POST request to API
-      const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: reconciledData,
-          }),
-        }
-      );
-
-      // Check for errors with better error reporting
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        const errorMessage =
-          errorData?.message || `Export failed with status: ${response.status}`;
-        console.error("API error:", errorData);
-        throw new Error(errorMessage);
-      }
-
-      // Get the blob from the response
-      const blob = await response.blob();
-
-      // Create a download link and trigger the download
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `reconciliation_export_${
-        new Date().toISOString().split("T")[0]
-      }.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      await exportReconciliation(reconciliationId);
 
       // Show success toast using custom component
       setToastMessage("Your data has been exported successfully!");
@@ -167,8 +129,8 @@ export default function DesktopView() {
                 Export
               </>
             )}
-          </button>
-        )}
+          </button>)
+          }
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2">
