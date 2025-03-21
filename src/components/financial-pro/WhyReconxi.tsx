@@ -51,6 +51,7 @@ export default function WhyReconXi() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="flex-1 space-y-6 md:space-y-8 w-full"
+              role="list"
             >
               {features.map((feature, index) => (
                 <div key={index} className="flex gap-4" role="listitem">

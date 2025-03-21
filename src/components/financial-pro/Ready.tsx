@@ -63,7 +63,7 @@ export default function StartReconcile() {
                 <DemoForm buttonText="Get your Demo" />
               </motion.div>
             </div>
-          </motion.div>
+          </motion.div> 
         </div>
       </Container>
     </section>
