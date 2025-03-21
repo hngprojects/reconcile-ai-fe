@@ -101,7 +101,6 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     // setData(dummyReconciliationData);
 
     const reconciliationId = path.split("/")[2];
-    console.log(reconciliationId);
     const fetch = async () => {
       try {
         const response = await fetchReconciliation(reconciliationId as string);
@@ -164,13 +163,13 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         body as ManualRequestBody
       );
 
-      if (response.status !== "success") {
+      if (response?.status !== "success") {
         toast.error("Failed to match transactions");
         return;
       }
 
       // Transform and update data
-      const reconciliationData = transformReconciliationData(response.data);
+      const reconciliationData = transformReconciliationData(response?.data);
       localStorage.setItem(
         "reconciliation",
         JSON.stringify(reconciliationData)
@@ -204,7 +203,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       );
       console.log(response);
 
-      if (response.status != "success") {
+      if (response?.status != "success") {
         toast.error("Failed to unlink transactions");
         return;
       }
