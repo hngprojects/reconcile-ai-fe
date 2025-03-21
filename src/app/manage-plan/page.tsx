@@ -56,7 +56,7 @@ export default function ManagePlanPage() {
       id: 2,
       name: "Starter Plan",
       price: "10",
-      link: "https://buy.stripe.com/test_9AQ28ucir1v5emAaEF",
+      link: "https://buy.stripe.com/00g9Ez9c42XW9mo14q ",
       features: [
         "Reconcile up to 20 reconciliations/month",
         "Basic AI matching and reconciliation",
