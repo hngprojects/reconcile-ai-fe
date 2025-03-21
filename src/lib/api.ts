@@ -9,6 +9,7 @@ import {
   CUSTOMER_FEEDBACK_API_URL,
   RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
+  GOOGLE_LOGIN_URL
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -385,4 +386,24 @@ export const exportReconciliation = async (reconciliationId: string) => {
       a.click();
       window.URL.revokeObjectURL(url);
       document.body.removeChild(a);
+}
+
+export const loginWithGoogle = async (id_token: string) => {
+      const response = await fetch(GOOGLE_LOGIN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id_token,
+        }),
+      });
+
+      const resData = await response.json();
+
+      if (response.ok) {
+        return { status: "success", data: resData };
+      } else {
+        return { status: "error" };
+      }
 }
