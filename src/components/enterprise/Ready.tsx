@@ -58,6 +58,7 @@ export default function StartReconcile() {
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
                 <WalkthroughForm/>
+
               </motion.div>
             </div>
           </motion.div>
