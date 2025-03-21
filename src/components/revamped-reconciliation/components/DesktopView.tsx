@@ -120,7 +120,7 @@ export default function DesktopView() {
           >
             Re-upload
           </Link>
-          { // hasPlanAccess("export") && (
+          { hasPlanAccess("export") && (
             <button
               type="button"
               className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
@@ -138,8 +138,7 @@ export default function DesktopView() {
                 </>
               )}
             </button>
-          //)
-          }
+          )}
         </div>
       </div>
 
