@@ -25,7 +25,7 @@ export function StatusBadge({
           )}
         >
           {matched ? (
-            <CheckIcon className="h-4 w-4 text-white group-hover:hidden" />
+            <CheckIcon className="h-4 w-4 text-white max-md:group-hover:hidden" />
           ) : (
             <XIcon className="h-2.5 w-2.5 text-white" />
           )}
