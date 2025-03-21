@@ -102,7 +102,7 @@ export default function ReconXiReleases() {
                 value={release.id}
                 className="border-b-[#CBD5E1] pb-[12px] md:pb-6 overflow-hidden"
               >
-                <motion.div 
+                <motion.div
                   className="flex items-center justify-between p-4 bg-white"
                   whileHover={{ backgroundColor: "#f9f9f9" }}
                   transition={{ duration: 0.2 }}
@@ -113,14 +113,14 @@ export default function ReconXiReleases() {
                     </span>
                     <div className="flex flex-col gap-[12px] md:gap-6 mt-1">
                       {release.id === latestReleaseId && (
-                        <motion.div 
+                        <motion.div
                           className="flex items-center bg-[#DFFAE0] px-1 py-0.5 rounded-full h-6 w-14 text-sm"
                           initial={{ scale: 0.8 }}
                           animate={{ scale: 1 }}
-                          transition={{ 
+                          transition={{
                             duration: 0.5,
                             repeat: Infinity,
-                            repeatType: "reverse" 
+                            repeatType: "reverse"
                           }}
                         >
                           <span className="text-xs bg-[#F3FEFA] text-center px-2 py-0.5 rounded-xl w-14">
@@ -177,7 +177,7 @@ export default function ReconXiReleases() {
                               {release.bannerTitle}
                             </h2>
                           </div>
-                          <motion.div 
+                          <motion.div
                             className="flex-1"
                             whileHover={{ scale: 1.02 }}
                             transition={{ duration: 0.2 }}
@@ -192,7 +192,7 @@ export default function ReconXiReleases() {
                           </motion.div>
                         </motion.div>
 
-                        <motion.div 
+                        <motion.div
                           className="p-4"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -210,25 +210,38 @@ export default function ReconXiReleases() {
                           </p>
 
                           {/* Video Section */}
-                          <motion.div 
+                          <motion.div
                             className="relative w-full h-0 pb-[56.25%] bg-gray-100 mb-6 rounded-md overflow-hidden"
                             whileHover={{ boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
                             transition={{ duration: 0.3 }}
                           >
-                            <video
-                              playsInline
-                              ref={(el) => {
-                                videoRefs.current[release.id] = el;
-                              }}
-                              onLoadedData={() => handleVideoLoad(release.id)}
-                              className="absolute inset-0 w-full h-full rounded-lg shadow-xl object-cover"
-                            >
-                              <source
-                                src={release.content.videoUrl}
-                                type="video/mp4"
-                              />
-                              Your browser does not support the video tag.
-                            </video>
+                            {release.content.videoUrl ?
+                              (
+                                <video
+                                  playsInline
+                                  ref={(el) => {
+                                    videoRefs.current[release.id] = el;
+                                  }}
+                                  onLoadedData={() => handleVideoLoad(release.id)}
+                                  className="absolute inset-0 w-full h-full rounded-lg shadow-xl object-cover"
+                                >
+                                  <source
+                                    src={release.content.videoUrl}
+                                    type="video/mp4"
+                                  />
+                                  Your browser does not support the video tag.
+                                </video>
+                              ) : (
+                                <Image
+                                  src="/assets/images/financial-pro-ft.svg"
+                                  alt="Video placeholder"
+                                  layout="fill"
+                                  objectFit="cover"
+                                  className="absolute inset-0 w-full h-full"
+                                />
+                              )
+                            }
+
                             {videoLoaded[release.id] && (
                               <motion.button
                                 onClick={() => playVideo(release.id)}
@@ -254,8 +267,8 @@ export default function ReconXiReleases() {
                           {/* Content Sections */}
                           <div className="space-y-5">
                             {release.content.sections.map((section, index) => (
-                              <motion.div 
-                                key={index} 
+                              <motion.div
+                                key={index}
                                 className="mb-4"
                                 initial={{ x: -20, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
@@ -289,7 +302,7 @@ export default function ReconXiReleases() {
                           </div>
 
                           {/* Feedback Section */}
-                          <motion.div 
+                          <motion.div
                             className="mt-6 text-sm md:text-[16px] pt-4"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
