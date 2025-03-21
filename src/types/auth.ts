@@ -12,6 +12,7 @@ export interface User {
   email: string;
   name: string;
   avatar: string;
+  image?: string;
   email_verified_at: string | null;
   created_at: string;
   updated_at: string;

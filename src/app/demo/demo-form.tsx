@@ -32,9 +32,6 @@ export default function DemoForm({
     phoneNumber: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectId] = useState(
-    `radix-select-${Math.random().toString(36).substr(2, 9)}`
-  );
 
   useEffect(() => {
     const loadCountries = async () => {

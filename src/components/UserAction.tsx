@@ -7,19 +7,20 @@ import LoginModal from "@/src/components/modal/LoginModal";
 import UserDetails from "@/src/components/UserDetails";
 import { Menu } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import { useSession } from "next-auth/react";
 
 const UserAction: FC = () => {
   const { user, setUser } = useAuth();
+  const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
+    if(session){
+      setUser(session.user as typeof user);
     }
-  }, [setUser]);
+  }, [session, setUser]);
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
@@ -31,9 +32,6 @@ const UserAction: FC = () => {
     setShowLoginModal(true);
   };
 
-  // if (user) {
-  //   return <UserDetails />;
-  // }
 
   return (
     <div className=" flex items-center gap-2">
