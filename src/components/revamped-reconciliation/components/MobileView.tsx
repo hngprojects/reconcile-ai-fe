@@ -25,11 +25,10 @@ import {
 } from "../types/frontendResponseTypes";
 import { StatusBadge } from "./StatusBadge";
 import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
-import { revertToBackendFormat } from "../helpers/revertBackToBackendFormat";
+import { exportReconciliation } from "@/src/lib/api";
 
 export function MobileView() {
   const {
-    data,
     paginatedData,
     pagination,
     totalItems,
@@ -72,42 +71,13 @@ export function MobileView() {
     try {
       setIsExporting(true);
 
-      if (!data) {
-        throw new Error("No reconciliation data found");
+      const reconciliationId = localStorage.getItem('reconciliation_id');
+
+      if (!reconciliationId) {
+        throw new Error("No reconciliation id found");
       }
 
-      const reconciledData = revertToBackendFormat(data);
-
-      // Send POST request to API
-      const response = await fetch(
-        "https://api-dev.reconxi.com/api/v1/reconcile/export",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: reconciledData,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(
-          errorData?.message || `Export failed with status: ${response.status}`
-        );
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `reconciliation_export_${new Date().toISOString().split("T")[0]}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+      await exportReconciliation(reconciliationId);
 
       setToastMessage("Your data has been exported successfully!");
       setShowSuccessToast(true);

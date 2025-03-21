@@ -78,7 +78,7 @@ export default function WhyReconXi() {
               className="flex-1"
             >
               <Image
-                src="/assets/images/small-business-ft.svg"
+                src="/assets/images/start-up-why-image.svg"
                 alt="Visual representation of ReconXi features"
                 width={580}
                 height={400}

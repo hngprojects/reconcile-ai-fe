@@ -91,7 +91,8 @@ const MobileMenu = ({
                       onClick={handleLinkClick}
                     >
                       <span className="flex gap-1">
-                        <Dot /> Startup and SMEs
+                        <Dot />
+                        Startup and SMEs
                       </span>
                     </Link>
                     <Link

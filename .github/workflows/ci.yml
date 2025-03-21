@@ -47,8 +47,8 @@ jobs:
       - name: Run Linting
         run: npm run lint
 
-      # - name: Run Build
-      #   run: npm run build
+      - name: Run Build
+        run: npm run build
 
       # - name: Archive Build Artifact
       #   run: tar -cvf build-artifact.tar .next
