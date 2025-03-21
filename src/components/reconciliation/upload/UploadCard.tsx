@@ -90,7 +90,7 @@ const UploadCard = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="md:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative">
+      <div className="lg:w-[500px] xl:w-[620px] h-[370px] rounded-[16px] border-[1.21px] border-[#33333333] relative">
         <div
           className={cn(
             "flex flex-col gap-[12px] h-full p-3 md:p-[23.5px_47px]",

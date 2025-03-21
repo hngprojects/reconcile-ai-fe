@@ -1,13 +1,13 @@
 "use client";
 
 import FileUploadLayout from "@/src/components/reconciliation/upload/FileUploadLayout";
-import { useAuth } from "@/src/components/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Loader } from "@/src/components/ui/loader";
 
 export default function FileUploadPage() {
-  const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleReconcile = async (
     bankFiles: File[],
@@ -28,13 +28,16 @@ export default function FileUploadPage() {
   };
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
       router.push("/");
+      return;
     }
-  }, [isLoading, isAuthenticated, router]);
+    setIsLoading(false);
+  }, [router]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return <FileUploadLayout onReconcile={handleReconcile} />;
