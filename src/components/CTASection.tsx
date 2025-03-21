@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import Link from "next/link";
 import Container from "./Container";
 import { motion } from "framer-motion";
+import StartReconciliationButton from "./buttons/StartReconciliationButton";
 
 // Animation variants
 const containerVariants = {
@@ -39,21 +39,17 @@ const CTASection = () => {
             className="space-y-3 text-center sm:text-left sm:space-y-4 md:w-2/3"
             variants={childVariants}
           >
-            <p className="font-bold text-gray-900 text-3xl">
-              Try ReconXi for free!
-            </p>
+            <p className="font-bold text-gray-900 text-3xl">Try ReconXi Now!</p>
             <p className="text-[#475467] text-xl sm:text-lg max-w-[43rem]">
-              Unlock faster and smarter financial reconciliation today - free
-              for a limited time.
+              Unlock faster and smarter financial reconciliation today.
             </p>
           </motion.div>
           <motion.div variants={childVariants}>
-            <Link
-              className="bg-primary whitespace-nowrap w-full sm:w-fit  py-2 px-4 rounded-md font-semibold justify-center items-center h-12 sm:h-9 text-sm text-white hover:bg-primary/90 flex"
-              href="/file-upload"
-            >
-              Get Started
-            </Link>
+            <StartReconciliationButton
+              text="Get Started"
+              className="bg-primary whitespace-nowrap w-full sm:w-fit py-2 px-4 rounded-md font-semibold justify-center items-center h-12 sm:h-9 text-sm text-white hover:bg-primary/90 flex cursor-pointer"
+              aria-label="Get started with ReconXi"
+            />
           </motion.div>
         </motion.div>
       </Container>

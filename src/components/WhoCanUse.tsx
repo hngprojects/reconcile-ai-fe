@@ -32,8 +32,15 @@ const whoCanUseContent = [
     id: 4,
     title: "Schools & Educational Institutions",
     content:
-      "Educational institutions use ReconXi to automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors",
+      "Educational institutions use ReconXi to automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors.",
     linkUrl: "/school-and-education",
+  },
+  {
+    id: 5,
+    title: "Freelancers",
+    content:
+      "Freelancers use ReconXi to streamline their financial tracking, automate invoice reconciliation, and ensure accurate payment records, reducing manual effort and minimizing errors.",
+    linkUrl: "/freelancer",
   },
 ];
 
@@ -64,20 +71,23 @@ const WhoCanUse = () => {
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 items-center gap-x-9 md:gap-y-8 gap-y-6">
           {whoCanUseContent.map(({ id, title, content, linkUrl }, index) => (
             <motion.article
+              key={id}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.3 * index }}
-              key={id}
               className={cn(
                 "md:bg-white md:p-8 rounded-[12px] h-[240px]",
-                id == 1 && "rounded-tl-[4rem]",
-                id == 2 && "rounded-tr-[4rem]",
-                id == 3 && "rounded-bl-[4rem]",
-                id == 4 && "rounded-br-[4rem]",
+                id === 1 && "rounded-tl-[4rem]",
+                id === 2 && "rounded-tr-[4rem]",
+                id === 3 && "rounded-bl-[4rem]",
+                id === 4 && "rounded-br-[4rem]",
+                // For the last card, span both columns, center it, and add the decorative rounded edge
+                id === 5 &&
+                  "md:col-span-2 md:w-[600px] md:mx-auto rounded-br-[4rem]"
               )}
             >
-              <h2 className="font-bold  md:text-xl">{title}</h2>
+              <h2 className="font-bold md:text-xl">{title}</h2>
               <p className="text-sm md:text-base text-[#3B3E45] mt-4 mb-8">
                 {content}
               </p>

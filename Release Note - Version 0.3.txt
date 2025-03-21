@@ -1,0 +1,14 @@
+Release Note Version 0.3
+Product: AI-Powered Bank Reconciliation 
+Release Notes: Version 0.3
+Release Date: 10-03-2025
+Limited Trials for Users
+With Version 0.3, users can now perform up to 5 free reconciliation sessions. Each session includes file uploads, AI-powered matching, and export functionality.
+Limited Free Access – Up to 5 Reconciliations
+Users can now perform up to 5 reconciliation sessions for free.
+Each reconciliation session includes full access to file uploads, AI-powered matching, and export functionality.
+Once the limit is reached, users will not be able to use free access.
+Coming Soon
+User Registration and Authentication
+Got feedback?: Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence! 

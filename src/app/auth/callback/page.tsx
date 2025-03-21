@@ -1,15 +1,23 @@
 "use client";
 
 import { useAuth } from "@/src/components/context/AuthContext";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function AuthCallback() {
+  const router = useRouter();
   const { getUserDetails } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if(token) getUserDetails(token as string);
-  }, [getUserDetails]);
+    const token = localStorage.getItem("access_token");
+    if (token) {
+      getUserDetails(token).then(() => {
+        router.push("/file-upload");
+      });
+    } else {
+      router.push("/");
+    }
+  }, [getUserDetails, router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
