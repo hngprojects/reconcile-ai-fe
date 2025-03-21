@@ -411,14 +411,16 @@ export const releases: ReleaseItem[] = [
     content: {
       heading: "Hey Community,",
       intro:
-        "Version 0.8 introduces a more dynamic way of reconciliation. This version enhances accuracy in reconciliation by systematically processing transactions in structured batches.",
+        "Version 0.8 introduces a more dynamic way of reconciliation. This version enhances accuracy in reconciliation by processing transactions in structured batches. This update now allows user to reconcile data files with more rows.",
       mainText: "What's New?",
       sections: [
         {
           title: "New Features",
           items: [
+            "Advanced Reconciliation: More advanced accuracy that allows users to upload and reconcile files up to 3000 rows of data",
             "AI-Powered Matching: The system identifies and marks exact matches within each processing window based on date and amount.",
             "User Confirmation: Users can review, confirm, or correct AI-suggested matches before finalizing them.",
+            "The improved version now allows users to reconcile a larger volume of data with more accuracy and speed.",
           ],
         },
         {
@@ -436,7 +438,7 @@ export const releases: ReleaseItem[] = [
         },
         {
           title: "What's Coming Soon?",
-          items: ["Version 0.8: Improved Reconciliation Accuracy. "],
+          items: ["Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete.", "Stay tuned for upcoming versions with even more improvements!"],
         },
       ],
       feedback: {
@@ -486,7 +488,9 @@ export const releases: ReleaseItem[] = [
         },
         {
           title: "What's Coming Soon?",
-          items: ["Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete. "],
+          items: [
+            "Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete. ",
+          ],
         },
       ],
       feedback: {
@@ -499,7 +503,7 @@ export const releases: ReleaseItem[] = [
 
   {
     id: "release-0-10",
-    date: "20 March 2025",
+    date: "21 March 2025",
     version: "ReconXi Version Release 0.10",
     isNew: true,
     bannerIntro: "Welcome to ReconXi 0.10! ",
@@ -538,7 +542,7 @@ export const releases: ReleaseItem[] = [
           title: "What's Coming Soon?",
           items: [
             "Platform subscriptions where we introduce subscription-based models that are categorized for different users.",
-            "Merging Multiple file records that allow users to upload more files at a go for reconciliation. This update looks to give users more control over their reconciliation process."
+            "Merging Multiple file records that allow users to upload more files at a go for reconciliation. This update looks to give users more control over their reconciliation process.",
           ],
         },
       ],

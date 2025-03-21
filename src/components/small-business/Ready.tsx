@@ -39,12 +39,15 @@ export default function StartReconcile() {
             <div className="space-y-3 md:space-y-4">
               <h2
                 id="ready-section-title"
-                className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
+                className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] font-semibold text-[#101828]"
               >
-Ready to Simplify Transaction Matching?
+                Ready to Simplify Transaction Matching?
               </h2>
               <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-              Leave your details, and let us show you how ReconXi can streamline your transaction matching and reconciliation process.              </p>
+                Leave your details, and let us show you how ReconXi can
+                streamline your transaction matching and reconciliation
+                process.{" "}
+              </p>
             </div>
 
             <div
