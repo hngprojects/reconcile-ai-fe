@@ -49,11 +49,28 @@ export function TransactionTable({
     }
   }
 
+  // Calculate the row height based on number of rows
+  const calculateRowHeight = () => {
+    // Base height for a single transaction
+    const baseHeight = 60;
+
+    // If no transactions or only one, use the base height
+    if (transactionsToDisplay.length <= 1) {
+      return baseHeight;
+    }
+
+    // Otherwise, calculate height based on number of transactions
+    return (baseHeight / 2) * transactionsToDisplay.length;
+  };
+
+  const rowHeight = calculateRowHeight();
+
+  console.log({ rowHeight, transactionsToDisplay });
+
   return (
-    <div className="rounded-lg border overflow-hidden">
+    <div className="rounded-lg border overflow-hidden flex-1">
       <Table>
-        {/* Table Header */}
-        <TableHeader className="bg-[#F9FAFB] h-[52px] border-b">
+        <TableHeader className="bg-[#F9FAFB] border-b h-[52px]">
           <TableRow className="!border-b-0">
             <TableHead className="text-left px-6 border-r">Date</TableHead>
             <TableHead className="text-left px-6 border-r">
@@ -62,40 +79,64 @@ export function TransactionTable({
             <TableHead className="text-left px-6">Amount</TableHead>
           </TableRow>
         </TableHeader>
-        {/* Table Body */}
         <TableBody>
           {status === "empty" ? (
-            <TableRow className="hover:bg-white">
-              <TableCell className="border-r h-[64px]"></TableCell>
-              <TableCell className="px-6 border-r h-[64px]"></TableCell>
-              <TableCell className="px-6 h-[64px]"></TableCell>
+            <TableRow
+              className="hover:bg-white"
+              style={{ height: `${rowHeight + 5}px` }}
+            >
+              <TableCell className="border-r"></TableCell>
+              <TableCell className="px-6 border-r"></TableCell>
+              <TableCell className="px-6"></TableCell>
             </TableRow>
           ) : transactionsToDisplay.length > 0 ? (
-            transactionsToDisplay.map((txn) => (
+            transactionsToDisplay.length === 1 ? (
+              // Single transaction row
               <TableRow
-                style={{
-                  height: `${NoOfMatchedData ? NoOfMatchedData * 60.8 : 60.8}px`,
-                }}
-                key={txn.id}
+                key={transactionsToDisplay[0].id}
                 className={cn(getRowStyles())}
+                style={{
+                  height: !!NoOfMatchedData
+                    ? `${rowHeight * NoOfMatchedData + 5}px`
+                    : `${rowHeight}px`,
+                }}
               >
-                <TableCell className="px-6 border-r h-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  {txn?.date}
+                <TableCell className="px-6 border-r whitespace-nowrap text-ellipsis">
+                  {transactionsToDisplay[0]?.date}
                 </TableCell>
-                <TableCell className="px-6 border-r h-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  {txn?.description}
+                <TableCell className="px-6 border-r whitespace-nowrap text-ellipsis">
+                  {transactionsToDisplay[0]?.description}
                 </TableCell>
-                <TableCell className="px-6 h-full whitespace-nowrap overflow-hidden text-ellipsis">
-                  {txn?.amount}
+                <TableCell className="px-6 whitespace-nowrap text-ellipsis">
+                  {transactionsToDisplay[0]?.amount}
                 </TableCell>
               </TableRow>
-            ))
+            ) : (
+              // Multiple transactions
+              transactionsToDisplay.map((txn) => (
+                <TableRow
+                  key={txn.id}
+                  className={cn(getRowStyles())}
+                  style={{ height: `${rowHeight}px` }}
+                >
+                  <TableCell className="px-6 border-r whitespace-nowrap text-ellipsis">
+                    {txn?.date}
+                  </TableCell>
+                  <TableCell className="px-6 border-r whitespace-nowrap text-ellipsis">
+                    {txn?.description}
+                  </TableCell>
+                  <TableCell className="px-6 whitespace-nowrap text-ellipsis">
+                    {txn?.amount}
+                  </TableCell>
+                </TableRow>
+              ))
+            )
           ) : (
-            <TableRow className={cn(getRowStyles())}>
-              <TableCell
-                colSpan={3}
-                className="px-6 h-[64px] text-center text-gray-500"
-              >
+            <TableRow
+              className={cn(getRowStyles())}
+              style={{ height: `${rowHeight}px` }}
+            >
+              <TableCell colSpan={3} className="px-6 text-center text-gray-500">
                 No transaction data
               </TableCell>
             </TableRow>
@@ -105,77 +146,3 @@ export function TransactionTable({
     </div>
   );
 }
-
-// "use client";
-
-// import {
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableHead,
-//   TableHeader,
-//   TableRow,
-// } from "@/src/components/ui/table";
-// import { FrontendTransaction } from "../types/frontendResponseTypes";
-// import { cn } from "@/src/lib/utils";
-
-// interface TransactionTableProps {
-//   transaction: FrontendTransaction | null;
-//   status: "matched" | "unmatched" | "empty";
-// }
-
-// export function TransactionTable({
-//   transaction,
-//   status,
-// }: TransactionTableProps) {
-//   const getRowStyles = () => {
-//     switch (status) {
-//       case "matched":
-//         return "bg-[#F3FEFA] hover:!bg-[#F3FEFA]";
-//       case "unmatched":
-//         return "bg-[#FFF4F0] hover:!bg-[#FFF4F0]";
-//       default:
-//         return "";
-//     }
-//   };
-
-//   return (
-//     <div className="rounded-lg border overflow-hidden">
-//       <Table>
-//         {/* Table Header */}
-//         <TableHeader className="bg-[#F9FAFB] h-[52px] border-b">
-//           <TableRow className="!border-b-0">
-//             <TableHead className="text-left px-6 border-r">Date</TableHead>
-//             <TableHead className="text-left px-6 border-r">
-//               Description
-//             </TableHead>
-//             <TableHead className="text-left px-6">Amount</TableHead>
-//           </TableRow>
-//         </TableHeader>
-
-//         {/* Table Body */}
-//         <TableBody>
-//           {status === "empty" ? (
-//             <TableRow className="hover:bg-white">
-//               <TableCell className="border-r h-[64px]"></TableCell>
-//               <TableCell className="px-6 border-r h-[64px]"></TableCell>
-//               <TableCell className="px-6 h-[64px]"></TableCell>
-//             </TableRow>
-//           ) : (
-//             <TableRow className={cn(getRowStyles())}>
-//               <TableCell className="px-6 border-r h-[64px] whitespace-nowrap overflow-hidden text-ellipsis">
-//                 {transaction?.date}
-//               </TableCell>
-//               <TableCell className="px-6 border-r h-[64px] whitespace-nowrap overflow-hidden text-ellipsis">
-//                 {transaction?.description}
-//               </TableCell>
-//               <TableCell className="px-6 h-[64px] whitespace-nowrap overflow-hidden text-ellipsis">
-//                 {transaction?.amount}
-//               </TableCell>
-//             </TableRow>
-//           )}
-//         </TableBody>
-//       </Table>
-//     </div>
-//   );
-// }

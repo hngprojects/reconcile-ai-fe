@@ -77,6 +77,13 @@ export function FindPossibleMatchModal({
       ? reconciledDataRow.ledgers[0].ledger_txn
       : null;
 
+  // Calculate the number of rows to display for consistent table heights
+  const transactionCount = Math.max(
+    selectedTransactions.length || 1,
+    bankTransaction ? 1 : 0,
+    ledgerTransaction ? 1 : 0
+  );
+
   const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
     if (!featureType) return false;
 
@@ -202,7 +209,10 @@ export function FindPossibleMatchModal({
         const ledgerTransactions = selectedTransactions;
 
         // Use existing StatementWithScore from reconciledDataRow
-        onMatch(reconciledDataRow.statements?.map(stat => stat.bank_txn) || [], ledgerTransactions);
+        onMatch(
+          reconciledDataRow.statements?.map((stat) => stat.bank_txn) || [],
+          ledgerTransactions
+        );
         onClose();
       } else if (ledgerTransaction) {
         // If we have a ledger transaction, the selected transactions are bank transactions
@@ -210,7 +220,10 @@ export function FindPossibleMatchModal({
         const bankTransactions = selectedTransactions;
 
         // Use existing LedgerWithScore from reconciledDataRow
-        onMatch(bankTransactions, reconciledDataRow.ledgers?.map(ledg => ledg.ledger_txn) || []);
+        onMatch(
+          bankTransactions,
+          reconciledDataRow.ledgers?.map((ledg) => ledg.ledger_txn) || []
+        );
         onClose();
       }
     }
@@ -246,6 +259,9 @@ export function FindPossibleMatchModal({
   const possibleMatchTitle = !bankTransaction
     ? "Bank Statement"
     : "Company Ledger";
+
+  // Calculate row height for status column in order to align with other tables' height
+  const statusRowHeight = transactionCount * 60;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -284,27 +300,8 @@ export function FindPossibleMatchModal({
                     ? "matched"
                     : "unmatched"
               }
-              NoOfMatchedData={selectedTransactionIndices.length}
+              NoOfMatchedData={transactionCount}
             />
-            {/* <TransactionTable
-              transaction={
-                bankTransaction ||
-                (selectedTransactions.length > 0 && !ledgerTransaction
-                  ? selectedTransactions[0]
-                  : null)
-              }
-              status={
-                !isMatched &&
-                !isDefaultMatch &&
-                selectedTransactions.length === 0 &&
-                !bankTransaction
-                  ? "empty"
-                  : isMatched || isDefaultMatch
-                    ? "matched"
-                    : "unmatched"
-              }
-              NoOfMatchedData={selectedTransactionIndices.length}
-            /> */}
 
             {/* Status */}
             <div className="rounded-lg border overflow-hidden">
@@ -316,6 +313,7 @@ export function FindPossibleMatchModal({
                 </TableHeader>
                 <TableBody>
                   <TableRow
+                    style={{ height: `${statusRowHeight}px` }}
                     className={cn(
                       isDefaultMatch || isMatched
                         ? "bg-[#F3FEFA] hover:bg-[#F3FEFA]"
@@ -330,26 +328,6 @@ export function FindPossibleMatchModal({
               </Table>
             </div>
 
-            {/* Company Ledger Details */}
-            {/* <TransactionTable
-              transaction={
-                ledgerTransaction ||
-                (selectedTransactions.length > 0 && !bankTransaction
-                  ? selectedTransactions[0]
-                  : null)
-              }
-              status={
-                !isMatched &&
-                !isDefaultMatch &&
-                selectedTransactions.length === 0 &&
-                !ledgerTransaction
-                  ? "empty"
-                  : isMatched || isDefaultMatch
-                    ? "matched"
-                    : "unmatched"
-              }
-              NoOfMatchedData={selectedTransactionIndices.length}
-            /> */}
             <TransactionTable
               transaction={ledgerTransaction}
               transactions={
@@ -369,7 +347,7 @@ export function FindPossibleMatchModal({
                     ? "matched"
                     : "unmatched"
               }
-              NoOfMatchedData={selectedTransactionIndices.length}
+              NoOfMatchedData={transactionCount}
             />
           </div>
 
@@ -399,13 +377,6 @@ export function FindPossibleMatchModal({
               {hasPlanAccess("match") && (
                 <AmountRangeSelector onRangeChange={handleAmountRangeChange} />
               )}
-            </div>
-          )}
-
-          {/* Selected Transactions Count */}
-          {!isMatched && selectedTransactionIndices.length > 0 && (
-            <div className="text-sm text-gray-700">
-              Selected transactions: {selectedTransactionIndices.length}
             </div>
           )}
 
@@ -593,7 +564,38 @@ export function FindPossibleMatchModal({
 
             {isMatched && (
               <>
-                <div className="space-y-2">
+                {reconciledDataRow.statements === null ? (
+                  <div className="flex flex-col gap-3">
+                    {selectedTransactions.map((transaction) => (
+                      <div key={transaction.id}>
+                        <div className="flex justify-between">
+                          <div className="flex flex-col">
+                            <div className="text-sm font-semibold text-gray-900">
+                              Bank Statement
+                            </div>
+                            <div className="space-y-1">
+                              <div className="text-sm text-gray-700">
+                                {bankTransaction?.date ||
+                                  transaction?.date ||
+                                  ""}
+                              </div>
+                              <div className="text-base text-gray-700">
+                                {bankTransaction?.description ||
+                                  transaction?.description ||
+                                  ""}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="font-medium text-gray-600">
+                            {bankTransaction?.amount ||
+                              transaction?.amount ||
+                              ""}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-sm font-semibold text-gray-900">
@@ -601,27 +603,18 @@ export function FindPossibleMatchModal({
                       </div>
                       <div className="space-y-1">
                         <div className="text-sm text-gray-700">
-                          {bankTransaction?.date ||
-                            (selectedTransactions.length > 0
-                              ? selectedTransactions[0]?.date
-                              : "")}
+                          {bankTransaction?.date}
                         </div>
                         <div className="text-base text-gray-700">
-                          {bankTransaction?.description ||
-                            (selectedTransactions.length > 0
-                              ? selectedTransactions[0]?.description
-                              : "")}
+                          {bankTransaction?.description}
                         </div>
                       </div>
                     </div>
                     <div className="font-medium text-gray-600">
-                      {bankTransaction?.amount ||
-                        (selectedTransactions.length > 0
-                          ? selectedTransactions[0]?.amount
-                          : "")}
+                      {bankTransaction?.amount}
                     </div>
                   </div>
-                </div>
+                )}
 
                 <div className="flex items-center gap-3">
                   <div className="inline-block border-[0.5px] p-2 rounded-3xl">
@@ -631,7 +624,33 @@ export function FindPossibleMatchModal({
                   <hr className="border border-gray-200/70 flex-1" />
                 </div>
 
-                <div className="space-y-2">
+                {reconciledDataRow.ledgers === null ? (
+                  <div className="flex flex-col gap-3">
+                    {selectedTransactions.map((transaction) => (
+                      <div key={transaction.id}>
+                        <div className="flex justify-between">
+                          <div className="flex flex-col">
+                            <div className="text-sm font-semibold text-gray-900">
+                              Company Ledger
+                            </div>
+                            <div className="space-y-1">
+                              <div className="text-sm text-gray-700">
+                                {ledgerTransaction?.date || transaction?.date}
+                              </div>
+                              <div className="text-base text-gray-700">
+                                {ledgerTransaction?.description ||
+                                  transaction?.description}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="font-medium text-gray-600">
+                            {ledgerTransaction?.amount || transaction?.amount}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
                   <div className="flex justify-between">
                     <div className="flex flex-col">
                       <div className="text-sm font-semibold text-gray-900">
@@ -639,46 +658,31 @@ export function FindPossibleMatchModal({
                       </div>
                       <div className="space-y-1">
                         <div className="text-sm text-gray-700">
-                          {ledgerTransaction?.date ||
-                            (selectedTransactions.length > 0
-                              ? selectedTransactions[0]?.date
-                              : "")}
+                          {ledgerTransaction?.date}
                         </div>
                         <div className="text-base text-gray-700">
-                          {ledgerTransaction?.description ||
-                            (selectedTransactions.length > 0
-                              ? selectedTransactions[0]?.description
-                              : "")}
+                          {ledgerTransaction?.description}
                         </div>
                       </div>
                     </div>
                     <div className="font-medium text-gray-600">
-                      {ledgerTransaction?.amount ||
-                        (selectedTransactions.length > 0
-                          ? selectedTransactions[0]?.amount
-                          : "")}
+                      {ledgerTransaction?.amount}
                     </div>
                   </div>
-                </div>
+                )}
               </>
             )}
           </div>
 
-          {/* Selected Transactions Count */}
-          {!isMatched && selectedTransactionIndices.length > 0 && (
-            <div className="text-sm text-gray-700">
-              Selected transactions: {selectedTransactionIndices.length}
-            </div>
-          )}
-
           {/* Search Input - Only show if not matched */}
           {!isMatched && (
             <div className="w-full flex flex-col gap-2">
-              <DatePickerWithRange
-                date={dateRange}
-                onDateChange={setDateRange}
-              />
-
+              {hasPlanAccess("match") && (
+                <DatePickerWithRange
+                  date={dateRange}
+                  onDateChange={setDateRange}
+                />
+              )}
               <div className="relative">
                 <Input
                   className="pl-9 h-12 text-base placeholder:text-sm rounded-xl placeholder:text-gray-600"
@@ -691,8 +695,9 @@ export function FindPossibleMatchModal({
                 />
                 <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 size-6" />
               </div>
-
-              <AmountRangeSelector onRangeChange={handleAmountRangeChange} />
+              {hasPlanAccess("match") && (
+                <AmountRangeSelector onRangeChange={handleAmountRangeChange} />
+              )}
             </div>
           )}
 

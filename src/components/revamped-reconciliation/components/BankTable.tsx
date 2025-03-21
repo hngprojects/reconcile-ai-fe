@@ -160,7 +160,7 @@ export function BankTable() {
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="cursor-pointer flex justify-center items-center"
+              className="cursor-pointer flex justify-center items-center w-full"
             >
               <span className="sr-only">Open menu</span>
               <VerticalDotsIcon className="h-5 w-5" />
@@ -283,8 +283,6 @@ export function BankTable() {
                         className={cn("py-0", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
-                          "flex items-center justify-center":
-                            cell.column.id === "action",
                         })}
                       >
                         {flexRender(
@@ -298,12 +296,12 @@ export function BankTable() {
                     <>
                       <TableCell
                         colSpan={
-                          isAuthenticated
+                          isAuthenticated && hasPlanAccess("match")
                             ? bankColumns.length - 1
                             : bankColumns.length
                         }
                         className={cn("px-4 !h-[0px]", {
-                          "border-r": isAuthenticated,
+                          "border-r": isAuthenticated && hasPlanAccess("match"),
                         })}
                       >
                         <QuickFindAndMatchComboBox
@@ -329,7 +327,9 @@ export function BankTable() {
                             ) {
                               onMatch(
                                 [selectedOption],
-                                reconciledDataRow.ledgers.map(ledg => ledg.ledger_txn)
+                                reconciledDataRow.ledgers.map(
+                                  (ledg) => ledg.ledger_txn
+                                )
                               );
                             }
                           }}
