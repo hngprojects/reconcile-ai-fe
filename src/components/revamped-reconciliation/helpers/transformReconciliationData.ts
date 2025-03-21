@@ -22,12 +22,12 @@ export const transformReconciliationData = (
   let reconciliationCounter = Date.now(); // Start with a timestamp as base for IDs
 
   // Process matched transactions
-  backendData.matches.forEach((match: Matched, matchIndex: number) => {
+  backendData.matches.forEach((match: Matched) => {
     const statements: StatementWithScore[] = match.statements.map(
-      (stmt, stmtIndex) => {
+      (stmt) => {
         return {
           bank_txn: {
-            id: `bank_txn_${matchIndex + 1}_${stmtIndex + 1}`,
+            id: stmt.statement.id,
             date: stmt.statement.Date,
             description: stmt.statement.Description,
             amount: stmt.statement.Amount,
@@ -37,10 +37,10 @@ export const transformReconciliationData = (
       }
     );
 
-    const ledgers: LedgerWithScore[] = match.ledgers.map((ldgr, ldgrIndex) => {
+    const ledgers: LedgerWithScore[] = match.ledgers.map((ldgr) => {
       return {
         ledger_txn: {
-          id: `ledger_txn_${matchIndex + 1}_${ldgrIndex + 1}`,
+          id: ldgr.ledger.id,
           date: ldgr.ledger.Date,
           description: ldgr.ledger.Description,
           amount: ldgr.ledger.Amount,
@@ -59,9 +59,9 @@ export const transformReconciliationData = (
 
   // Process unmatched bank transactions (statements)
   backendData.unmatched_statements.forEach(
-    (stmt: BackendTransaction, index: number) => {
+    (stmt: BackendTransaction) => {
       const bankTxn: FrontendTransaction = {
-        id: `unmatched_bank_txn_${index + 1}`,
+        id: stmt.id,
         date: stmt.Date,
         description: stmt.Description,
         amount: stmt.Amount,
@@ -85,9 +85,9 @@ export const transformReconciliationData = (
 
   // Process unmatched ledger transactions
   backendData.unmatched_ledgers.forEach(
-    (ldgr: BackendTransaction, index: number) => {
+    (ldgr: BackendTransaction) => {
       const ledgerTxn: FrontendTransaction = {
-        id: `ledger_txn_unmatched_${index + 1}`,
+        id: ldgr.id,
         date: ldgr.Date,
         description: ldgr.Description,
         amount: ldgr.Amount,
