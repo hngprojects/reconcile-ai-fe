@@ -222,9 +222,11 @@ export async function updateReconciliation(
       body: JSON.stringify(data),
     });
 
-    const resData = await response.json();
+    if(response.ok){
+      const resData = await response.json();
 
-    return { status: 'success', data: resData };
+      return { status: 'success', data: resData.data };
+    }
   } catch {
     return { error: "Something went wrong. Please try again later." };
   }
