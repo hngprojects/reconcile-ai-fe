@@ -16,7 +16,7 @@ export default function ProfileManagement() {
 
 
     return (
-        <div className="flex  h-screen flex-col md:flex-row bg-white">
+        <div className="flex  h-screen flex-col md:flex-row bg-gray-50">
             {/* Sidebar */}
             <SidebarNav />
 
@@ -32,34 +32,23 @@ export default function ProfileManagement() {
                         <TabsList className="flex flex-row flex-wrap w-full border-b rounded-sm p-2  gap-2 h-auto mb-8">
                             <TabsTrigger
                                 value="personal"
-                                className="border-b-2 data-[state=active]:border-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none h-12 data-[state=active]:rounded-sm rounded-sm border-teal-600"
+                                className="data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:bg-gray-100 h-12 data-[state=active]:rounded-none rounded-sm "
                             >
                                 Personal Information
                             </TabsTrigger>
                             <TabsTrigger
                                 value="emails"
-                                className="border-b-2  data-[state=active]:border-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none h-12 data-[state=active]:rounded-sm rounded-sm border-teal-600"
+                                className="data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:bg-gray-100 h-12 data-[state=active]:rounded-none rounded-sm "
                             >
                                 Emails & Passwords
                             </TabsTrigger>
                             <TabsTrigger
                                 value="notifications"
-                                className="border-b-2 data-[state=active]:border-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none h-12 data-[state=active]:rounded-sm rounded-sm border-teal-600"
+                                className="data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:bg-gray-100 h-12 data-[state=active]:rounded-none rounded-sm "
                             >
                                 Notifications
                             </TabsTrigger>
-                            <TabsTrigger
-                                value="preference"
-                                className="border-b-2 data-[state=active]:border-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none h-12 data-[state=active]:rounded-sm rounded-sm border-teal-600"
-                            >
-                                Preference
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="integrations"
-                                className="border-b-2 border-teal-600 data-[state=active]:border-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none h-12 data-[state=active]:rounded-sm rounded-sm"
-                            >
-                                Integrations
-                            </TabsTrigger>
+
                         </TabsList>
 
                         <TabsContent value="personal" className="pt-0 mt-0">

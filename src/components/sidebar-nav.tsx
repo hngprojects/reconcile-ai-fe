@@ -1,19 +1,15 @@
 import type React from "react"
 import Link from "next/link"
-import { BarChart, FileUp, HandMetal, FileDown, FileText, User } from "lucide-react"
+import { LayoutDashboard, Settings} from "lucide-react"
 
 export default function SidebarNav() {
   return (
-    <aside className="hidden md:block border-r w-16 md:w-60 shrink-0 overflow-y-auto h-screen bg-gray-50">
+    <aside className="hidden md:block border-r w-16 md:w-60 shrink-0 overflow-y-auto h-screen bg-white">
 
       {/* Navigation */}
       <nav className="py-4 space-y-1">
-        <NavItem href="/settings" icon={<BarChart size={20} />} label="Dashboard" />
-        <NavItem href="/#" icon={<FileUp size={20} />} label="File Upload" />
-        <NavItem href="/#" icon={<HandMetal size={20} />} label="Manual Override" />
-        <NavItem href="/#" icon={<FileDown size={20} />} label="Export" />
-        <NavItem href="/#" icon={<FileText size={20} />} label="Reconciliation Summary" />
-        <NavItem href="/#" icon={<User size={20} />} label="Profile Management" active />
+        <NavItem href="/settings" icon={<LayoutDashboard size={20} />} label="Dashboard" />
+        <NavItem href="/#" icon={<Settings size={20} /> } label="Profile Management" active />
       </nav>
     </aside>
   )
