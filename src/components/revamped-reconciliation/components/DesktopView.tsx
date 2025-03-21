@@ -155,7 +155,7 @@ export default function DesktopView() {
       <PaginationControls />
 
       {/* Conditionally render unlink modal based on plan */}
-      {hasPlanAccess("unlink") && (
+      {//hasPlanAccess("unlink") && (
         <UnlinkModal
           isOpen={showUnlinkModal}
           isLoading={isLoading}
@@ -172,7 +172,8 @@ export default function DesktopView() {
             }
           }}
         />
-      )}
+      //)
+      }
     </div>
   );
 }

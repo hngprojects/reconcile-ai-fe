@@ -228,7 +228,7 @@ export async function updateReconciliation(
       return { error: resData.message || "Failed to add to newsletter" }; //TODO: Correct this
     }
 
-    return resData;
+    return { status: 'success', data: resData };
   } catch {
     return { error: "Something went wrong. Please try again later." };
   }

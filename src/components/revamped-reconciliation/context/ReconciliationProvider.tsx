@@ -207,7 +207,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         Date: bankTransaction.bank_txn.date,
         Person: bankTransaction.bank_txn.description,
       })),
-      action: "match",
+      action: "unmatch",
     };
 
     setIsLoading(true);
@@ -217,6 +217,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         reconciliationId,
         body as ManualRequestBody
       );
+      console.log(response);
 
       if (response.status !== "success") {
         toast.error("Failed to unlink transactions");
