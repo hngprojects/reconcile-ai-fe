@@ -10,7 +10,7 @@ const Feature = dynamic(
     () => import("@/src/components/freelancer/Features"),
   );
 const VideoFeature = dynamic(
-  () => import("@/src/components/school-and-education/VideoFeature"),
+  () => import("@/src/components/freelancer/VideoFeature"),
 );
 const WhyReconXi = dynamic(
   () => import("@/src/components/freelancer/WhyReconXi"),
