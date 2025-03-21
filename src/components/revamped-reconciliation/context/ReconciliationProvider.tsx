@@ -44,7 +44,7 @@ interface ReconciliationContextProps {
   // Actions
   handleMatch: (
     bankTransaction: FrontendTransaction[],
-    ledgerTransaction: FrontendTransaction[],
+    ledgerTransaction: FrontendTransaction[]
   ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
@@ -54,7 +54,7 @@ interface ReconciliationContextProps {
   handleSearch: (query: string) => void;
   handleUnlink: (
     bankTransaction: FrontendTransaction[],
-    ledgerTransaction: FrontendTransaction[],
+    ledgerTransaction: FrontendTransaction[]
   ) => Promise<void>;
 
   // Modals
@@ -147,10 +147,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const handleMatch = async (
     bankTransactions: FrontendTransaction[],
-    ledgerTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[]
   ) => {
     const body = {
-      ledgers: ledgerTransactions.map((ledgerTransaction) => ledgerTransaction.id),
+      ledgers: ledgerTransactions.map(
+        (ledgerTransaction) => ledgerTransaction.id
+      ),
       statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
       action: "match",
     };
@@ -186,10 +188,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
   const handleUnlink = async (
     bankTransactions: FrontendTransaction[],
-    ledgerTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[]
   ) => {
     const body = {
-      ledgers: ledgerTransactions.map((ledgerTransaction) => ledgerTransaction.id),
+      ledgers: ledgerTransactions.map(
+        (ledgerTransaction) => ledgerTransaction.id
+      ),
       statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
       action: "unmatch",
     };

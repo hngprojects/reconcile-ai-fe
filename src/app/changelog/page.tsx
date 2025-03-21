@@ -19,7 +19,7 @@ export default function ReconXiReleases() {
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [videoLoaded, setVideoLoaded] = useState<{ [key: string]: boolean }>(
-    {},
+    {}
   );
 
   // play video
@@ -73,15 +73,15 @@ export default function ReconXiReleases() {
     }
   };
 
-  // Find the latest release based on date "new tag"
-  const latestReleaseId = releases.reduce((latest, current) => {
-    if (!latest) return current.id;
-    const latestDate = new Date(
-      releases.find((r) => r.id === latest)?.date || "",
-    );
-    const currentDate = new Date(current.date);
-    return currentDate > latestDate ? current.id : latest;
-  }, "");
+  // Sort releases from latest to oldest
+  const sortedReleases = [...releases].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  // Find the latest release (will now be the first item after sorting)
+  const latestReleaseId = sortedReleases[0]?.id;
 
   return (
     <>
@@ -91,7 +91,7 @@ export default function ReconXiReleases() {
           value={openItems}
           className="space-y-4 mt-9 md:mt-16 mb-9 md:mb-16"
         >
-          {releases.map((release) => (
+          {sortedReleases.map((release) => (
             <motion.div
               key={release.id}
               initial={{ opacity: 0, y: 20 }}
@@ -120,7 +120,7 @@ export default function ReconXiReleases() {
                           transition={{
                             duration: 0.5,
                             repeat: Infinity,
-                            repeatType: "reverse"
+                            repeatType: "reverse",
                           }}
                         >
                           <span className="text-xs bg-[#F3FEFA] text-center px-2 py-0.5 rounded-xl w-14">
@@ -135,15 +135,22 @@ export default function ReconXiReleases() {
                   </div>
                   <AccordionTrigger
                     onClick={() => handleToggle(release.id)}
-                    className="h-6 w-6 md:h-[50px] md:w-[50px] rounded-[5px] p-[3px] md:p-[5px] border border-[#2E604A] flex items-center justify-center text-[#2E604A] hover:border-white hover:text-white hover:bg-[#2E604A] cursor-pointer"
+                    className={`
+                      flex items-center h-6 w-6 md:h-[50px] md:w-[50px] 
+                      rounded-[5px] p-[3px] md:p-[5px] border border-[#2E604A] 
+                      text-[#2E604A] hover:border-white hover:text-white 
+                      hover:bg-[#2E604A] justify-center
+                    `}
                     aria-label={
                       openItems.includes(release.id)
                         ? "Collapse section"
                         : "Expand section"
                     }
                   >
-                    <motion.div
-                      animate={{ rotate: openItems.includes(release.id) ? 180 : 0 }}
+                    <motion.span
+                      animate={{
+                        rotate: openItems.includes(release.id) ? 180 : 0,
+                      }}
                       transition={{ duration: 0.3 }}
                     >
                       {openItems.includes(release.id) ? (
@@ -151,7 +158,7 @@ export default function ReconXiReleases() {
                       ) : (
                         <Plus className="h-5 w-5" aria-hidden="true" />
                       )}
-                    </motion.div>
+                    </motion.span>
                   </AccordionTrigger>
                 </motion.div>
                 <AccordionContent className="pt-0 lg:pl-62">
@@ -172,7 +179,9 @@ export default function ReconXiReleases() {
                           style={{ backgroundColor: release.bannerColor }}
                         >
                           <div className="flex-1 flex flex-col justify-center gap-2 ">
-                            <h4 className="font-semibold">{release.bannerIntro}</h4>
+                            <h4 className="font-semibold">
+                              {release.bannerIntro}
+                            </h4>
                             <h2 className="font-semibold text-[16px] md:text-[32px]">
                               {release.bannerTitle}
                             </h2>
@@ -212,35 +221,35 @@ export default function ReconXiReleases() {
                           {/* Video Section */}
                           <motion.div
                             className="relative w-full h-0 pb-[56.25%] bg-gray-100 mb-6 rounded-md overflow-hidden"
-                            whileHover={{ boxShadow: "0 4px 20px rgba(0,0,0,0.1)" }}
+                            whileHover={{
+                              boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                            }}
                             transition={{ duration: 0.3 }}
                           >
-                            {release.content.videoUrl ?
-                              (
-                                <video
-                                  playsInline
-                                  ref={(el) => {
-                                    videoRefs.current[release.id] = el;
-                                  }}
-                                  onLoadedData={() => handleVideoLoad(release.id)}
-                                  className="absolute inset-0 w-full h-full rounded-lg shadow-xl object-cover"
-                                >
-                                  <source
-                                    src={release.content.videoUrl}
-                                    type="video/mp4"
-                                  />
-                                  Your browser does not support the video tag.
-                                </video>
-                              ) : (
-                                <Image
-                                  src="/assets/images/financial-pro-ft.svg"
-                                  alt="Video placeholder"
-                                  layout="fill"
-                                  objectFit="cover"
-                                  className="absolute inset-0 w-full h-full"
+                            {release.content.videoUrl ? (
+                              <video
+                                playsInline
+                                ref={(el) => {
+                                  videoRefs.current[release.id] = el;
+                                }}
+                                onLoadedData={() => handleVideoLoad(release.id)}
+                                className="absolute inset-0 w-full h-full rounded-lg shadow-xl object-cover"
+                              >
+                                <source
+                                  src={release.content.videoUrl}
+                                  type="video/mp4"
                                 />
-                              )
-                            }
+                                Your browser does not support the video tag.
+                              </video>
+                            ) : (
+                              <Image
+                                src="/assets/images/financial-pro-ft.svg"
+                                alt="Video placeholder"
+                                layout="fill"
+                                objectFit="cover"
+                                className="absolute inset-0 w-full h-full"
+                              />
+                            )}
 
                             {videoLoaded[release.id] && (
                               <motion.button
@@ -256,9 +265,15 @@ export default function ReconXiReleases() {
                                 transition={{ duration: 0.2 }}
                               >
                                 {playingVideo !== release.id ? (
-                                  <Play className="h-8 w-8 text-white" />
+                                  <Play
+                                    className="h-8 w-8 text-white"
+                                    aria-hidden="true"
+                                  />
                                 ) : (
-                                  <Pause className="h-8 w-8 text-white opacity-80" />
+                                  <Pause
+                                    className="h-8 w-8 text-white opacity-80"
+                                    aria-hidden="true"
+                                  />
                                 )}
                               </motion.button>
                             )}
@@ -272,7 +287,10 @@ export default function ReconXiReleases() {
                                 className="mb-4"
                                 initial={{ x: -20, opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
-                                transition={{ delay: 0.4 + (index * 0.1), duration: 0.3 }}
+                                transition={{
+                                  delay: 0.4 + index * 0.1,
+                                  duration: 0.3,
+                                }}
                               >
                                 <h5 className="font-medium text-xl mb-2">
                                   {section.title}
@@ -290,7 +308,10 @@ export default function ReconXiReleases() {
                                         className="text-sm md:text-[16px]"
                                         initial={{ x: -10, opacity: 0 }}
                                         animate={{ x: 0, opacity: 1 }}
-                                        transition={{ delay: 0.5 + (itemIndex * 0.05), duration: 0.2 }}
+                                        transition={{
+                                          delay: 0.5 + itemIndex * 0.05,
+                                          duration: 0.2,
+                                        }}
                                       >
                                         {item}
                                       </motion.li>

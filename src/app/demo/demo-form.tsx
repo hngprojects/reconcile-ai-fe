@@ -8,13 +8,6 @@ import { Label } from "@/src/components/ui/label";
 import { handleMarketingDemo } from "@/src/lib/api";
 import { toast } from "sonner";
 import { fetchCountryCodes } from "@/src/lib/constants";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/src/components/ui/select";
 import Image from "next/image";
 
 interface Country {
@@ -39,6 +32,9 @@ export default function DemoForm({
     phoneNumber: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectId] = useState(
+    `radix-select-${Math.random().toString(36).substr(2, 9)}`
+  );
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -71,7 +67,7 @@ export default function DemoForm({
 
       if (result.success) {
         toast.success(
-          "Demo request submitted successfully! We'll be in touch soon.",
+          "Demo request submitted successfully! We'll be in touch soon."
         );
         setFormData({
           fullName: "",
@@ -87,7 +83,7 @@ export default function DemoForm({
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to submit demo request. Please try again.",
+          : "Failed to submit demo request. Please try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -161,32 +157,56 @@ export default function DemoForm({
             Phone Number
           </Label>
           <div className="flex gap-2">
-            <Select
-              value={formData.countryCode}
-              onValueChange={handleCountryCodeChange}
-            >
-              <SelectTrigger className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer">
-                <SelectValue placeholder="+234" />
-              </SelectTrigger>
-              <SelectContent>
+            <div className="relative">
+              <select
+                value={formData.countryCode}
+                onChange={(e) => handleCountryCodeChange(e.target.value)}
+                className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer rounded-md pl-9 pr-8 appearance-none"
+              >
                 {countries.map((country: Country) => (
-                  <SelectItem
+                  <option
                     key={`${country.code}-${country.name}`}
                     value={country.code}
-                    className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
+                    className="flex items-center gap-2 h-12 px-3 py-2"
                   >
-                    <Image
-                      src={country.flag}
-                      alt={country.name}
-                      width={16}
-                      height={16}
-                      className="object-contain"
-                    />
-                    <span>{country.code}</span>
-                  </SelectItem>
+                    {country.code}
+                  </option>
                 ))}
-              </SelectContent>
-            </Select>
+              </select>
+              <div className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
+                {countries.find((c) => c.code === formData.countryCode)
+                  ?.flag && (
+                  <Image
+                    src={
+                      countries.find((c) => c.code === formData.countryCode)
+                        ?.flag || "/assets/images/placeholder-flag.png"
+                    }
+                    alt={`Flag for ${formData.countryCode}`}
+                    width={20}
+                    height={15}
+                    className="rounded-sm"
+                  />
+                )}
+              </div>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg
+                  width="10"
+                  height="6"
+                  viewBox="0 0 10 6"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="text-gray-500"
+                >
+                  <path
+                    d="M1 1L5 5L9 1"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
             <Input
               id="phoneNumber"
               name="phoneNumber"

@@ -21,9 +21,22 @@ import { ReconciliationItem } from "../types/frontendResponseTypes";
 import useRowHeights from "../hooks/useRowHeights";
 
 export function StatusTable() {
-  const { paginatedData, setShowUnlinkModal, setSelectedRow } =
+  const { paginatedData, setShowUnlinkModal, setSelectedRow, userPlan } =
     useReconciliation();
   const rowHeights = useRowHeights(paginatedData);
+
+  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
+    if (!featureType) return false;
+
+    switch (userPlan) {
+      case "starter":
+        return true;
+      case "basic":
+        return false;
+      default:
+        return true; // business plan has all features
+    }
+  };
 
   const statusColumn: ColumnDef<ReconciliationItem>[] = [
     {
@@ -69,18 +82,20 @@ export function StatusTable() {
                     )}
                   </div>
 
-                  <button
-                    type="button"
-                    title="Unlink matching transactions"
-                    className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer -top-4 -right-8 z-20"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedRow(row.original);
-                      setShowUnlinkModal(true);
-                    }}
-                  >
-                    <XIcon className="w-4 h-4 text-[#333333]" />
-                  </button>
+                  {hasPlanAccess("match") && (
+                    <button
+                      type="button"
+                      title="Unlink matching transactions"
+                      className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer -top-4 -right-8 z-20"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedRow(row.original);
+                        setShowUnlinkModal(true);
+                      }}
+                    >
+                      <XIcon className="w-4 h-4 text-[#333333]" />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -133,7 +148,8 @@ export function StatusTable() {
                   <TableCell
                     key={cell.id}
                     className={cn("py-0 transition duration-200", {
-                      "group hover:bg-[#CEFFED]": row.original.matched,
+                      "group hover:bg-[#CEFFED]":
+                        row.original.matched && hasPlanAccess("match"),
                     })}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
