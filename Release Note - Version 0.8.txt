@@ -1,0 +1,27 @@
+Release Note Version 0.8
+
+Product: AI-Powered Bank Reconciliation 
+Release Notes: Version 0.8
+Release Date: 17-03-2025
+Version 0.8: Improved Reconciliation Accuracy
+
+Epic Title: Advanced AI-Powered Transaction Matching with Sliding Window Technique
+Release Date: 19-03-2025
+
+Overview
+Version 0.8 introduces a more dynamic way of reconciliation. This version enhances accuracy in reconciliation by systematically processing transactions in structured batches.
+
+New Features
+AI-Powered Matching: The system identifies and marks exact matches within each processing window based on date and amount.
+User Confirmation: Users can review, confirm, or correct AI-suggested matches before finalizing them.
+
+Limitations
+The AI model currently matches only exact date and amount pairs; fuzzy matching (e.g., similar descriptions) is not yet supported.
+Requires user validation for final reconciliation to ensure accuracy.
+
+What’s Coming Next?
+Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete.
+
+Stay tuned for upcoming versions with even more improvements!
+Got feedback? Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence!

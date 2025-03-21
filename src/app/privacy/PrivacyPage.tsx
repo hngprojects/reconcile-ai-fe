@@ -336,7 +336,7 @@ const PrivacyPage = () => {
 
                 <p className="font-normal text-[16px] text-[#475467] ">
                   For any privacy-related concerns, reach out to us at
-                  info@ReconXi.com.
+                 support@reconxi.com.
                 </p>
               </motion.div>
 
