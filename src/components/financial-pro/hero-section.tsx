@@ -3,7 +3,6 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import StartReconciliationButton from "../buttons/StartReconciliationButton";
 
 export default function FinancialHero() {
   return (
@@ -32,17 +31,6 @@ export default function FinancialHero() {
                 The best financial platform to automate transactions, spot
                 errors, and keep your books balanced.
               </p>
-
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-fit mt-7 mx-auto lg:mx-0"
-              >
-                <StartReconciliationButton
-                  className="inline-flex items-center mx-auto justify-center w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-[#2E604A] rounded-lg hover:bg-[#2E604A]/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E604A]"
-                  aria-label="Start enterprise reconciliation"
-                />
-              </motion.div>
             </div>
           </motion.div>
 
