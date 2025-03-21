@@ -1,40 +1,24 @@
 "use client";
 
 import { useAuth } from "@/src/components/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Loader } from "@/src/components/ui/loader";
+import { useEffect } from "react";
 
 export default function AuthCallback() {
-  const router = useRouter();
   const { getUserDetails } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const handleAuth = async () => {
-      const token = localStorage.getItem("access_token");
-      if (!token) {
-        router.push("/");
-        return;
-      }
+    const token = localStorage.getItem("access_token");
+    if (token) getUserDetails(token as string);
+  }, [getUserDetails]);
 
-      try {
-        await getUserDetails(token);
-        router.push("/file-upload");
-      } catch (error) {
-        console.error("Auth error:", error);
-        router.push("/");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    handleAuth();
-  }, [getUserDetails, router]);
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  return null;
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <h1 className="text-2xl font-semibold mb-4">Authenticating...</h1>
+        <p className="text-gray-600">
+          Please wait while we complete your sign-in.
+        </p>
+      </div>
+    </div>
+  );
 }
