@@ -31,7 +31,7 @@ const VideoFeature = () => {
               viewport={{ once: true }}
               className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-8 max-w-[768px]"
             >
-              See how ReconXi does it!
+              Let's show you the ReconXi way!
             </motion.h2>
           </motion.div>
 
