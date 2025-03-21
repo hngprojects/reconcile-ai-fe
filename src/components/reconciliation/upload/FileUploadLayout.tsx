@@ -78,10 +78,6 @@ export default function FileUploadLayout({
         toast.dismiss(toastId);
         setErrorCode(result.code);
         setShowErrorModal(true);
-
-        toast.error("Reconciliation failed. Please try again.", {
-          id: toastId,
-        });
         return;
       }
 
@@ -96,10 +92,6 @@ export default function FileUploadLayout({
         );
         setBankFiles([]);
         setLedgerFiles([]);
-
-        toast.success("Reconciliation completed successfully! Check you mail for reconcilation result.", {
-          id: toastId,
-        });
       }
 
       setTimeout(() => {
