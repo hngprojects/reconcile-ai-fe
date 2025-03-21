@@ -8,6 +8,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormDescription,
   FormMessage,
 } from "@/src/components/ui/form";
 import { Input } from "@/src/components/ui/input";
@@ -108,6 +109,9 @@ const EmailSubscribeForm = () => {
                     </div>
                   </div>
                 </FormControl>
+                <FormDescription className="sr-only">
+    Enter your email to subscribe to our newsletter
+  </FormDescription>
               </FormItem>
             )}
           />

@@ -159,7 +159,7 @@ export function LedgerTable() {
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="cursor-pointer flex justify-center items-center"
+              className="cursor-pointer flex justify-center items-center w-full"
             >
               <span className="sr-only">Open menu</span>
               <VerticalDotsIcon className="h-5 w-5" />
@@ -281,8 +281,6 @@ export function LedgerTable() {
                         className={cn("py-0", {
                           "border-r":
                             index !== row.getVisibleCells().length - 1,
-                          "flex items-center justify-center":
-                            cell.column.id === "action",
                         })}
                       >
                         {flexRender(
@@ -296,12 +294,12 @@ export function LedgerTable() {
                     <>
                       <TableCell
                         colSpan={
-                          isAuthenticated
+                          isAuthenticated && hasPlanAccess("match")
                             ? ledgerColumns.length - 1
                             : ledgerColumns.length
                         }
                         className={cn("px-4 !h-[0px]", {
-                          "border-r": isAuthenticated,
+                          "border-r": isAuthenticated && hasPlanAccess("match"),
                         })}
                       >
                         <QuickFindAndMatchComboBox
@@ -325,7 +323,12 @@ export function LedgerTable() {
                               reconciledDataRow.statements &&
                               reconciledDataRow.statements[0]?.bank_txn
                             ) {
-                              onMatch(reconciledDataRow.statements.map(stat => stat?.bank_txn), [selectedOption]);
+                              onMatch(
+                                reconciledDataRow.statements.map(
+                                  (stat) => stat?.bank_txn
+                                ),
+                                [selectedOption]
+                              );
                             }
                           }}
                           emptyIndicator={

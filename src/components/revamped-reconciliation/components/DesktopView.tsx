@@ -5,13 +5,13 @@ import { BankTable } from "./BankTable";
 import { LedgerTable } from "./LedgerTable";
 import { PaginationControls } from "./PaginationControls";
 import { StatusTable } from "./StatusTable";
-
 import { DownloadCloudIcon, Loader2 } from "lucide-react";
 import { SuccessToast } from "../../reconciliation/SuccessToast";
 import UnlinkModal from "../../modal/UnlinkModal";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import { exportReconciliation } from "@/src/lib/api";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function DesktopView() {
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -29,6 +29,7 @@ export default function DesktopView() {
     setSelectedRow,
     userPlan,
   } = useReconciliation();
+  const path = usePathname();
 
   // Add plan validation helper
   const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
@@ -73,7 +74,7 @@ export default function DesktopView() {
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      const reconciliationId = localStorage.getItem("reconciliation_id");
+      const reconciliationId = path.split("/")[2];
 
       if (!reconciliationId) {
         throw new Error("No reconciliation id found");
@@ -81,12 +82,10 @@ export default function DesktopView() {
 
       await exportReconciliation(reconciliationId);
 
-      // Show success toast using custom component
       setToastMessage("Your data has been exported successfully!");
       setShowSuccessToast(true);
     } catch (error) {
       console.error("Export error:", error);
-      // Show error toast using custom component
       setToastMessage(
         error instanceof Error ? error.message : "Failed to export data"
       );
@@ -120,7 +119,7 @@ export default function DesktopView() {
           >
             Re-upload
           </Link>
-          {hasPlanAccess("export") && (
+          { hasPlanAccess("export") && (
             <button
               type="button"
               className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"

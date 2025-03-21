@@ -14,9 +14,6 @@ const VideoFeature = dynamic(
 const WhyReconXi = dynamic(
   () => import("@/src/components/small-business/WhyReconXi"),
 );
-const Benefits = dynamic(
-  () => import("@/src/components/small-business/Benefits"),
-);
 const StartReconcile = dynamic(
   () => import("@/src/components/small-business/Ready"),
 );
@@ -33,16 +30,13 @@ export default function HomePage() {
         <Features1 />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <VideoFeature />
+        <StartReconcile />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <WhyReconXi />
       </Suspense>
-      <Suspense fallback={<div className="min-h-[400px]" />}>
-        <Benefits />
-      </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <StartReconcile />
+        <VideoFeature />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <FAQSection />
