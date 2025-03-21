@@ -55,11 +55,11 @@ export default function UserDetails() {
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:bg-[#eaf5f1] cursor-pointer px-4 py-3 transition-colors">
             <Link
-              href="/settings"
+              href="/dashboard"
               className="flex gap-3 items-center text-[#101828] w-full"
             >
               <Settings className="w-4 h-4" />
-              <p>Settings</p>
+              <p>Manage Profile</p>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:bg-red-100 cursor-pointer px-4 py-3 transition-colors">
