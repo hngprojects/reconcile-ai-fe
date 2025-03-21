@@ -114,12 +114,15 @@ export default function DesktopView() {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
         <div className="flex gap-4">
-          <Link
-            className=" h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
-            href="/file-upload"
-          >
-            Re-upload
-          </Link>
+          <a href="/file-upload">
+            <button
+              type="button"
+              className="px-6 py-4 border border-[#2E604A] !bg-[#2E604A] !text-white font-medium hover:bg-[#2E604A]/90 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+            >
+              Re-upload
+            </button>
+          </a>
+
           {hasPlanAccess("export") && (
             <button
               type="button"
