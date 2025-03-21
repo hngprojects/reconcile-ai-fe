@@ -3,8 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import ContactForm from "./SMEForm";
-
+import DemoForm from "@/src/app/demo/demo-form";
 
 export default function StartReconcile() {
   return (
@@ -61,8 +60,7 @@ export default function StartReconcile() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="w-full"
               >
-                <ContactForm/>
-
+                <DemoForm buttonText="Get your Demo" />
               </motion.div>
             </div>
           </motion.div>

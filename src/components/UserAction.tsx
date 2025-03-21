@@ -31,12 +31,12 @@ const UserAction: FC = () => {
     setShowLoginModal(true);
   };
 
-  if (user) {
-    return <UserDetails />;
-  }
+  // if (user) {
+  //   return <UserDetails />;
+  // }
 
   return (
-    <>
+    <div className=" flex items-center gap-2">
       {user ? (
         <UserDetails />
       ) : (
@@ -60,6 +60,20 @@ const UserAction: FC = () => {
             </button>
           </div>
 
+          <LoginModal
+            isOpen={showLoginModal}
+            onClose={() => setShowLoginModal(false)}
+            onSwitchToSignup={handleSwitchToSignup}
+          />
+
+          <GoogleAuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            onSwitchToLogin={handleSwitchToLogin}
+          />
+        </>
+      )}
+      <div className="flex items-center md:hidden">
           <button
             type="button"
             onClick={() => setShowMobileMenu(true)}
@@ -83,21 +97,8 @@ const UserAction: FC = () => {
               setShowAuthModal(true);
             }}
           />
-
-          <LoginModal
-            isOpen={showLoginModal}
-            onClose={() => setShowLoginModal(false)}
-            onSwitchToSignup={handleSwitchToSignup}
-          />
-
-          <GoogleAuthModal
-            isOpen={showAuthModal}
-            onClose={() => setShowAuthModal(false)}
-            onSwitchToLogin={handleSwitchToLogin}
-          />
-        </>
-      )}
-    </>
+        </div>
+    </div>
   );
 };
 
