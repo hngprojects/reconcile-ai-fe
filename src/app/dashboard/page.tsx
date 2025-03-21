@@ -27,12 +27,6 @@ export default function Dashboard() {
     <div className={containerClasses}>
       {/* Sidebar Navigation */}
       <aside className="border-r w-16 md:w-60 shrink-0 overflow-y-auto h-screen bg-white dark:bg-gray-800 transition-all">
-        {/* Brand/Logo Area */}
-        <div className="h-16 flex items-center justify-center md:justify-start px-4 border-b dark:border-gray-700">
-          <span className="hidden md:block font-semibold text-xl dark:text-white">
-            ReconcileAI
-          </span>
-        </div>
 
         {/* Navigation Links */}
         <nav className="py-4 space-y-1">
