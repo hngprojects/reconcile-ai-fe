@@ -36,7 +36,7 @@ export const transformReconciliationData = (
         amount: match.file2_transaction.Amount,
       },
       matched: true,
-      match_score: 100,
+      score: 100,
     });
   });
 
@@ -55,7 +55,7 @@ export const transformReconciliationData = (
         bank_txn: bankTxn,
         ledger_txn: null,
         matched: false,
-        match_score: 0,
+        score: 0,
       });
 
       unmatched_bank_transactions.push(bankTxn);
@@ -77,7 +77,7 @@ export const transformReconciliationData = (
         bank_txn: null,
         ledger_txn: ledgerTxn,
         matched: false,
-        match_score: 0,
+        score: 0,
       });
 
       unmatched_ledger_transactions.push(ledgerTxn);

@@ -11,7 +11,7 @@ export const reconciliationData = {
         Description: "Naza",
         Amount: "50,000",
       },
-      match_score: 100,
+      score: 100,
     },
     {
       file1_transaction: {
@@ -24,7 +24,7 @@ export const reconciliationData = {
         Description: "Tunde",
         Amount: "40,000",
       },
-      match_score: 100,
+      score: 100,
     },
   ],
   only_in_file1: [
