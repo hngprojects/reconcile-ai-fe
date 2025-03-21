@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
 
@@ -56,6 +57,15 @@ Tired of Manual Bank Reconciliations?
               <strong className="font-bold">
               ReconXi offers a smarter, faster way to reconcile your bank statements and keep your finances on track.
               </strong>
+              <Link href={'/demo'}>
+                <button
+                  type="button"
+                  className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                  aria-label="Open signup modal"
+                >
+                  Get a Free Demo
+                </button>
+                </Link>
             </p>
           </motion.div>
         </motion.div>
