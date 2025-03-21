@@ -13,10 +13,9 @@ import { useRouter } from "next/navigation";
 import { User, Response } from "@/src/types/auth";
 import { toast } from "sonner";
 import {
-  GOOGLE_API_URL,
-  LOGOUT_API_URL,
-  USER_API_URL,
-} from "@/src/lib/apiEndpoints";
+  LOGOUT_API_URL} from "@/src/lib/apiEndpoints";
+import { signIn } from 'next-auth/react';
+import { SessionProvider } from "next-auth/react";
 
 interface AuthContextType {
   user: User | null;
@@ -36,28 +35,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const signInWithGoogle = async () => {
-    // window.location.href = GOOGLE_API_URL;
-    router.push(GOOGLE_API_URL);
-  };
+    const result = await signIn('google', { callbackUrl: '/file-upload' });
 
-  const getUserDetails = async (token: string) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch(USER_API_URL, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
-      const data: Response = await response.json();
-
-      localStorage.setItem("user", JSON.stringify(data.data.user));
-      setUser(data.data.user);
-    } catch (e) {
-      console.error("Failed to fetch", e);
-    } finally {
-      setIsLoading(false);
-    }
+      if (result?.error) {
+        alert(result.error);
+        return;
+    };  
   };
 
   const logout = async () => {
@@ -95,11 +78,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userDetails = localStorage.getItem("user");
 
     if (token) {
-      if (userDetails) {
+      if (userDetails && userDetails !== "undefined") {
         setUser(JSON.parse(userDetails));
         setIsLoading(false);
-      } else {
-        getUserDetails(token);
       }
     } else {
       setIsLoading(false);
@@ -115,10 +96,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isLoading,
         signInWithGoogle,
         logout,
-        getUserDetails,
       }}
     >
+      <SessionProvider>
       {children}
+      </SessionProvider>
     </AuthContext.Provider>
   );
 };
