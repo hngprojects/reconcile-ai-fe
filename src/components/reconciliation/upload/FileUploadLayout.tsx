@@ -109,7 +109,7 @@ export default function FileUploadLayout({
 
   return (
     <Container className="my-10">
-      <div className="flex flex-col md:flex-row justify-center gap-[40px]">
+      <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
         <UploadCard
           title="Upload Bank Statement"
           type="bank"

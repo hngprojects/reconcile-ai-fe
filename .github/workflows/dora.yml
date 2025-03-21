@@ -1,26 +1,26 @@
-name: Track DORA Metrics
-on:
-  push:
-    branches:
-      - main
-  workflow_run:
-    workflows: ["cd.yml"]
-    types:
-      - completed
-jobs:
-  collect-metrics:
-    runs-on: reconcile
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      - name: Install Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install Dependencies
-        run: pip install requests prometheus_client
-      - name: Calculate DORA Metrics
-        run: python .github/dora_metrics.py
-        env:
-          PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# #name: Track DORA Metrics
+# #on:
+#   push:
+#     branches:
+#       - main
+#   workflow_run:
+#     workflows: ["cd.yml"]
+#     types:
+#       - completed
+# jobs:
+#   collect-metrics:
+#     runs-on: reconcile
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
+#       - name: Install Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
+#       - name: Install Dependencies
+#         run: pip install requests prometheus_client
+#       - name: Calculate DORA Metrics
+#         run: python .github/dora_metrics.py
+#         env:
+#           PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

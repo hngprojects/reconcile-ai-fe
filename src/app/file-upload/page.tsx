@@ -1,19 +1,19 @@
 "use client";
 
 import FileUploadLayout from "@/src/components/reconciliation/upload/FileUploadLayout";
-import { useEffect } from "react";
-import { useAuth } from "@/src/components/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Loader } from "@/src/components/ui/loader";
 
 export default function FileUploadPage() {
-  // const router = useRouter();
-  const { getUserDetails } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleReconcile = async (
     bankFiles: File[],
     ledgerFiles: File[],
   ): Promise<void> => {
     try {
-      // Store the files in localStorage or state management if needed
       localStorage.setItem(
         "bankFiles",
         JSON.stringify(bankFiles.map((f) => f.name)),
@@ -22,26 +22,23 @@ export default function FileUploadPage() {
         "ledgerFiles",
         JSON.stringify(ledgerFiles.map((f) => f.name)),
       );
-
-      // Navigate to results page or handle as needed
-      // router.push("/reconciliation");
-
     } catch (error) {
       console.error("Error handling reconciliation:", error);
     }
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-
-      if (token) {
-        localStorage.setItem("access_token", token); // Store token
-        getUserDetails(token);
-      }
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      router.push("/");
+      return;
     }
-  }, [getUserDetails]);
+    setIsLoading(false);
+  }, [router]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return <FileUploadLayout onReconcile={handleReconcile} />;
 }

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
+import StartReconciliationButton from "../buttons/StartReconciliationButton";
 
 export default function HeroSection() {
   return (
@@ -37,13 +37,10 @@ export default function HeroSection() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Link
-              href="/file-upload"
+            <StartReconciliationButton
               aria-label="Start your free reconciliation trial"
               className="bg-[#297B65] py-3 px-6 rounded-md font-semibold inline-flex justify-center items-center min-h-[48px] w-full sm:w-auto text-base text-white hover:bg-[#297B65]/90 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#297B65] focus:outline-none transition-colors"
-            >
-              Start Reconciliation
-            </Link>
+            />
           </motion.div>
         </motion.div>
 

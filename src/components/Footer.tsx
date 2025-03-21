@@ -70,21 +70,21 @@ const Footer = () => {
               aria-label="Social Media Links"
             >
               <Link
-                href="https://www.instagram.com/reconxi02/?igsh=YTh5aWx6Y2c2dW0w#"
+                href="https://www.instagram.com/reconxihq"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                 aria-label="Instagram"
               >
                 <InstagramIcon className="text-inherit w-5 h-5" />
               </Link>
               <Link
-                href="https://www.facebook.com/profile.php?id=61573471907361&mibextid=rS40aB7S9Ucbxw6v"
+                href="www.fb.com/reconxihq"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                 aria-label="Facebook"
               >
                 <FacebookIcon className="text-inherit w-5 h-5" />
               </Link>
               <Link
-                href="https://www.linkedin.com/in/recon-xi-b06835354"
+                href="https://www.linkedin.com/in/the-reconxi"
                 className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
                 aria-label="Linkedin"
               >

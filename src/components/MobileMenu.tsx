@@ -31,7 +31,7 @@ const MobileMenu = ({
     onClose();
   };
 
-  const {user} = useAuth()
+  const { user } = useAuth();
 
   return (
     <div
@@ -172,24 +172,26 @@ const MobileMenu = ({
             </Link>
           </nav>
 
-          {!user && <div className="flex items-center gap-4 w-full">
-            <button
-              type="button"
-              onClick={onLogin}
-              className="w-full max-w-[280px] h-[44px] border-2 border-[#EAEFED] text-[#EAEFED] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/10 cursor-pointer"
-              aria-label="Login"
-            >
-              Login
-            </button>
-            <button
-              type="button"
-              onClick={onSignup}
-              className="w-full max-w-[280px] h-[44px] bg-white text-[#2E604A] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
-              aria-label="Sign up"
-            >
-              Sign up
-            </button>
-          </div>}
+          {!user && (
+            <div className="flex items-center gap-4 w-full">
+              <button
+                type="button"
+                onClick={onLogin}
+                className="w-full max-w-[280px] h-[44px] border-2 border-[#EAEFED] text-[#EAEFED] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/10 hover:scale-105 transition-all duration-300 cursor-pointer"
+                aria-label="Login"
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                onClick={onSignup}
+                className="w-full max-w-[280px] h-[44px] bg-white text-[#2E604A] rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:scale-105 transition-all duration-300 cursor-pointer"
+                aria-label="Sign up"
+              >
+                Sign up
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

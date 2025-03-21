@@ -13,8 +13,8 @@ import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 interface PlanMap {
   [key: string]: number;
   Basic: number;
-  "Starter Plan": number;
-  "Business Plan": number;
+  Starter: number;
+  Business: number;
 }
 
 export default function ManagePlanPage() {
@@ -28,8 +28,8 @@ export default function ManagePlanPage() {
     if (user?.payment_plan?.plan) {
       const planMap: PlanMap = {
         Basic: 1,
-        "Starter Plan": 2,
-        "Business Plan": 3,
+        Starter: 2,
+        Business: 3,
       };
 
       const currentPlan = user.payment_plan.plan;
@@ -56,7 +56,7 @@ export default function ManagePlanPage() {
       id: 2,
       name: "Starter Plan",
       price: "10",
-      link: "https://buy.stripe.com/00g9Ez9c42XW9mo14q",
+      link: "https://buy.stripe.com/test_9AQ28ucir1v5emAaEF",
       features: [
         "Reconcile up to 20 reconciliations/month",
         "Basic AI matching and reconciliation",
@@ -89,14 +89,14 @@ export default function ManagePlanPage() {
             <CircleCheck
               className={cn(
                 "w-5 h-5",
-                isActive ? "text-white" : "text-[#39B057]"
+                isActive ? "text-white" : "text-[#39B057]",
               )}
             />
           </span>
           <span
             className={cn(
               "font-[400] text-[13px] leading-[150%] font-inter",
-              isActive ? "text-white" : "text-[#333333]"
+              isActive ? "text-white" : "text-[#333333]",
             )}
           >
             {feature}
@@ -153,7 +153,7 @@ export default function ManagePlanPage() {
                     ? "bg-[#2E604A] scale-105"
                     : "border-2 border-[#38B43C] hover:scale-105",
                   !isCurrentPlan && activeCard !== null && "opacity-50",
-                  isHovered && !isCurrentPlan && "opacity-100"
+                  isHovered && !isCurrentPlan && "opacity-100",
                 )}
                 onMouseEnter={() => setHoveredCard(plan.id)}
                 onMouseLeave={() => setHoveredCard(null)}
@@ -164,7 +164,7 @@ export default function ManagePlanPage() {
                   <h3
                     className={cn(
                       "font-[500] text-[16px] leading-[100%] font-inter",
-                      activeCard === plan.id ? "text-white" : "text-black"
+                      activeCard === plan.id ? "text-white" : "text-black",
                     )}
                   >
                     {plan.name}
@@ -175,7 +175,7 @@ export default function ManagePlanPage() {
                   <p
                     className={cn(
                       "font-[600] text-[32px] leading-[100%]",
-                      activeCard === plan.id ? "text-white" : "text-black"
+                      activeCard === plan.id ? "text-white" : "text-black",
                     )}
                   >
                     <span className="text-2xl">$</span>
@@ -197,7 +197,7 @@ export default function ManagePlanPage() {
                         "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",
                         isHovered
                           ? "bg-[#eaf5f1] text-[#2A5743] border-[#2E604A]"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]"
+                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]",
                       )}
                     >
                       Choose Plan
