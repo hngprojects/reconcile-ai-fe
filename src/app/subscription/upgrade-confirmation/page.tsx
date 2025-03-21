@@ -15,9 +15,9 @@ export default function UpgradeConfirmationPage() {
             <div className="max-w-lg w-[90%] mx-auto bg-white shadow-lg rounded-lg p-6 text-center flex flex-col items-center space-y-4">
                 <Check className="w-12 h-12 mx-auto text-[#096012] border-1 borde-solid bg-[#E7F7E9] border-[#91DA98] rounded-full outline-2 ouline-solid outline-[#B5E6BA] p-2" />
                 <div>
-                    <h2 className="text-xl font-semibold mt-4">Success! You've Upgraded Your Plan!</h2>
+                    <h2 className="text-xl font-semibold mt-4">Success You&apos;ve Upgraded Your Plan</h2>
                     <p className="text-[#64748B] mt-2">
-                    Congratulations! You've successfully upgraded to the Starter plan. This means you now have access to:
+                    Congratulations You&apos;ve successfully upgraded to the Starter plan. This means you now have access to:
                     </p>
                     <div className="flex justify-center items-center">    
                         <ul className="mt-4 text-left space-y-2 text-[#64748B]">
