@@ -164,7 +164,7 @@ export default function DesktopView() {
       <PaginationControls />
 
       {/* Conditionally render unlink modal based on plan */}
-      {hasPlanAccess("unlink") && (
+      {//hasPlanAccess("unlink") && (
         <UnlinkModal
           isOpen={showUnlinkModal}
           isLoading={isLoading}
@@ -176,12 +176,13 @@ export default function DesktopView() {
             if (!selectedRow) return;
 
             if (selectedRow.statements && selectedRow.ledgers) {
-              await onUnlink(selectedRow.statements, selectedRow.ledgers);
+              await onUnlink(selectedRow.statements.map(stat => stat.bank_txn), selectedRow.ledgers.map(ledg => ledg.ledger_txn));
               setSelectedRow(null);
             }
           }}
         />
-      )}
+      //)
+      }
     </div>
   );
 }

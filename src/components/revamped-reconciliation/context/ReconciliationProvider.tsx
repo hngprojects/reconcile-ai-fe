@@ -1,9 +1,6 @@
 "use client";
 
 import { useAuth } from "@/src/components/context/AuthContext";
-import { fetchReconciliation, updateReconciliation } from "@/src/lib/api";
-import { ManualRequestBody } from "@/src/types/reconciliation";
-import { ColumnFiltersState } from "@tanstack/react-table";
 import { usePathname } from "next/navigation";
 import React, {
   createContext,
@@ -13,15 +10,16 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { toast } from "sonner";
-import { transformReconciliationData } from "../helpers/transformReconciliationData";
+import { ColumnFiltersState } from "@tanstack/react-table";
 import {
-  FrontendTransaction,
-  LedgerWithScore,
   ReconciliationItem,
   ReconciliationResponse,
-  StatementWithScore,
+  FrontendTransaction,
 } from "../types/frontendResponseTypes";
+import { updateReconciliation, fetchReconciliation } from "@/src/lib/api";
+import { ManualRequestBody } from "@/src/types/reconciliation";
+import { toast } from "sonner";
+import { transformReconciliationData } from "../helpers/transformReconciliationData";
 
 interface ReconciliationContextProps {
   data: ReconciliationResponse;
@@ -45,8 +43,8 @@ interface ReconciliationContextProps {
 
   // Actions
   handleMatch: (
-    bankTransaction: StatementWithScore[],
-    ledgerTransaction: LedgerWithScore[]
+    bankTransaction: FrontendTransaction[],
+    ledgerTransaction: FrontendTransaction[],
   ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
@@ -55,8 +53,8 @@ interface ReconciliationContextProps {
   onRowsPerPageChange: (size: number) => void;
   handleSearch: (query: string) => void;
   handleUnlink: (
-    bankTransaction: StatementWithScore[],
-    ledgerTransaction: LedgerWithScore[]
+    bankTransaction: FrontendTransaction[],
+    ledgerTransaction: FrontendTransaction[],
   ) => Promise<void>;
 
   // Modals
@@ -149,20 +147,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const handleSearch = (query: string) => setSearchQuery(query);
 
   const handleMatch = async (
-    bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[]
+    bankTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[],
   ) => {
     const body = {
-      ledgers: ledgerTransactions.map((ledgerTransaction) => ({
-        Amount: ledgerTransaction.ledger_txn.amount,
-        Date: ledgerTransaction.ledger_txn.date,
-        Person: ledgerTransaction.ledger_txn.description,
-      })),
-      statements: bankTransactions.map((bankTransaction) => ({
-        Amount: bankTransaction.bank_txn.amount,
-        Date: bankTransaction.bank_txn.date,
-        Person: bankTransaction.bank_txn.description,
-      })),
+      ledgers: ledgerTransactions.map((ledgerTransaction) => ledgerTransaction.id),
+      statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
       action: "match",
     };
 
@@ -196,21 +186,13 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   };
 
   const handleUnlink = async (
-    bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[]
+    bankTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[],
   ) => {
     const body = {
-      ledgers: ledgerTransactions.map((ledgerTransaction) => ({
-        Amount: ledgerTransaction.ledger_txn.amount,
-        Date: ledgerTransaction.ledger_txn.date,
-        Person: ledgerTransaction.ledger_txn.description,
-      })),
-      statements: bankTransactions.map((bankTransaction) => ({
-        Amount: bankTransaction.bank_txn.amount,
-        Date: bankTransaction.bank_txn.date,
-        Person: bankTransaction.bank_txn.description,
-      })),
-      action: "match",
+      ledgers: ledgerTransactions.map((ledgerTransaction) => ledgerTransaction.id),
+      statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
+      action: "unmatch",
     };
 
     setIsLoading(true);
@@ -220,8 +202,9 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         reconciliationId,
         body as ManualRequestBody
       );
+      console.log(response);
 
-      if (response.status !== "success") {
+      if (response.status != "success") {
         toast.error("Failed to unlink transactions");
         return;
       }

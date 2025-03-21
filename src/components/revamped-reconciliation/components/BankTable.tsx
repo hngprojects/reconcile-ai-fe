@@ -316,7 +316,7 @@ export function BankTable() {
                           hidePlaceholderWhenSelected
                           onConfirm={async (option) => {
                             const selectedOption: FrontendTransaction = {
-                              id: `ledger_txn_${Date.now()}`,
+                              id: option.id,
                               description: option.description,
                               date: option.date,
                               amount: option.amount,
@@ -328,13 +328,8 @@ export function BankTable() {
                               reconciledDataRow.ledgers[0]?.ledger_txn
                             ) {
                               onMatch(
-                                [
-                                  {
-                                    bank_txn: { ...selectedOption },
-                                    score: "0",
-                                  },
-                                ],
-                                reconciledDataRow.ledgers
+                                [selectedOption],
+                                reconciledDataRow.ledgers.map(ledg => ledg.ledger_txn)
                               );
                             }
                           }}
