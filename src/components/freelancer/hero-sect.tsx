@@ -3,7 +3,6 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import StartReconciliationButton from "../buttons/StartReconciliationButton";
 
 export default function HeroSection() {
   return (
@@ -32,16 +31,6 @@ export default function HeroSection() {
             Get accurate bank reconciliation statements in seconds—no
             spreadsheets, no stress!{" "}
           </p>
-          <motion.div
-            className="flex flex-col items-center justify-center w-full gap-4 md:gap-6 my-4 md:my-6 sm:flex-row"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <StartReconciliationButton
-              aria-label="Start your free reconciliation trial"
-              className="bg-[#297B65] py-3 px-6 rounded-md font-semibold inline-flex justify-center items-center min-h-[48px] w-full sm:w-auto text-base text-white hover:bg-[#297B65]/90 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#297B65] focus:outline-none transition-colors"
-            />
-          </motion.div>
         </motion.div>
 
         <motion.div
