@@ -40,7 +40,7 @@ const Nav = () => {
             className={cn(
               "font-medium text-[#333333] relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
               pathname === "/" &&
-                "after:w-full after:bg-[#2E604A] after:h-[2px]",
+                "after:w-full after:bg-[#2E604A] after:h-[2px]"
             )}
             href="/"
           >
@@ -54,7 +54,7 @@ const Nav = () => {
                 <ChevronDown
                   className={cn(
                     "w-4 h-4 transition-transform duration-200",
-                    isOpen && "transform rotate-180",
+                    isOpen && "transform rotate-180"
                   )}
                 />
               </DropdownMenuTrigger>

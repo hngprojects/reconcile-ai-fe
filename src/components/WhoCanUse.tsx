@@ -74,7 +74,7 @@ const WhoCanUse = () => {
                 id == 1 && "rounded-tl-[4rem]",
                 id == 2 && "rounded-tr-[4rem]",
                 id == 3 && "rounded-bl-[4rem]",
-                id == 4 && "rounded-br-[4rem]",
+                id == 4 && "rounded-br-[4rem]"
               )}
             >
               <h2 className="font-bold  md:text-xl">{title}</h2>
