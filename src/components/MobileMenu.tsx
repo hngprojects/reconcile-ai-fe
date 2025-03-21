@@ -121,6 +121,18 @@ const MobileMenu = ({
                       </span>
                     </Link>
                     <Link
+                      href="/freelancer"
+                      className={cn(
+                        "text-xl hover:text-white transition-colors",
+                        pathname === "/freelancer" && "text-white",
+                      )}
+                      onClick={handleLinkClick}
+                    >
+                      <span className="flex gap-1">
+                        <Dot /> Freelancer
+                      </span>
+                    </Link>
+                    <Link
                       href="/school-and-education"
                       className={cn(
                         "text-xl hover:text-white transition-colors",
