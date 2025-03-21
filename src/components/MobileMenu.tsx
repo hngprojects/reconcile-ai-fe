@@ -51,14 +51,14 @@ const MobileMenu = ({
           className="self-end p-2 text-white hover:bg-gray-100 rounded-full cursor-pointer"
           aria-label="Close mobile menu"
         >
-          <X className="h-12 w-12" />
+          <X className="h-8 w-8" />
         </button>
 
         <div className="flex flex-col justify-between flex-1 gap-4">
           <nav className="gap-6 flex flex-col">
             <Link
               className={cn(
-                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
+                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
                 pathname === "/" && "text-white after:w-full",
               )}
               href="/"
@@ -138,7 +138,7 @@ const MobileMenu = ({
 
             <Link
               className={cn(
-                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
+                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
                 pathname === "/blog" && "text-white after:w-full",
               )}
               href="/blog"
@@ -149,7 +149,7 @@ const MobileMenu = ({
 
             <Link
               className={cn(
-                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
+                "font-medium text-2xl text-white/80 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-white/80 hover:after:w-full after:transition-all after:duration-300",
                 pathname === "/pricing" && "text-white after:w-full",
               )}
               href="/pricing"
