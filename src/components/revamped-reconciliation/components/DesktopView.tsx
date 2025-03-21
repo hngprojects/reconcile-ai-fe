@@ -11,6 +11,7 @@ import { SuccessToast } from "../../reconciliation/SuccessToast";
 import UnlinkModal from "../../modal/UnlinkModal";
 import { useReconciliation } from "../context/ReconciliationProvider";
 import { exportReconciliation } from "@/src/lib/api";
+import Link from "next/link";
 
 export default function DesktopView() {
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -72,7 +73,7 @@ export default function DesktopView() {
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      const reconciliationId = localStorage.getItem('reconciliation_id');
+      const reconciliationId = localStorage.getItem("reconciliation_id");
 
       if (!reconciliationId) {
         throw new Error("No reconciliation id found");
@@ -112,25 +113,33 @@ export default function DesktopView() {
       {/* header section with conditional export button */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
-        {hasPlanAccess("export") && (
-          <button
-            type="button"
-            className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
-            onClick={handleExport}
-            disabled={isExporting}
+        <div className="flex gap-4">
+          <Link
+            className=" h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+            href="/file-upload"
           >
-            {isExporting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
-              </>
-            ) : (
-              <>
-                <DownloadCloudIcon className="mr-2 w-5 h-5" />
-                Export
-              </>
-            )}
-          </button>)
-          }
+            Re-upload
+          </Link>
+          {hasPlanAccess("export") && (
+            <button
+              type="button"
+              className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+              onClick={handleExport}
+              disabled={isExporting}
+            >
+              {isExporting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Exporting...
+                </>
+              ) : (
+                <>
+                  <DownloadCloudIcon className="mr-2 w-5 h-5" />
+                  Export
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2">
