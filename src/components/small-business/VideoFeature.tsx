@@ -31,7 +31,7 @@ const VideoFeature = () => {
               viewport={{ once: true }}
               className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-8 max-w-[768px]"
             >
-              Let's show you the ReconXi way!
+              Let&apos;s show you the ReconXi way!
             </motion.h2>
           </motion.div>
 
@@ -48,7 +48,7 @@ const VideoFeature = () => {
               controls
               preload="metadata"
               playsInline
-              // poster="/assets/images/video-thumbnail.png"
+              poster="/assets/images/video-thumbnail.png"
             >
               <source src="/assets/video/smeVideo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
