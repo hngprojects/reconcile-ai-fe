@@ -14,7 +14,7 @@ export default function StartReconcile() {
       aria-labelledby="ready-section-title"
     >
       <Container>
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
+        <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
