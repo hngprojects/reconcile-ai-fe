@@ -7,12 +7,12 @@ export type FrontendTransaction = {
 
 export type StatementWithScore = {
   bank_txn: FrontendTransaction;
-  match_score: string;
+  score: string;
 };
 
 export type LedgerWithScore = {
   ledger_txn: FrontendTransaction;
-  match_score: string;
+  score: string;
 };
 
 export type ReconciliationItem = {

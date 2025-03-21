@@ -45,7 +45,7 @@ export function LedgerTable() {
     pagination,
     setPagination,
     paginatedData,
-    unmatchedBankTransactions,
+    unmatchedLedgerTransactions,
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
@@ -55,7 +55,7 @@ export function LedgerTable() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
-    unmatchedBankTransactions
+    unmatchedLedgerTransactions
   );
   const rowHeights = useRowHeights(paginatedData);
 
@@ -328,7 +328,7 @@ export function LedgerTable() {
                               onMatch(reconciledDataRow.statements, [
                                 {
                                   ledger_txn: { ...selectedOption },
-                                  match_score: "0",
+                                  score: "0",
                                 },
                               ]);
                             }
@@ -398,7 +398,7 @@ export function LedgerTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransaction}
-        potentialMatches={unmatchedBankTransactions}
+        potentialMatches={unmatchedLedgerTransactions}
         onMatch={onMatch}
       />
     </>
