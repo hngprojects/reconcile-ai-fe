@@ -10,7 +10,7 @@ import {
   SetStateAction,
 } from "react";
 import { useRouter } from "next/navigation";
-import { User, Response } from "@/src/types/auth";
+import { User } from "@/src/types/auth";
 import { toast } from "sonner";
 import {
   LOGOUT_API_URL} from "@/src/lib/apiEndpoints";
@@ -24,7 +24,6 @@ interface AuthContextType {
   isLoading: boolean;
   signInWithGoogle: () => void;
   logout: () => void;
-  getUserDetails: (token: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

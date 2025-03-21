@@ -54,7 +54,7 @@ export default function Features1() {
               <p className="font-inter text-base sm:text-lg md:text-[18px] leading-[1.5] md:leading-[28px] font-normal text-[#475467]">
                 As a startup or small business owner, tracking transactions and
                 balancing books can be time-consuming and prone to errors.
-                Spreadsheets and expensive software aren't the answer.
+                Spreadsheets and expensive software are not the answer.
               </p>
 
               <p className="font-inter text-base sm:text-lg md:text-[18px] leading-[1.5] md:leading-[28px] font-bold text-[#475467]">
