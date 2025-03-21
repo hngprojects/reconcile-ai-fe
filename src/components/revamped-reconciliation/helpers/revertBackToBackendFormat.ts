@@ -26,7 +26,7 @@ export const revertToBackendFormat = (
             Description: stmt.bank_txn.description,
             Amount: String(stmt.bank_txn.amount), // Ensure amount is a string
           },
-          score: stmt.match_score,
+          score: stmt.score,
         })) || [];
 
       const ledgers: LedgerMatch[] =
@@ -36,7 +36,7 @@ export const revertToBackendFormat = (
             Description: ldgr.ledger_txn.description,
             Amount: String(ldgr.ledger_txn.amount), // Ensure amount is a string
           },
-          score: ldgr.match_score,
+          score: ldgr.score,
         })) || [];
 
       matches.push({

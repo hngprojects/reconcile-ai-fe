@@ -3,8 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import WalkthroughForm from "./EnterpriseForm";
-
+import DemoForm from "@/src/app/demo/demo-form";
 
 export default function StartReconcile() {
   return (
@@ -44,7 +43,6 @@ export default function StartReconcile() {
               >
                 Get a Personalized Walkthrough
               </h2>
-             
             </div>
 
             <div
@@ -57,8 +55,7 @@ export default function StartReconcile() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <WalkthroughForm/>
-
+                <DemoForm buttonText="Get your Demo" />
               </motion.div>
             </div>
           </motion.div>

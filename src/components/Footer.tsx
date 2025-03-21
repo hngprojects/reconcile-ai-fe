@@ -17,7 +17,7 @@ const Footer = () => {
       link: "/contact",
     },
     {
-      name: "Features list",
+      name: "Features List",
       link: "/features",
     },
     {
@@ -47,7 +47,7 @@ const Footer = () => {
       link: "/demo",
     },
     {
-      name: "Help centre",
+      name: "Help Centre",
       link: "/customer-support-form",
     },
   ];

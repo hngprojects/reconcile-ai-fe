@@ -208,7 +208,7 @@ export function MobileView() {
 
         return (
           <div
-            key={index}
+            key={`transaction-${item.reconciliation_pair_id || index}`}
             className={cn(
               "rounded-lg border shadow-sm",
               item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
@@ -227,12 +227,15 @@ export function MobileView() {
               </div>
             )}
 
-            <div className="p-4 space-y-4" key={item.reconciliation_pair_id}>
+            <div className="p-4 space-y-4">
               {/* Bank Statement */}
-              {item.statements?.map((stmt) => {
-                return (
+              {item.statements?.map(
+                (stmt) =>
                   stmt.bank_txn !== null && (
-                    <div className="space-y-2" key={stmt.bank_txn.id}>
+                    <div
+                      className="space-y-2"
+                      key={`bank-stmt-${stmt.bank_txn.id}`}
+                    >
                       <div className="flex justify-between">
                         <div className="flex flex-col">
                           <div className="text-sm font-semibold text-gray-900">
@@ -274,15 +277,16 @@ export function MobileView() {
                       )}
                     </div>
                   )
-                );
-              })}
-              {}
+              )}
 
               {/* Company Ledger - Only show if matched */}
-              {item.ledgers?.map((ldgr) => {
-                return (
+              {item.ledgers?.map(
+                (ldgr) =>
                   ldgr.ledger_txn !== null && (
-                    <div className="flex justify-between">
+                    <div
+                      className="flex justify-between"
+                      key={`ledger-txn-${ldgr.ledger_txn.id}`}
+                    >
                       <div className="flex flex-col">
                         <div className="text-sm font-semibold text-gray-900">
                           Company Ledger
@@ -330,8 +334,7 @@ export function MobileView() {
                       </div>
                     </div>
                   )
-                );
-              })}
+              )}
 
               {/* Show Unmatched status if not matched */}
               {!item.matched && (
@@ -364,7 +367,7 @@ export function MobileView() {
                               [
                                 {
                                   bank_txn: { ...selectedOption },
-                                  match_score: "0",
+                                  score: "0",
                                 },
                               ],
                               item.ledgers
@@ -375,7 +378,7 @@ export function MobileView() {
                             onMatch(item.statements, [
                               {
                                 ledger_txn: { ...selectedOption },
-                                match_score: "0",
+                                score: "0",
                               },
                             ]);
                           }
