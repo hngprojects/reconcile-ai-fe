@@ -18,13 +18,21 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # Debug step to check if metrics were successfully collected
+      - name: Debug Collected Metrics
+        run: |
+          echo "Deployment Frequency: ${{ steps.collect-dora-metrics.outputs.deployment_frequency }}"
+          echo "Lead Time: ${{ steps.collect-dora-metrics.outputs.lead_time_for_changes }}"
+          echo "Change Failure Rate: ${{ steps.collect-dora-metrics.outputs.change_failure_rate }}"
+          echo "MTTR: ${{ steps.collect-dora-metrics.outputs.mean_time_to_recovery }}"
+
       - name: Push DORA Metrics to Prometheus
         uses: prom/pushgateway-action@v1
         with:
           job_name: "github_dora_metrics"
           url: "http://3.73.6.29:9091"
           metrics: |
-            deployment_frequency=${{ steps.collect-dora-metrics.outputs.deployment_frequency }}
-            lead_time=${{ steps.collect-dora-metrics.outputs.lead_time_for_changes }}
-            change_failure_rate=${{ steps.collect-dora-metrics.outputs.change_failure_rate }}
-            mttr=${{ steps.collect-dora-metrics.outputs.mean_time_to_recovery }}
+            deployment_frequency ${{ steps.collect-dora-metrics.outputs.deployment_frequency }}
+            lead_time ${{ steps.collect-dora-metrics.outputs.lead_time_for_changes }}
+            change_failure_rate ${{ steps.collect-dora-metrics.outputs.change_failure_rate }}
+            mttr ${{ steps.collect-dora-metrics.outputs.mean_time_to_recovery }}
