@@ -1,0 +1,30 @@
+name: Collect DORA Metrics
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  collect-dora-metrics:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Collect DORA Metrics
+        id: collect-dora-metrics  # Required to reference outputs
+        uses: DeveloperMetrics/devops-metrics-from-github@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push DORA Metrics to Prometheus
+        uses: prom/pushgateway-action@v1
+        with:
+          job_name: "github_dora_metrics"
+          url: "http://3.73.6.29:9091"
+          metrics: |
+            deployment_frequency=${{ steps.collect-dora-metrics.outputs.deployment_frequency }}
+            lead_time=${{ steps.collect-dora-metrics.outputs.lead_time_for_changes }}
+            change_failure_rate=${{ steps.collect-dora-metrics.outputs.change_failure_rate }}
+            mttr=${{ steps.collect-dora-metrics.outputs.mean_time_to_recovery }}
