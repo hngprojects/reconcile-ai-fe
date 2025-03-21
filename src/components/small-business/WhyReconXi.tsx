@@ -7,24 +7,24 @@ import { Check } from "lucide-react";
 
 const features = [
   {
-    title: "Completely Free to Start",
+    title: "Automated & Accurate",
     description:
-      "Get started with free bank reconciliation software, no upfront costs.",
+      "ReconXi leverages AI to automatically match transactions from your bank statements to your accounting records, ensuring accuracy and minimizing human error.",
   },
   {
-    title: "No More Spreadsheets",
+    title: "Save Time & Reduce Stress",
     description:
-      "AI-driven automated reconciliation software simplifies your workflow.",
+      "Stop wasting hours on manual reconciliation. With ReconXi’s fast transaction matching, you can focus more on growing your business and less on balancing the books.",
   },
   {
-    title: "Easy for Any Business",
+    title: "Affordable & Scalable",
     description:
-      "Whether you're a freelancer, startup, or small business, enjoy free online bank reconciliation with ease.",
+      "Whether you're a small startup or a growing SME, ReconXi adapts to your financial needs. Start with a free trial and easily upgrade as your business expands.",
   },
-  {
-    title: "Scales as You Grow",
-    description: "Upgrade to affordable plans as your business needs increase.",
-  },
+  // {
+  //   title: "Scales as You Grow",
+  //   description: "Upgrade to affordable plans as your business needs increase.",
+  // },
 ];
 
 export default function WhyReconXi() {
@@ -41,7 +41,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-            Why Startups and SMEs Need ReconXi
+Why Choose ReconXi for Transaction Matching?
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
