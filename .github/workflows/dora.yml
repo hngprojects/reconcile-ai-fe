@@ -4,7 +4,7 @@ on:
     branches:
       - main
   workflow_run:
-    workflows: ["cd.yml"]
+    workflows: ["ci.yml", "cd.yml"]
     types:
       - completed
 jobs:
@@ -24,3 +24,4 @@ jobs:
         env:
           PUSHGATEWAY_URL: ${{ secrets.PUSHGATEWAY_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
