@@ -1,4 +1,4 @@
-import { ChevronUp, ChevronDown, CreditCard } from "lucide-react";
+import { ChevronUp, ChevronDown, CreditCard, Settings } from "lucide-react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import {
   DropdownMenu,
@@ -53,6 +53,15 @@ export default function UserDetails() {
               <p>Manage Plan</p>
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuItem className="hover:bg-[#eaf5f1] cursor-pointer px-4 py-3 transition-colors">
+            <Link
+              href="/dashboard"
+              className="flex gap-3 items-center text-[#101828] w-full"
+            >
+              <Settings className="w-4 h-4" />
+              <p>Manage Profile</p>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem className="hover:bg-red-100 cursor-pointer px-4 py-3 transition-colors">
             <div
               className="text-red-600 flex gap-2 items-center w-full"
@@ -64,6 +73,7 @@ export default function UserDetails() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
     </div>
   );
 }
