@@ -62,7 +62,7 @@ export default function StartReconcile() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="w-full"
               >
-                <DemoForm buttonText="Start your free trial Now" />
+                <DemoForm buttonText="Get your Demo" />
               </motion.div>
             </div>
           </motion.div>
