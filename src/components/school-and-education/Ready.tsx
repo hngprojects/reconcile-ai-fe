@@ -24,7 +24,7 @@ export default function StartReconcile() {
           >
             <div className="w-full">
               <Image
-                src="/assets/images/ready-smallbusiness.svg"
+                src="/assets/images/education-contact.svg"
                 alt="Visual representation of ReconXi's reconciliation process"
                 width={536}
                 height={410}
@@ -63,7 +63,7 @@ export default function StartReconcile() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <DemoForm buttonText="Start your free trial Now" />
+                <DemoForm buttonText="Get your Demo" />
               </motion.div>
             </div>
           </motion.div>

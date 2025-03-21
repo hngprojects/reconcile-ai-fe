@@ -20,15 +20,15 @@ export default function EnterpriseHero() {
             transition={{ duration: 0.8 }}
             className="flex-1 max-w-[640px]"
           >
-            <div className="space-y-6 md:space-y-8">
+            <div className="space-y-6 md:space-y-8 w-full flex items-center lg:items-start flex-col">
               <h1
                 id="hero-heading"
-                className="font-inter text-[32px] sm:text-[45px] md:text-[48px] leading-[1.2] tracking-[-0.02em] font-semibold text-[#101828]"
+                className="font-inter text-[32px] text-center lg:text-left sm:text-[45px] md:text-[48px] leading-[1.2] tracking-[-0.02em] font-semibold text-[#101828]"
               >
                 Enterprise-Grade Reconciliation for Precise Financial Control
               </h1>
 
-              <p className="font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
+              <p className="font-inter text-base  text-center lg:text-left sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
                 Automate reconciliation, eliminate compliance risks, and achieve
                 unmatched financial accuracy.
               </p>
@@ -36,11 +36,12 @@ export default function EnterpriseHero() {
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-fit"
+                className="w-fit mx-auto lg:mx-0"
               >
                 <Link
                   href="/file-upload"
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-[#2E604A] rounded-lg hover:bg-[#2E604A]/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E604A]"
+                  className="inline-flex items-center mx-auto
+                   justify-center w-full sm:w-auto px-8 py-4 text-base font-semibold text-white bg-[#2E604A] rounded-lg hover:bg-[#2E604A]/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2E604A]"
                   aria-label="Start enterprise reconciliation"
                 >
                   Start Reconciliation

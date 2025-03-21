@@ -3,9 +3,8 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+import ContactForm from "./SMEForm";
 
-const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
 
 export default function StartReconcile() {
   return (
@@ -23,7 +22,7 @@ export default function StartReconcile() {
             className="flex-1 w-full min-w-[300px]"
           >
             <Image
-              src="/assets/images/ready-smallbusiness.svg"
+              src="/assets/images/smallbusiness-ready.svg"
               alt="Visual representation of ReconXi's reconciliation process"
               width={680}
               height={850}
@@ -62,7 +61,8 @@ export default function StartReconcile() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="w-full"
               >
-                <DemoForm buttonText="Start your free trial Now" />
+                <ContactForm/>
+
               </motion.div>
             </div>
           </motion.div>

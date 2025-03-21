@@ -3,9 +3,8 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+import WalkthroughForm from "./EnterpriseForm";
 
-const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
 
 export default function StartReconcile() {
   return (
@@ -23,7 +22,7 @@ export default function StartReconcile() {
             className="flex-1 w-full min-w-[300px]"
           >
             <Image
-              src="/assets/images/ready-smallbusiness.svg"
+              src="/assets/images/ready-enterprise.svg"
               alt="Visual representation of ReconXi's reconciliation process"
               width={680}
               height={850}
@@ -43,12 +42,9 @@ export default function StartReconcile() {
                 id="ready-section-title"
                 className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
               >
-                Ready to Reconcile Smarter?
+                Get a Personalized Walkthrough
               </h2>
-              <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Join thousands of small businesses using ReconXi&apos;s free
-                bank reconciliation software to simplify accounting.
-              </p>
+             
             </div>
 
             <div
@@ -61,7 +57,8 @@ export default function StartReconcile() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
               >
-                <DemoForm buttonText="Start your free trial Now" />
+                <WalkthroughForm/>
+
               </motion.div>
             </div>
           </motion.div>

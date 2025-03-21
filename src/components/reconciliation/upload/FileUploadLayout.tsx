@@ -58,8 +58,8 @@ export default function FileUploadLayout({
         }
       }
 
-      // Show processing toast
-      const toastId = toast.info(
+      // Show single processing toast
+      const toastId = toast.loading(
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold">Processing Reconciliation</h2>
           <p className="text-sm text-gray-600">
@@ -84,8 +84,11 @@ export default function FileUploadLayout({
       }
 
       if (result.status === "success") {
-        toast.dismiss(toastId);
-        toast.success("Reconciliation started successfully");
+        // Save reconciliation ID to localStorage
+        localStorage.setItem(
+          "reconciliation_id",
+          result.data.reconciliation_id,
+        );
         setBankFiles([]);
         setLedgerFiles([]);
       }
