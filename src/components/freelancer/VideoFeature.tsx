@@ -48,10 +48,9 @@ const VideoFeature = () => {
               controls
               preload="metadata"
               playsInline
-            //   poster="/assets/images/video-thumbnail.png"
+              poster="/assets/images/video-thumbnail.png"
             >
               <source src="/assets/video/freelan.mp4" type="video/mp4" />
-           
               Your browser does not support the video tag.
             </video>
           </motion.div>

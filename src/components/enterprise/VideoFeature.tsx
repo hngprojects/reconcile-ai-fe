@@ -48,7 +48,7 @@ const VideoFeature = () => {
               controls
               preload="metadata"
               playsInline
-              // poster="/assets/images/video-thumbnail.png"
+              poster="/assets/images/video-thumbnail.png"
             >
               <source
                 src="/assets/video/enterpriseVideo.mp4"
