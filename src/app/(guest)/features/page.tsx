@@ -37,8 +37,7 @@ const Features = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Automate bank reconciliation tasks, enhance accuracy and gain
-            real-time insights to keep your finances in perfect balance.
+            Automate bank reconciliation tasks and enhance accuracy to keep your finances in perfect balance.
           </motion.p>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-[27px] md:gap-[32px] justify-center">

@@ -26,7 +26,7 @@ export const revertToBackendFormat = (
           Description: row.ledger_txn.description,
           Amount: row.ledger_txn.amount,
         },
-        match_score: 100, // Defaulting to 100, can be adjusted based on logic
+        score: 100, // Defaulting to 100, can be adjusted based on logic
       });
     } else if (row.bank_txn) {
       // Unmatched bank transaction

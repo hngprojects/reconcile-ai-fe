@@ -45,7 +45,7 @@ export function BankTable() {
     pagination,
     setPagination,
     paginatedData,
-    unmatchedLedgerTransactions,
+    unmatchedBankTransactions,
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
@@ -55,7 +55,7 @@ export function BankTable() {
   const [selectedTransactionRow, setSelectedTransactionRow] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
-    unmatchedLedgerTransactions
+    unmatchedBankTransactions
   );
   const rowHeights = useRowHeights(paginatedData);
 
@@ -331,7 +331,7 @@ export function BankTable() {
                                 [
                                   {
                                     bank_txn: { ...selectedOption },
-                                    match_score: "0",
+                                    score: "0",
                                   },
                                 ],
                                 reconciledDataRow.ledgers
@@ -405,7 +405,7 @@ export function BankTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransactionRow}
-        potentialMatches={unmatchedLedgerTransactions}
+        potentialMatches={unmatchedBankTransactions}
         onMatch={onMatch}
       />
     </>

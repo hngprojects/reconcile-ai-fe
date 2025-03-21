@@ -8,13 +8,13 @@ export interface ReconciliationItem {
   bankStatement: Transaction;
   companyLedger?: Transaction;
   matched: boolean;
-  match_score: number;
+  score: number;
 }
 
 export type Matched = {
   file1_transaction: Transaction;
   file2_transaction: Transaction;
-  match_score: number;
+  score: number;
   status?: string;
 };
 

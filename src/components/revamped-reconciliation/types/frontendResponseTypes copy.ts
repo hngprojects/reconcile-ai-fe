@@ -10,7 +10,7 @@ export type ReconciliationItem = {
   bank_txn: Transaction | null;
   ledger_txn: Transaction | null;
   matched: boolean;
-  match_score: number;
+  score: number;
 };
 
 export type ReconciliationResponse = {

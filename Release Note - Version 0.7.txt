@@ -1,0 +1,43 @@
+Release Note Version 0.7
+Product: AI-Powered Bank Reconciliation 
+Release Notes: Version 0.6
+Release Date: 17-03-2025
+
+Version 0.7: Find and Match Unmatched Records with Date and Amount Range Filter
+
+Epic Title: Enhanced Filtering for Unmatched RecordsRelease Date: [To be filled in]
+
+Overview
+Version 0.7 enhances the reconciliation interface by introducing advanced filtering capabilities for unmatched records. Users can now efficiently search for transactions using date and amount range filters, significantly improving the accuracy and speed of the matching process.
+
+New Features
+Filter by Date Range: Users can specify a start and end date to narrow down unmatched transactions.
+Filter by Amount Range: Users can input minimum and maximum transaction amounts to refine their search.
+Combined Filtering: Users can apply both date and amount filters simultaneously for more precise results.
+User-Friendly Interface: The filtering options are clearly visible and easy to use within the reconciliation module.
+Restricted Access: This feature is available only to authenticated users.
+Real-Time Filtering Results: The system dynamically updates the display, showing only unmatched records that meet the specified criteria.
+Quick Match Selection: Once users identify the correct record, they can manually match transactions and update the reconciliation status instantly.
+
+User Benefits
+Faster and more efficient transaction matching.
+Reduced manual effort in locating unmatched records.
+Improved reconciliation accuracy.
+
+Limitations
+Filtering is limited to date and amount ranges; additional filter criteria (e.g., transaction type) are not yet available.
+Users still need to manually review and match transactions after filtering.
+This Update is only available for Authenticated Users.
+How to Use
+Log in to the system (authentication required).
+Navigate to the reconciliation page.
+Use the filtering panel to set a date range and/or amount range.
+Apply the filters to view the refined list of unmatched transactions.
+Select and confirm the correct match.
+Receive instant confirmation of the updated reconciliation status.
+What's Coming Soon?
+Version 0.8: Improved Reconciliation Accuracy. 
+
+Stay tuned for upcoming versions with even more improvements!
+Got feedback? Let us know at support@reconxi.com.
+Thanks for using ReconXi! the simplest way to reconcile with confidence!
