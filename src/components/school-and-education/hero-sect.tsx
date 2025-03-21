@@ -21,13 +21,11 @@ export default function HeroSection() {
             id="hero-title"
             className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
           >
-            Simplify School Financial Management with Automated Reconciliation
-          </h1>
+Track and Match School Fee Payments       
+   </h1>
 
           <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
-            Streamline the reconciliation of diverse funding sources; grants,
-            tuition, and donations, with a cost-effective solution tailored for
-            educational institutions.
+          Reconciling fee payments can be tedious and error-prone, but with ReconXi, schools can easily automate the entire process. Match student fee payments to their records quickly and accurately, without the manual hassle.
           </p>
         </motion.div>
 
@@ -37,7 +35,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mt-8 md:mt-16 w-full max-w-[1200px] mx-auto"
         >
-          <div className="relative w-full aspect-[2/1]">
+          {/* <div className="relative w-full aspect-[2/1]">
             <Image
               src="/assets/images/education.svg"
               alt="Demonstration of ReconXi's reconciliation software interface"
@@ -46,7 +44,7 @@ export default function HeroSection() {
               sizes="(max-width: 1200px) 100vw, 1200px"
               priority
             />
-          </div>
+          </div> */}
         </motion.div>
       </Container>
     </section>

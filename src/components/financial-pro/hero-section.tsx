@@ -24,12 +24,11 @@ export default function FinancialHero() {
                 id="hero-heading"
                 className="font-inter text-[32px] text-center lg:text-left sm:text-[45px] md:text-[48px] leading-[1.2] tracking-[-0.02em] font-semibold text-[#101828]"
               >
-                Best Account Reconciliation Software
+Reconcile Bank Accounts with AI 
               </h1>
 
               <p className="font-inter text-base text-center lg:text-left sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                The best financial platform to automate transactions, spot
-                errors, and keep your books balanced.
+              As an accountant, managing accurate financial records is a must. But reconciling multiple bank statements and transactions manually can be time-consuming and prone to errors. That’s where ReconXi comes in.
               </p>
             </div>
           </motion.div>

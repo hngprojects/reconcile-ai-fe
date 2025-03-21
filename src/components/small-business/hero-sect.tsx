@@ -21,14 +21,11 @@ export default function HeroSection() {
             id="hero-title"
             className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
           >
-            Free and Affordable Reconciliation Software – Fast, Accurate &amp;
-            Hassle-Free
+          Transaction Matching for Startups & SMEs: Simplify Your Financial Reconciliation
           </h1>
 
           <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
-            Get free online bank reconciliation with AI-powered accuracy. Save
-            hours, eliminate errors, and take control of your finances with the
-            best free reconciliation software for startups and small businesses.
+          Reconcile your business’s bank statements and accounting records with ReconXi. Say goodbye to the headache of manual reconciliation and enjoy accurate, fast results every time.
           </p>
         </motion.div>
 
@@ -38,7 +35,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mt-8 md:mt-16 w-full max-w-[1200px] mx-auto"
         >
-          <div className="relative w-full aspect-[2/1]">
+          {/* <div className="relative w-full aspect-[2/1]">
             <Image
               src="/assets/images/smallbusiness-heroImg.svg"
               alt="Demonstration of ReconXi's reconciliation software interface"
@@ -47,7 +44,7 @@ export default function HeroSection() {
               sizes="(max-width: 1200px) 100vw, 1200px"
               priority
             />
-          </div>
+          </div> */}
         </motion.div>
       </Container>
     </section>

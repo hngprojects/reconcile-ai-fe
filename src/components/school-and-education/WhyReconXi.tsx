@@ -7,24 +7,24 @@ import { Check } from "lucide-react";
 
 const features = [
   {
-    title: "Completely Free to Start",
+    title: "Automated Tuition Fee Payment Matching",
     description:
-      "Get started with ReconXi’s free, AI-powered reconciliation tool—no upfront fees.",
+      "Match fee payments to student records. ReconXi automatically matches tution payments, saving you hours of manual work and ensuring that every payment is accounted for.",
   },
   {
-    title: "Reduce Manual Work",
+    title: "Accurate Financial Records",
     description:
-      "Say goodbye to tedious spreadsheets and manual reconciliation. Let AI do the heavy lifting for you.",
+      "With ReconXi, you can trust that your fee records are always up-to-date and precise. Eliminate the risk of discrepancies and ensure smooth financial operations within your school.",
   },
   {
-    title: "Designed for Educational Institutions",
+    title: "Quick and Easy Setup",
     description:
-      "Whether it’s managing student fee payments, payroll for staff, or general accounts, ReconXi’s automated solution streamlines all your financial data.",
+      "Start reconciling fee payments immediately. Simply upload your data and let ReconXi handle the rest. No more spreadsheets, no more errors.",
   },
   {
-    title: "Easily Scalable",
+    title: "Scalable for All School Sizes",
     description:
-      "As your institution grows, ReconXi grows with you—handling increased transactions and complexity as needed.",
+      "Whether you’re a small private school or a large institution, ReconXi grows with you. Reconcile multiple payments at once without the stress and ensure accuracy every time.",
   },
 ];
 

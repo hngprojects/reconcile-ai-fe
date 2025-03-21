@@ -47,12 +47,10 @@ export default function StartReconcile() {
                 id="ready-section-title"
                 className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
               >
-                Ready to Reconcile Smarter?
+              Ready to Simplify Fee Payment Matching?
               </h2>
               <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Join thousands of educational institutions already using
-                ReconXi&apos;s free bank reconciliation software to simplify
-                accounting.
+              Start simplifying your school’s fee payment reconciliation today! Get in touch to find out how ReconXi can save you time and reduce errors.
               </p>
             </div>
 

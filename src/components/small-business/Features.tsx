@@ -48,17 +48,13 @@ export default function Features1() {
               id="features-title"
               className="font-inter text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828]"
             >
-              Struggling with manual bank reconciliations?
+Tired of Manual Bank Reconciliations?
             </h2>
 
             <p className="font-inter text-base sm:text-lg md:text-[18px] leading-[1.5] md:leading-[28px] font-normal text-[#475467]">
-              As a startup founder or small business owner, you need to track
-              every transaction, prevent errors, and ensure your books are
-              balanced. But manual reconciliation is time-consuming,
-              error-prone, and costly. Expensive accounting software is out of
-              reach, and spreadsheets can&apos;t keep up.{" "}
+            As a startup or small business owner, tracking transactions and balancing books can be time-consuming and prone to errors. Spreadsheets and expensive software aren’t the answer. {" "}
               <strong className="font-bold">
-                ReconXi gives you a better way!
+              ReconXi offers a smarter, faster way to reconcile your bank statements and keep your finances on track.
               </strong>
             </p>
           </motion.div>
