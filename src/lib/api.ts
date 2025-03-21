@@ -222,13 +222,11 @@ export async function updateReconciliation(
       body: JSON.stringify(data),
     });
 
-    const resData = await response.json();
+    if(response.ok){
+      const resData = await response.json();
 
-    if (!response.ok) {
-      return { error: resData.message || "Failed to add to newsletter" }; //TODO: Correct this
+      return { status: 'success', data: resData.data };
     }
-
-    return resData;
   } catch {
     return { error: "Something went wrong. Please try again later." };
   }
