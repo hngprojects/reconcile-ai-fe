@@ -22,7 +22,7 @@ export const transformReconciliationData = (
   let reconciliationCounter = Date.now(); // Start with a timestamp as base for IDs
 
   // Process matched transactions
-  backendData.matches.forEach((match: Matched, matchIndex: number) => {
+  backendData.matches.forEach((match: Matched) => {
     const statements: StatementWithScore[] = match.statements.map(
       (stmt) => {
         return {
