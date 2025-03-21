@@ -85,9 +85,9 @@ export const transformReconciliationData = (
 
   // Process unmatched ledger transactions
   backendData.unmatched_ledgers.forEach(
-    (ldgr: BackendTransaction, index: number) => {
+    (ldgr: BackendTransaction) => {
       const ledgerTxn: FrontendTransaction = {
-        id: `ledger_txn_unmatched_${index + 1}`,
+        id: ldgr.id,
         date: ldgr.Date,
         description: ldgr.Description,
         amount: ldgr.Amount,

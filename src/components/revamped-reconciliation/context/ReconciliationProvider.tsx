@@ -204,7 +204,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
       );
       console.log(response);
 
-      if (response.status !== "success") {
+      if (response.status != "success") {
         toast.error("Failed to unlink transactions");
         return;
       }

@@ -176,7 +176,7 @@ export default function DesktopView() {
             if (!selectedRow) return;
 
             if (selectedRow.statements && selectedRow.ledgers) {
-              await onUnlink(selectedRow.statements, selectedRow.ledgers);
+              await onUnlink(selectedRow.statements.map(stat => stat.bank_txn), selectedRow.ledgers.map(ledg => ledg.ledger_txn));
               setSelectedRow(null);
             }
           }}

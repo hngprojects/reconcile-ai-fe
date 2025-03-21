@@ -29,8 +29,6 @@ import { TransactionTable } from "../components/TransactionTable";
 import type {
   ReconciliationItem,
   FrontendTransaction,
-  StatementWithScore,
-  LedgerWithScore,
 } from "../types/frontendResponseTypes";
 import { DateRange } from "react-day-picker";
 import { useReconciliation } from "../context/ReconciliationProvider";
@@ -41,8 +39,8 @@ interface FindPossibleMatchModalProps {
   reconciledDataRow: ReconciliationItem;
   potentialMatches: FrontendTransaction[];
   onMatch: (
-    bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[]
+    bankTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[]
   ) => void;
 }
 
@@ -176,8 +174,6 @@ export function FindPossibleMatchModal({
     return matchesSearch && matchesDateRange && matchesAmountRange;
   });
 
-  console.log({ filteredTransactions });
-
   const handleMatchClick = () => {
     if (
       selectedTransactionIndices.length > 0 &&
@@ -203,28 +199,18 @@ export function FindPossibleMatchModal({
       if (bankTransaction) {
         // If we have a bank transaction, the selected transactions are ledger transactions
         // Convert to LedgerWithScore array
-        const ledgerTransactions: LedgerWithScore[] = selectedTransactions.map(
-          (txn) => ({
-            ledger_txn: txn,
-            score: "1.0", // Assuming default score, adjust as needed
-          })
-        );
+        const ledgerTransactions = selectedTransactions;
 
         // Use existing StatementWithScore from reconciledDataRow
-        onMatch(reconciledDataRow.statements || [], ledgerTransactions);
+        onMatch(reconciledDataRow.statements?.map(stat => stat.bank_txn) || [], ledgerTransactions);
         onClose();
       } else if (ledgerTransaction) {
         // If we have a ledger transaction, the selected transactions are bank transactions
         // Convert to StatementWithScore array
-        const bankTransactions: StatementWithScore[] = selectedTransactions.map(
-          (txn) => ({
-            bank_txn: txn,
-            score: "1.0", // Assuming default score, adjust as needed
-          })
-        );
+        const bankTransactions = selectedTransactions;
 
         // Use existing LedgerWithScore from reconciledDataRow
-        onMatch(bankTransactions, reconciledDataRow.ledgers || []);
+        onMatch(bankTransactions, reconciledDataRow.ledgers?.map(ledg => ledg.ledger_txn) || []);
         onClose();
       }
     }
