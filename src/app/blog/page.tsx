@@ -27,7 +27,12 @@ export default function BlogPage() {
   const currentPosts = blogData.slice(indexOfFirstPost, indexOfLastPost);
 
   // Change page
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -92,7 +97,7 @@ export default function BlogPage() {
           >
             <div className="mb-8">
               <h2 className="font-semibold text-[20px] leading-[30px]">
-                All blog posts
+                All Blog Posts
               </h2>
             </div>
             {/* Blog Grid - 3 items per row */}
@@ -167,7 +172,7 @@ export default function BlogPage() {
                       currentPage === 1
                         ? "opacity-0 cursor-default"
                         : "text-[#2A5743] hover:underline"
-                    }`,
+                    }`
                   )}
                 >
                   <ArrowLeftIcon className="w-5 h-5" />
@@ -194,7 +199,7 @@ export default function BlogPage() {
                 <button
                   onClick={() =>
                     paginate(
-                      currentPage < totalPages ? currentPage + 1 : totalPages,
+                      currentPage < totalPages ? currentPage + 1 : totalPages
                     )
                   }
                   disabled={currentPage === totalPages}
@@ -203,7 +208,7 @@ export default function BlogPage() {
                       currentPage === totalPages
                         ? "opacity-0 cursor-default"
                         : "text-[#2A5743] hover:underline"
-                    }`,
+                    }`
                   )}
                 >
                   <span className="hidden sm:block">Next</span>
