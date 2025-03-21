@@ -24,10 +24,10 @@ export const transformReconciliationData = (
   // Process matched transactions
   backendData.matches.forEach((match: Matched, matchIndex: number) => {
     const statements: StatementWithScore[] = match.statements.map(
-      (stmt, stmtIndex) => {
+      (stmt) => {
         return {
           bank_txn: {
-            id: `bank_txn_${matchIndex + 1}_${stmtIndex + 1}`,
+            id: stmt.statement.id,
             date: stmt.statement.Date,
             description: stmt.statement.Description,
             amount: stmt.statement.Amount,
@@ -37,10 +37,10 @@ export const transformReconciliationData = (
       }
     );
 
-    const ledgers: LedgerWithScore[] = match.ledgers.map((ldgr, ldgrIndex) => {
+    const ledgers: LedgerWithScore[] = match.ledgers.map((ldgr) => {
       return {
         ledger_txn: {
-          id: `ledger_txn_${matchIndex + 1}_${ldgrIndex + 1}`,
+          id: ldgr.ledger.id,
           date: ldgr.ledger.Date,
           description: ldgr.ledger.Description,
           amount: ldgr.ledger.Amount,
@@ -59,9 +59,9 @@ export const transformReconciliationData = (
 
   // Process unmatched bank transactions (statements)
   backendData.unmatched_statements.forEach(
-    (stmt: BackendTransaction, index: number) => {
+    (stmt: BackendTransaction) => {
       const bankTxn: FrontendTransaction = {
-        id: `unmatched_bank_txn_${index + 1}`,
+        id: stmt.id,
         date: stmt.Date,
         description: stmt.Description,
         amount: stmt.Amount,

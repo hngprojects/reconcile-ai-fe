@@ -16,6 +16,7 @@ import {
   StatementWithScore,
   LedgerWithScore,
 } from "../types/frontendResponseTypes";
+import { BackendTransaction } from "../types/backendResponseTypes";
 import { updateReconciliation, fetchReconciliation } from "@/src/lib/api";
 import { ManualRequestBody } from "@/src/types/reconciliation";
 import { toast } from "sonner";
@@ -45,8 +46,8 @@ interface ReconciliationContextProps {
 
   // Actions
   handleMatch: (
-    bankTransaction: StatementWithScore[],
-    ledgerTransaction: LedgerWithScore[],
+    bankTransaction: BackendTransaction[],
+    ledgerTransaction: BackendTransaction[],
   ) => Promise<void>;
   canPreviousPage: boolean;
   canNextPage: boolean;
@@ -55,8 +56,8 @@ interface ReconciliationContextProps {
   onRowsPerPageChange: (size: number) => void;
   handleSearch: (query: string) => void;
   handleUnlink: (
-    bankTransaction: StatementWithScore[],
-    ledgerTransaction: LedgerWithScore[],
+    bankTransaction: BackendTransaction[],
+    ledgerTransaction: BackendTransaction[],
   ) => Promise<void>;
 
   // Modals
@@ -146,20 +147,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const handleSearch = (query: string) => setSearchQuery(query);
 
   const handleMatch = async (
-    bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[],
+    bankTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[],
   ) => {
     const body = {
-      ledgers: ledgerTransactions.map((ledgerTransaction) => ({
-        Amount: ledgerTransaction.ledger_txn.amount,
-        Date: ledgerTransaction.ledger_txn.date,
-        Person: ledgerTransaction.ledger_txn.description,
-      })),
-      statements: bankTransactions.map((bankTransaction) => ({
-        Amount: bankTransaction.bank_txn.amount,
-        Date: bankTransaction.bank_txn.date,
-        Person: bankTransaction.bank_txn.description,
-      })),
+      ledgers: ledgerTransactions.map((ledgerTransaction) => ledgerTransaction.id),
+      statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
       action: "match",
     };
 
@@ -193,20 +186,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   };
 
   const handleUnlink = async (
-    bankTransactions: StatementWithScore[],
-    ledgerTransactions: LedgerWithScore[],
+    bankTransactions: FrontendTransaction[],
+    ledgerTransactions: FrontendTransaction[],
   ) => {
     const body = {
-      ledgers: ledgerTransactions.map((ledgerTransaction) => ({
-        Amount: ledgerTransaction.ledger_txn.amount,
-        Date: ledgerTransaction.ledger_txn.date,
-        Person: ledgerTransaction.ledger_txn.description,
-      })),
-      statements: bankTransactions.map((bankTransaction) => ({
-        Amount: bankTransaction.bank_txn.amount,
-        Date: bankTransaction.bank_txn.date,
-        Person: bankTransaction.bank_txn.description,
-      })),
+      ledgers: ledgerTransactions.map((ledgerTransaction) => ledgerTransaction.id),
+      statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
       action: "unmatch",
     };
 
