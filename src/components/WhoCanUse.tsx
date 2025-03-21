@@ -32,14 +32,14 @@ const whoCanUseContent = [
     id: 4,
     title: "Schools & Educational Institutions",
     content:
-      "Educational institutions use ReconXi to automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors",
+      "Educational institutions use ReconXi to automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors.",
     linkUrl: "/school-and-education",
   },
   {
     id: 5,
     title: "Freelancers",
     content:
-      "Freelancers use ReconXi to streamline their financial tracking, automate invoice reconciliation, and ensure accurate payment records, reducing manual effort and minimizing errors",
+      "Freelancers use ReconXi to streamline their financial tracking, automate invoice reconciliation, and ensure accurate payment records, reducing manual effort and minimizing errors.",
     linkUrl: "/freelancer",
   },
 ];
