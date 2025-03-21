@@ -1,6 +1,6 @@
 "use client";
 
-import { Dot, X } from "lucide-react";
+import { ChevronDown, Dot, X } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import Link from "next/link";
 import {
@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/src/components/ui/accordion";
 import { usePathname } from "next/navigation";
+import { useAuth } from "./context/AuthContext";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -29,6 +30,8 @@ const MobileMenu = ({
   const handleLinkClick = () => {
     onClose();
   };
+
+  const {user} = useAuth()
 
   return (
     <div
@@ -68,13 +71,14 @@ const MobileMenu = ({
               <AccordionItem value="industries" className="border-none">
                 <AccordionTrigger
                   className={cn(
-                    "font-medium text-2xl text-white/80 hover:no-underline py-0",
+                    "font-medium text-2xl text-white/80 hover:no-underline py-0 flex items-center gap-2",
                     (pathname === "/small-business" ||
                       pathname === "/enterprise") &&
                       "text-white",
                   )}
                 >
-                  Industries
+                  <span>Industries</span>
+                  <ChevronDown />
                 </AccordionTrigger>
                 <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
                   <div className="flex flex-col gap-4">
@@ -86,7 +90,9 @@ const MobileMenu = ({
                       )}
                       onClick={handleLinkClick}
                     >
-                      Startup and SMEs
+                      <span className="flex gap-1">
+                        <Dot /> Startup and SMEs
+                      </span>
                     </Link>
                     <Link
                       href="/financial-pro"
@@ -153,7 +159,7 @@ const MobileMenu = ({
             </Link>
           </nav>
 
-          <div className="flex items-center gap-4 w-full">
+          {!user && <div className="flex items-center gap-4 w-full">
             <button
               type="button"
               onClick={onLogin}
@@ -170,7 +176,7 @@ const MobileMenu = ({
             >
               Sign up
             </button>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

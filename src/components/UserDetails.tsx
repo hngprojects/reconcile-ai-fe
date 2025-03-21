@@ -1,4 +1,4 @@
-import { ChevronUp, ChevronDown, CreditCard } from "lucide-react";
+import { ChevronUp, ChevronDown, CreditCard, Menu } from "lucide-react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import {
   DropdownMenu,
@@ -6,13 +6,18 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/src/components/ui/dropdown-menu";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { User } from "@/src/types/auth";
 
-export default function UserDetails() {
+type TUserDetails = {
+  showMobileMenu: boolean;
+  setShowMobileMenu: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function UserDetails({showMobileMenu, setShowMobileMenu}: TUserDetails) {
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
@@ -24,13 +29,25 @@ export default function UserDetails() {
     <div className="flex items-center gap-1 sm:gap-3">
       <div className="flex items-center justify-center bg-gray-100 text-[#297B65] size-10 text-xl rounded-full">
         {(user as User).avatar ? (
-          <Image
-            src={(user as User).avatar}
-            alt={(user as User).name}
-            width={80}
-            height={80}
-            className="rounded-full"
-          />
+          <div className="flex items-center gap-2">
+            <Image
+              src={(user as User).avatar}
+              alt={(user as User).name}
+              width={80}
+              height={80}
+              className="rounded-full"
+            />
+            <button
+            type="button"
+            onClick={() => setShowMobileMenu(true)}
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+            aria-label="Open mobile menu"
+            aria-expanded={showMobileMenu}
+            aria-controls="mobile-menu"
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
         ) : (
           <p>{getUserInitials((user as User).name)}</p>
         )}

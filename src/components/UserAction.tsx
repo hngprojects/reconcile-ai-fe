@@ -32,13 +32,13 @@ const UserAction: FC = () => {
   };
 
   if (user) {
-    return <UserDetails />;
+    return <UserDetails showMobileMenu={showMobileMenu} setShowMobileMenu={setShowMobileMenu} />;
   }
 
   return (
     <>
       {user ? (
-        <UserDetails />
+        <UserDetails showMobileMenu={showMobileMenu} setShowMobileMenu={setShowMobileMenu} />
       ) : (
         <>
           <div className="hidden md:flex items-center gap-4">
