@@ -3,26 +3,29 @@
 export function Loader() {
   return (
     <div className="fixed inset-0 bg-[#2E604A] flex flex-col items-center justify-center z-50">
-      <svg
-        className="animate-spin h-12 w-12 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
+      <div className="relative w-[75px] h-[100px]">
+        <div
+          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp1_4s_infinite]"
+          style={{ left: "0px" }}
         />
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+        <div
+          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp2_4s_infinite]"
+          style={{ left: "15px" }}
         />
-      </svg>
+        <div
+          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp3_4s_infinite]"
+          style={{ left: "30px" }}
+        />
+        <div
+          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp4_4s_infinite]"
+          style={{ left: "45px" }}
+        />
+        <div
+          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp5_4s_infinite]"
+          style={{ left: "60px" }}
+        />
+        <div className="absolute bottom-[10px] left-0 w-[10px] h-[10px] bg-white rounded-full [animation:ball624_4s_infinite]" />
+      </div>
       <p className="mt-4 text-white text-lg font-medium">Loading...</p>
     </div>
   );
