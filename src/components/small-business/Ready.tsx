@@ -7,7 +7,11 @@ import DemoForm from "@/src/app/demo/demo-form";
 
 export default function StartReconcile() {
   return (
-    <section
+    <motion.section
+      initial={{ opacity: 0, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
       className="py-10 md:py-20 px-0 lg:px-20 bg-white"
       aria-labelledby="ready-section-title"
       id="demo-form"
@@ -68,6 +72,6 @@ export default function StartReconcile() {
           </motion.div>
         </div>
       </Container>
-    </section>
+    </motion.section>
   );
 }

@@ -1,11 +1,16 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
+import { smoothScroll } from "@/src/utils/smoothScroll";
 
 export default function Features1() {
+  const handleDemoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    smoothScroll("demo-form");
+  };
+
   return (
     <section
       className="w-full py-12 md:py-20 px-0 lg:px-20"
@@ -62,13 +67,15 @@ export default function Features1() {
                 statements and keep your finances on track.
               </p>
             </div>
-            <Link
-              href="#demo-form"
-              className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white w-fit rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+            <motion.button
+              onClick={handleDemoClick}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="h-[44px] px-6 py-3 bg-[#2E604A] text-white w-fit rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
               aria-label="Open signup modal"
             >
               Get a Free Demo
-            </Link>
+            </motion.button>
           </motion.div>
         </motion.div>
       </Container>

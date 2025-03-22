@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Container from "../Container";
 import { motion } from "framer-motion";
 import { Check } from "lucide-react";
+import { smoothScroll } from "@/src/utils/smoothScroll";
 
 const features = [
   {
@@ -27,6 +27,11 @@ const features = [
 ];
 
 export default function WhyReconXi() {
+  const handleDemoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    smoothScroll("demo-form");
+  };
+
   return (
     <section className="py-10 md:py-20" aria-labelledby="why-reconxi-title">
       <Container>
@@ -68,15 +73,15 @@ export default function WhyReconXi() {
                   </div>
                 </div>
               ))}
-              <Link href="#demo-form">
-                <button
-                  type="button"
-                  className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
-                  aria-label="Open signup modal"
-                >
-                  Get a Free Demo
-                </button>
-              </Link>
+              <motion.button
+                onClick={handleDemoClick}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-[44px] px-6 ml-8 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                aria-label="Open signup modal"
+              >
+                Get a Free Demo
+              </motion.button>
             </motion.div>
 
             <motion.div

@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Container from "../Container";
 import { motion } from "framer-motion";
+import { smoothScroll } from "@/src/utils/smoothScroll";
 
 const features = [
   {
@@ -29,6 +29,11 @@ const features = [
 ];
 
 export default function WhyReconXi() {
+  const handleDemoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    smoothScroll("demo-form");
+  };
+
   return (
     <section
       className="py-10 md:py-20 px-0 lg:px-20"
@@ -55,38 +60,42 @@ export default function WhyReconXi() {
               viewport={{ once: true }}
               className="flex-1 space-y-6 md:space-y-8 w-full"
             >
-              {features.map((feature, index) => (
-                <div key={index} className="flex gap-4" role="listitem">
-                  <div
-                    className="flex-shrink-0 flex items-center justify-center my-auto"
-                    aria-hidden="true"
-                  >
-                    <Image
-                      src="/assets/images/check-icon.svg"
-                      alt="Check icon"
-                      width={28}
-                      height={28}
-                      className="w-[23px] h-[23px] lg:w-7 lg:h-7"
-                    />
+              <div role="list" className="space-y-6 md:space-y-8">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex gap-4" role="listitem">
+                    <div
+                      className="flex-shrink-0 flex items-center justify-center my-auto"
+                      aria-hidden="true"
+                    >
+                      <Image
+                        src="/assets/images/check-icon.svg"
+                        alt="Check icon"
+                        width={28}
+                        height={28}
+                        className="w-[23px] h-[23px] lg:w-7 lg:h-7"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1 sm:gap-2">
+                      <h3 className="font-inter text-base sm:text-lg md:text-[20px] leading-tight md:leading-[30px] font-semibold text-[#101828]">
+                        {feature.title}
+                      </h3>
+                      <p className="font-inter text-sm sm:text-base md:text-[16px] leading-normal md:leading-[24px] text-[#101828]">
+                        {feature.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1 sm:gap-2">
-                    <h3 className="font-inter text-base sm:text-lg md:text-[20px] leading-tight md:leading-[30px] font-semibold text-[#101828]">
-                      {feature.title}
-                    </h3>
-                    <p className="font-inter text-sm sm:text-base md:text-[16px] leading-normal md:leading-[24px] text-[#101828]">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
 
-              <Link
-                href="#demo-form"
-                className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+              <motion.button
+                onClick={handleDemoClick}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer ml-8"
                 aria-label="Open signup modal"
               >
                 Get a Free Demo
-              </Link>
+              </motion.button>
             </motion.div>
 
             <motion.div

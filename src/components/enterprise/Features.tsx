@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Container from "@/src/components/Container";
 import { motion } from "framer-motion";
+import { smoothScroll } from "@/src/utils/smoothScroll";
 
 const features = [
   {
@@ -24,6 +24,11 @@ const features = [
 ];
 
 export default function Features() {
+  const handleDemoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    smoothScroll("demo-form");
+  };
+
   return (
     <section
       className="w-full py-20 px-0 lg:px-20"
@@ -59,7 +64,7 @@ export default function Features() {
               transition={{ duration: 0.8 }}
               className="flex-1 max-w-[560px] w-full my-auto"
             >
-              <div className="space-y-0">
+              <div className="space-y-0 mb-8">
                 {features.map((feature, index) => (
                   <motion.div
                     key={index}
@@ -78,13 +83,16 @@ export default function Features() {
                   </motion.div>
                 ))}
               </div>
-              <Link
-                href="#demo-form"
-                className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+
+              <motion.button
+                onClick={handleDemoClick}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="h-[44px] inline-flex items-center px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
                 aria-label="Open signup modal"
               >
                 Get a Free Demo
-              </Link>
+              </motion.button>
             </motion.div>
 
             {/* Right Image - Hidden on mobile */}

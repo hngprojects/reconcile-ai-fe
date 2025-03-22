@@ -44,7 +44,7 @@ export default function ProfileManagementSection({
         city: formState.city, // Preserve existing values
       });
     }
-  }, [user]);
+  }, [user, formState.country, formState.city]);
 
   const getUserInitials = (name?: string) => {
     return name && name.length > 0 ? name[0].toUpperCase() : "";
