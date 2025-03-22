@@ -28,7 +28,7 @@ Reconcile Bank Accounts with AI
               </h1>
 
               <p className="font-inter text-base text-center lg:text-left sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-              As an accountant, managing accurate financial records is a must. But reconciling multiple bank statements and transactions manually can be time-consuming and prone to errors. That’s where ReconXi comes in.
+              As a financial professional, managing accurate financial records is a must. But reconciling multiple bank statements and transactions manually can be time-consuming and prone to errors. That’s where ReconXi comes in.
               </p>
             </div>
           </motion.div>
