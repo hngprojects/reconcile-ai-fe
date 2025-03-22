@@ -61,16 +61,16 @@ export default function Features1() {
                 ReconXi offers a smarter, faster way to reconcile your bank
                 statements and keep your finances on track.
               </p>
-
-              <div className="mt-2">
-                <Link
-                  href="#demo-form"
-                  className="inline-block px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 transition-colors"
-                >
-                  Get a Free Demo
-                </Link>
-              </div>
             </div>
+            <Link href="#demo-form">
+              <button
+                type="button"
+                className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                aria-label="Open signup modal"
+              >
+                Get a Free Demo
+              </button>
+            </Link>
           </motion.div>
         </motion.div>
       </Container>

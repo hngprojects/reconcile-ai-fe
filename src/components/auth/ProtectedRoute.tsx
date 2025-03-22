@@ -2,25 +2,31 @@
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { validateToken } from '@/src/lib/api';
 
 export default function ProtectedRoute({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated } = useAuth();
+  const { logout } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    // Only redirect if we're sure the user is not authenticated
-    if (isAuthenticated === false) {
-      router.replace("/");
-    }
-  }, [isAuthenticated, router]);
+    const token = localStorage.getItem('access_token') as string;
+    const interval = setInterval(() => {
+      if (token && token !== 'undefined') {
+        const valid = validateToken(token);
 
-  if (isAuthenticated === undefined) {
-    return null;
-  }
+        if(!valid){
+          logout();
+          router.replace("/");
+        }
+      }
+    }, 1 * 60 * 1000); 
+    return () => clearInterval(interval);
+  }, [logout, router]);
 
-  return isAuthenticated ? <>{children}</> : null;
+
+  return <>{children}</>;
 }
