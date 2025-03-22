@@ -43,3 +43,5 @@ export const RECONCILIATION_RESULT_API_URL = `${BASE_URL}/reconciliations/`;
 
 // PAYMENT PLAN
 export const PAYMENT_PLAN_API_URL = `${BASE_URL}/payment-plan`;
+
+export const GOOGLE_LOGIN_URL = `${BASE_URL}/auth/google-login`;

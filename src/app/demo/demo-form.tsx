@@ -32,9 +32,6 @@ export default function DemoForm({
     phoneNumber: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectId] = useState(
-    `radix-select-${Math.random().toString(36).substr(2, 9)}`
-  );
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -67,7 +64,7 @@ export default function DemoForm({
 
       if (result.success) {
         toast.success(
-          "Demo request submitted successfully! We'll be in touch soon."
+          "Demo request submitted successfully! We'll be in touch soon.",
         );
         setFormData({
           fullName: "",
@@ -83,7 +80,7 @@ export default function DemoForm({
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to submit demo request. Please try again."
+          : "Failed to submit demo request. Please try again.",
       );
     } finally {
       setIsSubmitting(false);

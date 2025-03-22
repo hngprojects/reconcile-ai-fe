@@ -7,19 +7,20 @@ import LoginModal from "@/src/components/modal/LoginModal";
 import UserDetails from "@/src/components/UserDetails";
 import { Menu } from "lucide-react";
 import MobileMenu from "./MobileMenu";
+import { useSession } from "next-auth/react";
 
 const UserAction: FC = () => {
   const { user, setUser } = useAuth();
+  const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
+    if (session) {
+      setUser(session.user as typeof user);
     }
-  }, [setUser]);
+  }, [session, setUser]);
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
@@ -30,10 +31,6 @@ const UserAction: FC = () => {
     setShowAuthModal(false);
     setShowLoginModal(true);
   };
-
-  // if (user) {
-  //   return <UserDetails />;
-  // }
 
   return (
     <div className=" flex items-center gap-2">
@@ -74,30 +71,30 @@ const UserAction: FC = () => {
         </>
       )}
       <div className="flex items-center md:hidden">
-          <button
-            type="button"
-            onClick={() => setShowMobileMenu(true)}
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-            aria-label="Open mobile menu"
-            aria-expanded={showMobileMenu}
-            aria-controls="mobile-menu"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
+        <button
+          type="button"
+          onClick={() => setShowMobileMenu(true)}
+          className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+          aria-label="Open mobile menu"
+          aria-expanded={showMobileMenu}
+          aria-controls="mobile-menu"
+        >
+          <Menu className="h-6 w-6" />
+        </button>
 
-          <MobileMenu
-            isOpen={showMobileMenu}
-            onClose={() => setShowMobileMenu(false)}
-            onLogin={() => {
-              setShowMobileMenu(false);
-              setShowLoginModal(true);
-            }}
-            onSignup={() => {
-              setShowMobileMenu(false);
-              setShowAuthModal(true);
-            }}
-          />
-        </div>
+        <MobileMenu
+          isOpen={showMobileMenu}
+          onClose={() => setShowMobileMenu(false)}
+          onLogin={() => {
+            setShowMobileMenu(false);
+            setShowLoginModal(true);
+          }}
+          onSignup={() => {
+            setShowMobileMenu(false);
+            setShowAuthModal(true);
+          }}
+        />
+      </div>
     </div>
   );
 };
