@@ -73,6 +73,8 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           className="lg:hidden w-full flex justify-center"
         >
           <Image
@@ -80,7 +82,7 @@ export default function HeroSection() {
             alt="Big screen mockup"
             width={224}
             height={149}
-            className="object-cover border-2 border-[#101828] rounded-[4px] transition-transform duration-700 ease-in-out hover:scale-105"
+            className="object-cover border-2 border-[#101828] rounded-[4px] transition-all duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)]"
             quality={75}
             priority={true}
             placeholder="blur"
