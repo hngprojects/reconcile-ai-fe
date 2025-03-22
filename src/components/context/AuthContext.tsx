@@ -12,9 +12,8 @@ import {
 import { useRouter } from "next/navigation";
 import { User } from "@/src/types/auth";
 import { toast } from "sonner";
-import {
-  LOGOUT_API_URL} from "@/src/lib/apiEndpoints";
-import { signIn } from 'next-auth/react';
+import { LOGOUT_API_URL } from "@/src/lib/apiEndpoints";
+import { signIn } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 
 interface AuthContextType {
@@ -34,12 +33,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const signInWithGoogle = async () => {
-    const result = await signIn('google', { callbackUrl: '/file-upload' });
+    const result = await signIn("google", { callbackUrl: "/file-upload" });
 
-      if (result?.error) {
-        alert(result.error);
-        return;
-    };  
+    if (result?.error) {
+      alert(result.error);
+      return;
+    }
   };
 
   const logout = async () => {
@@ -97,9 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         logout,
       }}
     >
-      <SessionProvider>
-      {children}
-      </SessionProvider>
+      <SessionProvider>{children}</SessionProvider>
     </AuthContext.Provider>
   );
 };

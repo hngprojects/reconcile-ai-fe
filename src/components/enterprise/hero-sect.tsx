@@ -24,12 +24,13 @@ export default function EnterpriseHero() {
                 id="hero-heading"
                 className="font-inter text-[32px] text-center lg:text-left sm:text-[45px] md:text-[48px] leading-[1.2] tracking-[-0.02em] font-semibold text-[#101828]"
               >
-                Enterprise-Grade Reconciliation for Precise Financial Control
+                Reconciliation Software for Large Organizations
               </h1>
 
               <p className="font-inter text-base  text-center lg:text-left sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Automate reconciliation, eliminate compliance risks, and achieve
-                unmatched financial accuracy.
+                Managing financial transactions across multiple accounts,
+                departments, or business units can be a challenge for large
+                organizations. Lets show you the ReconXi way.
               </p>
             </div>
           </motion.div>

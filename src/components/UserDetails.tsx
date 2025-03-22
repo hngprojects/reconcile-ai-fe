@@ -1,4 +1,4 @@
-import { ChevronUp, ChevronDown, CreditCard, Settings } from "lucide-react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import {
   DropdownMenu,
@@ -10,7 +10,8 @@ import { useState } from "react";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { User } from "@/src/types/auth";
+import { User } from "@/src/types/auth";d
+import { LayoutDashboard } from "lucide-react";d
 
 export default function UserDetails() {
   const { user, logout } = useAuth();
@@ -46,20 +47,11 @@ export default function UserDetails() {
         <DropdownMenuContent className="absolute right-[-28px] top-[12px] min-w-[180px]">
           <DropdownMenuItem className="hover:bg-[#eaf5f1] cursor-pointer px-4 py-3 transition-colors">
             <Link
-              href="/manage-plan"
-              className="flex gap-3 items-center text-[#101828] w-full"
-            >
-              <CreditCard className="w-4 h-4" />
-              <p>Manage Plan</p>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="hover:bg-[#eaf5f1] cursor-pointer px-4 py-3 transition-colors">
-            <Link
               href="/dashboard"
               className="flex gap-3 items-center text-[#101828] w-full"
             >
-              <Settings className="w-4 h-4" />
-              <p>Manage Profile</p>
+              <LayoutDashboard className="w-4 h-4" />
+              <p>Dashboard</p>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:bg-red-100 cursor-pointer px-4 py-3 transition-colors">
@@ -73,7 +65,6 @@ export default function UserDetails() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
     </div>
   );
 }
