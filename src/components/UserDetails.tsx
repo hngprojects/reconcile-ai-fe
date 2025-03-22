@@ -10,8 +10,8 @@ import { useState } from "react";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { User } from "@/src/types/auth";d
-import { LayoutDashboard } from "lucide-react";d
+import { User } from "@/src/types/auth";
+import { LayoutDashboard } from "lucide-react";
 
 export default function UserDetails() {
   const { user, logout } = useAuth();
