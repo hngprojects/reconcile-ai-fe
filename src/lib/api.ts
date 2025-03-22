@@ -85,6 +85,8 @@ export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
       body: formData,
     });
 
+    console.log(response.status);
+
     const data = await response.json();
     localStorage.setItem("reconciliation_id", data.data.reconciliation_id);
 

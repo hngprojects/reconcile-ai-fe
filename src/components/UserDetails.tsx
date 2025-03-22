@@ -11,11 +11,10 @@ import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { User } from "@/src/types/auth";
-import { signOut } from "next-auth/react";
 import { LayoutDashboard } from "lucide-react";
 
 export default function UserDetails() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
 
   const getUserInitials = (name: string) => {
@@ -58,7 +57,7 @@ export default function UserDetails() {
           <DropdownMenuItem className="hover:bg-red-100 cursor-pointer px-4 py-3 transition-colors">
             <div
               className="text-red-600 flex gap-2 items-center w-full"
-              onClick={() => signOut()}
+              onClick={logout}
             >
               <LogOut className="text-red-600" />
               <p>Log out</p>

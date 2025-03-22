@@ -15,7 +15,7 @@ interface ProfileManagementProps {
 
 export default function ProfileManagementSection({
   darkMode,
-  setDarkMode,
+  // setDarkMode,
 }: ProfileManagementProps) {
   const { user } = useAuth();
   const [formState, setFormState] = useState({
