@@ -6,7 +6,7 @@ import StartReconciliationButton from "./buttons/StartReconciliationButton";
 
 export default function HeroSection() {
   return (
-    <section className=" overflow-x-hidden pt-8 md:pt-0">
+    <section className="overflow-x-hidden pt-8 md:pt-0">
       <div className="flex flex-col lg:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-10 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
         <motion.div
           className="flex flex-col items-center md:items-start w-full"
@@ -21,12 +21,14 @@ export default function HeroSection() {
           <p className="text-[#475467] text-sm sm:text-xl max-w-[620px] text-left mt-6 md:pr-8 max-md:text-center">
             ReconXi is the perfect solution for small and medium-sized
             businesses, schools, financial professionals, freelancers that need
-            quick and affordable financial reconciliation.
+            quick and affordable financial reconciliation.
           </p>
           <motion.div
             className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
           >
             <StartReconciliationButton
               aria-label="Start Reconciliation"
@@ -34,6 +36,7 @@ export default function HeroSection() {
             />
           </motion.div>
         </motion.div>
+
         {/* Hero Image for desktop */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -46,32 +49,25 @@ export default function HeroSection() {
             alt="Iphone mockup"
             width={314}
             height={440}
-            className="object-contain absolute right-[22rem] z-10 top-[8rem]"
+            className="object-contain absolute right-[22rem] z-10 top-[8rem] transition-transform duration-700 ease-in-out hover:scale-110"
             quality={75}
             priority={true}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAAXNSR0IArs4c6QAAAJBJREFUGFcljUEKwjAABHdjBTXvyFN66bnkVt8gaS59gEVQ0GPTJ5Q+qe+IQtNEQue4szCsqso01+YlKEgSCQkEASBN8/SgruvuZkyfl2NRYIsRCQBTghvHN7XWXdu2vRACUkqAhPceYV3hnNsP1to+i9PljJz5+S+2EDAMw4dlWRql1D3GeNjTGUKQcVmW5x9hfjTwri74OwAAAABJRU5ErkJggg=="
-            style={{
-              height: "auto",
-              maxWidth: "100%",
-            }}
           />
           <Image
             src="/assets/images/screen_mockup.png"
             alt="Big screen mockup"
             width={621}
             height={782}
-            className="object-contain absolute right-0 bottom-0"
+            className="object-contain absolute right-0 bottom-0 transition-transform duration-700 ease-in-out hover:scale-105"
             quality={75}
             priority={true}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAAXNSR0IArs4c6QAAAJBJREFUGFcljUEKwjAABHdjBTXvyFN66bnkVt8gaS59gEVQ0GPTJ5Q+qe+IQtNEQue4szCsqso01+YlKEgSCQkEASBN8/SgruvuZkyfl2NRYIsRCQBTghvHN7XWXdu2vRACUkqAhPceYV3hnNsP1to+i9PljJz5+S+2EDAMw4dlWRql1D3GeNjTGUKQcVmW5x9hfjTwri74OwAAAABJRU5ErkJggg=="
-            style={{
-              height: "auto",
-              maxWidth: "100%",
-            }}
           />
         </motion.div>
+
         {/* Hero Image for mobile */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -84,15 +80,11 @@ export default function HeroSection() {
             alt="Big screen mockup"
             width={224}
             height={149}
-            className="object-cover border-2 border-[#101828] rounded-[4px]"
+            className="object-cover border-2 border-[#101828] rounded-[4px] transition-transform duration-700 ease-in-out hover:scale-105"
             quality={75}
             priority={true}
             placeholder="blur"
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAAXNSR0IArs4c6QAAAJBJREFUGFcljUEKwjAABHdjBTXvyFN66bnkVt8gaS59gEVQ0GPTJ5Q+qe+IQtNEQue4szCsqso01+YlKEgSCQkEASBN8/SgruvuZkyfl2NRYIsRCQBTghvHN7XWXdu2vRACUkqAhPceYV3hnNsP1to+i9PljJz5+S+2EDAMw4dlWRql1D3GeNjTGUKQcVmW5x9hfjTwri74OwAAAABJRU5ErkJggg=="
-            style={{
-              height: "auto",
-              maxWidth: "100%",
-            }}
           />
         </motion.div>
       </div>

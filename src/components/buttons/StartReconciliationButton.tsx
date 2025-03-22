@@ -1,3 +1,4 @@
+
 // "use client";
 
 // import { useAuth } from "@/src/components/context/AuthContext";
@@ -97,8 +98,10 @@ export default function StartReconciliationButton({
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State for handling loading state
 
   const handleClick = () => {
+    setIsLoading(true); // Start loading state
     if (isAuthenticated) {
       router.push("/file-upload");
     } else {
@@ -122,15 +125,21 @@ export default function StartReconciliationButton({
         onClick={handleClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        whileHover={{ scale: 1.05 }}
+        whileHover={{
+          scale: 1.05,
+          backgroundColor: "#1E6741", // Subtle color change on hover
+        }}
         whileTap={{ scale: 0.95 }}
         className={
           className ||
-          "bg-[#297B65] py-3 px-6 rounded-md font-semibold inline-flex justify-center items-center min-h-[48px] w-full sm:w-auto text-base text-white hover:bg-[#297B65]/90 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#297B65] focus:outline-none transition-colors"
+          "bg-[#297B65] py-3 px-6 rounded-md font-semibold inline-flex justify-center items-center min-h-[48px] w-full sm:w-auto text-base text-white hover:bg-[#297B65]/90 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#297B65] focus:outline-none transition-all duration-300"
         }
         aria-label={ariaLabel || text}
       >
-        {isHovered ? (
+        {/* Show loading spinner if isLoading is true */}
+        {isLoading ? (
+          <div className="loader"></div> // Simple spinner for loading state
+        ) : isHovered ? (
           <Typewriter
             words={[text]}
             loop={1}
@@ -155,6 +164,23 @@ export default function StartReconciliationButton({
         onClose={() => setShowAuthModal(false)}
         onSwitchToLogin={handleSwitchToLogin}
       />
+
+      {/* Add a CSS spinner */}
+      <style jsx>{`
+        .loader {
+          border: 4px solid #f3f3f3; /* Light gray background */
+          border-top: 4px solid #3498db; /* Blue spinner color */
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </>
   );
 }
