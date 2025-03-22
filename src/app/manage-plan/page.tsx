@@ -24,15 +24,15 @@ export default function ManagePlanPage() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   useEffect(() => {
+    // Log user to confirm shape during development
     // Set active card based on user's current plan
-    if (user?.payment_plan?.plan) {
+    if (user?.payment_plan) {
       const planMap: PlanMap = {
         Basic: 1,
         Starter: 2,
         Business: 3,
       };
-
-      const currentPlan = user.payment_plan.plan;
+      const currentPlan = user.payment_plan; 
       if (currentPlan in planMap) {
         setActiveCard(planMap[currentPlan]);
       }
