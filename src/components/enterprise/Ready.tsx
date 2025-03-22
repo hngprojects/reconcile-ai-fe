@@ -41,8 +41,9 @@ export default function StartReconcile() {
                 id="ready-section-title"
                 className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
               >
-                Get a Personalized Walkthrough
-              </h2>
+Get A Free Demo From Us
+
+</h2>
             </div>
 
             <div

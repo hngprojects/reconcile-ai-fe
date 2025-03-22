@@ -7,19 +7,19 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "No More Complex Data Headaches",
+    title: "Handle High-Volume Transactions",
     description:
-      "Automate reconciliation for high-volume data, easily identifying errors and discrepancies.",
+      "Perfect for large organizations dealing with numerous bank statements and transactions.",
   },
   {
-    title: "Reduce Compliance Risks",
+    title: "Faster Financial Operations",
     description:
-      "Achieve precise financial control, protecting your enterprise from costly regulatory mistakes.",
+      "Reconcile accounts and manage financial statements at scale in minutes, not hours.",
   },
   {
-    title: "Instant Financial Accuracy",
+    title: "AI-Powered Reconciliation Accuracy",
     description:
-      "Quickly detect and fix financial issues before they become bigger problems, ensuring reliable reporting and decision-making.",
+      "Automate transaction matching with AI, ensuring accuracy and eliminating human errors in your financial records..",
   },
 ];
 
