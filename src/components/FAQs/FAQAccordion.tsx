@@ -1,77 +1,53 @@
-// test
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
 
-import React, { useState } from "react";
-import { Plus, Minus } from "lucide-react";
-import { AccordionItemProps, FAQ } from "@/src/types/faq";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
-const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
-  const [selected, setSelected] = useState<number | null>(null);
+const FAQAccordion = ({ faqs }) => {
+  const [openIndex, setOpenIndex] = useState(null);
 
-  return (
-    <div className="overflow-hidden">
-      <ul className="min-w-[100%] divide-y divide-[#E6E8EB] ">
-        {faqs.map((faq, index) => (
-          <AccordionItem
-            key={index}
-            faq={faq}
-            selected={selected}
-            setSelected={setSelected}
-            index={index}
-          />
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-const AccordionItem = ({
-  faq,
-  selected,
-  setSelected,
-  index,
-}: AccordionItemProps) => {
-  const isOpen = selected === index;
-
-  const handleClick = () => {
-    setSelected(isOpen ? null : index);
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <li>
-      <motion.div
-        className="border-b border-gray-200 py-4"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
-      >
-        <button
-          className="flex justify-between items-center w-full text-left py-2"
-          onClick={handleClick}
+    <div className="space-y-4">
+      {faqs.map((faq, index) => (
+        <div
+          key={index}
+          className="border border-gray-300 rounded-lg p-4 cursor-pointer transition-all duration-300 hover:bg-gray-100"
+          onClick={() => toggleFAQ(index)}
         >
-          <span className="text-lg font-medium text-[#101828]">
-            {faq.question}
-          </span>
-          <span>{isOpen ? <Minus size={20} /> : <Plus size={20} />}</span>
-        </button>
-
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
+          <div className="flex justify-between items-center">
+            <h3
+              className={`text-lg font-medium ${
+                openIndex === index ? "text-[#297B65]" : "text-gray-900"
+              }`}
             >
-              <p className="py-3 text-[#475467]">{faq.answer}</p>
-            </motion.div>
+              {faq.question}
+            </h3>
+            <motion.span
+              animate={{ rotate: openIndex === index ? 90 : 0 }}
+              transition={{ duration: 0.2 }}
+              className="text-2xl font-bold text-[#297B65]"
+            >
+              {openIndex === index ? "−" : "+"}
+            </motion.span>
+          </div>
+          {openIndex === index && (
+            <motion.p
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="mt-2 text-gray-700"
+            >
+              {faq.answer}
+            </motion.p>
           )}
-        </AnimatePresence>
-      </motion.div>
-    </li>
+        </div>
+      ))}
+    </div>
   );
 };
 
