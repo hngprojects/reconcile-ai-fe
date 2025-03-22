@@ -66,15 +66,15 @@ export default function Features1() {
                 <strong className="font-semibold">The ReconXi Way!</strong>
               </span>
             </p>
-            <Link href={'/demo'}>
-                <button
-                  type="button"
-                  className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
-                  aria-label="Open signup modal"
-                >
-                  Get a Free Demo
-                </button>
-                </Link>
+            <Link href={"/demo"}>
+              <button
+                type="button"
+                className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                aria-label="Open signup modal"
+              >
+                Get a Free Demo
+              </button>
+            </Link>
           </motion.div>
         </motion.div>
       </Container>

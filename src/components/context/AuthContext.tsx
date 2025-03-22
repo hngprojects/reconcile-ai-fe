@@ -12,8 +12,8 @@ import {
 import { useRouter } from "next/navigation";
 import { User } from "@/src/types/auth";
 import { toast } from "sonner";
-import { LOGOUT_API_URL } from "@/src/lib/apiEndpoints";
-import { signIn, signOut  } from "next-auth/react";
+import { LOGOUT_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
+import { signIn, signOut } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 
 interface AuthContextType {
@@ -23,6 +23,7 @@ interface AuthContextType {
   isLoading: boolean;
   signInWithGoogle: () => void;
   logout: () => void;
+  getUserDetails: (token: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       await signOut({ callbackUrl: "/" });
-      
+
       if (!res.ok) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("user");
@@ -70,6 +71,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       toast.success("Logged out successfully!");
     } catch (error) {
       console.error("Something went wrong while logging out!", error);
+    }
+  };
+
+  
+  const getUserDetails = async (token: string) => {
+    try {
+      const response = await fetch(USER_API_URL, {
+        // const response = await fetch(USER_API_URL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+      const data: Response = await response.json();
+
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+      setUser({ ...data.data.user, payment_plan: data.data.plan });
+    } catch (e) {
+      console.error("Failed to fetch", e);
     }
   };
 
@@ -97,6 +117,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isLoading,
         signInWithGoogle,
         logout,
+        getUserDetails
       }}
     >
       <SessionProvider>{children}</SessionProvider>

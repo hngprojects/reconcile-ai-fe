@@ -78,6 +78,7 @@ export default function WhyReconXi() {
                   </div>
                 </div>
               ))}
+              </div>
               <Link href={"/demo"}>
                 <button
                   type="button"

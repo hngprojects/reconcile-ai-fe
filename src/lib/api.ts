@@ -10,6 +10,7 @@ import {
   RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
   GOOGLE_LOGIN_URL,
+  TOKEN_VALIDATOR_URL
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -413,3 +414,15 @@ export const loginWithGoogle = async (id_token: string) => {
     return { status: "error" };
   }
 };
+
+export const validateToken = async (accessToken: string) => {
+    const response = await fetch(TOKEN_VALIDATOR_URL, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`, // Pass the access token
+      },
+    });
+
+    return response.ok;
+  };
+

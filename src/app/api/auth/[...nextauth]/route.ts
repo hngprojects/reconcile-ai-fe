@@ -14,27 +14,23 @@ export const authOptions = {
     async signIn({ user, account }) {
       const response = await loginWithGoogle(account.id_token);
       const cookieStore = await cookies();
+      console.log('Response', response);
 
-      if (response.status === "success") {
-        cookieStore.set("access_token", response.data?.access_token, {
-          path: "/",
-          maxAge: 60 * 60 * 24 * 7,
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-        });
-        user.access_token = response.data.access_token;
-        user.data = response.data.user;
-        user.plan = response.data.plan;
-        return true;
-      }
+      cookieStore.set("access_token", response.data?.access_token, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
+      user.access_token = response.data.access_token;
+      user.data = { ...response.data.user, payment_plan: response.data.plan };
+      return user;
 
-      return false;
     },
     async jwt({ token, user }) {
       if (user) {
         token.accessToken = user.access_token;
         token.user = user.data;
-        token.payment_plan = user.plan;
       }
       return token;
     },
@@ -42,8 +38,7 @@ export const authOptions = {
       session.accessToken = token.accessToken;
       session.user = {
         ...session.user,
-        ...token.user,
-        payment_plan: token.payment_plan
+        ...token.user
       };
       return session;
     },
