@@ -24,6 +24,7 @@ export const authOptions = {
         });
         user.access_token = response.data.access_token;
         user.data = response.data.user;
+        user.plan = response.data.plan;
         return true;
       }
 
@@ -33,6 +34,7 @@ export const authOptions = {
       if (user) {
         token.accessToken = user.access_token;
         token.user = user.data;
+        token.payment_plan = user.plan;
       }
       return token;
     },
@@ -41,6 +43,7 @@ export const authOptions = {
       session.user = {
         ...session.user,
         ...token.user,
+        payment_plan: token.payment_plan
       };
       return session;
     },
