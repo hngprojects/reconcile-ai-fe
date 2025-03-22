@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -12,7 +12,13 @@ import {
 } from "@/src/components/ui/tabs";
 import { User } from "@/src/types/auth";
 import { Card, CardContent } from "@/src/components/ui/card";
-import { Save, AlertTriangle } from "lucide-react";
+import { Save, AlertTriangle, Loader2 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/src/components/ui/dialog";
 
 interface ProfileManagementSectionProps {
   darkMode: boolean;
@@ -23,6 +29,9 @@ export default function ProfileManagementSection({
   darkMode,
 }: ProfileManagementSectionProps) {
   const { user } = useAuth();
+  const [showDialog, setShowDialog] = useState(false);
+  const [dialogType, setDialogType] = useState<"save" | "delete">("save");
+  const [isFormDirty, setIsFormDirty] = useState(false);
   const [formState, setFormState] = useState({
     firstName: user?.name?.split(" ")[0] || "",
     surname: user?.name?.split(" ")[1] || "",
@@ -30,6 +39,13 @@ export default function ProfileManagementSection({
     country: "",
     city: "",
   });
+
+  // Track form changes
+  useEffect(() => {
+    const hasChanges =
+      formState.country.length > 0 || formState.city.length > 0;
+    setIsFormDirty(hasChanges);
+  }, [formState.country, formState.city]);
 
   const getUserInitials = (name?: string) => {
     return name && name.length > 0 ? name[0].toUpperCase() : "";
@@ -42,10 +58,36 @@ export default function ProfileManagementSection({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Save changes logic would go here
-    console.log("Saving profile changes:", formState);
-    // Show success message or handle errors
+    setDialogType("save");
+    setShowDialog(true);
   };
+
+  const handleDeleteAccount = () => {
+    setDialogType("delete");
+    setShowDialog(true);
+  };
+
+  const ComingSoonDialog = () => (
+    <Dialog open={showDialog} onOpenChange={setShowDialog}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle className="text-center">
+            {dialogType === "save"
+              ? "Feature Coming Soon!"
+              : "Delete Account Coming Soon!"}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="flex flex-col items-center p-6">
+          <Loader2 className="h-12 w-12 animate-spin text-[#2E604A] mb-4" />
+          <p className="text-center text-sm text-gray-500">
+            {dialogType === "save"
+              ? "We're working on making your profile even better. This feature will be available soon!"
+              : "Account deletion functionality is coming soon. Please check back later."}
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 
   return (
     <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -105,8 +147,8 @@ export default function ProfileManagementSection({
                   id="firstName"
                   name="firstName"
                   value={formState.firstName}
-                  onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+                  disabled
+                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700/50 text-gray-400" : "bg-gray-100 text-gray-600"} cursor-not-allowed !text-base`}
                 />
               </div>
 
@@ -121,8 +163,8 @@ export default function ProfileManagementSection({
                   id="surname"
                   name="surname"
                   value={formState.surname}
-                  onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+                  disabled
+                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700/50 text-gray-400" : "bg-gray-100 text-gray-600"} cursor-not-allowed !text-base`}
                 />
               </div>
             </div>
@@ -139,8 +181,8 @@ export default function ProfileManagementSection({
                 name="email"
                 type="email"
                 value={formState.email}
-                onChange={handleInputChange}
-                className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+                disabled
+                className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700/50 text-gray-400" : "bg-gray-100 text-gray-600"} cursor-not-allowed !text-base`}
               />
             </div>
 
@@ -181,7 +223,9 @@ export default function ProfileManagementSection({
             <div className="flex justify-center pt-4">
               <Button
                 type="submit"
-                className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                disabled={!isFormDirty}
+                className={`h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] 
+                  ${!isFormDirty ? "opacity-50 cursor-not-allowed" : "hover:bg-[#2E604A]/90 cursor-pointer"}`}
                 aria-label="Save Changes"
               >
                 <Save size={16} className="mr-2" />
@@ -193,15 +237,6 @@ export default function ProfileManagementSection({
 
         <TabsContent value="security">
           <div className="max-w mx-auto">
-            {/* <Card className="mb-4 dark:bg-gray-800">
-              <CardContent className="p-4 flex justify-between items-center dark:text-gray-100">
-                <span className="text-lg font-medium">
-                  {darkMode ? "Light Mode" : "Dark Mode"}
-                </span>
-                <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-              </CardContent>
-            </Card> */}
-
             <Card className="dark:bg-gray-800">
               <CardContent className="p-4 dark:text-gray-100">
                 <h3 className="text-lg font-semibold">Delete My Account</h3>
@@ -224,6 +259,7 @@ export default function ProfileManagementSection({
                 <div className="max-w-sm mt-6 flex gap-2">
                   <button
                     type="button"
+                    onClick={handleDeleteAccount}
                     className="!w-full !bg-red-600 !text-white font-medium rounded-md max-w-[280px] h-[44px] hover:bg-red-700 transition-all duration-300 cursor-pointer"
                     aria-label="Delete Account"
                   >
@@ -235,6 +271,8 @@ export default function ProfileManagementSection({
           </div>
         </TabsContent>
       </Tabs>
+
+      <ComingSoonDialog />
     </div>
   );
 }
