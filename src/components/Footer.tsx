@@ -69,34 +69,34 @@ const Footer = () => {
               </div>
             </Link>
             <div
-              className="flex gap-4 text-white"
+              className="flex gap-6 text-white"
               role="navigation"
               aria-label="Social Media Links"
             >
               <Link
                 href="https://www.instagram.com/reconxihq"
-                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center border-2 border-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white hover:text-primary"
                 aria-label="Instagram"
               >
                 <InstagramIcon className="text-inherit w-5 h-5" />
               </Link>
               <Link
                 href="https://www.fb.com/reconxihq"
-                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center border-2 border-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white hover:text-primary"
                 aria-label="Facebook"
               >
                 <FacebookIcon className="text-inherit w-5 h-5" />
               </Link>
               <Link
                 href="https://www.linkedin.com/in/the-reconxi"
-                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center border-2 border-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white hover:text-primary"
                 aria-label="Linkedin"
               >
                 <LinkedinIcon className="text-inherit w-5 h-5" />
               </Link>
               <Link
                 href="https://x.com/thereconxi"
-                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-colors duration-200"
+                className="bg-[#2a5743] h-10 w-10 rounded-full flex items-center justify-center border-2 border-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white hover:text-primary"
                 aria-label="Twitter"
               >
                 <TwitterIcon className="text-inherit w-5 h-5" />
