@@ -12,7 +12,6 @@ import {
 } from "@/src/components/ui/tabs";
 import { User } from "@/src/types/auth";
 import { Card, CardContent } from "@/src/components/ui/card";
-import { Switch } from "@/src/components/ui/switch";
 import { Save, AlertTriangle } from "lucide-react";
 
 interface ProfileManagementSectionProps {
@@ -22,7 +21,6 @@ interface ProfileManagementSectionProps {
 
 export default function ProfileManagementSection({
   darkMode,
-  setDarkMode,
 }: ProfileManagementSectionProps) {
   const { user } = useAuth();
   const [formState, setFormState] = useState({
