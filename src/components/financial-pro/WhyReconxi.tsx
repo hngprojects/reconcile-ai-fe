@@ -7,23 +7,24 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    title: "Completely Free to Start",
+    title: "Automated Bank Reconciliation",
     description:
-      "Get started with free bank reconciliation software, no upfront costs.",
+      "Reconcile multiple bank statements in a fraction of the time with AI-powered matching technology.",
   },
   {
-    title: "No More Spreadsheets",
+    title: "Accurate & Reliable Results",
     description:
-      "AI-driven automated reconciliation software simplifies your workflow.",
+      "Reduce human errors in reconciliation with automated transaction matching..",
   },
   {
-    title: "Easy for Any Business",
+    title: "Quick Reconciliation Setup",
     description:
-      "Whether you're a freelancer, startup, or small business, enjoy free online bank reconciliation with ease.",
+      " Simply upload your bank statements in CSV format and let ReconXi take care of the rest.",
   },
   {
-    title: "Scales as You Grow",
-    description: "Upgrade to affordable plans as your business needs increase.",
+    title: "Save Time with ReconXi",
+    description:
+      "Spend less time on manual checks and more time providing insights to your clients or company.",
   },
 ];
 export default function WhyReconXi() {
@@ -77,7 +78,7 @@ export default function WhyReconXi() {
                   </div>
                 </div>
               ))}
-              <Link href={'/demo'}>
+              <Link href={"/demo"}>
                 <button
                   type="button"
                   className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
@@ -85,7 +86,7 @@ export default function WhyReconXi() {
                 >
                   Get a Free Demo
                 </button>
-                </Link>
+              </Link>
             </motion.div>
 
             <motion.div

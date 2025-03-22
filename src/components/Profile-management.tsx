@@ -4,25 +4,26 @@ import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { Input } from "@/src/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/src/components/ui/tabs";
 import { User } from "@/src/types/auth";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { Switch } from "@/src/components/ui/switch";
-import { Save, AlertTriangle } from "lucide-react";
+import { Save } from "lucide-react";
 
-interface ProfileManagementSectionProps {
+interface ProfileManagementProps {
   darkMode: boolean;
   setDarkMode: (value: boolean) => void;
 }
 
-export default function ProfileManagementSection({ darkMode, setDarkMode }: ProfileManagementSectionProps) {
+
+export default function ProfileManagementSection({
+  darkMode,
+  // setDarkMode,
+}: ProfileManagementProps) {
   const { user } = useAuth();
   const [formState, setFormState] = useState({
-    firstName: "Mark",
-    surname: "Essien",
+    firstName: user?.name?.split(" ")[0] || "",
+    surname: user?.name?.split(" ")[1] || "",
     email: user?.email || "",
     country: "Nigeria",
-    city: "Lagos"
+    city: "Lagos",
   });
 
   const getUserInitials = (name?: string) => {
@@ -31,9 +32,9 @@ export default function ProfileManagementSection({ darkMode, setDarkMode }: Prof
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormState(prev => ({ ...prev, [name]: value }));
+    setFormState((prev) => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Save changes logic would go here
@@ -42,162 +43,132 @@ export default function ProfileManagementSection({ darkMode, setDarkMode }: Prof
   };
 
   return (
-    <>
-      <h1 className={`text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-4`}>
+    <div className="p-6 dark:bg-[#2E604A]/20 rounded-lg border border-[#2E604A]/30">
+      <h1
+        className={`text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-6`}
+      >
         Profile Management
       </h1>
 
-      <Tabs defaultValue="personal" className="w-full mb-8">
-        <TabsList
-          className={`flex flex-row flex-wrap w-full border-b ${darkMode ? "dark:border-gray-700" : "border-gray-200"} rounded-sm p-2 gap-2 h-auto mb-8`}
+      {/* Profile Avatar */}
+      <div className="flex justify-start mb-8">
+        <div
+          className={`flex items-center justify-center ${
+            darkMode ? "bg-[#2E604A]/30" : "bg-gray-100"
+          } text-[#297B65] size-10 text-xl rounded-full`}
         >
-          <TabsTrigger
-            value="personal"
-            className={`data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:${darkMode ? "bg-gray-800" : "bg-gray-100"} hover:bg-white h-12 rounded-sm`}
-          >
-            Personal Information
-          </TabsTrigger>
-          <TabsTrigger
-            value="security"
-            className={`data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:${darkMode ? "bg-gray-800" : "bg-gray-100"} hover:bg-white h-12 rounded-sm`}
-          >
-            Settings
-          </TabsTrigger>
-        </TabsList>
+          {(user as User)?.avatar ? (
+            <Image
+              src={(user as User).avatar}
+              alt={(user as User).name}
+              width={80}
+              height={80}
+              className="rounded-full"
+            />
+          ) : (
+            <p>{getUserInitials((user as User)?.name)}</p>
+          )}
+        </div>
+      </div>
 
-        <TabsContent value="personal" className="pt-0 mt-0">
-          <div className="flex justify-start mb-8">
-            <div className={`flex items-center justify-center ${darkMode ? "bg-gray-800" : "bg-gray-100"} text-[#297B65] size-10 text-xl rounded-full`}>
-              {(user as User)?.avatar ? (
-                <Image src={(user as User).avatar} alt={(user as User).name} width={80} height={80} className="rounded-full" />
-              ) : (
-                <p>{getUserInitials((user as User)?.name)}</p>
-              )}
-            </div>
+      {/* Form */}
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label
+              htmlFor="firstName"
+              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+            >
+              First Name
+            </label>
+            <Input
+              id="firstName"
+              name="firstName"
+              value={formState.firstName}
+              onChange={handleInputChange}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+            />
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="firstName" className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                  First Name
-                </label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  value={formState.firstName}
-                  onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="surname" className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                  Surname
-                </label>
-                <Input
-                  id="surname"
-                  name="surname"
-                  value={formState.surname}
-                  onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="email" className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                Email
-              </label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                value={formState.email}
-                onChange={handleInputChange}
-                className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label htmlFor="country" className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                  Country
-                </label>
-                <Input
-                  id="country"
-                  name="country"
-                  value={formState.country}
-                  onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label htmlFor="city" className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}>
-                  City
-                </label>
-                <Input
-                  id="city"
-                  name="city"
-                  value={formState.city}
-                  onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-center pt-4">
-              <Button 
-                type="submit"
-                className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
-                aria-label="Save Changes"
-              >
-                <Save size={16} className="mr-2" />
-                Save Changes
-              </Button>
-            </div>
-          </form>
-        </TabsContent>
-
-        <TabsContent value="security">
-          <div className="max-w mx-auto">
-            <Card className="mb-4 dark:bg-gray-800">
-              <CardContent className="p-4 flex justify-between items-center dark:text-gray-100">
-                <span className="text-lg font-medium">{darkMode ? "Light Mode" : "Dark Mode"}</span>
-                <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-              </CardContent>
-            </Card>
-
-            <Card className="dark:bg-gray-800">
-              <CardContent className="p-4 dark:text-gray-100">
-                <h3 className="text-lg font-semibold">Delete My Account</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  Deleting your account is permanent and cannot be reversed.
-                </p>
-                
-                <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-start space-x-3 mb-4">
-                  <AlertTriangle className="text-red-500 h-5 w-5 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-red-800 text-sm">Warning: This action cannot be undone</h4>
-                    <p className="text-red-700 text-xs mt-1">All your data and history will be permanently removed.</p>
-                  </div>
-                </div>
-                
-                <div className="max-w-sm mt-6 flex gap-2">
-                  <button 
-                    type="button" 
-                    className="!w-full !bg-red-600 !text-white font-medium rounded-md max-w-[280px] h-[44px] hover:bg-red-700 transition-all duration-300 cursor-pointer" 
-                    aria-label="Delete Account"
-                  >
-                    Delete Account
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
+          <div className="space-y-2">
+            <label
+              htmlFor="surname"
+              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+            >
+              Surname
+            </label>
+            <Input
+              id="surname"
+              name="surname"
+              value={formState.surname}
+              onChange={handleInputChange}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+            />
           </div>
-        </TabsContent>
-      </Tabs>
-    </>
+        </div>
+
+        <div className="space-y-2">
+          <label
+            htmlFor="email"
+            className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+          >
+            Email
+          </label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            value={formState.email}
+            onChange={handleInputChange}
+            className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label
+              htmlFor="country"
+              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+            >
+              Country
+            </label>
+            <Input
+              id="country"
+              name="country"
+              value={formState.country}
+              onChange={handleInputChange}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              htmlFor="city"
+              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
+            >
+              City
+            </label>
+            <Input
+              id="city"
+              name="city"
+              value={formState.city}
+              onChange={handleInputChange}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center pt-4">
+          <Button
+            type="submit"
+            className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+            aria-label="Save Changes"
+          >
+            <Save size={16} className="mr-2" />
+            Save Changes
+          </Button>
+        </div>
+      </form>
+    </div>
   );
 }

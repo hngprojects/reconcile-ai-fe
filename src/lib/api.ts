@@ -9,7 +9,7 @@ import {
   CUSTOMER_FEEDBACK_API_URL,
   RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
-  GOOGLE_LOGIN_URL
+  GOOGLE_LOGIN_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -85,8 +85,10 @@ export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
       body: formData,
     });
 
+    console.log(response.status);
+
     const data = await response.json();
-    localStorage.setItem('reconciliation_id', data.data.reconciliation_id);
+    localStorage.setItem("reconciliation_id", data.data.reconciliation_id);
 
     if (response.status === 429) {
       return {
@@ -223,10 +225,10 @@ export async function updateReconciliation(
       body: JSON.stringify(data),
     });
 
-    if(response.ok){
+    if (response.ok) {
       const resData = await response.json();
 
-      return { status: 'success', data: resData.data };
+      return { status: "success", data: resData.data };
     }
   } catch {
     return { error: "Something went wrong. Please try again later." };
@@ -322,9 +324,11 @@ export const handleCustomerFeedback = async (formData: FormData) => {
   }
 };
 
-export const fetchReconciliation = async(reconciliationId: string) => {
+export const fetchReconciliation = async (reconciliationId: string) => {
   try {
-    const response = await fetch(`${RECONCILIATION_RESULT_API_URL}${reconciliationId}`);
+    const response = await fetch(
+      `${RECONCILIATION_RESULT_API_URL}${reconciliationId}`,
+    );
 
     const data = await response.json();
 
@@ -373,37 +377,39 @@ export async function updatePaymentPlan(
 }
 
 export const exportReconciliation = async (reconciliationId: string) => {
-      const response = await fetch(`${RECONCILIATION_RESULT_API_URL}${reconciliationId}/export`);
-      const blob = await response.blob();
+  const response = await fetch(
+    `${RECONCILIATION_RESULT_API_URL}${reconciliationId}/export`,
+  );
+  const blob = await response.blob();
 
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `reconciliation_export_${
-        new Date().toISOString().split("T")[0]
-      }.csv`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-}
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `reconciliation_export_${
+    new Date().toISOString().split("T")[0]
+  }.csv`;
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+};
 
 export const loginWithGoogle = async (id_token: string) => {
-      const response = await fetch(GOOGLE_LOGIN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id_token,
-        }),
-      });
+  const response = await fetch(GOOGLE_LOGIN_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id_token,
+    }),
+  });
 
-      const resData = await response.json();
+  const resData = await response.json();
 
-      if (response.ok) {
-        return { status: "success", data: resData };
-      } else {
-        return { status: "error" };
-      }
-}
+  if (response.ok) {
+    return { status: "success", data: resData };
+  } else {
+    return { status: "error" };
+  }
+};
