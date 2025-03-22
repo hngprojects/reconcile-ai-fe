@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import { CircleCheck } from "lucide-react";
 import { cn } from "@/src/lib/utils";
@@ -96,7 +95,7 @@ export default function ManagePlanSection({
           <span
             className={cn(
               "font-[400] text-[13px] leading-[150%] font-inter",
-              isActive ? "text-white" : "text-[#333333]"
+              isActive ? "text-white" : darkMode ? "text-[#D1D5DB]" : "text-[#333333]"
             )}
           >
             {feature}
@@ -136,12 +135,12 @@ export default function ManagePlanSection({
             <div
               key={plan.id}
               className={cn(
-                "relative w-full lg:w-1/3 rounded-[13px] p-6 transition-all duration-300",
+                "relative w-full lg:w-1/3 rounded-[13px] p-6 transition-all duration-500",
                 isCurrentPlan
                   ? "bg-[#2E604A] text-white"
                   : `border-2 border-[#38B43C] hover:scale-105 ${darkMode ? "text-white" : "text-black"}`,
                 !isCurrentPlan && activeCard !== null && "opacity-70",
-                isHovered && !isCurrentPlan && "opacity-100",
+                isHovered && !isCurrentPlan && "opacity-100 bg-[#38B43C]/30", // Green background on hover
                 darkMode && !isCurrentPlan && "bg-[#2E604A]/20"
               )}
               onMouseEnter={() => setHoveredCard(plan.id)}
@@ -166,7 +165,7 @@ export default function ManagePlanSection({
                 <p
                   className={cn(
                     "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black"
+                    activeCard === plan.id ? "text-white" : darkMode ? "text-white" : "text-black"
                   )}
                 >
                   <span className="text-2xl">$</span>
