@@ -18,7 +18,7 @@ export default function BlogDetail() {
 
   const hasContent = (
     sectionHeading?: string,
-    sectionContent?: string,
+    sectionContent?: string
   ): boolean => {
     return !!sectionHeading && !!sectionContent;
   };
@@ -28,30 +28,42 @@ export default function BlogDetail() {
       <div>
         <div className="pb-8 md:pb-12">
           <div className="bg-[#F9FAFB] md:bg-white pb-[40px] md:pb-0 pt-8 md:pt-12 px-4 w-full">
-            {/* Breadcrumbs */}
+            {/* Back to Blog Link */}
             <motion.div
               className="lg:px-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <nav className="flex justify-center items-center">
-                <Link
-                  href="/"
-                  className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
+              <Link
+                href="/blog"
+                className="inline-flex items-center text-[#5C5C5C] hover:text-[#2E604A] transition-colors"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mr-2"
                 >
-                  HOME
-                </Link>
-                <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
-                  /
-                </span>
-                <Link
-                  href="/blog"
-                  className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
-                >
-                  BLOG
-                </Link>
-              </nav>
+                  <path
+                    d="M15.8332 10H4.1665"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9.99984 15.8334L4.1665 10L9.99984 4.16669"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="text-[16px] font-medium">Back to Blog</span>
+              </Link>
             </motion.div>
 
             {/* Author Info and Metadata */}
@@ -91,7 +103,7 @@ export default function BlogDetail() {
 
           {/* Featured Image */}
           <motion.div
-          className="px-6 w-full"
+            className="px-6 w-full"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
@@ -313,7 +325,7 @@ export default function BlogDetail() {
 
             {hasContent(
               blog.categoryThreeHeading,
-              blog.categoryThreeContent,
+              blog.categoryThreeContent
             ) && (
               <motion.section
                 initial={{ opacity: 0, y: 20 }}

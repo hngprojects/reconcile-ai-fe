@@ -36,26 +36,19 @@ export default function BlogPage() {
 
   return (
     <>
-      <Container className="py-24">
+      <Container className="py-24 pt-12">
         <div className="sm:w-11/12 mx-auto">
           <div>
             <div className="">
               <nav className="flex justify-center items-center">
-                <Link
-                  href="/"
-                  className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
-                >
-                  HOME
-                </Link>
-                <span className="font-normal text-xs leading-4 text-[#333333] mx-2">
-                  /
-                </span>
-                <Link
-                  href="/blog"
-                  className="text-[#5C5C5C] text-[18px] font-[400] leading-[20px]"
+                <motion.p
+                  className="bg-[#E6FFF2] rounded-[16px] py-1 px-3 text-[20px] text-[#2E604A] mb-6"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
                 >
                   BLOG
-                </Link>
+                </motion.p>
               </nav>
             </div>
             {/* Blog Header */}
