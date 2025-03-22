@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { User } from "@/src/types/auth";
 import { LayoutDashboard } from "lucide-react";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 export default function UserDetails() {
   const { user, logout } = useAuth();
@@ -22,6 +23,7 @@ export default function UserDetails() {
   };
 
   return (
+    <ProtectedRoute>
     <div className="flex items-center gap-1 sm:gap-3">
       <DropdownMenu onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
@@ -66,5 +68,6 @@ export default function UserDetails() {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
+    </ProtectedRoute>
   );
 }

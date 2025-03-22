@@ -10,18 +10,24 @@ import MobileMenu from "./MobileMenu";
 import { useSession } from "next-auth/react";
 
 const UserAction: FC = () => {
-  const { user, setUser } = useAuth();
+  const { user, setUser, getUserDetails } = useAuth();
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    if (session) {
-      setUser(session.user as typeof user);
-      localStorage.setItem("access_token", session?.accessToken as string);
+    const fetch = async() => {
+      if (session) {
+        localStorage.setItem("access_token", session?.accessToken as string);
+        if(session?.accessToken) {
+          return getUserDetails(session?.accessToken);
+        }
+      }
     }
-  }, [session, setUser]);
+
+    fetch();
+  }, [session, setUser, getUserDetails]);
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
