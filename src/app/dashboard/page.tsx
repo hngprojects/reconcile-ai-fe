@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
-import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 import {
   LayoutDashboard,
   User,
@@ -16,11 +15,7 @@ import { useRouter } from "next/navigation";
 import SettingsPage from "./settings/page";
 
 export default function DashboardPage() {
-  return (
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  );
+  return <Dashboard />;
 }
 
 function Dashboard() {
@@ -28,17 +23,17 @@ function Dashboard() {
   const [darkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const router = useRouter();
-  const containerClasses = `flex h-screen ${darkMode ? "dark bg-[#1c3a2e]" : "bg-white"}`;
+
+  const containerClasses = `flex h-screen ${darkMode ? "dark bg-[#181818]" : "bg-white"} max-w-[1440px] mx-auto`;
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
   return (
-    <div className={`${containerClasses} max-w-[1440px] mx-auto`}>
+    <div className={containerClasses}>
       {/* Sidebar Navigation */}
-      <aside className="border-r w-16 md:w-60 h-screen bg-white dark:bg-[#1c3a2e] transition-all fixed md:relative z-10">
-        {/* Navigation Links */}
+      <aside className="border-r w-16 md:w-60 h-full bg-white dark:bg-[#222222] transition-all fixed md:relative z-10">
         <nav className="py-4 space-y-1">
           <NavItem
             icon={<LayoutDashboard size={20} />}
@@ -64,11 +59,10 @@ function Dashboard() {
         </nav>
 
         {/* Bottom Controls */}
-        <div className="absolute bottom-0 w-full border-t dark:border-[#2E604A]">
+        <div className="absolute bottom-0 w-full border-t dark:border-[#2E2E2E]">
           <button
             onClick={toggleDarkMode}
-            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-[#eaf5f1] dark:hover:bg-[#2E604A]/20"
-          >
+            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-[#EAEAEA] hover:bg-[#eaf5f1] dark:hover:bg-[#2E2E2E]">
             <span className="shrink-0">
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </span>
@@ -88,18 +82,13 @@ function Dashboard() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto pl-16 md:pl-0">
-        <main className="p-4 md:p-8 max-w-6xl mx-auto">
+      <div className="flex-1 ml-16 md:ml-0 h-full">
+        <main className="p-4 md:p-8 max-w-6xl mx-auto h-full overflow-auto">
           {activeTab === "profile" && (
-            <ProfileManagementSection
-              darkMode={darkMode}
-              setDarkMode={setDarkMode}
-            />
+            <ProfileManagementSection darkMode={darkMode} setDarkMode={setDarkMode} />
           )}
 
-          {activeTab === "subscription" && (
-            <ManagePlanSection darkMode={darkMode} />
-          )}
+          {activeTab === "subscription" && <ManagePlanSection darkMode={darkMode} />}
 
           {activeTab === "settings" && (
             <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
@@ -107,18 +96,16 @@ function Dashboard() {
 
           {activeTab === "dashboard" && (
             <div
-              className={`p-6 rounded-lg border ${
-                darkMode
-                  ? "bg-[#2E604A]/10 border-[#2E604A]/30 text-white"
-                  : "bg-white border-gray-200"
+              className={`p-6 rounded-lg border transition-colors ${darkMode
+                ? "bg-[#222222] border-[#2E2E2E] text-[#EAEAEA]"
+                : "bg-white border-gray-200 text-gray-800"
               }`}
             >
               <h1 className="text-2xl font-semibold mb-4">
                 Welcome back, {(user?.name || "User").split(" ")[0]}
               </h1>
               <p className="mb-6">
-                This is your ReconXi dashboard where you can manage your
-                account and reconciliations.
+                This is your ReconXi dashboard where you can manage your account and reconciliations.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -146,23 +133,17 @@ function Dashboard() {
 }
 
 // Navigation Item Component
-interface NavItemProps {
-  icon: React.ReactNode;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-  darkMode: boolean;
-}
-
-function NavItem({ icon, label, active, onClick, darkMode }: NavItemProps) {
+function NavItem({ icon, label, active, onClick, darkMode }) {
   return (
     <button
       onClick={onClick}
       className={`flex items-center w-full px-4 py-3 rounded-md transition-colors cursor-pointer
         ${
           active
-            ? `${darkMode ? "bg-[#2E604A] text-white" : "bg-[#eaf5f1] text-[#2E604A]"}`
-            : `text-gray-700 dark:text-gray-300 hover:bg-[#eaf5f1] dark:hover:bg-[#2E604A]/20`
+            ? darkMode
+              ? "bg-[#2E2E2E] text-white"
+              : "bg-[#eaf5f1] text-[#2E604A]"
+            : "text-gray-700 dark:text-gray-300 hover:bg-[#eaf5f1] dark:hover:bg-[#292929]"
         }`}
     >
       <span className="shrink-0">{icon}</span>
@@ -172,42 +153,26 @@ function NavItem({ icon, label, active, onClick, darkMode }: NavItemProps) {
 }
 
 // Dashboard Card Component
-interface DashboardCardProps {
-  title: string;
-  content: string;
-  actionText?: string;
-  onAction?: () => void;
-  darkMode: boolean;
-}
-
-function DashboardCard({
-  title,
-  content,
-  actionText,
-  onAction,
-  darkMode,
-}: DashboardCardProps) {
+function DashboardCard({ title, content, actionText, onAction, darkMode }) {
   return (
     <div
-      className={`p-4 rounded-lg border ${darkMode ? "bg-[#2E604A]/20 border-[#2E604A]/30" : "bg-gray-50 border-gray-200"}`}
+      className={`p-4 rounded-lg border transition-colors ${
+        darkMode ? "bg-[#222222] border-[#2E2E2E]" : "bg-gray-50 border-gray-200"
+      }`}
     >
-      <h3
-        className={`font-medium mb-2 ${darkMode ? "text-gray-100" : "text-gray-800"}`}
-      >
+      <h3 className={`font-medium mb-2 ${darkMode ? "text-[#EAEAEA]" : "text-gray-800"}`}>
         {title}
       </h3>
-      <p
-        className={`text-sm mb-4 ${darkMode ? "text-gray-300" : "text-gray-600"}`}
-      >
+      <p className={`text-sm mb-4 ${darkMode ? "text-[#B0B0B0]" : "text-gray-600"}`}>
         {content}
       </p>
 
       {actionText && onAction && (
         <button
           onClick={onAction}
-          className="px-4 py-2 text-sm bg-[#2E604A] hover:bg-[#2E604A]/90 text-white rounded"
+          className="px-4 py-2 text-sm bg-[#4CAF50] hover:bg-[#388E3C] text-white rounded"
         >
-          {actionText}
+          <span className="cursor-pointer">{actionText}</span> {/* Added cursor-pointer */}
         </button>
       )}
     </div>

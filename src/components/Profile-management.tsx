@@ -12,18 +12,16 @@ interface ProfileManagementProps {
   setDarkMode: (value: boolean) => void;
 }
 
-
 export default function ProfileManagementSection({
   darkMode,
-  // setDarkMode,
 }: ProfileManagementProps) {
   const { user } = useAuth();
   const [formState, setFormState] = useState({
     firstName: user?.name?.split(" ")[0] || "",
     surname: user?.name?.split(" ")[1] || "",
     email: user?.email || "",
-    country: "Nigeria",
-    city: "Lagos",
+    country: "",
+    city: "",
   });
 
   const getUserInitials = (name?: string) => {
@@ -53,9 +51,7 @@ export default function ProfileManagementSection({
       {/* Profile Avatar */}
       <div className="flex justify-start mb-8">
         <div
-          className={`flex items-center justify-center ${
-            darkMode ? "bg-[#2E604A]/30" : "bg-gray-100"
-          } text-[#297B65] size-10 text-xl rounded-full`}
+          className={`flex items-center justify-center ${darkMode ? "bg-[#2E604A]/30" : "bg-gray-100"} text-[#297B65] size-10 text-xl rounded-full`}
         >
           {(user as User)?.avatar ? (
             <Image
@@ -86,7 +82,7 @@ export default function ProfileManagementSection({
               name="firstName"
               value={formState.firstName}
               onChange={handleInputChange}
-              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white text-gray-800"} !text-base border ${darkMode ? "border-gray-600" : "border-gray-300"} focus:ring-2 focus:ring-[#2E604A]`}
             />
           </div>
 
@@ -102,7 +98,7 @@ export default function ProfileManagementSection({
               name="surname"
               value={formState.surname}
               onChange={handleInputChange}
-              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white text-gray-800"} !text-base border ${darkMode ? "border-gray-600" : "border-gray-300"} focus:ring-2 focus:ring-[#2E604A]`}
             />
           </div>
         </div>
@@ -120,7 +116,7 @@ export default function ProfileManagementSection({
             type="email"
             value={formState.email}
             onChange={handleInputChange}
-            className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+            className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white text-gray-800"} !text-base border ${darkMode ? "border-gray-600" : "border-gray-300"} focus:ring-2 focus:ring-[#2E604A]`}
           />
         </div>
 
@@ -137,7 +133,7 @@ export default function ProfileManagementSection({
               name="country"
               value={formState.country}
               onChange={handleInputChange}
-              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white text-gray-800"} !text-base border ${darkMode ? "border-gray-600" : "border-gray-300"} focus:ring-2 focus:ring-[#2E604A]`}
             />
           </div>
 
@@ -153,7 +149,7 @@ export default function ProfileManagementSection({
               name="city"
               value={formState.city}
               onChange={handleInputChange}
-              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+              className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white text-gray-800"} !text-base border ${darkMode ? "border-gray-600" : "border-gray-300"} focus:ring-2 focus:ring-[#2E604A]`}
             />
           </div>
         </div>
