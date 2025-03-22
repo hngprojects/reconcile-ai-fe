@@ -12,7 +12,13 @@ interface PlanMap {
   Business: number;
 }
 
-export default function ManagePlanSection() {
+interface ManagePlanSectionProps {
+  darkMode: boolean;
+}
+
+export default function ManagePlanSection({
+  darkMode,
+}: ManagePlanSectionProps) {
   const { user } = useAuth();
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
@@ -83,14 +89,14 @@ export default function ManagePlanSection() {
             <CircleCheck
               className={cn(
                 "w-5 h-5",
-                isActive ? "text-white" : "text-[#39B057]",
+                isActive ? "text-white" : "text-[#39B057]"
               )}
             />
           </span>
           <span
             className={cn(
               "font-[400] text-[13px] leading-[150%] font-inter",
-              isActive ? "text-white" : "text-[#333333]",
+              isActive ? "text-white" : "text-[#333333]"
             )}
           >
             {feature}
@@ -105,14 +111,16 @@ export default function ManagePlanSection() {
   };
 
   return (
-    <>
-      <h1 className="font-inter font-semibold text-[30px] leading-[38px] text-[#101828] mb-2">
+    <div className={darkMode ? "text-white" : "text-black"}>
+      <h1 className="font-inter font-semibold text-[30px] leading-[38px] mb-2">
         Subscription Management
       </h1>
-      <p className="font-inter font-normal text-[16px] leading-[24px] text-[#333333] mb-8">
+      <p
+        className={`font-inter font-normal text-[16px] leading-[24px] ${darkMode ? "text-gray-300" : "text-[#333333]"} mb-8`}
+      >
         Choose the plan that works best for your reconciliation needs.
       </p>
-      
+
       {/* Pricing cards section */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -130,21 +138,24 @@ export default function ManagePlanSection() {
               className={cn(
                 "relative w-full lg:w-1/3 rounded-[13px] p-6 transition-all duration-300",
                 isCurrentPlan
-                  ? "bg-[#2E604A] scale-105"
-                  : "border-2 border-[#38B43C] hover:scale-105",
+                  ? "bg-[#2E604A] text-white"
+                  : `border-2 border-[#38B43C] hover:scale-105 ${darkMode ? "text-white" : "text-black"}`,
                 !isCurrentPlan && activeCard !== null && "opacity-70",
                 isHovered && !isCurrentPlan && "opacity-100",
+                darkMode && !isCurrentPlan && "bg-[#2E604A]/20"
               )}
               onMouseEnter={() => setHoveredCard(plan.id)}
               onMouseLeave={() => setHoveredCard(null)}
               tabIndex={0}
               aria-label={`${plan.name} pricing plan`}
             >
-              <div className="border-b border-[#BFB8B8] pb-4">
+              <div
+                className={`border-b ${darkMode ? "border-[#2E604A]" : "border-[#BFB8B8]"} pb-4`}
+              >
                 <h3
                   className={cn(
                     "font-[500] text-[16px] leading-[100%] font-inter",
-                    activeCard === plan.id ? "text-white" : "text-black",
+                    isCurrentPlan || darkMode ? "text-white" : "text-black"
                   )}
                 >
                   {plan.name}
@@ -155,14 +166,16 @@ export default function ManagePlanSection() {
                 <p
                   className={cn(
                     "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black",
+                    activeCard === plan.id ? "text-white" : "text-black"
                   )}
                 >
                   <span className="text-2xl">$</span>
                   {plan.price}
-                  {plan.price !== "Free" && <span className="text-sm font-normal">/month</span>}
+                  {plan.price !== "Free" && (
+                    <span className="text-sm font-normal">/month</span>
+                  )}
                 </p>
-                
+
                 <div className="flex-grow">
                   {renderFeaturesList(plan.features, activeCard === plan.id)}
                 </div>
@@ -181,7 +194,7 @@ export default function ManagePlanSection() {
                       "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",
                       isHovered
                         ? "bg-[#eaf5f1] text-[#2A5743] border-[#2E604A]"
-                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]",
+                        : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]"
                     )}
                   >
                     Choose Plan
@@ -192,6 +205,6 @@ export default function ManagePlanSection() {
           );
         })}
       </motion.div>
-    </>
+    </div>
   );
 }

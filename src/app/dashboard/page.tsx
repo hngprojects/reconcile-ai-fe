@@ -1,33 +1,43 @@
 "use client";
 import { useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 import {
   LayoutDashboard,
   User,
   CreditCard,
-  LogOut,
+  Settings,
   Moon,
   Sun,
 } from "lucide-react";
 import ProfileManagementSection from "@/src/components/Profile-management";
 import ManagePlanSection from "@/src/components/manage-plans";
 import { useRouter } from "next/navigation";
-export default function Dashboard() {
+import SettingsPage from "./settings/page";
+
+export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  );
+}
+
+function Dashboard() {
   const { user } = useAuth();
   const [darkMode, setDarkMode] = useState(false);
-  const [activeTab, setActiveTab] = useState("profile"); // Default to profile view
+  const [activeTab, setActiveTab] = useState("dashboard");
   const router = useRouter();
-  const containerClasses = `flex h-screen flex-col md:flex-row ${darkMode ? "dark bg-gray-900" : "bg-white"}`;
+  const containerClasses = `flex h-screen ${darkMode ? "dark bg-[#1c3a2e]" : "bg-white"}`;
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
   return (
-    <div className={containerClasses}>
+    <div className={`${containerClasses} max-w-[1440px] mx-auto`}>
       {/* Sidebar Navigation */}
-      <aside className="border-r w-16 md:w-60 shrink-0 overflow-y-auto h-screen bg-white dark:bg-gray-800 transition-all">
-
+      <aside className="border-r w-16 md:w-60 h-screen bg-white dark:bg-[#1c3a2e] transition-all fixed md:relative z-10">
         {/* Navigation Links */}
         <nav className="py-4 space-y-1">
           <NavItem
@@ -54,10 +64,10 @@ export default function Dashboard() {
         </nav>
 
         {/* Bottom Controls */}
-        <div className="absolute bottom-0 w-full border-t dark:border-gray-700">
+        <div className="absolute bottom-0 w-full border-t dark:border-[#2E604A]">
           <button
             onClick={toggleDarkMode}
-            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-[#eaf5f1] dark:hover:bg-[#2E604A]/20"
           >
             <span className="shrink-0">
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -67,17 +77,18 @@ export default function Dashboard() {
             </span>
           </button>
 
-          <button className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
-            <span className="shrink-0">
-              <LogOut size={20} />
-            </span>
-            <span className="ml-3 hidden md:block">Sign Out</span>
-          </button>
+          <NavItem
+            icon={<Settings size={20} />}
+            label="Settings"
+            active={activeTab === "settings"}
+            onClick={() => setActiveTab("settings")}
+            darkMode={darkMode}
+          />
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pl-16 md:pl-0">
         <main className="p-4 md:p-8 max-w-6xl mx-auto">
           {activeTab === "profile" && (
             <ProfileManagementSection
@@ -86,17 +97,27 @@ export default function Dashboard() {
             />
           )}
 
-          {activeTab === "subscription" && <ManagePlanSection />}
+          {activeTab === "subscription" && (
+            <ManagePlanSection darkMode={darkMode} />
+          )}
+
+          {activeTab === "settings" && (
+            <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
+          )}
 
           {activeTab === "dashboard" && (
             <div
-              className={`p-6 rounded-lg border ${darkMode ? "bg-gray-800 border-gray-700 text-white" : "bg-white border-gray-200"}`}
+              className={`p-6 rounded-lg border ${
+                darkMode
+                  ? "bg-[#2E604A]/10 border-[#2E604A]/30 text-white"
+                  : "bg-white border-gray-200"
+              }`}
             >
               <h1 className="text-2xl font-semibold mb-4">
                 Welcome back, {(user?.name || "User").split(" ")[0]}
               </h1>
               <p className="mb-6">
-                This is your ReconcileAI dashboard where you can manage your
+                This is your ReconXi dashboard where you can manage your
                 account and reconciliations.
               </p>
 
@@ -106,7 +127,6 @@ export default function Dashboard() {
                   content="Quickly reconcile your records."
                   actionText="Start Reconciliation"
                   onAction={() => router.push("/file-upload")}
-
                   darkMode={darkMode}
                 />
                 <DashboardCard
@@ -138,11 +158,11 @@ function NavItem({ icon, label, active, onClick, darkMode }: NavItemProps) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center w-full px-4 py-3 rounded-md transition-colors
+      className={`flex items-center w-full px-4 py-3 rounded-md transition-colors cursor-pointer
         ${
           active
-            ? `${darkMode ? "bg-gray-700 text-white" : "bg-teal-50 text-teal-700"}`
-            : `text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700`
+            ? `${darkMode ? "bg-[#2E604A] text-white" : "bg-[#eaf5f1] text-[#2E604A]"}`
+            : `text-gray-700 dark:text-gray-300 hover:bg-[#eaf5f1] dark:hover:bg-[#2E604A]/20`
         }`}
     >
       <span className="shrink-0">{icon}</span>
@@ -169,10 +189,10 @@ function DashboardCard({
 }: DashboardCardProps) {
   return (
     <div
-      className={`p-4 rounded-lg border ${darkMode ? "bg-gray-700 border-gray-600" : "bg-gray-50 border-gray-200"}`}
+      className={`p-4 rounded-lg border ${darkMode ? "bg-[#2E604A]/20 border-[#2E604A]/30" : "bg-gray-50 border-gray-200"}`}
     >
       <h3
-        className={`font-medium mb-2 ${darkMode ? "text-white" : "text-gray-800"}`}
+        className={`font-medium mb-2 ${darkMode ? "text-gray-100" : "text-gray-800"}`}
       >
         {title}
       </h3>
