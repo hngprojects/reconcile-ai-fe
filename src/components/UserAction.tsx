@@ -19,6 +19,7 @@ const UserAction: FC = () => {
   useEffect(() => {
     if(session){
       setUser(session.user as typeof user);
+      localStorage.setItem("access_token", session?.accessToken as string);
     }
   }, [session, setUser]);
 
