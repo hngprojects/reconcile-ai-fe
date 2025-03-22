@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { User } from "@/src/types/auth";
 import { toast } from "sonner";
 import { LOGOUT_API_URL } from "@/src/lib/apiEndpoints";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 
 interface AuthContextType {
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const signInWithGoogle = async () => {
-    const result = await signIn("google", { callbackUrl: "/file-upload" });
+    const result = await signIn("google", { callbackUrl: "/dashboard" });
 
     if (result?.error) {
       alert(result.error);
@@ -52,6 +52,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }), // Only send Authorization if token exists in localStorage
         },
       });
+
+      await signOut({ callbackUrl: "/" });
+
       if (!res.ok) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("user");
