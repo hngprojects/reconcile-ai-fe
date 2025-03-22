@@ -37,6 +37,7 @@
     "react-dom": "^18.3.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.54.2",
+    "react-simple-typewriter": "^5.0.1",
     "react-use": "^17.6.0",
     "reconcile-fe": "file:",
     "sharp": "^0.33.5",
