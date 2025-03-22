@@ -14,7 +14,7 @@ export default function VideoPage() {
           aria-label="Demo video"
           muted
         >
-          <source src="/assets/video/demoVD.MOV" type="video/mp4" />
+          <source src="/assets/video/ReconXi-Ad.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </main>
