@@ -17,7 +17,7 @@ const UserAction: FC = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    if(session){
+    if (session) {
       setUser(session.user as typeof user);
     }
   }, [session, setUser]);
@@ -31,7 +31,6 @@ const UserAction: FC = () => {
     setShowAuthModal(false);
     setShowLoginModal(true);
   };
-
 
   return (
     <div className=" flex items-center gap-2">
@@ -72,30 +71,30 @@ const UserAction: FC = () => {
         </>
       )}
       <div className="flex items-center md:hidden">
-          <button
-            type="button"
-            onClick={() => setShowMobileMenu(true)}
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-            aria-label="Open mobile menu"
-            aria-expanded={showMobileMenu}
-            aria-controls="mobile-menu"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
+        <button
+          type="button"
+          onClick={() => setShowMobileMenu(true)}
+          className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+          aria-label="Open mobile menu"
+          aria-expanded={showMobileMenu}
+          aria-controls="mobile-menu"
+        >
+          <Menu className="h-6 w-6" />
+        </button>
 
-          <MobileMenu
-            isOpen={showMobileMenu}
-            onClose={() => setShowMobileMenu(false)}
-            onLogin={() => {
-              setShowMobileMenu(false);
-              setShowLoginModal(true);
-            }}
-            onSignup={() => {
-              setShowMobileMenu(false);
-              setShowAuthModal(true);
-            }}
-          />
-        </div>
+        <MobileMenu
+          isOpen={showMobileMenu}
+          onClose={() => setShowMobileMenu(false)}
+          onLogin={() => {
+            setShowMobileMenu(false);
+            setShowLoginModal(true);
+          }}
+          onSignup={() => {
+            setShowMobileMenu(false);
+            setShowAuthModal(true);
+          }}
+        />
+      </div>
     </div>
   );
 };

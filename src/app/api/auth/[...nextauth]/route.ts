@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { loginWithGoogle } from "@/src/lib/api";
-import { cookies } from 'next/headers';
+import { cookies } from "next/headers";
 
 export const authOptions = {
   providers: [
@@ -15,19 +15,19 @@ export const authOptions = {
       const response = await loginWithGoogle(account.id_token);
       const cookieStore = await cookies();
 
-      if (response.status === 'success') {
-        cookieStore.set('access_token', response.data?.access_token, {
-          path: '/',
+      if (response.status === "success") {
+        cookieStore.set("access_token", response.data?.access_token, {
+          path: "/",
           maxAge: 60 * 60 * 24 * 7,
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
+          secure: process.env.NODE_ENV === "production",
         });
         user.access_token = response.data.access_token;
         user.data = response.data.user;
         return true;
       }
 
-      return false; 
+      return false;
     },
     async jwt({ token, user }) {
       if (user) {
@@ -39,14 +39,14 @@ export const authOptions = {
     async session({ session, token }) {
       session.accessToken = token.accessToken;
       session.user = {
-        ...session.user, 
-        ...token.user, 
+        ...session.user,
+        ...token.user,
       };
       return session;
     },
   },
   session: {
-    strategy: "jwt", 
+    strategy: "jwt",
   },
 };
 

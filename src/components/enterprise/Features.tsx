@@ -25,7 +25,10 @@ const features = [
 
 export default function Features() {
   return (
-    <section className="w-full py-20 px-0 lg:px-20" aria-labelledby="features-heading">
+    <section
+      className="w-full py-20 px-0 lg:px-20"
+      aria-labelledby="features-heading"
+    >
       <Container>
         <div className="flex flex-col gap-12">
           {/* Image - Moves to top on mobile */}
@@ -75,7 +78,7 @@ export default function Features() {
                   </motion.div>
                 ))}
               </div>
-              <Link href={'/demo'}>
+              <Link href={"/demo"}>
                 <button
                   type="button"
                   className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
@@ -83,7 +86,7 @@ export default function Features() {
                 >
                   Get a Free Demo
                 </button>
-                </Link>
+              </Link>
             </motion.div>
 
             {/* Right Image - Hidden on mobile */}
