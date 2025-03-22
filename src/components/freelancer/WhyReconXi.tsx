@@ -9,13 +9,11 @@ import { Check } from "lucide-react";
 const features = [
   {
     title: "Instant Bank Reconciliation Accounting",
-    description:
-      "Upload your bank statements and let AI do the work",
+    description: "Upload your bank statements and let AI do the work",
   },
   {
     title: "Automated Reconciliation Software",
-    description:
-      "Say goodbye to manual tracking and errors.",
+    description: "Say goodbye to manual tracking and errors.",
   },
   {
     title: "Accurate Financial Reports",
@@ -24,8 +22,7 @@ const features = [
   },
   {
     title: "100% Free for limited Use",
-    description:
-      "No hidden fees. Just fast, effortless reconciliation.",
+    description: "No hidden fees. Just fast, effortless reconciliation.",
   },
 ];
 
@@ -43,7 +40,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-           Why Freelancers Need ReconXi
+            Why Freelancers Need ReconXi
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
@@ -71,7 +68,7 @@ export default function WhyReconXi() {
                   </div>
                 </div>
               ))}
-              <Link href={'/demo'}>
+              <Link href="#demo-form">
                 <button
                   type="button"
                   className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
@@ -79,7 +76,7 @@ export default function WhyReconXi() {
                 >
                   Get a Free Demo
                 </button>
-                </Link>
+              </Link>
             </motion.div>
 
             <motion.div

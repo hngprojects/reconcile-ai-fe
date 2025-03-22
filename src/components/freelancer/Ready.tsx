@@ -12,6 +12,7 @@ export default function StartReconcile() {
     <section
       className="py-10 md:py-20 bg-white"
       aria-labelledby="ready-section-title"
+      id="demo-form"
     >
       <Container>
         <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-16 items-center">
@@ -50,7 +51,8 @@ export default function StartReconcile() {
                 Ready to Reconcile Smarter?
               </h2>
               <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-              Join thousands of financial professionals using ReconXi&apos;s free bank reconciliation software to simplify accounting.
+                Join thousands of financial professionals using ReconXi&apos;s
+                free bank reconciliation software to simplify accounting.
               </p>
             </div>
 

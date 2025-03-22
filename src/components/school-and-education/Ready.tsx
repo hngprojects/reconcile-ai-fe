@@ -12,6 +12,7 @@ export default function StartReconcile() {
     <section
       className="py-10 md:py-20 bg-white"
       aria-labelledby="ready-section-title"
+      id="demo-form"
     >
       <Container>
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
@@ -47,10 +48,12 @@ export default function StartReconcile() {
                 id="ready-section-title"
                 className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
               >
-              Ready to Simplify Fee Payment Matching?
+                Ready to Simplify Fee Payment Matching?
               </h2>
               <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-              Start simplifying your school’s fee payment reconciliation today! Get in touch to find out how ReconXi can save you time and reduce errors.
+                Start simplifying your school’s fee payment reconciliation
+                today! Get in touch to find out how ReconXi can save you time
+                and reduce errors.
               </p>
             </div>
 

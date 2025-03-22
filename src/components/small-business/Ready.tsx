@@ -10,6 +10,7 @@ export default function StartReconcile() {
     <section
       className="py-10 md:py-20 px-0 lg:px-20 bg-white"
       aria-labelledby="ready-section-title"
+      id="demo-form"
     >
       <Container>
         <div className="flex flex-col w-full lg:flex-row-reverse gap-8 lg:gap-16 items-center">
