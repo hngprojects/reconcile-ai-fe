@@ -24,7 +24,7 @@ function Dashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const router = useRouter();
 
-  const containerClasses = `flex h-screen ${darkMode ? "dark bg-[#181818]" : "bg-white"} max-w-[1440px] mx-auto`;
+  const containerClasses = `flex min-h-screen ${darkMode ? "dark bg-[#1c3a2e]" : "bg-white"} w-full`;
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -32,101 +32,111 @@ function Dashboard() {
 
   return (
     <div className={containerClasses}>
-      {/* Sidebar Navigation */}
-      <aside className="border-r w-16 md:w-60 h-full bg-white dark:bg-[#222222] transition-all fixed md:relative z-10">
-        <nav className="py-4 space-y-1">
-          <NavItem
-            icon={<LayoutDashboard size={20} />}
-            label="Dashboard"
-            active={activeTab === "dashboard"}
-            onClick={() => setActiveTab("dashboard")}
-            darkMode={darkMode}
-          />
-          <NavItem
-            icon={<User size={20} />}
-            label="Profile"
-            active={activeTab === "profile"}
-            onClick={() => setActiveTab("profile")}
-            darkMode={darkMode}
-          />
-          <NavItem
-            icon={<CreditCard size={20} />}
-            label="Subscription"
-            active={activeTab === "subscription"}
-            onClick={() => setActiveTab("subscription")}
-            darkMode={darkMode}
-          />
-        </nav>
+      <div className="w-full max-w-[1440px] mx-auto flex relative">
+        {/* Sidebar Navigation */}
+        <aside className="border-r w-16 lg:w-60 h-screen bg-white dark:bg-[#1c3a2e] transition-all fixed md:relative z-10">
+          <nav className="py-4 space-y-1">
+            <NavItem
+              icon={<LayoutDashboard size={20} />}
+              label="Dashboard"
+              active={activeTab === "dashboard"}
+              onClick={() => setActiveTab("dashboard")}
+              darkMode={darkMode}
+            />
+            <NavItem
+              icon={<User size={20} />}
+              label="Profile"
+              active={activeTab === "profile"}
+              onClick={() => setActiveTab("profile")}
+              darkMode={darkMode}
+            />
+            <NavItem
+              icon={<CreditCard size={20} />}
+              label="Subscription"
+              active={activeTab === "subscription"}
+              onClick={() => setActiveTab("subscription")}
+              darkMode={darkMode}
+            />
+          </nav>
 
-        {/* Bottom Controls */}
-        <div className="absolute bottom-0 w-full border-t dark:border-[#2E2E2E]">
-          <button
-            onClick={toggleDarkMode}
-            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-[#EAEAEA] hover:bg-[#eaf5f1] dark:hover:bg-[#2E2E2E]">
-            <span className="shrink-0">
-              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </span>
-            <span className="ml-3 hidden md:block">
-              {darkMode ? "Light Mode" : "Dark Mode"}
-            </span>
-          </button>
-
-          <NavItem
-            icon={<Settings size={20} />}
-            label="Settings"
-            active={activeTab === "settings"}
-            onClick={() => setActiveTab("settings")}
-            darkMode={darkMode}
-          />
-        </div>
-      </aside>
-
-      {/* Main Content Area */}
-      <div className="flex-1 ml-16 md:ml-0 h-full">
-        <main className="p-4 md:p-8 max-w-6xl mx-auto h-full overflow-auto">
-          {activeTab === "profile" && (
-            <ProfileManagementSection darkMode={darkMode} setDarkMode={setDarkMode} />
-          )}
-
-          {activeTab === "subscription" && <ManagePlanSection darkMode={darkMode} />}
-
-          {activeTab === "settings" && (
-            <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
-          )}
-
-          {activeTab === "dashboard" && (
-            <div
-              className={`p-6 rounded-lg border transition-colors ${darkMode
-                ? "bg-[#222222] border-[#2E2E2E] text-[#EAEAEA]"
-                : "bg-white border-gray-200 text-gray-800"
-              }`}
+          {/* Bottom Controls */}
+          <div className="absolute bottom-0 w-full border-t dark:border-[#2E2E2E]">
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-[#EAEAEA] hover:bg-[#eaf5f1] dark:hover:bg-[#2E2E2E] cursor-pointer"
             >
-              <h1 className="text-2xl font-semibold mb-4">
-                Welcome back, {(user?.name || "User").split(" ")[0]}
-              </h1>
-              <p className="mb-6">
-                This is your ReconXi dashboard where you can manage your account and reconciliations.
-              </p>
+              <span className="shrink-0">
+                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </span>
+              <span className="ml-3 hidden md:block">
+                {darkMode ? "Light Mode" : "Dark Mode"}
+              </span>
+            </button>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <DashboardCard
-                  title="Reconciliation Magic"
-                  content="Quickly reconcile your records."
-                  actionText="Start Reconciliation"
-                  onAction={() => router.push("/file-upload")}
-                  darkMode={darkMode}
-                />
-                <DashboardCard
-                  title="Current Plan"
-                  content={`You are currently on the ${user?.payment_plan?.plan || "Basic"} plan.`}
-                  actionText="Upgrade Plan"
-                  onAction={() => setActiveTab("subscription")}
-                  darkMode={darkMode}
-                />
+            <NavItem
+              icon={<Settings size={20} />}
+              label="Settings"
+              active={activeTab === "settings"}
+              onClick={() => setActiveTab("settings")}
+              darkMode={darkMode}
+            />
+          </div>
+        </aside>
+
+        {/* Main Content Area */}
+        <div className="flex-1 pl-16 lg:pl-0">
+          <main className="p-4 lg:p-8 w-full max-w-[1200px] mx-auto">
+            {activeTab === "profile" && (
+              <ProfileManagementSection
+                darkMode={darkMode}
+                setDarkMode={setDarkMode}
+              />
+            )}
+
+            {activeTab === "subscription" && (
+              <ManagePlanSection darkMode={darkMode} />
+            )}
+
+            {activeTab === "settings" && (
+              <SettingsPage darkMode={darkMode} setDarkMode={setDarkMode} />
+            )}
+
+            {activeTab === "dashboard" && (
+              <div
+                className={`p-6 rounded-lg border transition-colors ${
+                  darkMode
+                    ? "bg-[#222222] border-[#2E2E2E] text-[#EAEAEA]"
+                    : "bg-white border-gray-200 text-gray-800"
+                }`}
+              >
+                <h1 className="text-2xl font-semibold mb-4">
+                  Welcome back, {(user?.name || "User").split(" ")[0]}
+                </h1>
+                <p className="mb-6">
+                  This is your ReconXi dashboard where you can manage your
+                  account and reconciliations.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <DashboardCard
+                    title="Reconciliation Magic"
+                    content="Quickly reconcile your records."
+                    actionText="Start Reconciliation"
+                    onAction={() => router.push("/file-upload")}
+                    darkMode={darkMode}
+                  />
+                  <DashboardCard
+                    title="Current Plan"
+                    content={`You are currently on the ${user?.payment_plan?.plan || "Basic"} plan.`}
+                    actionText="Upgrade Plan"
+                    onAction={() => setActiveTab("subscription")}
+                    darkMode={darkMode}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-        </main>
+            )}
+          </main>
+        </div>
       </div>
     </div>
   );
@@ -157,13 +167,19 @@ function DashboardCard({ title, content, actionText, onAction, darkMode }) {
   return (
     <div
       className={`p-4 rounded-lg border transition-colors ${
-        darkMode ? "bg-[#222222] border-[#2E2E2E]" : "bg-gray-50 border-gray-200"
+        darkMode
+          ? "bg-[#222222] border-[#2E2E2E]"
+          : "bg-gray-50 border-gray-200"
       }`}
     >
-      <h3 className={`font-medium mb-2 ${darkMode ? "text-[#EAEAEA]" : "text-gray-800"}`}>
+      <h3
+        className={`font-medium mb-2 ${darkMode ? "text-[#EAEAEA]" : "text-gray-800"}`}
+      >
         {title}
       </h3>
-      <p className={`text-sm mb-4 ${darkMode ? "text-[#B0B0B0]" : "text-gray-600"}`}>
+      <p
+        className={`text-sm mb-4 ${darkMode ? "text-[#B0B0B0]" : "text-gray-600"}`}
+      >
         {content}
       </p>
 
@@ -172,7 +188,8 @@ function DashboardCard({ title, content, actionText, onAction, darkMode }) {
           onClick={onAction}
           className="px-4 py-2 text-sm bg-[#4CAF50] hover:bg-[#388E3C] text-white rounded"
         >
-          <span className="cursor-pointer">{actionText}</span> {/* Added cursor-pointer */}
+          <span className="cursor-pointer">{actionText}</span>{" "}
+          {/* Added cursor-pointer */}
         </button>
       )}
     </div>
