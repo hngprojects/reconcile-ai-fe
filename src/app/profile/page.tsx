@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -30,6 +30,21 @@ export default function ProfileManagementSection({
     country: "",
     city: "",
   });
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
+  // Update form state when user data is available
+  useEffect(() => {
+    if (user) {
+      const names = user.name?.split(" ") || ["", ""];
+      setFormState({
+        firstName: names[0] || "",
+        surname: names[1] || "",
+        email: user.email || "",
+        country: formState.country, // Preserve existing values
+        city: formState.city, // Preserve existing values
+      });
+    }
+  }, [user]);
 
   const getUserInitials = (name?: string) => {
     return name && name.length > 0 ? name[0].toUpperCase() : "";
@@ -38,6 +53,12 @@ export default function ProfileManagementSection({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
+
+    // Only check changes for country and city
+    if (name === "country" || name === "city") {
+      const hasChanges = value.trim() !== "";
+      setIsFormChanged(hasChanges);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -106,7 +127,8 @@ export default function ProfileManagementSection({
                   name="firstName"
                   value={formState.firstName}
                   onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
+                  readOnly
                 />
               </div>
 
@@ -122,7 +144,8 @@ export default function ProfileManagementSection({
                   name="surname"
                   value={formState.surname}
                   onChange={handleInputChange}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
+                  readOnly
                 />
               </div>
             </div>
@@ -140,7 +163,8 @@ export default function ProfileManagementSection({
                 type="email"
                 value={formState.email}
                 onChange={handleInputChange}
-                className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
+                className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
+                readOnly
               />
             </div>
 
@@ -181,8 +205,9 @@ export default function ProfileManagementSection({
             <div className="flex justify-center pt-4">
               <Button
                 type="submit"
-                className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                className={`h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 ${!isFormChanged ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 aria-label="Save Changes"
+                disabled={!isFormChanged}
               >
                 <Save size={16} className="mr-2" />
                 Save Changes
