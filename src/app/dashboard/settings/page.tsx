@@ -60,7 +60,7 @@ export default function SettingsPage({
 
             <button
               type="button"
-              className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition-all duration-300"
+              className="px-4 py-2 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 transition-all duration-300 cursor-pointer"
             >
               Delete Account
             </button>
