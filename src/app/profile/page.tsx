@@ -13,6 +13,7 @@ import {
 import { User } from "@/src/types/auth";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Save, AlertTriangle } from "lucide-react";
+import { toast } from "sonner"; // Replace useToast with sonner
 
 interface ProfileManagementSectionProps {
   darkMode: boolean;
@@ -23,6 +24,7 @@ export default function ProfileManagementSection({
   darkMode,
 }: ProfileManagementSectionProps) {
   const { user } = useAuth();
+  // Remove useToast hook
   const [formState, setFormState] = useState({
     firstName: user?.name?.split(" ")[0] || "",
     surname: user?.name?.split(" ")[1] || "",
@@ -63,9 +65,18 @@ export default function ProfileManagementSection({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Save changes logic would go here
-    console.log("Saving profile changes:", formState);
-    // Show success message or handle errors
+    toast.info("Coming Soon!", {
+      description: "This feature will be available soon. Stay tuned!",
+      duration: 3000,
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    toast.warning("Coming Soon!", {
+      description:
+        "Account deletion feature will be available soon. Stay tuned!",
+      duration: 3000,
+    });
   };
 
   return (
@@ -249,6 +260,7 @@ export default function ProfileManagementSection({
                 <div className="max-w-sm mt-6 flex gap-2">
                   <button
                     type="button"
+                    onClick={handleDeleteAccount}
                     className="!w-full !bg-red-600 !text-white font-medium rounded-md max-w-[280px] h-[44px] hover:bg-red-700 transition-all duration-300 cursor-pointer"
                     aria-label="Delete Account"
                   >
