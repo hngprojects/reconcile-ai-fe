@@ -33,7 +33,7 @@ function Dashboard() {
   return (
     <div className={containerClasses}>
       {/* Sidebar Navigation */}
-      <aside className="border-r w-16 md:w-60 h-screen bg-white dark:bg-[#222222] transition-all fixed md:relative z-10">
+      <aside className="border-r w-16 md:w-60 h-full bg-white dark:bg-[#222222] transition-all fixed md:relative z-10">
         <nav className="py-4 space-y-1">
           <NavItem
             icon={<LayoutDashboard size={20} />}
@@ -62,8 +62,7 @@ function Dashboard() {
         <div className="absolute bottom-0 w-full border-t dark:border-[#2E2E2E]">
           <button
             onClick={toggleDarkMode}
-            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-[#EAEAEA] hover:bg-[#eaf5f1] dark:hover:bg-[#2E2E2E]"
-          >
+            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-[#EAEAEA] hover:bg-[#eaf5f1] dark:hover:bg-[#2E2E2E]">
             <span className="shrink-0">
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
             </span>
@@ -83,8 +82,8 @@ function Dashboard() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 pl-16 md:pl-0">
-        <main className="p-4 md:p-8 max-w-6xl mx-auto h-screen overflow-hidden">
+      <div className="flex-1 ml-16 md:ml-0 h-full">
+        <main className="p-4 md:p-8 max-w-6xl mx-auto h-full overflow-auto">
           {activeTab === "profile" && (
             <ProfileManagementSection darkMode={darkMode} setDarkMode={setDarkMode} />
           )}
@@ -97,10 +96,9 @@ function Dashboard() {
 
           {activeTab === "dashboard" && (
             <div
-              className={`p-6 rounded-lg border transition-colors ${
-                darkMode
-                  ? "bg-[#222222] border-[#2E2E2E] text-[#EAEAEA]"
-                  : "bg-white border-gray-200 text-gray-800"
+              className={`p-6 rounded-lg border transition-colors ${darkMode
+                ? "bg-[#222222] border-[#2E2E2E] text-[#EAEAEA]"
+                : "bg-white border-gray-200 text-gray-800"
               }`}
             >
               <h1 className="text-2xl font-semibold mb-4">
