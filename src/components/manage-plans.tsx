@@ -112,7 +112,7 @@ export default function ManagePlanSection({
 
   return (
     <div className={darkMode ? "text-white" : "text-black"}>
-      <h1 className="font-inter font-semibold text-[30px] leading-[38px] mb-2">
+      <h1 className="font-inter font-semibold text-2xl leading-[38px] mb-2 md:text-[30px]">
         Subscription Management
       </h1>
       <p
@@ -149,39 +149,47 @@ export default function ManagePlanSection({
               tabIndex={0}
               aria-label={`${plan.name} pricing plan`}
             >
-              <div
-                className={`border-b ${darkMode ? "border-[#2E604A]" : "border-[#BFB8B8]"} pb-4`}
-              >
-                <h3
-                  className={cn(
-                    "font-[500] text-[16px] leading-[100%] font-inter",
-                    isCurrentPlan || darkMode ? "text-white" : "text-black"
-                  )}
-                >
-                  {plan.name}
-                </h3>
-              </div>
+              <div className="flex flex-col justify-between gap-7 h-full">
+                <div>
+                  <div
+                    className={`border-b ${darkMode ? "border-[#2E604A]" : "border-[#BFB8B8]"} pb-4`}
+                  >
+                    <h3
+                      className={cn(
+                        "font-[500] text-[16px] leading-[100%] font-inter",
+                        isCurrentPlan || darkMode ? "text-white" : "text-black"
+                      )}
+                    >
+                      {plan.name}
+                    </h3>
+                  </div>
 
-              <div className="mt-6 space-y-6">
-                <p
-                  className={cn(
-                    "font-[600] text-[32px] leading-[100%]",
-                    activeCard === plan.id ? "text-white" : "text-black"
-                  )}
-                >
-                  <span className="text-2xl">$</span>
-                  {plan.price}
-                  {plan.price !== "Free" && (
-                    <span className="text-sm font-normal">/month</span>
-                  )}
-                </p>
+                  <div className="mt-6 space-y-6">
+                    <p
+                      className={cn(
+                        "font-[600] text-[32px] leading-[100%]",
+                        activeCard === plan.id ? "text-white" : "text-black"
+                      )}
+                    >
+                      <span className="text-2xl">$</span>
+                      {plan.price}
+                      {plan.price !== "Free" && (
+                        <span className="text-sm font-normal">/month</span>
+                      )}
+                    </p>
 
-                <div className="flex-grow">
-                  {renderFeaturesList(plan.features, activeCard === plan.id)}
+                    <div className="flex-grow">
+                      {renderFeaturesList(
+                        plan.features,
+                        activeCard === plan.id
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 {isCurrentPlan ? (
                   <button
+                    type="button"
                     disabled
                     className="w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] bg-gray-400 text-white cursor-not-allowed"
                   >
@@ -189,6 +197,7 @@ export default function ManagePlanSection({
                   </button>
                 ) : (
                   <button
+                    type="button"
                     onClick={() => handlePlanClick(plan.link)}
                     className={cn(
                       "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",

@@ -28,18 +28,20 @@ function Dashboard() {
   const [darkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState("dashboard");
   const router = useRouter();
-  const containerClasses = `flex h-screen ${darkMode ? "dark bg-[#1c3a2e]" : "bg-white"}`;
+  const containerClasses = `flex ${darkMode ? "dark bg-[#1c3a2e]" : "bg-white"}`;
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
 
   return (
-    <div className={`${containerClasses} max-w-[1440px] mx-auto`}>
+    <div
+      className={`${containerClasses} max-w-[1440px] mx-auto min-h-[calc(100vh-72px)] md:min-h-[calc(100vh-82px)]`}
+    >
       {/* Sidebar Navigation */}
-      <aside className="border-r w-16 md:w-60 h-screen bg-white dark:bg-[#1c3a2e] transition-all fixed md:relative z-10">
+      <aside className="pb-3 border-r w-16 md:w-60 min-h-[calc(100vh-72px)] bg-white dark:bg-[#1c3a2e] transition-all fixed md:relative z-10 flex flex-col justify-between md:pb-4 md:min-h-[calc(100vh-82px)] md:pr-4">
         {/* Navigation Links */}
-        <nav className="py-4 space-y-1">
+        <nav className="py-4 space-y-1 max-md:px-2">
           <NavItem
             icon={<LayoutDashboard size={20} />}
             label="Dashboard"
@@ -64,10 +66,11 @@ function Dashboard() {
         </nav>
 
         {/* Bottom Controls */}
-        <div className="absolute bottom-0 w-full border-t dark:border-[#2E604A]">
+        <div className="flex flex-col justify-center items-center w-full border-t dark:border-[#2E604A]">
           <button
+            type="button"
             onClick={toggleDarkMode}
-            className="flex items-center w-full px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-[#eaf5f1] dark:hover:bg-[#2E604A]/20"
+            className="flex items-center justify-center w-full px-4 py-3 text-gray-700 dark:text-gray-200 hover:bg-[#eaf5f1] dark:hover:bg-[#2E604A]/20 md:justify-start"
           >
             <span className="shrink-0">
               {darkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -117,8 +120,8 @@ function Dashboard() {
                 Welcome back, {(user?.name || "User").split(" ")[0]}
               </h1>
               <p className="mb-6">
-                This is your ReconXi dashboard where you can manage your
-                account and reconciliations.
+                This is your ReconXi dashboard where you can manage your account
+                and reconciliations.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -157,8 +160,9 @@ interface NavItemProps {
 function NavItem({ icon, label, active, onClick, darkMode }: NavItemProps) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`flex items-center w-full px-4 py-3 rounded-md transition-colors cursor-pointer
+      className={`flex items-center justify-center w-full px-4 py-3 rounded-md transition-colors cursor-pointer md:justify-start
         ${
           active
             ? `${darkMode ? "bg-[#2E604A] text-white" : "bg-[#eaf5f1] text-[#2E604A]"}`
@@ -204,6 +208,7 @@ function DashboardCard({
 
       {actionText && onAction && (
         <button
+          type="button"
           onClick={onAction}
           className="px-4 py-2 text-sm bg-[#2E604A] hover:bg-[#2E604A]/90 text-white rounded"
         >
