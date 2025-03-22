@@ -78,7 +78,7 @@ export default function WhyReconXi() {
                   </div>
                 </div>
               ))}
-              <Link href={"/demo"}>
+              <Link href="#demo-form">
                 <button
                   type="button"
                   className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"

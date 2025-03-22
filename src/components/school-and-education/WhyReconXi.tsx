@@ -43,7 +43,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="text-[28px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-           How can ReconXi make reconciliation easier for your school?
+            How can ReconXi make reconciliation easier for your school?
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
@@ -71,7 +71,7 @@ export default function WhyReconXi() {
                   </div>
                 </div>
               ))}
-              <Link href={'/demo'}>
+              <Link href="#demo-form">
                 <button
                   type="button"
                   className="h-[44px] px-6 mt-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
@@ -79,7 +79,7 @@ export default function WhyReconXi() {
                 >
                   Get a Free Demo
                 </button>
-                </Link>
+              </Link>
             </motion.div>
 
             <motion.div

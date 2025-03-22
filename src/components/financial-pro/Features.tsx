@@ -7,9 +7,11 @@ import { motion } from "framer-motion";
 
 export default function Features1() {
   return (
-    <section className="w-full py-12 md:py-20 px-0 lg:px-20" aria-labelledby="features-title">
+    <section
+      className="w-full py-12 md:py-20 px-0 lg:px-20"
+      aria-labelledby="features-title"
+    >
       <Container>
-
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -65,15 +67,15 @@ export default function Features1() {
                 </strong>
               </span>
             </p>
-            <Link href={'/demo'}>
-                <button
-                  type="button"
-                  className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
-                  aria-label="Open signup modal"
-                >
-                  Get a Free Demo
-                </button>
-                </Link>
+            <Link href="#demo-form">
+              <button
+                type="button"
+                className="h-[44px] px-6 mt-4 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
+                aria-label="Open signup modal"
+              >
+                Get a Free Demo
+              </button>
+            </Link>
           </motion.div>
         </motion.div>
       </Container>
