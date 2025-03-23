@@ -396,22 +396,33 @@ export const exportReconciliation = async (reconciliationId: string) => {
 };
 
 export const loginWithGoogle = async (id_token: string) => {
-  const response = await fetch(GOOGLE_LOGIN_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id_token,
-    }),
-  });
+  // console.log("loginWithGoogle function called"); // Debugging
+  // console.log("Sending request to:", GOOGLE_LOGIN_URL); // Debugging
+  // console.log("ID Token:", id_token); // Debugging
 
-  const resData = await response.json();
+  try {
+    const response = await fetch(GOOGLE_LOGIN_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_token,
+      }),
+    });
 
-  if (response.ok) {
-    return { status: "success", data: resData };
-  } else {
-    return { status: "error" };
+    const resData = await response.json();
+
+    if (response.ok) {
+      // console.log("loginWithGoogle response:", resData); // Debugging
+      return { status: "success", data: resData };
+    } else {
+      // console.error("Error in loginWithGoogle:", resData); // Debugging
+      return { status: "error", error: resData };
+    }
+  } catch (error) {
+    // console.error("Fetch failed in loginWithGoogle:", error); // Debugging
+    return { status: "error", error: error.message };
   }
 };
 
