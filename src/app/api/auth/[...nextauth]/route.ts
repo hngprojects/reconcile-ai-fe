@@ -3,6 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import { cookies } from "next/headers";
 import { loginWithGoogle } from "@/src/lib/api";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 export const authOptions = {
   providers: [
     GoogleProvider({
@@ -17,7 +19,7 @@ export const authOptions = {
       },
     }),
   ],
-  debug: true,
+  debug: isDevelopment,
   callbacks: {
     async signIn({ account, profile, user }) {
       // console.log("SignIn callback triggered"); // Debugging
