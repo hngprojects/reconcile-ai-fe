@@ -25,7 +25,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
-// import ListItem from "./ListItem";
 
 import { forwardRef, useState } from "react";
 import LoginModal from "./modal/LoginModal";
@@ -267,12 +266,12 @@ const Nav = () => {
                   </li>
                 </ul>
 
-                <div className="flex w-full md:w-fit items-center gap-4">
+                <div className="flex flex-col w-full items-center gap-4">
                   <SheetClose asChild>
                     <button
                       type="button"
                       onClick={() => setShowLoginModal(true)}
-                      className="h-[44px] px-6 py-3 border-2 w-full md:w-fit border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
+                      className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
                       aria-label="Open login modal"
                     >
                       <span className="relative bottom-0.5">Login</span>
@@ -282,7 +281,7 @@ const Nav = () => {
                     <button
                       type="button"
                       onClick={() => setShowAuthModal(true)}
-                      className="h-[44px] px-6 py-3 bg-white w-full md:w-fit text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
+                      className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
                       aria-label="Open signup modal"
                     >
                       Sign up
