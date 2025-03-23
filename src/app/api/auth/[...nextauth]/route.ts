@@ -27,6 +27,12 @@ export const authOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
       });
+      cookieStore.set("payment_plan", response?.data?.data?.plan, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
       user.access_token = response.data.access_token;
       user.data = { ...response.data.data.user, payment_plan: response.data.data.plan };
       return user;
