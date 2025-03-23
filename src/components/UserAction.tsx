@@ -1,30 +1,27 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 import LoginModal from "@/src/components/modal/LoginModal";
 import UserDetails from "@/src/components/UserDetails";
-import { Menu } from "lucide-react";
-import MobileMenu from "./MobileMenu";
 import { useSession } from "next-auth/react";
 
-const UserAction: FC = () => {
+const UserAction = () => {
   const { user, setUser, getUserDetails } = useAuth();
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    const fetch = async() => {
+    const fetch = async () => {
       if (session) {
         localStorage.setItem("access_token", session?.accessToken as string);
-        if(session?.accessToken) {
+        if (session?.accessToken) {
           return getUserDetails(session?.accessToken);
         }
       }
-    }
+    };
 
     fetch();
   }, [session, setUser, getUserDetails]);
@@ -40,7 +37,7 @@ const UserAction: FC = () => {
   };
 
   return (
-    <div className=" flex items-center gap-2">
+    <>
       {user ? (
         <UserDetails />
       ) : (
@@ -77,32 +74,7 @@ const UserAction: FC = () => {
           />
         </>
       )}
-      <div className="flex items-center md:hidden">
-        <button
-          type="button"
-          onClick={() => setShowMobileMenu(true)}
-          className="md:hidden p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-          aria-label="Open mobile menu"
-          aria-expanded={showMobileMenu}
-          aria-controls="mobile-menu"
-        >
-          <Menu className="h-6 w-6" />
-        </button>
-
-        <MobileMenu
-          isOpen={showMobileMenu}
-          onClose={() => setShowMobileMenu(false)}
-          onLogin={() => {
-            setShowMobileMenu(false);
-            setShowLoginModal(true);
-          }}
-          onSignup={() => {
-            setShowMobileMenu(false);
-            setShowAuthModal(true);
-          }}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 
