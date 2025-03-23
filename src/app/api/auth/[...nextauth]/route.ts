@@ -58,7 +58,7 @@ export const authOptions = {
       }
       return false; // Deny other login methods
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, account }) {
       // console.log("JWT callback triggered"); // Debugging
       // console.log("Account:", account); // Debugging
 
