@@ -22,6 +22,7 @@ export const revertToBackendFormat = (
       const statements: StatementMatch[] =
         item.statements?.map((stmt) => ({
           statement: {
+            id: stmt.bank_txn.id,
             Date: stmt.bank_txn.date,
             Description: stmt.bank_txn.description,
             Amount: String(stmt.bank_txn.amount), // Ensure amount is a string
@@ -32,6 +33,7 @@ export const revertToBackendFormat = (
       const ledgers: LedgerMatch[] =
         item.ledgers?.map((ldgr) => ({
           ledger: {
+            id: ldgr.ledger_txn.id,
             Date: ldgr.ledger_txn.date,
             Description: ldgr.ledger_txn.description,
             Amount: String(ldgr.ledger_txn.amount), // Ensure amount is a string
@@ -48,6 +50,7 @@ export const revertToBackendFormat = (
     else if (item.statements && !item.ledgers) {
       item.statements.forEach((stmt) => {
         unmatched_statements.push({
+          id: stmt.bank_txn.id,
           Date: stmt.bank_txn.date,
           Description: stmt.bank_txn.description,
           Amount: String(stmt.bank_txn.amount),
@@ -58,6 +61,7 @@ export const revertToBackendFormat = (
     else if (item.ledgers && !item.statements) {
       item.ledgers.forEach((ldgr) => {
         unmatched_ledgers.push({
+          id: ldgr.ledger_txn.id,
           Date: ldgr.ledger_txn.date,
           Description: ldgr.ledger_txn.description,
           Amount: String(ldgr.ledger_txn.amount),

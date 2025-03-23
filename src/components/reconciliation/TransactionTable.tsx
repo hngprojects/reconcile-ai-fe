@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { FrontendTransaction } from "../types/frontendResponseTypes";
+import { FrontendTransaction } from "../../types/frontendResponseTypes";
 import { cn } from "@/src/lib/utils";
 
 interface TransactionTableProps {

@@ -25,37 +25,37 @@ import {
 import { useState } from "react";
 import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
 import { useAuth } from "../../context/AuthContext";
-import { useReconciliation } from "../context/ReconciliationProvider";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
-} from "../helpers/searchComboxOptionExpander";
+} from "../../../helpers/searchComboxOptionExpander";
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   ReconciliationItem,
   FrontendTransaction,
-} from "../types/frontendResponseTypes";
-import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
-import useRowHeights from "../hooks/useRowHeights";
+} from "../../../types/frontendResponseTypes";
+import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
+import useRowHeights from "../../../hooks/useRowHeights";
 
-export function BankTable() {
+export function LedgerTable() {
   const { isAuthenticated } = useAuth();
 
   const {
     pagination,
     setPagination,
     paginatedData,
-    unmatchedBankTransactions,
+    unmatchedLedgerTransactions,
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
     userPlan,
   } = useReconciliation();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTransactionRow, setSelectedTransactionRow] =
+  const [selectedTransaction, setSelectedTransaction] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
-    unmatchedBankTransactions
+    unmatchedLedgerTransactions
   );
   const rowHeights = useRowHeights(paginatedData);
 
@@ -73,26 +73,25 @@ export function BankTable() {
     }
   };
 
-  // Base columns that are always visible
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
-      accessorKey: "bank_txn.date",
+      accessorKey: "ledger_txn.date",
       header: "Date",
       cell: ({ row }) => {
-        const statements = row.original.statements;
-        if (!statements || statements.length === 0) return null;
+        const ledgers = row.original.ledgers;
+        if (!ledgers || ledgers.length === 0) return null;
 
         return (
           <div className="flex flex-col px-1">
-            {statements.map((statement, index) => (
+            {ledgers.map((ledger, index) => (
               <div
-                key={`${statement.bank_txn.id}-${index}`}
+                key={`${ledger.ledger_txn.id}-${index}`}
                 className={cn(
                   "px-3 py-5",
                   index > 0 ? "border-t border-gray-200" : ""
                 )}
               >
-                {statement.bank_txn.date}
+                {ledger.ledger_txn.date}
               </div>
             ))}
           </div>
@@ -100,23 +99,23 @@ export function BankTable() {
       },
     },
     {
-      accessorKey: "bank_txn.description",
+      accessorKey: "ledger_txn.description",
       header: "Description",
       cell: ({ row }) => {
-        const statements = row.original.statements;
-        if (!statements || statements.length === 0) return null;
+        const ledgers = row.original.ledgers;
+        if (!ledgers || ledgers.length === 0) return null;
 
         return (
           <div className="flex flex-col px-1">
-            {statements.map((statement, index) => (
+            {ledgers.map((ledger, index) => (
               <div
-                key={`${statement.bank_txn.id}-${index}`}
+                key={`${ledger.ledger_txn.id}-${index}`}
                 className={cn(
                   "px-3 py-5",
                   index > 0 ? "border-t border-gray-200" : ""
                 )}
               >
-                {statement.bank_txn.description}
+                {ledger.ledger_txn.description}
               </div>
             ))}
           </div>
@@ -124,23 +123,23 @@ export function BankTable() {
       },
     },
     {
-      accessorKey: "bank_txn.amount",
+      accessorKey: "ledger_txn.amount",
       header: "Amount",
       cell: ({ row }) => {
-        const statements = row.original.statements;
-        if (!statements || statements.length === 0) return null;
+        const ledgers = row.original.ledgers;
+        if (!ledgers || ledgers.length === 0) return null;
 
         return (
           <div className="flex flex-col px-1">
-            {statements.map((statement, index) => (
+            {ledgers.map((ledger, index) => (
               <div
-                key={`${statement.bank_txn.id}-${index}`}
+                key={`${ledger.ledger_txn.id}-${index}`}
                 className={cn(
                   "px-3 py-5",
                   index > 0 ? "border-t border-gray-200" : ""
                 )}
               >
-                {statement.bank_txn.amount}
+                {ledger.ledger_txn.amount}
               </div>
             ))}
           </div>
@@ -149,12 +148,12 @@ export function BankTable() {
     },
   ];
 
-  // Conditional action column
   const actionColumn: ColumnDef<ReconciliationItem> = {
     id: "action",
     header: "Action",
     cell: ({ row }) => {
       const reconciledDataRow = row.original;
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -185,7 +184,7 @@ export function BankTable() {
               <DropdownMenuItem
                 className="gap-0.5"
                 onClick={() => {
-                  setSelectedTransactionRow(reconciledDataRow);
+                  setSelectedTransaction(reconciledDataRow);
                   setModalOpen(true);
                 }}
               >
@@ -201,15 +200,14 @@ export function BankTable() {
     },
   };
 
-  // Combine columns based on authentication
-  const bankColumns = [
+  const ledgerColumns = [
     ...baseColumns,
     ...(isAuthenticated && hasPlanAccess("match") ? [actionColumn] : []),
   ];
 
   const table = useReactTable({
     data: paginatedData,
-    columns: bankColumns,
+    columns: ledgerColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
@@ -269,14 +267,14 @@ export function BankTable() {
                     "transition-colors",
                     row.original.matched
                       ? "bg-green-50 hover:bg-green-50"
-                      : row.original.statements
+                      : row.original.ledgers
                         ? "bg-red-50 hover:bg-red-50"
                         : "hover:bg-white"
                   )}
                   style={{ height: `${rowHeights[index]}px` }}
                 >
-                  {row.original.statements ? (
-                    // If bank statements exist, render normal cells
+                  {row.original.ledgers ? (
+                    // If ledger transactions exist, render normal cells
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
@@ -292,13 +290,13 @@ export function BankTable() {
                       </TableCell>
                     ))
                   ) : (
-                    // If no bank transaction, render a single combobox spanning all cells except action
+                    // If no ledger transaction, render a single combobox spanning all cells except action
                     <>
                       <TableCell
                         colSpan={
                           isAuthenticated && hasPlanAccess("match")
-                            ? bankColumns.length - 1
-                            : bankColumns.length
+                            ? ledgerColumns.length - 1
+                            : ledgerColumns.length
                         }
                         className={cn("px-4 !h-[0px]", {
                           "border-r": isAuthenticated && hasPlanAccess("match"),
@@ -312,7 +310,7 @@ export function BankTable() {
                           onSearchSync={handleSearch}
                           placeholder="Find possible match"
                           hidePlaceholderWhenSelected
-                          onConfirm={async (option) => {
+                          onConfirm={(option) => {
                             const selectedOption: FrontendTransaction = {
                               id: option.id,
                               description: option.description,
@@ -322,14 +320,14 @@ export function BankTable() {
                             console.log("Confirmed:", option);
 
                             if (
-                              reconciledDataRow.ledgers &&
-                              reconciledDataRow.ledgers[0]?.ledger_txn
+                              reconciledDataRow.statements &&
+                              reconciledDataRow.statements[0]?.bank_txn
                             ) {
                               onMatch(
-                                [selectedOption],
-                                reconciledDataRow.ledgers.map(
-                                  (ledg) => ledg.ledger_txn
-                                )
+                                reconciledDataRow.statements.map(
+                                  (stat) => stat?.bank_txn
+                                ),
+                                [selectedOption]
                               );
                             }
                           }}
@@ -371,9 +369,7 @@ export function BankTable() {
                                 <DropdownMenuItem
                                   className="gap-0.5"
                                   onClick={() => {
-                                    setSelectedTransactionRow(
-                                      reconciledDataRow
-                                    );
+                                    setSelectedTransaction(reconciledDataRow);
                                     setModalOpen(true);
                                   }}
                                 >
@@ -399,8 +395,8 @@ export function BankTable() {
       <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        reconciledDataRow={selectedTransactionRow}
-        potentialMatches={unmatchedBankTransactions}
+        reconciledDataRow={selectedTransaction}
+        potentialMatches={unmatchedLedgerTransactions}
         onMatch={onMatch}
       />
     </>

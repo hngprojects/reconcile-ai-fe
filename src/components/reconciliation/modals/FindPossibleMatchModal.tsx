@@ -22,16 +22,16 @@ import { cn } from "@/src/lib/utils";
 import { Check } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SearchIcon } from "../../Icon/Icons";
-import { AmountRangeSelector } from "../components/AmountRangeSelector";
-import { DatePickerWithRange } from "../components/DateRangePicker";
-import { StatusBadge } from "../components/StatusBadge";
-import { TransactionTable } from "../components/TransactionTable";
+import { AmountRangeSelector } from "../AmountRangeSelector";
+import { DatePickerWithRange } from "../DateRangePicker";
+import { StatusBadge } from "../StatusBadge";
+import { TransactionTable } from "../TransactionTable";
 import type {
   ReconciliationItem,
   FrontendTransaction,
-} from "../types/frontendResponseTypes";
+} from "../../../types/frontendResponseTypes";
 import { DateRange } from "react-day-picker";
-import { useReconciliation } from "../context/ReconciliationProvider";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 
 interface FindPossibleMatchModalProps {
   isOpen: boolean;

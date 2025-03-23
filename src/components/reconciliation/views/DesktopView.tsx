@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BankTable } from "./BankTable";
-import { LedgerTable } from "./LedgerTable";
-import { PaginationControls } from "./PaginationControls";
-import { StatusTable } from "./StatusTable";
+import { BankTable } from "../tables/BankTable";
+import { LedgerTable } from "../tables/LedgerTable";
+import { PaginationControls } from "../PaginationControls";
+import { StatusTable } from "../tables/StatusTable";
 import { DownloadCloudIcon, Loader2 } from "lucide-react";
-import { SuccessToast } from "../../reconciliation/SuccessToast";
+import { SuccessToast } from "../SuccessToast";
 import UnlinkModal from "../../modal/UnlinkModal";
-import { useReconciliation } from "../context/ReconciliationProvider";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import { exportReconciliation } from "@/src/lib/api";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -119,7 +119,7 @@ export default function DesktopView() {
           >
             Re-upload
           </Link>
-          { hasPlanAccess("export") && (
+          {hasPlanAccess("export") && (
             <button
               type="button"
               className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
@@ -163,7 +163,8 @@ export default function DesktopView() {
       <PaginationControls />
 
       {/* Conditionally render unlink modal based on plan */}
-      {//hasPlanAccess("unlink") && (
+      {
+        //hasPlanAccess("unlink") && (
         <UnlinkModal
           isOpen={showUnlinkModal}
           isLoading={isLoading}
@@ -175,12 +176,15 @@ export default function DesktopView() {
             if (!selectedRow) return;
 
             if (selectedRow.statements && selectedRow.ledgers) {
-              await onUnlink(selectedRow.statements.map(stat => stat.bank_txn), selectedRow.ledgers.map(ledg => ledg.ledger_txn));
+              await onUnlink(
+                selectedRow.statements.map((stat) => stat.bank_txn),
+                selectedRow.ledgers.map((ledg) => ledg.ledger_txn)
+              );
               setSelectedRow(null);
             }
           }}
         />
-      //)
+        //)
       }
     </div>
   );

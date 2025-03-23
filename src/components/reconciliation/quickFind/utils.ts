@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TransactionOption } from "../../helpers/searchComboxOptionExpander";
+import { TransactionOption } from "../../../helpers/searchComboxOptionExpander";
 import type { GroupOption } from "./types";
 
 export function useDebounce<T>(value: T, delay?: number): T {

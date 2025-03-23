@@ -1,5 +1,5 @@
 import Container from "@/src/components/Container";
-import { View } from "@/src/components/revamped-reconciliation/components/View";
+import { View } from "@/src/components/reconciliation/views/View";
 
 export default function ReconciliationPage() {
   return (

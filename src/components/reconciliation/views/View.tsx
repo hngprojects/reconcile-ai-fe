@@ -1,6 +1,6 @@
 "use client";
 
-import { ReconciliationProvider } from "../context/ReconciliationProvider";
+import { ReconciliationProvider } from "@/src/context/ReconciliationProvider";
 import DesktopView from "./DesktopView";
 import { MobileView } from "./MobileView";
 
