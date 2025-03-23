@@ -25,6 +25,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
+// import ListItem from "./ListItem";
 
 import { forwardRef, useState } from "react";
 import LoginModal from "./modal/LoginModal";
@@ -87,8 +88,10 @@ const Nav = () => {
             <li>
               <Link
                 className={cn(
-                  "hover:text-primary",
-                  pathname === "/" ? "text-primary font-semibold" : ""
+                  "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                  pathname === "/"
+                    ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                    : ""
                 )}
                 href="/"
               >
@@ -101,8 +104,10 @@ const Nav = () => {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger
                       className={cn(
-                        "p-0 text-[#333333] font-medium text-lg hover:text-primary",
-                        isIndustryPaths ? "text-primary font-semibold" : ""
+                        "p-0 text-[#333333] font-medium text-lg h-[21px] hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        isIndustryPaths
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
                       )}
                     >
                       Industries
@@ -110,7 +115,11 @@ const Nav = () => {
                     <NavigationMenuContent className="p-1">
                       <ul className="w-48">
                         {industryPaths.map(({ name, href }) => (
-                          <ListItem key={href} href={href}>
+                          <ListItem
+                            key={href}
+                            href={href}
+                            className={pathname === href ? "text-primary" : ""}
+                          >
                             {name}
                           </ListItem>
                         ))}
@@ -123,8 +132,10 @@ const Nav = () => {
             <li>
               <Link
                 className={cn(
-                  "hover:text-primary",
-                  pathname === "/blog" ? "text-primary font-semibold" : ""
+                  "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                  pathname === "/blog"
+                    ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                    : ""
                 )}
                 href="/blog"
               >
@@ -134,8 +145,10 @@ const Nav = () => {
             <li>
               <Link
                 className={cn(
-                  "hover:text-primary",
-                  pathname === "/pricing" ? "text-primary font-semibold" : ""
+                  "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                  pathname === "/pricing"
+                    ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                    : ""
                 )}
                 href="/pricing"
               >
@@ -170,7 +183,9 @@ const Nav = () => {
                       <Link
                         className={cn(
                           "hover:text-white",
-                          pathname === "/" ? "text-white font-semibold" : ""
+                          pathname === "/"
+                            ? "text-white font-semibold underline underline-offset-2"
+                            : ""
                         )}
                         href="/"
                       >
@@ -185,7 +200,9 @@ const Nav = () => {
                           <AccordionTrigger
                             className={cn(
                               "font-medium text-2xl justify-start text-white/80 py-0 flex items-center gap-2",
-                              isIndustryPaths ? "text-white font-semibold" : ""
+                              isIndustryPaths
+                                ? "text-white font-semibold underline underline-offset-2"
+                                : ""
                             )}
                           >
                             <span>Industries</span>
@@ -200,7 +217,8 @@ const Nav = () => {
                                   href={href}
                                   className={cn(
                                     "text-xl hover:text-white transition-colors",
-                                    pathname === href && "text-white"
+                                    pathname === href &&
+                                      "text-white underline underline-offset-2"
                                   )}
                                 >
                                   <span className="flex gap-1">
@@ -222,7 +240,9 @@ const Nav = () => {
                       <Link
                         className={cn(
                           "hover:text-white",
-                          pathname === "/blog" ? "text-white font-semibold" : ""
+                          pathname === "/blog"
+                            ? "text-white font-semibold underline underline-offset-2"
+                            : ""
                         )}
                         href="/blog"
                       >
@@ -236,7 +256,7 @@ const Nav = () => {
                         className={cn(
                           "hover:text-white",
                           pathname === "/pricing"
-                            ? "text-white font-semibold"
+                            ? "text-white font-semibold underline underline-offset-2"
                             : ""
                         )}
                         href="/pricing"
@@ -318,5 +338,4 @@ const ListItem = forwardRef<
     </li>
   );
 });
-
 ListItem.displayName = "ListItem";
