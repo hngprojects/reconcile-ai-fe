@@ -122,7 +122,7 @@ const Footer = () => {
                   <Link
                     key={subnavs.name}
                     href={subnavs.link}
-                    className="relative text-white transition-all duration-300 hover:text-gray-300 group"
+                    className="relative text-white w-fit transition-all duration-300 hover:text-gray-300 group"
                   >
                     {subnavs.name}
                     <span className="absolute left-0 bottom-[-2px] h-[2px] bg-white w-0 transition-all duration-300 group-hover:w-full"></span>
@@ -143,7 +143,7 @@ const Footer = () => {
                   <Link
                     key={subnavs.name}
                     href={subnavs.link}
-                    className="relative text-white transition-all duration-300 hover:text-gray-300 group"
+                    className="relative text-white w-fit transition-all duration-300 hover:text-gray-300 group"
                   >
                     {subnavs.name}
                     <span className="absolute left-0 bottom-[-2px] h-[2px] bg-white w-0 transition-all duration-300 group-hover:w-full"></span>
@@ -153,7 +153,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="text-white">
+          <div className="text-white w-full md:w-fit">
             <FooterEmailForm />
           </div>
         </div>
