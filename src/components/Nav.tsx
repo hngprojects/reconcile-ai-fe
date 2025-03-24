@@ -76,7 +76,10 @@ const Nav = () => {
     "/manage-plan",
     "/reconciliation",
   ];
-  console.log(pathname);
+
+  const isPathWithoutNavlinks = pathNamesWithoutNavlinks.some((path) =>
+    pathname.startsWith(path)
+  );
 
   return (
     <header className="border-b-[1px] flex items-center border-[#0000001A] sticky top-0 left-0 right-0 bg-white z-50">
@@ -90,9 +93,7 @@ const Nav = () => {
           </div>
         </Link>
 
-        {!pathNamesWithoutNavlinks.some((path) =>
-          pathname.startsWith(path)
-        ) && (
+        {!isPathWithoutNavlinks && (
           <nav className="hidden md:block">
             <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
               <li>
@@ -179,135 +180,140 @@ const Nav = () => {
         <div className="flex items-center md:hidden gap-2">
           <div className="md:hidden">{user && <UserDetails />}</div>
 
-          <Sheet>
-            <SheetTrigger className="md:hidden" asChild>
-              <button>
-                <AlignJustify />
-              </button>
-            </SheetTrigger>
-            <SheetContent className="h-full bg-primary">
-              <SheetHeader className="hidden">
-                <SheetTitle>Mobile Nav</SheetTitle>
-                <SheetDescription>Navigation for mobile</SheetDescription>
-              </SheetHeader>
-              <nav className="py-8 mt-4 px-4 flex flex-col h-full justify-between">
-                <ul className="flex flex-col text-white/80 gap-4 font-medium text-lg">
-                  <li>
-                    <SheetClose asChild>
-                      <Link
-                        className={cn(
-                          "hover:text-white",
-                          pathname === "/"
-                            ? "text-white font-semibold underline underline-offset-2"
-                            : ""
-                        )}
-                        href="/"
-                      >
-                        Home
-                      </Link>
-                    </SheetClose>
-                  </li>
-                  <li>
-                    <Accordion type="single" collapsible>
-                      <AccordionItem value="industries" className="border-none">
-                        <div className="w-fit">
-                          <AccordionTrigger
-                            className={cn(
-                              "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-2",
-                              isIndustryPaths
-                                ? "text-white font-semibold underline underline-offset-2"
-                                : ""
-                            )}
-                          >
-                            <span>Industries</span>
-                            <ChevronDown />
-                          </AccordionTrigger>
-                        </div>
-                        <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
-                          <div className="flex flex-col gap-3">
-                            {industryPaths.map(({ name, href }) => (
-                              <SheetClose key={href} asChild>
-                                <Link
-                                  href={href}
-                                  className={cn(
-                                    "hover:text-white transition-colors",
-                                    pathname === href &&
-                                      "text-white underline underline-offset-2"
-                                  )}
-                                >
-                                  <span className="flex gap-0.5">
-                                    <div className="shrink-0">
-                                      <Dot />
-                                    </div>
-                                    {name}
-                                  </span>
-                                </Link>
-                              </SheetClose>
-                            ))}
+          {!isPathWithoutNavlinks && (
+            <Sheet>
+              <SheetTrigger className="md:hidden" asChild>
+                <button>
+                  <AlignJustify />
+                </button>
+              </SheetTrigger>
+              <SheetContent className="h-full bg-primary">
+                <SheetHeader className="hidden">
+                  <SheetTitle>Mobile Nav</SheetTitle>
+                  <SheetDescription>Navigation for mobile</SheetDescription>
+                </SheetHeader>
+                <nav className="py-8 mt-4 px-4 flex flex-col h-full justify-between">
+                  <ul className="flex flex-col text-white/80 gap-4 font-medium text-lg">
+                    <li>
+                      <SheetClose asChild>
+                        <Link
+                          className={cn(
+                            "hover:text-white",
+                            pathname === "/"
+                              ? "text-white font-semibold underline underline-offset-2"
+                              : ""
+                          )}
+                          href="/"
+                        >
+                          Home
+                        </Link>
+                      </SheetClose>
+                    </li>
+                    <li>
+                      <Accordion type="single" collapsible>
+                        <AccordionItem
+                          value="industries"
+                          className="border-none"
+                        >
+                          <div className="w-fit">
+                            <AccordionTrigger
+                              className={cn(
+                                "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-2",
+                                isIndustryPaths
+                                  ? "text-white font-semibold underline underline-offset-2"
+                                  : ""
+                              )}
+                            >
+                              <span>Industries</span>
+                              <ChevronDown />
+                            </AccordionTrigger>
                           </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </li>
-                  <li>
-                    <SheetClose asChild>
-                      <Link
-                        className={cn(
-                          "hover:text-white",
-                          pathname === "/blog"
-                            ? "text-white font-semibold underline underline-offset-2"
-                            : ""
-                        )}
-                        href="/blog"
-                      >
-                        Blog
-                      </Link>
-                    </SheetClose>
-                  </li>
-                  <li>
-                    <SheetClose asChild>
-                      <Link
-                        className={cn(
-                          "hover:text-white",
-                          pathname === "/pricing"
-                            ? "text-white font-semibold underline underline-offset-2"
-                            : ""
-                        )}
-                        href="/pricing"
-                      >
-                        Pricing
-                      </Link>
-                    </SheetClose>
-                  </li>
-                </ul>
+                          <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
+                            <div className="flex flex-col gap-3">
+                              {industryPaths.map(({ name, href }) => (
+                                <SheetClose key={href} asChild>
+                                  <Link
+                                    href={href}
+                                    className={cn(
+                                      "hover:text-white transition-colors",
+                                      pathname === href &&
+                                        "text-white underline underline-offset-2"
+                                    )}
+                                  >
+                                    <span className="flex gap-0.5">
+                                      <div className="shrink-0">
+                                        <Dot />
+                                      </div>
+                                      {name}
+                                    </span>
+                                  </Link>
+                                </SheetClose>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </li>
+                    <li>
+                      <SheetClose asChild>
+                        <Link
+                          className={cn(
+                            "hover:text-white",
+                            pathname === "/blog"
+                              ? "text-white font-semibold underline underline-offset-2"
+                              : ""
+                          )}
+                          href="/blog"
+                        >
+                          Blog
+                        </Link>
+                      </SheetClose>
+                    </li>
+                    <li>
+                      <SheetClose asChild>
+                        <Link
+                          className={cn(
+                            "hover:text-white",
+                            pathname === "/pricing"
+                              ? "text-white font-semibold underline underline-offset-2"
+                              : ""
+                          )}
+                          href="/pricing"
+                        >
+                          Pricing
+                        </Link>
+                      </SheetClose>
+                    </li>
+                  </ul>
 
-                {!user && (
-                  <div className="flex flex-col w-full items-center gap-4">
-                    <SheetClose asChild>
-                      <button
-                        type="button"
-                        onClick={() => setShowLoginModal(true)}
-                        className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
-                        aria-label="Open login modal"
-                      >
-                        <span className="relative bottom-0.5">Login</span>
-                      </button>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <button
-                        type="button"
-                        onClick={() => setShowAuthModal(true)}
-                        className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
-                        aria-label="Open signup modal"
-                      >
-                        Sign up
-                      </button>
-                    </SheetClose>
-                  </div>
-                )}
-              </nav>
-            </SheetContent>
-          </Sheet>
+                  {!user && (
+                    <div className="flex flex-col w-full items-center gap-4">
+                      <SheetClose asChild>
+                        <button
+                          type="button"
+                          onClick={() => setShowLoginModal(true)}
+                          className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
+                          aria-label="Open login modal"
+                        >
+                          <span className="relative bottom-0.5">Login</span>
+                        </button>
+                      </SheetClose>
+                      <SheetClose asChild>
+                        <button
+                          type="button"
+                          onClick={() => setShowAuthModal(true)}
+                          className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
+                          aria-label="Open signup modal"
+                        >
+                          Sign up
+                        </button>
+                      </SheetClose>
+                    </div>
+                  )}
+                </nav>
+              </SheetContent>
+            </Sheet>
+          )}
         </div>
         <LoginModal
           isOpen={showLoginModal}
