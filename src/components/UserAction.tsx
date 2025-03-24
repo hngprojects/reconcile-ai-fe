@@ -8,7 +8,7 @@ import UserDetails from "@/src/components/UserDetails";
 import { useSession } from "next-auth/react";
 
 const UserAction = () => {
-  const { user, setUser, getUserDetails } = useAuth();
+  const { user, setUser } = useAuth();
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -16,15 +16,13 @@ const UserAction = () => {
   useEffect(() => {
     const fetch = async () => {
       if (session) {
-        localStorage.setItem("access_token", session?.accessToken as string);
-        if (session?.accessToken) {
-          return getUserDetails(session?.accessToken);
-        }
+        localStorage.setItem('access_token', session.accessToken as string);
+        setUser(session.user as typeof user);
       }
     };
 
     fetch();
-  }, [session, setUser, getUserDetails]);
+  }, [session, setUser]);
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);

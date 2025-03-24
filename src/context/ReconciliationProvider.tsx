@@ -74,6 +74,7 @@ interface ReconciliationContextProps {
   >;
 
   authenticated: boolean
+  loading: boolean
 }
 
 const ReconciliationContext = createContext<
@@ -95,6 +96,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     null
   );
   const [authenticated, setAuthenticated] = useState(true);
+  const [loading, setLoading] = useState(false);
   const path = usePathname();
 
   useEffect(() => {
@@ -105,6 +107,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
 
     const reconciliationId = path.split("/")[2];
     const fetch = async () => {
+      setLoading(true);
       try {
         const response = await fetchReconciliation(reconciliationId as string);
 
@@ -113,12 +116,15 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
           console.log({ reconciliationData });
 
           setData(reconciliationData);
+          setLoading(false);
         }else {
           setAuthenticated(false);
+          setLoading(false);
         }
       } catch (e) {
         console.error("Error: ", e);
         setAuthenticated(false);
+        setLoading(false);
       }
     };
     fetch();
@@ -280,7 +286,8 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         selectedRow,
         setSelectedRow,
 
-        authenticated
+        authenticated,
+        loading
       }}
     >
       {children}

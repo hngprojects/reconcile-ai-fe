@@ -10,13 +10,6 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
-        },
-      },
     }),
   ],
   debug: isDevelopment,
@@ -30,7 +23,7 @@ export const authOptions = {
         if (response.status === "success") {
           // Set the access token in a cookie
           const cookieStore = await cookies(); // Await the cookies() function
-          await cookieStore.set("access_token", response.data.access_token, {
+          cookieStore.set("access_token", response.data.access_token, {
             path: "/",
             maxAge: 60 * 60 * 24 * 7, // 1 week
             httpOnly: true,
@@ -38,7 +31,7 @@ export const authOptions = {
           });
 
           // Set the user data in a cookie
-          await cookieStore.set("user_data", JSON.stringify(response.data.data), {
+          cookieStore.set("user_data", JSON.stringify(response.data.data), {
             path: "/",
             maxAge: 60 * 60 * 24 * 7, // 1 week
             httpOnly: true,
@@ -47,7 +40,7 @@ export const authOptions = {
 
           // Attach the access token and user data to the user object
           user.access_token = response.data.access_token;
-          user.data = response.data.data.user;
+          user.data = { ...response.data.data.user, payment_plan: response.data.data.plan };
 
           return true; // Allow Google login
         } else {
@@ -69,7 +62,7 @@ export const authOptions = {
         if (response.status === "success") {
           // Update the token with user data and access token
           token.accessToken = response.data.access_token;
-          token.user = response.data.data.user;
+          token.user = { ...response.data.data.user, payment_plan: response.data.data.plan };
         } else {
           console.error("Error in loginWithGoogle:", response.error); // Debugging
         }
