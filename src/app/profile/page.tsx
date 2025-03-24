@@ -147,7 +147,9 @@ export default function ProfileManagementSection({
       toast.error("Failed to delete account.");
     }
   };
-  if (isLoading) {
+
+  if (isLoading || isAuthenticated === null) {
+
     return <Loader />;
   }
 
