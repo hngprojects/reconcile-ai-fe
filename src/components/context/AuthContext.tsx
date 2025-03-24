@@ -9,13 +9,11 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { useRouter } from "next/navigation";
 import { User } from "@/src/types/auth";
 import { toast } from "sonner";
 import { LOGOUT_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 import { signIn, signOut } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
-import { validateToken } from "@/src/lib/api";
 
 interface AuthContextType {
   user: User | null;
@@ -32,7 +30,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   const signInWithGoogle = async () => {
     const result = await signIn("google", { callbackUrl: "/file-upload" });
@@ -43,27 +40,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Modified logout function to handle cleanup properly
   const logout = async () => {
     try {
       const token = localStorage.getItem("access_token");
+
+      // Only attempt server logout if we have a token
       if (token) {
-        await fetch(LOGOUT_API_URL, {
+        const res = await fetch(LOGOUT_API_URL, {
           method: "POST",
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
+
+        if (!res.ok) {
+          toast.error("Logout failed on server");
+        }
       }
     } catch (error) {
-      console.error("Logout API error:", error);
+      console.error("Logout error:", error);
+      toast.error("Failed to logout properly");
     } finally {
-      // Always clean up local storage and state
+      // Always clean up local state regardless of server response
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
       setUser(null);
+
+      // Sign out of NextAuth session
       await signOut({ callbackUrl: "/" });
+
+      toast.success("Logged out successfully");
     }
   };
 
@@ -85,41 +92,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Check for authenticated user on mount and token validity
+  // Check for authenticated user on mount
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem("access_token");
-      const userDetails = localStorage.getItem("user");
+    const token = localStorage.getItem("access_token");
+    const userDetails = localStorage.getItem("user");
 
-      if (!token || token === "undefined") {
-        setUser(null);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        // Validate token on mount
-        const isValid = await validateToken(token);
-        if (!isValid) {
-          logout();
-          return;
-        }
-
-        if (userDetails && userDetails !== "undefined") {
-          setUser(JSON.parse(userDetails));
-        } else {
-          // Fetch user details if we have token but no user data
-          await getUserDetails(token);
-        }
-      } catch (error) {
-        console.error("Auth check failed:", error);
-        logout();
-      } finally {
+    if (token) {
+      if (userDetails && userDetails !== "undefined") {
+        setUser(JSON.parse(userDetails));
         setIsLoading(false);
       }
-    };
-
-    checkAuth();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   return (
