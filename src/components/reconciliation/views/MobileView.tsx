@@ -151,7 +151,7 @@ export function MobileView() {
       )}
 
       {/* Conditional export button */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col gap-4 md:flex-row justify-between mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
         <div className="flex gap-4">
           <a href="/file-upload">
