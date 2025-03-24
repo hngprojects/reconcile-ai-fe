@@ -39,7 +39,7 @@ const contactUsSchema = z.object({
   phone_number: z
     .string()
     .min(1, "Phone number is required")
-    .regex(/^[0-9]{10,15}$/, "Please enter a valid phone number"),
+    .regex(/^[0-9]{10,15}$/, "Enter a valid phone number between 10 and 15 digits"),
   message: z
     .string()
     .min(1, "Message is required")
