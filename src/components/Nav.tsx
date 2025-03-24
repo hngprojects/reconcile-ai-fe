@@ -83,7 +83,7 @@ const Nav = () => {
         </Link>
 
         <nav className="hidden md:block">
-          <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium text-lg">
+          <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
             <li>
               <Link
                 className={cn(
@@ -103,7 +103,7 @@ const Nav = () => {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger
                       className={cn(
-                        "p-0 text-[#333333] font-medium text-lg h-[21px] hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        "p-0 text-[#333333] font-medium text-base h-[21px] hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
                         isIndustryPaths
                           ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
                           : ""
@@ -176,7 +176,7 @@ const Nav = () => {
                 <SheetDescription>Navigation for mobile</SheetDescription>
               </SheetHeader>
               <nav className="py-8 mt-4 px-4 flex flex-col h-full justify-between">
-                <ul className="flex flex-col text-white/80 gap-4 font-medium text-2xl">
+                <ul className="flex flex-col text-white/80 gap-4 font-medium text-lg">
                   <li>
                     <SheetClose asChild>
                       <Link
@@ -198,7 +198,7 @@ const Nav = () => {
                         <div className="w-fit">
                           <AccordionTrigger
                             className={cn(
-                              "font-medium text-2xl justify-start text-white/80 py-0 flex items-center gap-2",
+                              "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-2",
                               isIndustryPaths
                                 ? "text-white font-semibold underline underline-offset-2"
                                 : ""
@@ -209,18 +209,18 @@ const Nav = () => {
                           </AccordionTrigger>
                         </div>
                         <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
-                          <div className="flex flex-col gap-4">
+                          <div className="flex flex-col gap-3">
                             {industryPaths.map(({ name, href }) => (
                               <SheetClose key={href} asChild>
                                 <Link
                                   href={href}
                                   className={cn(
-                                    "text-xl hover:text-white transition-colors",
+                                    "hover:text-white transition-colors",
                                     pathname === href &&
                                       "text-white underline underline-offset-2"
                                   )}
                                 >
-                                  <span className="flex gap-1">
+                                  <span className="flex gap-0.5">
                                     <div className="shrink-0">
                                       <Dot />
                                     </div>
