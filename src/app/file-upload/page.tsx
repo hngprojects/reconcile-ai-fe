@@ -4,6 +4,7 @@ import FileUploadLayout from "@/src/components/reconciliation/upload/FileUploadL
 import { useEffect, useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { Loader } from "@/src/components/ui/loader";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 export default function FileUploadPage() {
   const { getUserDetails } = useAuth();
@@ -44,5 +45,9 @@ export default function FileUploadPage() {
     return <Loader />;
   }
 
-  return <FileUploadLayout onReconcile={handleReconcile} />;
+  return (
+    <ProtectedRoute>
+      <FileUploadLayout onReconcile={handleReconcile} />
+    </ProtectedRoute>
+  )
 }
