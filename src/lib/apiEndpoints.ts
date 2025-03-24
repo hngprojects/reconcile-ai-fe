@@ -47,3 +47,7 @@ export const PAYMENT_PLAN_API_URL = `${BASE_URL}/payment-plan`;
 export const GOOGLE_LOGIN_URL = `${BASE_URL}/auth/google-login`;
 
 export const TOKEN_VALIDATOR_URL = `${BASE_URL}/auth/check-token`;
+
+// USER PROFILE UPDATE
+export const USER_PROFILE_UPDATE_API_URL = `${BASE_URL}/profile/update`;
+
