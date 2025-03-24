@@ -266,28 +266,30 @@ const Nav = () => {
                   </li>
                 </ul>
 
-                <div className="flex flex-col w-full items-center gap-4">
-                  <SheetClose asChild>
-                    <button
-                      type="button"
-                      onClick={() => setShowLoginModal(true)}
-                      className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
-                      aria-label="Open login modal"
-                    >
-                      <span className="relative bottom-0.5">Login</span>
-                    </button>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <button
-                      type="button"
-                      onClick={() => setShowAuthModal(true)}
-                      className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
-                      aria-label="Open signup modal"
-                    >
-                      Sign up
-                    </button>
-                  </SheetClose>
-                </div>
+                {!user && (
+                  <div className="flex flex-col w-full items-center gap-4">
+                    <SheetClose asChild>
+                      <button
+                        type="button"
+                        onClick={() => setShowLoginModal(true)}
+                        className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
+                        aria-label="Open login modal"
+                      >
+                        <span className="relative bottom-0.5">Login</span>
+                      </button>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <button
+                        type="button"
+                        onClick={() => setShowAuthModal(true)}
+                        className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
+                        aria-label="Open signup modal"
+                      >
+                        Sign up
+                      </button>
+                    </SheetClose>
+                  </div>
+                )}
               </nav>
             </SheetContent>
           </Sheet>
