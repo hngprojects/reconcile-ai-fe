@@ -396,9 +396,6 @@ export const exportReconciliation = async (reconciliationId: string) => {
 };
 
 export const loginWithGoogle = async (id_token: string) => {
-  // console.log("loginWithGoogle function called"); // Debugging
-  // console.log("Sending request to:", GOOGLE_LOGIN_URL); // Debugging
-  // console.log("ID Token:", id_token); // Debugging
 
   try {
     const response = await fetch(GOOGLE_LOGIN_URL, {
@@ -414,14 +411,11 @@ export const loginWithGoogle = async (id_token: string) => {
     const resData = await response.json();
 
     if (response.ok) {
-      // console.log("loginWithGoogle response:", resData); // Debugging
       return { status: "success", data: resData };
     } else {
-      // console.error("Error in loginWithGoogle:", resData); // Debugging
       return { status: "error", error: resData };
     }
   } catch (error) {
-    // console.error("Fetch failed in loginWithGoogle:", error); // Debugging
     return { status: "error", error: error.message };
   }
 };

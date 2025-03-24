@@ -16,9 +16,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { CheckIcon, XIcon } from "lucide-react";
-import { useReconciliation } from "../context/ReconciliationProvider";
-import { ReconciliationItem } from "../types/frontendResponseTypes";
-import useRowHeights from "../hooks/useRowHeights";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
+import { ReconciliationItem } from "../../../types/frontendResponseTypes";
+import useRowHeights from "../../../hooks/useRowHeights";
 
 export function StatusTable() {
   const { paginatedData, setShowUnlinkModal, setSelectedRow, userPlan } =

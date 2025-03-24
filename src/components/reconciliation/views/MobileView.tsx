@@ -6,25 +6,22 @@ import { DownloadCloudIcon, Loader2, MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../../Icon/Icons";
 import UnlinkModal from "../../modal/UnlinkModal";
-import { SuccessToast } from "../../reconciliation/SuccessToast";
+import { SuccessToast } from "../SuccessToast";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { useReconciliation } from "../context/ReconciliationProvider";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
-} from "../helpers/searchComboxOptionExpander";
+} from "../../../helpers/searchComboxOptionExpander";
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
-import {
-  FrontendTransaction,
-  ReconciliationItem,
-} from "../types/frontendResponseTypes";
-import { StatusBadge } from "./StatusBadge";
-import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+import { FrontendTransaction } from "../../../types/frontendResponseTypes";
+import { StatusBadge } from "../StatusBadge";
+import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
 
 export function MobileView() {
@@ -45,6 +42,8 @@ export function MobileView() {
     setShowUnlinkModal,
     isLoading,
     userPlan,
+    setSelectedRow,
+    selectedRow,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -53,11 +52,12 @@ export function MobileView() {
   const [toastMessage, setToastMessage] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTransactionRow, setSelectedTransactionRow] =
-    useState<ReconciliationItem>({} as ReconciliationItem);
+  // const [selectedTransactionRow, setSelectedRow] = useState<ReconciliationItem>(
+  //   {} as ReconciliationItem
+  // );
 
   const possibleMatches =
-    selectedTransactionRow.statements === null
+    selectedRow?.statements === null
       ? unmatchedBankTransactions
       : unmatchedLedgerTransactions;
 
@@ -187,7 +187,7 @@ export function MobileView() {
       {/* Transaction Cards */}
       {paginatedData.map((item, index) => {
         const possibleMatches =
-          item.statements === null
+          item.statements !== null
             ? unmatchedLedgerTransactions
             : unmatchedBankTransactions;
 
@@ -266,7 +266,7 @@ export function MobileView() {
                               className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
                               onClick={() => {
                                 setShowUnlinkModalMobile(true);
-                                setSelectedTransactionRow(item);
+                                setSelectedRow(item);
                               }}
                             >
                               <StatusBadge matched={item.matched} />
@@ -319,7 +319,7 @@ export function MobileView() {
                               <DropdownMenuItem
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setSelectedTransactionRow(item);
+                                  setSelectedRow(item);
                                   setShowUnlinkModal(true);
                                 }}
                                 className="gap-0.5"
@@ -356,7 +356,7 @@ export function MobileView() {
                         hidePlaceholderWhenSelected
                         onConfirm={(option) => {
                           const selectedOption: FrontendTransaction = {
-                            id: `${option.id}-${Date.now()}`,
+                            id: option.id,
                             description: option.description,
                             date: option.date,
                             amount: option.amount,
@@ -365,25 +365,25 @@ export function MobileView() {
 
                           if (item.ledgers) {
                             onMatch(
-                              [
-                                {
-                                  bank_txn: { ...selectedOption },
-                                  score: "0",
-                                },
-                              ],
-                              item.ledgers
+                              [selectedOption],
+                              item.ledgers.map((ledger) => ledger.ledger_txn)
                             );
                           }
 
                           if (item.statements) {
-                            onMatch(item.statements, [
-                              {
-                                ledger_txn: { ...selectedOption },
-                                score: "0",
-                              },
-                            ]);
+                            onMatch(
+                              item.statements.map(
+                                (statement) => statement.bank_txn
+                              ),
+                              [selectedOption]
+                            );
                           }
                         }}
+                        emptyIndicator={
+                          <p className="text-center text-sm">
+                            No transactions found
+                          </p>
+                        }
                       />
                     )}
 
@@ -398,7 +398,7 @@ export function MobileView() {
                         <DropdownMenuItem
                           className="gap-0.5"
                           onClick={() => {
-                            setSelectedTransactionRow(item);
+                            setSelectedRow(item);
                             setModalOpen(true);
                           }}
                         >
@@ -445,7 +445,7 @@ export function MobileView() {
       <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        reconciledDataRow={selectedTransactionRow}
+        reconciledDataRow={selectedRow}
         potentialMatches={possibleMatches}
         onMatch={onMatch}
       />
@@ -456,18 +456,17 @@ export function MobileView() {
           isLoading={isLoading}
           onClose={() => {
             setShowUnlinkModalMobile(false);
+            setSelectedRow(null);
           }}
           onConfirm={async () => {
-            if (!selectedTransactionRow) return;
+            if (!selectedRow) return;
 
-            if (
-              selectedTransactionRow.statements &&
-              selectedTransactionRow.ledgers
-            ) {
+            if (selectedRow.statements && selectedRow.ledgers) {
               await onUnlink(
-                selectedTransactionRow.statements,
-                selectedTransactionRow.ledgers
+                selectedRow.statements.map((statement) => statement.bank_txn),
+                selectedRow.ledgers.map((ledger) => ledger.ledger_txn)
               );
+              setSelectedRow(null);
             }
           }}
         />

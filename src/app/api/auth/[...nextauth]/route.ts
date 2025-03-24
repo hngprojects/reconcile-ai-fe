@@ -22,9 +22,6 @@ export const authOptions = {
   debug: isDevelopment,
   callbacks: {
     async signIn({ account, profile, user }) {
-      // console.log("SignIn callback triggered"); // Debugging
-      // console.log("Account:", account); // Debugging
-      // console.log("Profile:", profile); // Debugging
 
       if (account?.provider === "google" && profile?.email) {
         // Call the loginWithGoogle function to authenticate with your backend
@@ -54,29 +51,22 @@ export const authOptions = {
 
           return true; // Allow Google login
         } else {
-          // console.error("Error in loginWithGoogle:", response.error); // Debugging
           return false; // Deny login if there's an error
         }
       }
       return false; // Deny other login methods
     },
     async jwt({ token, account }) {
-      // console.log("JWT callback triggered"); // Debugging
-      // console.log("Account:", account); // Debugging
 
       if (account?.provider === "google") {
         if (!account?.id_token) {
-          // console.log("No id_token found in account"); // Debugging
           return token; // Return existing token if no id_token is present
         }
-
-        // console.log("Calling loginWithGoogle with id_token:", account.id_token); // Debugging
 
         // Call the loginWithGoogle function to authenticate with your backend
         const response = await loginWithGoogle(account.id_token);
 
         if (response.status === "success") {
-          // console.log("loginWithGoogle response:", response); // Debugging
           // Update the token with user data and access token
           token.accessToken = response.data.access_token;
           token.user = response.data.data.user;

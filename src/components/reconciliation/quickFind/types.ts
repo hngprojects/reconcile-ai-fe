@@ -1,7 +1,7 @@
 import type { Command as CommandPrimitive } from "cmdk";
 import type React from "react";
-import { TransactionOption } from "../../helpers/searchComboxOptionExpander";
-import type { Command } from "../command";
+import { TransactionOption } from "../../../helpers/searchComboxOptionExpander";
+import type { Command } from "./command";
 
 export interface Option {
   value: string;

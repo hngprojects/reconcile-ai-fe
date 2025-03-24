@@ -1,4 +1,4 @@
-import { Option } from "../components/quickFind/types";
+import { Option } from "../components/reconciliation/quickFind/types";
 import { FrontendTransaction } from "../types/frontendResponseTypes";
 
 export interface TransactionOption extends Option, FrontendTransaction {}

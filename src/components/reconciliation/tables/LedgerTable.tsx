@@ -25,18 +25,18 @@ import {
 import { useState } from "react";
 import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
 import { useAuth } from "../../context/AuthContext";
-import { useReconciliation } from "../context/ReconciliationProvider";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
-} from "../helpers/searchComboxOptionExpander";
+} from "../../../helpers/searchComboxOptionExpander";
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   ReconciliationItem,
   FrontendTransaction,
-} from "../types/frontendResponseTypes";
-import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
-import useRowHeights from "../hooks/useRowHeights";
+} from "../../../types/frontendResponseTypes";
+import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
+import useRowHeights from "../../../hooks/useRowHeights";
 
 export function LedgerTable() {
   const { isAuthenticated } = useAuth();
@@ -46,6 +46,7 @@ export function LedgerTable() {
     setPagination,
     paginatedData,
     unmatchedLedgerTransactions,
+    unmatchedBankTransactions,
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
@@ -396,7 +397,7 @@ export function LedgerTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransaction}
-        potentialMatches={unmatchedLedgerTransactions}
+        potentialMatches={unmatchedBankTransactions}
         onMatch={onMatch}
       />
     </>
