@@ -46,6 +46,7 @@ export function LedgerTable() {
     setPagination,
     paginatedData,
     unmatchedLedgerTransactions,
+    unmatchedBankTransactions,
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
@@ -396,7 +397,7 @@ export function LedgerTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransaction}
-        potentialMatches={unmatchedLedgerTransactions}
+        potentialMatches={unmatchedBankTransactions}
         onMatch={onMatch}
       />
     </>
