@@ -23,6 +23,7 @@ import { FrontendTransaction } from "../../../types/frontendResponseTypes";
 import { StatusBadge } from "../StatusBadge";
 import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
+import { usePathname } from "next/navigation";
 import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
 
 export function MobileView() {
@@ -52,6 +53,7 @@ export function MobileView() {
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const path = usePathname();
 
   const [modalOpen, setModalOpen] = useState(false);
   // const [selectedTransactionRow, setSelectedRow] = useState<ReconciliationItem>(
@@ -73,7 +75,7 @@ export function MobileView() {
     try {
       setIsExporting(true);
 
-      const reconciliationId = localStorage.getItem("reconciliation_id");
+      const reconciliationId = path.split("/")[2];
 
       if (!reconciliationId) {
         throw new Error("No reconciliation id found");
@@ -166,7 +168,7 @@ export function MobileView() {
               Re-upload
             </button>
           </a>
-          {hasPlanAccess("export") && (
+          {//hasPlanAccess("export") && (
             <button
               type="button"
               className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
@@ -184,7 +186,8 @@ export function MobileView() {
                 </>
               )}
             </button>
-          )}
+          //)
+          }
         </div>
       </div>
 
