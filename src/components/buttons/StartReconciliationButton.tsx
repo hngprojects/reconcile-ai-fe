@@ -1,4 +1,3 @@
-
 // "use client";
 
 // import { useAuth } from "@/src/components/context/AuthContext";
@@ -76,7 +75,7 @@
 
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import LoginModal from "../modal/LoginModal";
@@ -99,6 +98,12 @@ export default function StartReconciliationButton({
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // State for handling loading state
+
+  useEffect(() => {
+    if (!showLoginModal && !showAuthModal) {
+      setIsLoading(false);
+    }
+  }, [showAuthModal, showLoginModal]);
 
   const handleClick = () => {
     setIsLoading(true); // Start loading state
@@ -177,8 +182,12 @@ export default function StartReconciliationButton({
         }
 
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </>
