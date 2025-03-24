@@ -75,7 +75,7 @@
 
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Typewriter } from "react-simple-typewriter";
 import LoginModal from "../modal/LoginModal";
@@ -97,16 +97,8 @@ export default function StartReconciliationButton({
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // State for handling loading state
-
-  useEffect(() => {
-    if (!showLoginModal && !showAuthModal) {
-      setIsLoading(false);
-    }
-  }, [showAuthModal, showLoginModal]);
 
   const handleClick = () => {
-    setIsLoading(true); // Start loading state
     if (isAuthenticated) {
       router.push("/file-upload");
     } else {
@@ -142,9 +134,7 @@ export default function StartReconciliationButton({
         aria-label={ariaLabel || text}
       >
         {/* Show loading spinner if isLoading is true */}
-        {isLoading ? (
-          <div className="loader"></div> // Simple spinner for loading state
-        ) : isHovered ? (
+        {isHovered ? (
           <Typewriter
             words={[text]}
             loop={1}
@@ -169,27 +159,6 @@ export default function StartReconciliationButton({
         onClose={() => setShowAuthModal(false)}
         onSwitchToLogin={handleSwitchToLogin}
       />
-
-      {/* Add a CSS spinner */}
-      <style jsx>{`
-        .loader {
-          border: 4px solid #f3f3f3; /* Light gray background */
-          border-top: 4px solid #3498db; /* Blue spinner color */
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
     </>
   );
 }
