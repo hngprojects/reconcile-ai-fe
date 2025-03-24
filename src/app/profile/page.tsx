@@ -14,6 +14,7 @@ import { User } from "@/src/types/auth";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Save, AlertTriangle } from "lucide-react";
 import { toast } from "sonner"; // Replace useToast with sonner
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 interface ProfileManagementSectionProps {
   darkMode: boolean;
@@ -80,7 +81,8 @@ export default function ProfileManagementSection({
   };
 
   return (
-    <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <ProtectedRoute>
+      <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1
         className={`text-xl sm:text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-6`}
       >
@@ -272,6 +274,7 @@ export default function ProfileManagementSection({
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 }
