@@ -45,7 +45,7 @@ export default function UpgradePlan() {
              "Everything in Starter Plan",
             "Unlimited reconciliation/month",
             "Advanced matching of unmatched records",
-            "Advanced AI matching and reconciliation (Large data set: up to 3000 rows)",
+            "Advanced AI matching and reconciliation (Large data set: up to 2000 rows)",
             "Merging multiple records/files",
             "Email notification for reconciled results",
           ],

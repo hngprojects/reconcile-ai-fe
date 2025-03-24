@@ -508,6 +508,7 @@ export const PlusIcon = ({ className = defaultSize }: IconClassProps) => {
 };
 export const MinusIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
+
     <svg
       className={cn("text-[#98A2B3] aspect-auto", className)}
       width="22"

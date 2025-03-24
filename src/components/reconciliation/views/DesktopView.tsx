@@ -12,6 +12,7 @@ import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import { exportReconciliation } from "@/src/lib/api";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
 
 export default function DesktopView() {
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -28,6 +29,7 @@ export default function DesktopView() {
     selectedRow,
     setSelectedRow,
     userPlan,
+    authenticated
   } = useReconciliation();
   const path = usePathname();
 
@@ -96,7 +98,9 @@ export default function DesktopView() {
   };
 
   return (
-    <div className="space-y-6 py-6">
+    <>
+    { authenticated ? 
+    (<div className="space-y-6 py-6">
       {/* Custom Toast Message */}
       {showSuccessToast && (
         <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
@@ -186,6 +190,10 @@ export default function DesktopView() {
         />
         //)
       }
-    </div>
+    </div>)
+
+    :  (<Unauthenticated />)
+    }
+    </>
   );
 }
