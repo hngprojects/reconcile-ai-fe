@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { LOGOUT_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
 import { signIn, signOut } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
+import { validateToken } from "@/src/lib/api";
 
 interface AuthContextType {
   user: User | null;
@@ -42,39 +43,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Modified logout function to handle cleanup properly
   const logout = async () => {
     try {
-      const res = await fetch(LOGOUT_API_URL, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          ...(localStorage.getItem("access_token") && {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          }), // Only send Authorization if token exists in localStorage
-        },
-      });
-
-      await signOut({ callbackUrl: "/" });
-
-      if (!res.ok) {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("user");
-        toast.error("Something went wrong!");
-        setUser(null);
-        return;
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        await fetch(LOGOUT_API_URL, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
       }
-      // Remove access token and user data from localStorage
+    } catch (error) {
+      console.error("Logout API error:", error);
+    } finally {
+      // Always clean up local storage and state
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
       setUser(null);
-      router.push("/");
-      toast.success("Logged out successfully!");
-    } catch (error) {
-      console.error("Something went wrong while logging out!", error);
+      await signOut({ callbackUrl: "/" });
     }
   };
 
-  
   const getUserDetails = async (token: string) => {
     try {
       const response = await fetch(USER_API_URL, {
@@ -93,19 +85,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Check for authenticated user on mount
+  // Check for authenticated user on mount and token validity
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    const userDetails = localStorage.getItem("user");
+    const checkAuth = async () => {
+      const token = localStorage.getItem("access_token");
+      const userDetails = localStorage.getItem("user");
 
-    if (token) {
-      if (userDetails && userDetails !== "undefined") {
-        setUser(JSON.parse(userDetails));
+      if (!token || token === "undefined") {
+        setUser(null);
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        // Validate token on mount
+        const isValid = await validateToken(token);
+        if (!isValid) {
+          logout();
+          return;
+        }
+
+        if (userDetails && userDetails !== "undefined") {
+          setUser(JSON.parse(userDetails));
+        } else {
+          // Fetch user details if we have token but no user data
+          await getUserDetails(token);
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        logout();
+      } finally {
         setIsLoading(false);
       }
-    } else {
-      setIsLoading(false);
-    }
+    };
+
+    checkAuth();
   }, []);
 
   return (
@@ -117,7 +131,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isLoading,
         signInWithGoogle,
         logout,
-        getUserDetails
+        getUserDetails,
       }}
     >
       <SessionProvider>{children}</SessionProvider>

@@ -426,7 +426,7 @@ export const loginWithGoogle = async (id_token: string) => {
       return { status: "error", error: resData };
     }
   } catch (error) {
-    return { status: "error", error: error.message };
+    return { status: "error", error: error instanceof Error ? error.message : "An unexpected error occurred" };
   }
 };
 

@@ -1,38 +1,52 @@
 "use client";
-import { useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { validateToken } from '@/src/lib/api';
-import UnAuthorized from "../reconciliation/UnAuthorized";
+import { validateToken } from "@/src/lib/api";
+import { Loader } from "../ui/loader";
 
 export default function ProtectedRoute({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { logout } = useAuth();
+  const { isAuthenticated, logout, isLoading } = useAuth();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token') as string;
-    const interval = setInterval(() => {
-      if (token && token !== 'undefined') {
-        const valid = validateToken(token);
+    // Check authentication on initial render
+    if (!isLoading && !isAuthenticated) {
+      router.replace("/");
+      return;
+    }
 
-        if(!valid){
+    // Token validation check
+    const token = localStorage.getItem("access_token");
+    if (!token || token === "undefined") {
+      logout();
+      router.replace("/");
+      return;
+    }
+
+    const interval = setInterval(
+      async () => {
+        const valid = await validateToken(token);
+        if (!valid) {
           logout();
           router.replace("/");
-        } else {
-          setIsAuthenticated(true)
         }
-      }
-    }, 1 * 60 * 1000); 
+      },
+      1 * 60 * 1000
+    );
+
     return () => clearInterval(interval);
-  }, [logout, router]);
+  }, [isAuthenticated, isLoading, logout, router]);
 
-  if (!isAuthenticated) return <UnAuthorized />;
+  // Show loading state
+  if (isLoading) {
+    return <Loader />;
+  }
 
-  return <>{children}</>;
+  // Only render children if authenticated
+  return isAuthenticated ? <>{children}</> : null;
 }
