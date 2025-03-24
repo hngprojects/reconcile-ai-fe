@@ -70,8 +70,13 @@ const Nav = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const pathNamesWithoutNavlinks:string[] = ["/file-upload", "/profile", "/manage-plan", "/reconciliation"]
-  console.log(pathname)
+  const pathNamesWithoutNavlinks: string[] = [
+    "/file-upload",
+    "/profile",
+    "/manage-plan",
+    "/reconciliation",
+  ];
+  console.log(pathname);
 
   return (
     <header className="border-b-[1px] flex items-center border-[#0000001A] sticky top-0 left-0 right-0 bg-white z-50">
@@ -85,82 +90,87 @@ const Nav = () => {
           </div>
         </Link>
 
-        { !pathNamesWithoutNavlinks.some(path => pathname.startsWith(path)) &&
+        {!pathNamesWithoutNavlinks.some((path) =>
+          pathname.startsWith(path)
+        ) && (
           <nav className="hidden md:block">
-          <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
-            <li>
-              <Link
-                className={cn(
-                  "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                  pathname === "/"
-                    ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                    : ""
-                )}
-                href="/"
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <NavigationMenu>
-                <NavigationMenuList>
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger
-                      className={cn(
-                        "p-0 text-[#333333] font-medium text-base h-[21px] hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                        isIndustryPaths
-                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                          : ""
-                      )}
-                    >
-                      Industries
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="p-1">
-                      <ul className="w-48">
-                        {industryPaths.map(({ name, href }) => (
-                          <ListItem
-                            key={href}
-                            href={href}
-                            className={pathname === href ? "text-primary" : ""}
-                          >
-                            {name}
-                          </ListItem>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </li>
-            <li>
-              <Link
-                className={cn(
-                  "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                  pathname === "/blog"
-                    ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                    : ""
-                )}
-                href="/blog"
-              >
-                Blog
-              </Link>
-            </li>
-            <li>
-              <Link
-                className={cn(
-                  "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                  pathname === "/pricing"
-                    ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                    : ""
-                )}
-                href="/pricing"
-              >
-                Pricing
-              </Link>
-            </li>
-          </ul>
+            <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
+              <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger
+                        className={cn(
+                          "text-[#333333] font-medium text-base h-[21px] hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                          isIndustryPaths
+                            ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                            : ""
+                        )}
+                        style={isIndustryPaths ? { color: "#2E604A" } : {}}
+                      >
+                        Industries
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="p-1">
+                        <ul className="w-48">
+                          {industryPaths.map(({ name, href }) => (
+                            <ListItem
+                              key={href}
+                              href={href}
+                              className={
+                                pathname === href ? "text-primary" : ""
+                              }
+                            >
+                              {name}
+                            </ListItem>
+                          ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </li>
+              <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/blog"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/blog"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/pricing"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/pricing"
+                >
+                  Pricing
+                </Link>
+              </li>
+            </ul>
           </nav>
-        }
+        )}
 
         <div className="hidden md:block">
           <UserAction />
@@ -271,28 +281,30 @@ const Nav = () => {
                   </li>
                 </ul>
 
-                <div className="flex flex-col w-full items-center gap-4">
-                  <SheetClose asChild>
-                    <button
-                      type="button"
-                      onClick={() => setShowLoginModal(true)}
-                      className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
-                      aria-label="Open login modal"
-                    >
-                      <span className="relative bottom-0.5">Login</span>
-                    </button>
-                  </SheetClose>
-                  <SheetClose asChild>
-                    <button
-                      type="button"
-                      onClick={() => setShowAuthModal(true)}
-                      className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
-                      aria-label="Open signup modal"
-                    >
-                      Sign up
-                    </button>
-                  </SheetClose>
-                </div>
+                {!user && (
+                  <div className="flex flex-col w-full items-center gap-4">
+                    <SheetClose asChild>
+                      <button
+                        type="button"
+                        onClick={() => setShowLoginModal(true)}
+                        className="h-[44px] px-6 py-3 border-2 w-full border-white text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/10 cursor-pointer"
+                        aria-label="Open login modal"
+                      >
+                        <span className="relative bottom-0.5">Login</span>
+                      </button>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <button
+                        type="button"
+                        onClick={() => setShowAuthModal(true)}
+                        className="h-[44px] px-6 py-3 bg-white w-full text-primary rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-white/90 cursor-pointer"
+                        aria-label="Open signup modal"
+                      >
+                        Sign up
+                      </button>
+                    </SheetClose>
+                  </div>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

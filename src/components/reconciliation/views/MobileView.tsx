@@ -24,6 +24,7 @@ import { StatusBadge } from "../StatusBadge";
 import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
 import { usePathname } from "next/navigation";
+import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
 
 export function MobileView() {
   const {
@@ -45,6 +46,7 @@ export function MobileView() {
     userPlan,
     setSelectedRow,
     selectedRow,
+    authenticated
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -142,7 +144,9 @@ export function MobileView() {
   }, [showSuccessToast, showErrorToast]);
 
   return (
-    <div className="space-y-3 py-6">
+    <>
+    { authenticated ?
+    (<div className="space-y-3 py-6">
       {showSuccessToast && (
         <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
           <SuccessToast
@@ -153,7 +157,7 @@ export function MobileView() {
       )}
 
       {/* Conditional export button */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col gap-4 md:flex-row justify-between mb-4">
         <h1 className="text-2xl font-semibold">Matched Results</h1>
         <div className="flex gap-4">
           <a href="/file-upload">
@@ -164,7 +168,7 @@ export function MobileView() {
               Re-upload
             </button>
           </a>
-          {hasPlanAccess("export") && (
+          {//hasPlanAccess("export") && (
             <button
               type="button"
               className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
@@ -182,7 +186,8 @@ export function MobileView() {
                 </>
               )}
             </button>
-          )}
+          //)
+          }
         </div>
       </div>
 
@@ -473,6 +478,7 @@ export function MobileView() {
           }}
         />
       )}
-    </div>
+    </div>) : (<Unauthenticated />) }
+    </>
   );
 }

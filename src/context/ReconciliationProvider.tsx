@@ -72,6 +72,8 @@ interface ReconciliationContextProps {
   setSelectedRow: React.Dispatch<
     React.SetStateAction<ReconciliationItem | null>
   >;
+
+  authenticated: boolean
 }
 
 const ReconciliationContext = createContext<
@@ -92,6 +94,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
     null
   );
+  const [authenticated, setAuthenticated] = useState(true);
   const path = usePathname();
 
   useEffect(() => {
@@ -110,9 +113,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
           console.log({ reconciliationData });
 
           setData(reconciliationData);
+        }else {
+          setAuthenticated(false);
         }
       } catch (e) {
         console.error("Error: ", e);
+        setAuthenticated(false);
       }
     };
     fetch();
@@ -273,6 +279,8 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         // Unlink data
         selectedRow,
         setSelectedRow,
+
+        authenticated
       }}
     >
       {children}
