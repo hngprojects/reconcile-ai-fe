@@ -24,6 +24,7 @@ import { StatusBadge } from "../StatusBadge";
 import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
 import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
+import { Loader } from "@/src/components/ui/loader";
 
 export function MobileView() {
   const {
@@ -45,7 +46,8 @@ export function MobileView() {
     userPlan,
     setSelectedRow,
     selectedRow,
-    authenticated
+    authenticated,
+    loading
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -143,7 +145,7 @@ export function MobileView() {
 
   return (
     <>
-    { authenticated ?
+    { loading ? (<Loader />) : authenticated ?
     (<div className="space-y-3 py-6">
       {showSuccessToast && (
         <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
