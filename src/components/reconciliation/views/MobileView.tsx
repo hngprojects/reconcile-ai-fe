@@ -6,25 +6,25 @@ import { DownloadCloudIcon, Loader2, MoreVertical } from "lucide-react";
 import { useEffect, useState } from "react";
 import { CheckIcon } from "../../Icon/Icons";
 import UnlinkModal from "../../modal/UnlinkModal";
-import { SuccessToast } from "../../reconciliation/SuccessToast";
+import { SuccessToast } from "../SuccessToast";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
-import { useReconciliation } from "../context/ReconciliationProvider";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
-} from "../helpers/searchComboxOptionExpander";
+} from "../../../helpers/searchComboxOptionExpander";
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
 import {
   FrontendTransaction,
   ReconciliationItem,
-} from "../types/frontendResponseTypes";
-import { StatusBadge } from "./StatusBadge";
-import QuickFindAndMatchComboBox from "./quickFind/QuickFindAndMatchComboBox";
+} from "../../../types/frontendResponseTypes";
+import { StatusBadge } from "../StatusBadge";
+import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
 
 export function MobileView() {
@@ -57,7 +57,7 @@ export function MobileView() {
     useState<ReconciliationItem>({} as ReconciliationItem);
 
   const possibleMatches =
-    selectedTransactionRow.statements === null
+    selectedTransactionRow.statements !== null
       ? unmatchedBankTransactions
       : unmatchedLedgerTransactions;
 
@@ -187,7 +187,7 @@ export function MobileView() {
       {/* Transaction Cards */}
       {paginatedData.map((item, index) => {
         const possibleMatches =
-          item.statements === null
+          item.statements !== null
             ? unmatchedLedgerTransactions
             : unmatchedBankTransactions;
 
@@ -356,7 +356,7 @@ export function MobileView() {
                         hidePlaceholderWhenSelected
                         onConfirm={(option) => {
                           const selectedOption: FrontendTransaction = {
-                            id: `${option.id}-${Date.now()}`,
+                            id: option.id,
                             description: option.description,
                             date: option.date,
                             amount: option.amount,
@@ -365,25 +365,25 @@ export function MobileView() {
 
                           if (item.ledgers) {
                             onMatch(
-                              [
-                                {
-                                  bank_txn: { ...selectedOption },
-                                  score: "0",
-                                },
-                              ],
-                              item.ledgers
+                              [selectedOption],
+                              item.ledgers.map((ledger) => ledger.ledger_txn)
                             );
                           }
 
                           if (item.statements) {
-                            onMatch(item.statements, [
-                              {
-                                ledger_txn: { ...selectedOption },
-                                score: "0",
-                              },
-                            ]);
+                            onMatch(
+                              item.statements.map(
+                                (statement) => statement.bank_txn
+                              ),
+                              [selectedOption]
+                            );
                           }
                         }}
+                        emptyIndicator={
+                          <p className="text-center text-sm">
+                            No transactions found
+                          </p>
+                        }
                       />
                     )}
 
@@ -465,8 +465,12 @@ export function MobileView() {
               selectedTransactionRow.ledgers
             ) {
               await onUnlink(
-                selectedTransactionRow.statements,
-                selectedTransactionRow.ledgers
+                selectedTransactionRow.statements.map(
+                  (statement) => statement.bank_txn
+                ),
+                selectedTransactionRow.ledgers.map(
+                  (ledger) => ledger.ledger_txn
+                )
               );
             }
           }}

@@ -2,7 +2,7 @@ import React from "react";
 
 interface SuccessToastProps {
   message: string;
-  onClose: () => void; 
+  onClose: () => void;
 }
 
 export const SuccessToast = ({ message, onClose }: SuccessToastProps) => {
@@ -11,7 +11,8 @@ export const SuccessToast = ({ message, onClose }: SuccessToastProps) => {
       <div className="flex-1">
         <p className="text-green-800 font-medium">{message}</p>
       </div>
-      <button 
+      <button
+        type="button"
         onClick={onClose}
         className="text-gray-500 hover:text-gray-700 "
       >
@@ -20,4 +21,3 @@ export const SuccessToast = ({ message, onClose }: SuccessToastProps) => {
     </div>
   );
 };
- 
