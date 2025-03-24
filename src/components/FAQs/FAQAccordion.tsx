@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import { FAQ } from "@/src/types/faq";
 import { PlusIcon, MinusIcon } from "../Icon/Icons";
 
-const FAQAccordion = ({ faqs }: { faqs:FAQ[] }) => {
+const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggleFAQ = (index:number) => {
+  const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
@@ -33,7 +33,11 @@ const FAQAccordion = ({ faqs }: { faqs:FAQ[] }) => {
               transition={{ duration: 0.2 }}
               className="text-2xl font-bold text-[#297B65]"
             >
-              {openIndex === index ? <MinusIcon /> : <PlusIcon />}
+              {openIndex === index ? (
+                <MinusIcon className="text-primary" />
+              ) : (
+                <PlusIcon className="text-primary" />
+              )}
             </motion.span>
           </div>
           {openIndex === index && (
