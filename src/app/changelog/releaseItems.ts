@@ -417,7 +417,7 @@ export const releases: ReleaseItem[] = [
         {
           title: "New Features",
           items: [
-            "Advanced Reconciliation: More advanced accuracy that allows users to upload and reconcile files up to 3000 rows of data",
+            "Advanced Reconciliation: More advanced accuracy that allows users to upload and reconcile files up to 2000 rows of data",
             "AI-Powered Matching: The system identifies and marks exact matches within each processing window based on date and amount.",
             "User Confirmation: Users can review, confirm, or correct AI-suggested matches before finalizing them.",
             "The improved version now allows users to reconcile a larger volume of data with more accuracy and speed.",
