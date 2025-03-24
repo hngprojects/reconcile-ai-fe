@@ -1,88 +1,99 @@
-  "use client";
-  import { useState, useEffect } from "react";
-  import Image from "next/image";
-  import { Button } from "@/src/components/ui/button";
-  import { useAuth } from "@/src/components/context/AuthContext";
-  import { Input } from "@/src/components/ui/input";
-  import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-  } from "@/src/components/ui/tabs";
-  import { User } from "@/src/types/auth";
-  import { Card, CardContent } from "@/src/components/ui/card";
-  import { Save, AlertTriangle } from "lucide-react";
-  import { toast } from "sonner"; // Replace useToast with sonner
-  import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
+"use client";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { Button } from "@/src/components/ui/button";
+import { useAuth } from "@/src/components/context/AuthContext";
+import { Input } from "@/src/components/ui/input";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/src/components/ui/tabs";
+import { User } from "@/src/types/auth";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { Save, AlertTriangle } from "lucide-react";
+import { toast } from "sonner"; // Replace useToast with sonner
+import { useRequireAuth } from "@/src/hooks/useRequireAuth";
+import { Loader } from "@/src/components/ui/loader";
+import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
 
-  interface ProfileManagementSectionProps {
-    darkMode: boolean;
-    setDarkMode: (value: boolean) => void;
+interface ProfileManagementSectionProps {
+  darkMode: boolean;
+  setDarkMode: (value: boolean) => void;
+}
+
+export default function ProfileManagementSection({
+  darkMode,
+}: ProfileManagementSectionProps) {
+  const { isLoading, isAuthenticated } = useRequireAuth();
+  const { user } = useAuth();
+  // Remove useToast hook
+  const [formState, setFormState] = useState({
+    firstName: user?.name?.split(" ")[0] || "",
+    surname: user?.name?.split(" ")[1] || "",
+    email: user?.email || "",
+    country: "",
+    city: "",
+  });
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
+  // Update form state when user data is available
+  useEffect(() => {
+    if (user) {
+      const names = user.name?.split(" ") || ["", ""];
+      setFormState({
+        firstName: names[0] || "",
+        surname: names[1] || "",
+        email: user.email || "",
+        country: formState.country, // Preserve existing values
+        city: formState.city, // Preserve existing values
+      });
+    }
+  }, [user, formState.country, formState.city]);
+
+  const getUserInitials = (name?: string) => {
+    return name && name.length > 0 ? name[0].toUpperCase() : "";
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({ ...prev, [name]: value }));
+
+    // Only check changes for country and city
+    if (name === "country" || name === "city") {
+      const hasChanges = value.trim() !== "";
+      setIsFormChanged(hasChanges);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast.info("Coming Soon!", {
+      description: "This feature will be available soon. Stay tuned!",
+      duration: 3000,
+    });
+  };
+
+  const handleDeleteAccount = () => {
+    toast.warning("Coming Soon!", {
+      description:
+        "Account deletion feature will be available soon. Stay tuned!",
+      duration: 3000,
+    });
+  };
+
+  if (isLoading) {
+    return <Loader />;
   }
 
-  export default function ProfileManagementSection({
-    darkMode,
-  }: ProfileManagementSectionProps) {
-    const { user } = useAuth();
-    // Remove useToast hook
-    const [formState, setFormState] = useState({
-      firstName: user?.name?.split(" ")[0] || "",
-      surname: user?.name?.split(" ")[1] || "",
-      email: user?.email || "",
-      country: "",
-      city: "",
-    });
-    const [isFormChanged, setIsFormChanged] = useState(false);
+  if (!isAuthenticated) {
+    return <UnAuthorized />;
+  }
 
-    // Update form state when user data is available
-    useEffect(() => {
-      if (user) {
-        const names = user.name?.split(" ") || ["", ""];
-        setFormState({
-          firstName: names[0] || "",
-          surname: names[1] || "",
-          email: user.email || "",
-          country: formState.country, // Preserve existing values
-          city: formState.city, // Preserve existing values
-        });
-      }
-    }, [user, formState.country, formState.city]);
-
-    const getUserInitials = (name?: string) => {
-      return name && name.length > 0 ? name[0].toUpperCase() : "";
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = e.target;
-      setFormState((prev) => ({ ...prev, [name]: value }));
-
-      // Only check changes for country and city
-      if (name === "country" || name === "city") {
-        const hasChanges = value.trim() !== "";
-        setIsFormChanged(hasChanges);
-      }
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      toast.info("Coming Soon!", {
-        description: "This feature will be available soon. Stay tuned!",
-        duration: 3000,
-      });
-    };
-
-    const handleDeleteAccount = () => {
-      toast.warning("Coming Soon!", {
-        description:
-          "Account deletion feature will be available soon. Stay tuned!",
-        duration: 3000,
-      });
-    };
-
-    return (
-      <ProtectedRoute>
-        <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  return (
+    <>
+      <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1
           className={`text-xl sm:text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-6`}
         >
@@ -274,7 +285,7 @@
             </div>
           </TabsContent>
         </Tabs>
-        </div>
-    </ProtectedRoute>
+      </div>
+    </>
   );
 }

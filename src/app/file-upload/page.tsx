@@ -1,9 +1,13 @@
 "use client";
 
 import FileUploadLayout from "@/src/components/reconciliation/upload/FileUploadLayout";
-import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
+import { Loader } from "@/src/components/ui/loader";
+import { useRequireAuth } from "@/src/hooks/useRequireAuth";
+import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
 
 export default function FileUploadPage() {
+  const { isLoading, isAuthenticated } = useRequireAuth();
+
   const handleReconcile = async (
     bankFiles: File[],
     ledgerFiles: File[]
@@ -22,9 +26,13 @@ export default function FileUploadPage() {
     }
   };
 
-  return (
-    <ProtectedRoute>
-      <FileUploadLayout onReconcile={handleReconcile} />
-    </ProtectedRoute>
-  );
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (!isAuthenticated) {
+    return <UnAuthorized />;
+  }
+
+  return <FileUploadLayout onReconcile={handleReconcile} />;
 }
