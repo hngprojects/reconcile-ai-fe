@@ -1,6 +1,7 @@
 "use client";
 
 import FileUploadLayout from "@/src/components/reconciliation/upload/FileUploadLayout";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 export default function FileUploadPage() {
   const handleReconcile = async (
@@ -21,5 +22,9 @@ export default function FileUploadPage() {
     }
   };
 
-  return <FileUploadLayout onReconcile={handleReconcile} />;
+  return (
+    <ProtectedRoute>
+      <FileUploadLayout onReconcile={handleReconcile} />
+    </ProtectedRoute>
+  );
 }

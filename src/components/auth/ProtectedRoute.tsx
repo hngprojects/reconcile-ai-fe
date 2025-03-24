@@ -1,8 +1,10 @@
 "use client";
+import { useState } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { validateToken } from '@/src/lib/api';
+import UnAuthorized from "../reconciliation/UnAuthorized";
 
 export default function ProtectedRoute({
   children,
@@ -11,6 +13,7 @@ export default function ProtectedRoute({
 }) {
   const { logout } = useAuth();
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('access_token') as string;
@@ -21,12 +24,15 @@ export default function ProtectedRoute({
         if(!valid){
           logout();
           router.replace("/");
+        } else {
+          setIsAuthenticated(true)
         }
       }
     }, 1 * 60 * 1000); 
     return () => clearInterval(interval);
   }, [logout, router]);
 
+  if (!isAuthenticated) return <UnAuthorized />;
 
   return <>{children}</>;
 }
