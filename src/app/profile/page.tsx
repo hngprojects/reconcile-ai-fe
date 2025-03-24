@@ -83,7 +83,7 @@ export default function ProfileManagementSection({
     });
   };
 
-  if (isLoading) {
+  if (isLoading || isAuthenticated === null) {
     return <Loader />;
   }
 
