@@ -70,6 +70,9 @@ const Nav = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
 
+  const pathNamesWithoutNavlinks:string[] = ["/file-upload", "/profile", "/manage-plan", "/reconciliation"]
+  console.log(pathname)
+
   return (
     <header className="border-b-[1px] flex items-center border-[#0000001A] sticky top-0 left-0 right-0 bg-white z-50">
       <Container className="flex py-4 justify-between gap-6 w-full items-center">
@@ -82,7 +85,8 @@ const Nav = () => {
           </div>
         </Link>
 
-        <nav className="hidden md:block">
+        { !pathNamesWithoutNavlinks.some(path => pathname.startsWith(path)) &&
+          <nav className="hidden md:block">
           <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
             <li>
               <Link
@@ -155,7 +159,8 @@ const Nav = () => {
               </Link>
             </li>
           </ul>
-        </nav>
+          </nav>
+        }
 
         <div className="hidden md:block">
           <UserAction />
