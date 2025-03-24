@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { FAQ } from "@/src/types/faq";
+import { PlusIcon, MinusIcon } from "../Icon/Icons";
 
-const FAQAccordion = ({ faqs }) => {
-  const [openIndex, setOpenIndex] = useState(null);
+const FAQAccordion = ({ faqs }: { faqs:FAQ[] }) => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const toggleFAQ = (index) => {
+  const toggleFAQ = (index:number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
@@ -27,11 +29,11 @@ const FAQAccordion = ({ faqs }) => {
               {faq.question}
             </h3>
             <motion.span
-              animate={{ rotate: openIndex === index ? 90 : 0 }}
+              animate={{ rotate: openIndex === index ? 180 : 0 }}
               transition={{ duration: 0.2 }}
               className="text-2xl font-bold text-[#297B65]"
             >
-              {openIndex === index ? "−" : "+"}
+              {openIndex === index ? <MinusIcon /> : <PlusIcon />}
             </motion.span>
           </div>
           {openIndex === index && (
