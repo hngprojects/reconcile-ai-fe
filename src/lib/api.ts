@@ -326,9 +326,19 @@ export const handleCustomerFeedback = async (formData: FormData) => {
 };
 
 export const fetchReconciliation = async (reconciliationId: string) => {
+  const token = localStorage.getItem("access_token");
+  const headers: HeadersInit = {
+    Accept: "application/json",
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   try {
     const response = await fetch(
       `${RECONCILIATION_RESULT_API_URL}${reconciliationId}`,
+       { headers }
     );
 
     const data = await response.json();

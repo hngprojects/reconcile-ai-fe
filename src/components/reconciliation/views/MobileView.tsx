@@ -23,6 +23,7 @@ import { FrontendTransaction } from "../../../types/frontendResponseTypes";
 import { StatusBadge } from "../StatusBadge";
 import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
+import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
 
 export function MobileView() {
   const {
@@ -44,6 +45,7 @@ export function MobileView() {
     userPlan,
     setSelectedRow,
     selectedRow,
+    authenticated
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -140,7 +142,9 @@ export function MobileView() {
   }, [showSuccessToast, showErrorToast]);
 
   return (
-    <div className="space-y-3 py-6">
+    <>
+    { authenticated ?
+    (<div className="space-y-3 py-6">
       {showSuccessToast && (
         <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
           <SuccessToast
@@ -471,6 +475,7 @@ export function MobileView() {
           }}
         />
       )}
-    </div>
+    </div>) : (<Unauthenticated />) }
+    </>
   );
 }
