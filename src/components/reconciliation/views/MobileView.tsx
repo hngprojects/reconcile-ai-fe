@@ -188,8 +188,8 @@ export function MobileView() {
       {paginatedData.map((item, index) => {
         const possibleMatches =
           item.statements !== null
-            ? unmatchedLedgerTransactions
-            : unmatchedBankTransactions;
+            ? unmatchedBankTransactions
+            : unmatchedLedgerTransactions;
 
         const transactionOptions: TransactionOption[] =
           addValueAndLabel(possibleMatches);
