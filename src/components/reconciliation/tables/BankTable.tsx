@@ -46,6 +46,7 @@ export function BankTable() {
     setPagination,
     paginatedData,
     unmatchedBankTransactions,
+    unmatchedLedgerTransactions,
     handleMatch: onMatch,
     setSelectedRow,
     setShowUnlinkModal,
@@ -400,7 +401,7 @@ export function BankTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransactionRow}
-        potentialMatches={unmatchedBankTransactions}
+        potentialMatches={unmatchedLedgerTransactions}
         onMatch={onMatch}
       />
     </>

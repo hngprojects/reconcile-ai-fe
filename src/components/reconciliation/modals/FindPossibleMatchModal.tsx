@@ -36,7 +36,7 @@ import { useReconciliation } from "@/src/context/ReconciliationProvider";
 interface FindPossibleMatchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  reconciledDataRow: ReconciliationItem;
+  reconciledDataRow: ReconciliationItem | null;
   potentialMatches: FrontendTransaction[];
   onMatch: (
     bankTransactions: FrontendTransaction[],
@@ -68,13 +68,13 @@ export function FindPossibleMatchModal({
 
   // Get bank and ledger transactions from the new structure
   const bankTransaction =
-    reconciledDataRow.statements && reconciledDataRow.statements.length > 0
-      ? reconciledDataRow.statements[0].bank_txn
+    reconciledDataRow?.statements && reconciledDataRow?.statements.length > 0
+      ? reconciledDataRow?.statements[0].bank_txn
       : null;
 
   const ledgerTransaction =
-    reconciledDataRow.ledgers && reconciledDataRow.ledgers.length > 0
-      ? reconciledDataRow.ledgers[0].ledger_txn
+    reconciledDataRow?.ledgers && reconciledDataRow?.ledgers.length > 0
+      ? reconciledDataRow?.ledgers[0].ledger_txn
       : null;
 
   // Calculate the number of rows to display for consistent table heights
@@ -210,7 +210,7 @@ export function FindPossibleMatchModal({
 
         // Use existing StatementWithScore from reconciledDataRow
         onMatch(
-          reconciledDataRow.statements?.map((stat) => stat.bank_txn) || [],
+          reconciledDataRow?.statements?.map((stat) => stat.bank_txn) || [],
           ledgerTransactions
         );
         onClose();
@@ -222,7 +222,7 @@ export function FindPossibleMatchModal({
         // Use existing LedgerWithScore from reconciledDataRow
         onMatch(
           bankTransactions,
-          reconciledDataRow.ledgers?.map((ledg) => ledg.ledger_txn) || []
+          reconciledDataRow?.ledgers?.map((ledg) => ledg.ledger_txn) || []
         );
         onClose();
       }
@@ -248,7 +248,7 @@ export function FindPossibleMatchModal({
     console.log("Selected range:", range);
   };
 
-  const isDefaultMatch = reconciledDataRow.matched;
+  const isDefaultMatch = reconciledDataRow?.matched;
 
   const title = !bankTransaction
     ? "Company Ledger"
@@ -564,7 +564,7 @@ export function FindPossibleMatchModal({
 
             {isMatched && (
               <>
-                {reconciledDataRow.statements === null ? (
+                {reconciledDataRow?.statements === null ? (
                   <div className="flex flex-col gap-3">
                     {selectedTransactions.map((transaction) => (
                       <div key={transaction.id}>
@@ -624,7 +624,7 @@ export function FindPossibleMatchModal({
                   <hr className="border border-gray-200/70 flex-1" />
                 </div>
 
-                {reconciledDataRow.ledgers === null ? (
+                {reconciledDataRow?.ledgers === null ? (
                   <div className="flex flex-col gap-3">
                     {selectedTransactions.map((transaction) => (
                       <div key={transaction.id}>

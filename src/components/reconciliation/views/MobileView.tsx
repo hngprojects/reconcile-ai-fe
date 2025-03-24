@@ -19,10 +19,7 @@ import {
   TransactionOption,
 } from "../../../helpers/searchComboxOptionExpander";
 import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
-import {
-  FrontendTransaction,
-  ReconciliationItem,
-} from "../../../types/frontendResponseTypes";
+import { FrontendTransaction } from "../../../types/frontendResponseTypes";
 import { StatusBadge } from "../StatusBadge";
 import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import { exportReconciliation } from "@/src/lib/api";
@@ -45,6 +42,8 @@ export function MobileView() {
     setShowUnlinkModal,
     isLoading,
     userPlan,
+    setSelectedRow,
+    selectedRow,
   } = useReconciliation();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
@@ -53,11 +52,12 @@ export function MobileView() {
   const [toastMessage, setToastMessage] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTransactionRow, setSelectedTransactionRow] =
-    useState<ReconciliationItem>({} as ReconciliationItem);
+  // const [selectedTransactionRow, setSelectedRow] = useState<ReconciliationItem>(
+  //   {} as ReconciliationItem
+  // );
 
   const possibleMatches =
-    selectedTransactionRow.statements !== null
+    selectedRow?.statements === null
       ? unmatchedBankTransactions
       : unmatchedLedgerTransactions;
 
@@ -188,8 +188,8 @@ export function MobileView() {
       {paginatedData.map((item, index) => {
         const possibleMatches =
           item.statements !== null
-            ? unmatchedBankTransactions
-            : unmatchedLedgerTransactions;
+            ? unmatchedLedgerTransactions
+            : unmatchedBankTransactions;
 
         const transactionOptions: TransactionOption[] =
           addValueAndLabel(possibleMatches);
@@ -266,7 +266,7 @@ export function MobileView() {
                               className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
                               onClick={() => {
                                 setShowUnlinkModalMobile(true);
-                                setSelectedTransactionRow(item);
+                                setSelectedRow(item);
                               }}
                             >
                               <StatusBadge matched={item.matched} />
@@ -319,7 +319,7 @@ export function MobileView() {
                               <DropdownMenuItem
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setSelectedTransactionRow(item);
+                                  setSelectedRow(item);
                                   setShowUnlinkModal(true);
                                 }}
                                 className="gap-0.5"
@@ -398,7 +398,7 @@ export function MobileView() {
                         <DropdownMenuItem
                           className="gap-0.5"
                           onClick={() => {
-                            setSelectedTransactionRow(item);
+                            setSelectedRow(item);
                             setModalOpen(true);
                           }}
                         >
@@ -445,7 +445,7 @@ export function MobileView() {
       <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        reconciledDataRow={selectedTransactionRow}
+        reconciledDataRow={selectedRow}
         potentialMatches={possibleMatches}
         onMatch={onMatch}
       />
@@ -456,22 +456,17 @@ export function MobileView() {
           isLoading={isLoading}
           onClose={() => {
             setShowUnlinkModalMobile(false);
+            setSelectedRow(null);
           }}
           onConfirm={async () => {
-            if (!selectedTransactionRow) return;
+            if (!selectedRow) return;
 
-            if (
-              selectedTransactionRow.statements &&
-              selectedTransactionRow.ledgers
-            ) {
+            if (selectedRow.statements && selectedRow.ledgers) {
               await onUnlink(
-                selectedTransactionRow.statements.map(
-                  (statement) => statement.bank_txn
-                ),
-                selectedTransactionRow.ledgers.map(
-                  (ledger) => ledger.ledger_txn
-                )
+                selectedRow.statements.map((statement) => statement.bank_txn),
+                selectedRow.ledgers.map((ledger) => ledger.ledger_txn)
               );
+              setSelectedRow(null);
             }
           }}
         />
