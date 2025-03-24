@@ -115,7 +115,7 @@ const Nav = () => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger
                         className={cn(
-                          "text-[#333333] font-medium text-base h-[21px] hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                          "text-[#333333] font-medium text-base bg-transparent p-0 h-auto hover:bg-transparent hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
                           isIndustryPaths
                             ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
                             : ""
