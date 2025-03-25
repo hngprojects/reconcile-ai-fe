@@ -133,8 +133,10 @@ export default function ProfileManagement() {
   };
   return (
     <>
-      <section className="bg-[#F8F8F8] min-h-screen flex justify-center items-center p-4">
-        <Container className="max-w-2xl w-full bg-white rounded-[24px] p-4 md:p-[40px]">
+      <section className="bg-[#F8F8F8] flex-grow min-h-[calc(100vh-var(--navbar-height,80px))] flex justify-center items-center p-4">
+        <div className="max-w-2xl w-full flex flex-col gap-6">
+          <h1 className="h-[39px] font-inter text-[#101828] text-[32px] leading-[100%] tracking-[0%] font-semibold">Profile and Settings</h1>
+        <Container className=" w-full bg-white rounded-[24px] p-4 md:p-[40px]">
           <div className="flex flex-col mb-6">
             <div className="w-[120px] h-[120px] rounded-full overflow-hidden mb-4">
               {user?.avatar ? (
@@ -202,6 +204,8 @@ export default function ProfileManagement() {
             </div>
           </div>
         </Container>
+        </div>
+
       </section>
 
       {/* Delete Account Modal */}
