@@ -148,14 +148,14 @@ export default function ProfileManagementSection({
     }
   };
 
-  if (isLoading || isAuthenticated === null) {
-
+  if (isLoading) {
     return <Loader />;
   }
 
   if (!isAuthenticated) {
     return <UnAuthorized />;
   }
+  
   return (
     <>
       <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
