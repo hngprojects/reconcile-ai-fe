@@ -51,7 +51,7 @@ const Features = () => {
 
   return (
     <section>
-      <Container className="py-6 sm:py-12">
+      <Container className="py-16 px-4 md:px-16 lg:px-24">
         <motion.div
           className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12"
           initial={{ opacity: 0, y: 30 }}
