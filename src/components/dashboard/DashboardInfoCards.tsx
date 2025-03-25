@@ -33,16 +33,16 @@ export const DashboardInfoCards = () => {
 
   const { used, limit, progress } = getReconciliationProgress();
 
-  const calculateTimeLeft = (date: string) => {
-    const end = new Date(date);
-    const now = new Date();
-    const diff = end.getTime() - now.getTime();
+  // const calculateTimeLeft = (date: string) => {
+  //   const end = new Date(date);
+  //   const now = new Date();
+  //   const diff = end.getTime() - now.getTime();
 
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  //   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  //   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
-    return `${days}d ${hours}h left`;
-  };
+  //   return `${days}d ${hours}h left`;
+  // };
 
   // Format date helper
   const formatDate = (date: string | null | undefined) => {
@@ -107,11 +107,6 @@ export const DashboardInfoCards = () => {
             <p className="text-xl font-bold">
               {formatDate(user?.payment_plan?.expire_date)}
             </p>
-            {user?.payment_plan?.expire_date && (
-              <p className="text-sm text-gray-600 mt-1">
-                {calculateTimeLeft(user.payment_plan.expire_date)}
-              </p>
-            )}
           </div>
           {user?.payment_plan?.is_active && (
             <p className="text-sm text-green-600">Active</p>

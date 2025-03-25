@@ -9,14 +9,17 @@ import ErrorModal from "@/src/components/modal/ErrorModal";
 import LimitReachedModal from "@/src/components/modal/LimitReachedModal";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { countCsvRows } from "@/src/utils/csvHelpers";
+import { useRouter } from "next/navigation";
 
 const PLAN_LIMITS: { [key: string]: number } = {
-  basic: 5,      
-  starter: 20,  
+  basic: 5,
+  starter: 20,
   business: Infinity,
 };
 
-export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps) {
+export default function FileUploadLayout({
+  onReconcile,
+}: FileUploadLayoutProps) {
   const { isAuthenticated, user } = useAuth();
   const [bankFiles, setBankFiles] = useState<File[]>([]);
   const [ledgerFiles, setLedgerFiles] = useState<File[]>([]);
@@ -25,6 +28,7 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
   const [errorCode, setErrorCode] = useState<number>();
   const [userPlan, setUserPlan] = useState<string>("basic");
   const [reconciliationCount, setReconciliationCount] = useState<number>(0);
+  const router = useRouter();
 
   const getPlanLimit = (plan: string): number => {
     return PLAN_LIMITS[plan] ?? PLAN_LIMITS["basic"];
@@ -34,12 +38,13 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
 
   const fetchPlanAndCount = useCallback(async () => {
     try {
-      const plan = isAuthenticated && user && user.payment_plan?.plan 
-        ? user.payment_plan.plan.toLowerCase() 
-        : "basic";
-        
+      const plan =
+        isAuthenticated && user && user.payment_plan?.plan
+          ? user.payment_plan.plan.toLowerCase()
+          : "basic";
+
       setUserPlan(plan);
-      
+
       const storedCount = localStorage.getItem("reconcileCount") || "0";
       setReconciliationCount(parseInt(storedCount, 10));
     } catch (error) {
@@ -76,9 +81,9 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
 
     try {
       if (!isAuthenticated) {
-        const [bankValid, ledgerValid] = await Promise.all([ 
-          validateRowCount(bankFiles), 
-          validateRowCount(ledgerFiles), 
+        const [bankValid, ledgerValid] = await Promise.all([
+          validateRowCount(bankFiles),
+          validateRowCount(ledgerFiles),
         ]);
 
         if (!bankValid || !ledgerValid) {
@@ -112,9 +117,14 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
       if (result.status === "success") {
         setTimeout(() => {
           toast.dismiss(toastId);
-        }, 20000);
+        }, 5000);
 
-        localStorage.setItem("reconciliation_id", result.data.reconciliation_id);
+        router.push("/dashboard");
+
+        localStorage.setItem(
+          "reconciliation_id",
+          result.data.reconciliation_id
+        );
         setBankFiles([]);
         setLedgerFiles([]);
 
@@ -128,7 +138,10 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
       }, 1000);
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
-      const reconciliationError = error as Error & { code?: number; status?: number };
+      const reconciliationError = error as Error & {
+        code?: number;
+        status?: number;
+      };
       setErrorCode(reconciliationError.code || reconciliationError.status);
       setShowErrorModal(true);
     }
@@ -165,7 +178,9 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
 
       <Button
         onClick={handleReconciliation}
-        disabled={bankFiles.length === 0 || ledgerFiles.length === 0 || !isAuthenticated}
+        disabled={
+          bankFiles.length === 0 || ledgerFiles.length === 0 || !isAuthenticated
+        }
         className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] rounded-[8px] mx-auto block cursor-pointer"
       >
         Reconcile
@@ -173,9 +188,9 @@ export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps)
 
       {/* Limit Reached Modal */}
       {showLimitModal && (
-        <LimitReachedModal 
-          open={showLimitModal} 
-          onClose={() => setShowLimitModal(false)} 
+        <LimitReachedModal
+          open={showLimitModal}
+          onClose={() => setShowLimitModal(false)}
           onUpgrade={handleUpgrade}
         />
       )}
