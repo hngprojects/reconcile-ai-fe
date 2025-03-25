@@ -12,6 +12,7 @@ import {
 } from "@/src/components/ui/select";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Footer from "@/src/components/Footer";
 import Container from "@/src/components/Container";
 import { getBillingHistory } from "@/src/lib/api";
@@ -27,6 +28,8 @@ interface BillingRecord {
 }
 
 const BillingHistory = () => {
+  const router = useRouter();
+
   const [billingHistory, setBillingHistory] = useState<BillingRecord[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -83,17 +86,15 @@ const BillingHistory = () => {
   return (
     <>
       <Container className="mt-8 flex flex-col gap-6 self-stretch">
-        <Link href="/" className="flex items-center gap-2 w-fit cursor-pointer">
-          <Link
-            href="/"
-            className="flex items-center gap-2 w-fit cursor-pointer"
-          >
-            <ArrowLeft className="w-6 h-6" />
-            <p className="text-[#333] font-inter text-base font-medium leading-[38px]">
-              Go back
-            </p>
-          </Link>
-        </Link>
+        <div
+          onClick={() => router.back()}
+          className="flex items-center gap-2 w-fit cursor-pointer"
+        >
+          <ArrowLeft className="w-6 h-6" />
+          <p className="text-[#333] font-inter text-base font-medium leading-[38px]">
+            Go back
+          </p>
+        </div>
 
         <div className="flex justify-between items-center">
           <h1 className="self-stretch text-[#101828] font-inter text-lg font-semibold leading-7">

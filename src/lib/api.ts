@@ -493,3 +493,36 @@ export const getBillingHistory = async (page: number, perPage: number) => {
     return { data: [], meta: { total: 0, last_page: 1 } };
   }
 };
+
+export const fetchReconciliationHistory = async () => {
+  const token = localStorage.getItem("access_token");
+  const headers: HeadersInit = {
+    Accept: "application/json",
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  try {
+    const response = await fetch(`${RECONCILIATION_RESULT_API_URL}`, {
+      headers,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return {
+      success: true,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};
