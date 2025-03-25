@@ -8,9 +8,9 @@ import Container from "./Container";
 const whoCanUseContent = [
   {
     id: 1,
-    title: "Startups & SMEs",
+    title: "Startups & Small Business Owners",
     content:
-      "ReconXi helps small businesses and startups reconcile transactions with ease, improving record accuracy and eliminating the burden of manual processes.",
+      "ReconXi helps small businesses reconcile transactions with ease, improving record accuracy and eliminating the burden of manual processes.",
     linkUrl: "/small-business",
   },
   {
