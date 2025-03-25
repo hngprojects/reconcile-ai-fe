@@ -5,14 +5,16 @@ export interface PaymentPlan {
   plan: "Basic" | "Starter Plan" | "Business Plan";
   created_at: string;
   updated_at: string;
+  expire_date: string;
+  reconciliations_used: number;
 }
 
 export interface User {
   id: number;
   email: string;
   name: string;
-  country:string | null;
-  city:string | null;
+  country: string | null;
+  city: string | null;
   avatar: string;
   image?: string;
   email_verified_at: string | null;

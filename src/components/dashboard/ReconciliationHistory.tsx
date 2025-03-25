@@ -1,31 +1,88 @@
-import { useState, useEffect } from 'react';
-import { ReconciliationHistoryTable } from './ReconciliationHistoryTable';
-import { ReconciliationHistoryCard } from './ReconcilaitionHistoryCard';
+import { fetchReconciliationHistory } from "@/src/lib/api";
+import { ReconciliationHistory as ReconciliationHistoryType } from "@/src/types/reconciliation";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { ReconciliationHistoryCard } from "./ReconcilaitionHistoryCard";
+import { ReconciliationHistoryTable } from "./ReconciliationHistoryTable";
+
 interface ReconciliationHistoryProps {
-    fromDate?: Date;
-    toDate?: Date;
-    isFilterApplied: boolean;
-  } 
-export default function ReconciliationHistory({fromDate, isFilterApplied, toDate}: ReconciliationHistoryProps) {
-  const [isMobile, setIsMobile] = useState(false);
+  fromDate?: Date;
+  toDate?: Date;
+  isFilterApplied: boolean;
+}
+export default function ReconciliationHistory({
+  fromDate,
+  isFilterApplied,
+  toDate,
+}: ReconciliationHistoryProps) {
+  const [reconciliations, setReconciliations] = useState<
+    ReconciliationHistoryType[]
+  >([]);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth >= 620);
+    const fetch = async () => {
+      const res = await fetchReconciliationHistory();
+      setReconciliations(res.data as ReconciliationHistoryType[]);
     };
-    
-    handleResize();
-    
-    // Add event listener
-    window.addEventListener('resize', handleResize);
-    
-    // Clean up
-    return () => window.removeEventListener('resize', handleResize);
+
+    fetch();
   }, []);
 
-  return isMobile ? <ReconciliationHistoryTable fromDate={fromDate}
-  toDate={toDate}
-  isFilterApplied={isFilterApplied}/> : <ReconciliationHistoryCard fromDate={fromDate}
-  toDate={toDate}
-  isFilterApplied={isFilterApplied}/>;
+  if (reconciliations.length === 0) {
+    {
+      /* Reconciliation History Empty State */
+    }
+    return (
+      <div className="flex flex-col items-center gap-6 mt-12 mb-20">
+        <div>
+          <div className="flex items-center justify-center">
+            <Image
+              src="/assets/images/no_billing.png"
+              alt="No Pending Activity"
+              width={350}
+              height={270}
+              className=""
+              quality={75}
+              priority={true}
+            />
+          </div>
+          <div className="flex flex-col items-center gap-1 max-w-md">
+            <h5 className="font-medium text-2xl">No Pending Activity</h5>
+            <p className="text-center text-[#333333]">
+              It looks like you haven&apos;t made started reconciling. Once you
+              do, you&apos;ll see there progress here.
+            </p>
+            <Link
+              href="/file-upload"
+              className="mt-4 cursor-pointer w-full text-sm font-medium hover:bg-accent border rounded-md h-10 flex justify-center items-center text-primary hover:text-primary border-primary"
+            >
+              Start Reconciliation
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="max-md:hidden">
+        <ReconciliationHistoryTable
+          fromDate={fromDate}
+          reconciliations={reconciliations}
+          toDate={toDate}
+          isFilterApplied={isFilterApplied}
+        />
+      </div>
+
+      <div className="md:hidden">
+        <ReconciliationHistoryCard
+          fromDate={fromDate}
+          toDate={toDate}
+          isFilterApplied={isFilterApplied}
+        />
+      </div>
+    </div>
+  );
 }

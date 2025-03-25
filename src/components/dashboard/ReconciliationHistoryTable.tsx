@@ -1,14 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpRight } from "lucide-react";
+import { PaginationControls } from "@/src/components/PaginationControl";
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -18,12 +10,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { PaginationControls } from "@/src/components/PaginationControl";
 import { cn } from "@/src/lib/utils";
-import { parse, isWithinInterval } from "date-fns";
-import { fetchReconciliationHistory } from "@/src/lib/api";
 import { ReconciliationHistory } from "@/src/types/reconciliation";
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { isWithinInterval, parse } from "date-fns";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import { useMemo, useState } from "react";
 
 // Columns definition
 const columns: ColumnDef<ReconciliationHistory>[] = [
@@ -65,14 +64,14 @@ const columns: ColumnDef<ReconciliationHistory>[] = [
 
       return (
         <Link href={`/reconciliation/${row.original.id}`}>
-        <Button
-          variant="outline"
-          size="sm"
-          className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
-          disabled={!isComplete}
-        >
-          View <ArrowUpRight className="h-3 w-3" />
-        </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
+            disabled={!isComplete}
+          >
+            View <ArrowUpRight className="h-3 w-3" />
+          </Button>
         </Link>
       );
     },
@@ -83,25 +82,16 @@ interface ReconciliationHistoryTableProps {
   fromDate?: Date;
   toDate?: Date;
   isFilterApplied: boolean;
+  reconciliations: ReconciliationHistory[];
 }
 
 export function ReconciliationHistoryTable({
   fromDate,
   toDate,
   isFilterApplied,
+  reconciliations,
 }: ReconciliationHistoryTableProps) {
   const [pageSize, setPageSize] = useState(10);
-  const [reconciliations, setReconciliations] = useState<ReconciliationHistory[]>([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await fetchReconciliationHistory();
-      setReconciliations(res.data as ReconciliationHistory[]);
-    }
-
-    fetch();
-  },[]);
-
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
