@@ -488,9 +488,11 @@ export const getBillingHistory = async (page: number, perPage: number) => {
     );
     const data = await response.json();
     return data;
-  } catch (e) {
-    console.error("Failed to fetch billing history:", e);
-    return { data: [], meta: { total: 0, last_page: 1 } };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
   }
 };
 

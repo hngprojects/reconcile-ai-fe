@@ -17,6 +17,7 @@ import Footer from "@/src/components/Footer";
 import Container from "@/src/components/Container";
 import { getBillingHistory } from "@/src/lib/api";
 import { Loader } from "@/src/components/ui/loader";
+import { toast } from "sonner";
 
 interface BillingRecord {
   id: number;
@@ -47,6 +48,9 @@ const BillingHistory = () => {
           setTotalRows(response.meta.total);
           setTotalPages(response.meta.last_page);
         }
+      } catch (error) {
+        console.error("Exception when fetching billing history:", error);
+        toast.error("An error occurred while Fetching billing history");
       } finally {
         setIsLoading(false);
       }
