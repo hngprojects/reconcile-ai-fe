@@ -55,10 +55,7 @@ const WhoCanUse = () => {
         <p
           className="text-[#475467] mt-6 max-w-[1002px] mx-auto md:text-center text-sm md:text-base"
         >
-          ReconXi is built for businesses and organizations of all sizes,
-          designed to make financial reconciliation simpler and more accurate.
-          Whether you&apos;re a small startup or a large enterprise, ReconXi
-          offers solutions tailored to your needs.
+          ReconXi is designed to simplify financial reconciliation for professionals and organizations of all sizes. Whether you're a financial professional managing complex data, a small business owner, or an educational institution, We provide a fast, accurate, and hassle-free solution.
         </p>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 items-center gap-x-9 md:gap-y-8 gap-y-6">
           {whoCanUseContent.map(({ id, title, content, linkUrl }) => (
