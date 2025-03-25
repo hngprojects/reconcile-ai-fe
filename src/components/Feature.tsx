@@ -6,17 +6,8 @@ import Container from "./Container";
 export default function Features1() {
   return (
     <section className="w-full overflow-hidden">
-<<<<<<< HEAD
-      <Container className="py-10">
-        <div
-=======
       <Container className="py-16 px-4 md:px-16 lg:px-24">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
->>>>>>> dev
+        <div
           className="flex flex-col justify-center lg:flex-row items-center gap-10 lg:gap-24 h-full"
         >
           {/* Left Text Section */}

@@ -14,13 +14,8 @@ const Features = () => {
 
   return (
     <section>
-<<<<<<< HEAD
-      <Container className="py-6 sm:py-12">
-        <div
-=======
       <Container className="py-16 px-4 md:px-16 lg:px-24">
-        <motion.div
->>>>>>> dev
+        <div
           className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12"
         >
           <h3
