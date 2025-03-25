@@ -47,8 +47,8 @@ const Footer = () => {
       link: "/demo",
     },
     {
-      name: "Advert Video",
-      link: "/advert-video",
+      name: "Demo Video",
+      link: "/demo-video",
     },
     {
       name: "Help Centre",

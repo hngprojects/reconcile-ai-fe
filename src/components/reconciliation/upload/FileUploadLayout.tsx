@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { Button } from "@/src/components/ui/button";
 import UploadCard from "./UploadCard";
 import { toast } from "sonner";
@@ -8,22 +6,50 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
+import LimitReachedModal from "@/src/components/modal/LimitReachedModal";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { countCsvRows } from "@/src/utils/csvHelpers";
 
-interface ReconciliationError extends Error {
-  code?: number;
-  status?: number;
-}
+const PLAN_LIMITS: { [key: string]: number } = {
+  basic: 5,      
+  starter: 20,  
+  business: Infinity,
+};
 
-export default function FileUploadLayout({
-  onReconcile,
-}: FileUploadLayoutProps) {
-  const { isAuthenticated } = useAuth();
+export default function FileUploadLayout({ onReconcile }: FileUploadLayoutProps) {
+  const { isAuthenticated, user } = useAuth();
   const [bankFiles, setBankFiles] = useState<File[]>([]);
   const [ledgerFiles, setLedgerFiles] = useState<File[]>([]);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showLimitModal, setShowLimitModal] = useState(false);
   const [errorCode, setErrorCode] = useState<number>();
+  const [userPlan, setUserPlan] = useState<string>("basic");
+  const [reconciliationCount, setReconciliationCount] = useState<number>(0);
+
+  const getPlanLimit = (plan: string): number => {
+    return PLAN_LIMITS[plan] ?? PLAN_LIMITS["basic"];
+  };
+
+  const currentPlanLimit = useMemo(() => getPlanLimit(userPlan), [userPlan]);
+
+  const fetchPlanAndCount = useCallback(async () => {
+    try {
+      const plan = isAuthenticated && user && user.payment_plan?.plan 
+        ? user.payment_plan.plan.toLowerCase() 
+        : "basic";
+        
+      setUserPlan(plan);
+      
+      const storedCount = localStorage.getItem("reconcileCount") || "0";
+      setReconciliationCount(parseInt(storedCount, 10));
+    } catch (error) {
+      console.error("Error fetching user plan:", error);
+    }
+  }, [isAuthenticated, user]);
+
+  useEffect(() => {
+    fetchPlanAndCount();
+  }, [fetchPlanAndCount]);
 
   const handleFileDelete = (fileName: string, type: "bank" | "ledger") => {
     if (type === "bank") {
@@ -34,7 +60,7 @@ export default function FileUploadLayout({
   };
 
   const validateRowCount = async (files: File[]): Promise<boolean> => {
-    if (isAuthenticated) return true;
+    if (!isAuthenticated) return true;
 
     const totalRows = await Promise.all(files.map(countCsvRows));
     return totalRows.reduce((sum, count) => sum + count, 0) <= 100;
@@ -43,12 +69,16 @@ export default function FileUploadLayout({
   const handleReconciliation = async () => {
     if (bankFiles.length === 0 || ledgerFiles.length === 0) return;
 
+    if (isAuthenticated && reconciliationCount >= currentPlanLimit) {
+      setShowLimitModal(true);
+      return;
+    }
+
     try {
-      // Validate row count for guest users
       if (!isAuthenticated) {
-        const [bankValid, ledgerValid] = await Promise.all([
-          validateRowCount(bankFiles),
-          validateRowCount(ledgerFiles),
+        const [bankValid, ledgerValid] = await Promise.all([ 
+          validateRowCount(bankFiles), 
+          validateRowCount(ledgerFiles), 
         ]);
 
         if (!bankValid || !ledgerValid) {
@@ -67,9 +97,7 @@ export default function FileUploadLayout({
               : "Your files are being processed"}
           </p>
         </div>,
-        {
-          duration: Infinity,
-        },
+        { duration: Infinity }
       );
 
       const result = await reconcileFiles(bankFiles, ledgerFiles);
@@ -83,15 +111,16 @@ export default function FileUploadLayout({
 
       if (result.status === "success") {
         setTimeout(() => {
-          toast.dismiss(toastId); // Dismiss the loading toast after 20 seconds
+          toast.dismiss(toastId);
         }, 20000);
 
-        localStorage.setItem(
-          "reconciliation_id",
-          result.data.reconciliation_id,
-        );
+        localStorage.setItem("reconciliation_id", result.data.reconciliation_id);
         setBankFiles([]);
         setLedgerFiles([]);
+
+        const newCount = reconciliationCount + 1;
+        setReconciliationCount(newCount);
+        localStorage.setItem("reconcileCount", newCount.toString());
       }
 
       setTimeout(() => {
@@ -99,45 +128,59 @@ export default function FileUploadLayout({
       }, 1000);
     } catch (error) {
       console.error("Error in reconciliation handler:", error);
-      const reconciliationError = error as ReconciliationError;
+      const reconciliationError = error as Error & { code?: number; status?: number };
       setErrorCode(reconciliationError.code || reconciliationError.status);
       setShowErrorModal(true);
     }
   };
 
-  const existingFiles = [...bankFiles, ...ledgerFiles].map((f) => f.name);
+  const handleUpgrade = () => {
+    setShowLimitModal(false);
+  };
 
   return (
     <Container className="my-10">
       <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
-        <UploadCard
-          title="Upload Bank Statement"
-          type="bank"
-          files={bankFiles}
-          onFilesSelect={setBankFiles}
-          onFileDelete={(fileName) => handleFileDelete(fileName, "bank")}
-          existingFiles={existingFiles}
-        />
-        <UploadCard
-          title="Upload Company Ledger"
-          type="ledger"
-          files={ledgerFiles}
-          onFilesSelect={setLedgerFiles}
-          onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
-          existingFiles={existingFiles}
-        />
+        {isAuthenticated && (
+          <>
+            <UploadCard
+              title="Upload Bank Statement"
+              type="bank"
+              files={bankFiles}
+              onFilesSelect={setBankFiles}
+              onFileDelete={(fileName) => handleFileDelete(fileName, "bank")}
+              existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
+            />
+            <UploadCard
+              title="Upload Company Ledger"
+              type="ledger"
+              files={ledgerFiles}
+              onFilesSelect={setLedgerFiles}
+              onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
+              existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
+            />
+          </>
+        )}
       </div>
 
       <Button
         onClick={handleReconciliation}
-        disabled={bankFiles.length === 0 || ledgerFiles.length === 0}
-        className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] 
-                  disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] 
-                  rounded-[8px] mx-auto block cursor-pointer"
+        disabled={bankFiles.length === 0 || ledgerFiles.length === 0 || !isAuthenticated}
+        className="mt-[40px] w-full md:w-[552px] h-[64px] bg-[#2E604A] disabled:bg-opacity-50 px-4 md:px-[200px] py-[16px] rounded-[8px] mx-auto block cursor-pointer"
       >
         Reconcile
       </Button>
 
+      {/* Limit Reached Modal */}
+      {showLimitModal && (
+        <LimitReachedModal 
+          open={showLimitModal} 
+          onClose={() => setShowLimitModal(false)} 
+          onUpgrade={handleUpgrade}
+        />
+      )}
+
+      {/* General Error Modal */}
       {showErrorModal && (
         <ErrorModal
           open={showErrorModal}
