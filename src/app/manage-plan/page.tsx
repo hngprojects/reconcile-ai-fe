@@ -134,13 +134,13 @@ export default function ManagePlanPage() {
     window.location.href = planLink;
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
-  if (!isAuthenticated) {
-    return <UnAuthorized />;
-  }
+  // if (!isAuthenticated) {
+  //   return <UnAuthorized />;
+  // }
 
   return (
     <>
@@ -264,7 +264,7 @@ export default function ManagePlanPage() {
                   </div>
 
                   <div className="py-[24px] px-[16px]">
-                    <h2 className="text-[#101828] text-[18px]">
+                    <h2 className="text-[#101828] text-[18px] py-4">
                       What you will loose
                     </h2>
 
