@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 export const DashboardInfoCards = () => {
   const { user } = useAuth();
+
   const getUserPlan = (plan: string | undefined) => {
     switch (plan) {
       case "Starter":
@@ -15,18 +16,31 @@ export const DashboardInfoCards = () => {
         return "basic";
     }
   };
-  const userPlan = getUserPlan(user?.payment_plan?.plan);
 
-  // Add plan validation helper
-  const hasPlanAccess = () => {
-    switch (userPlan) {
-      case "starter":
-        return true;
-      case "basic":
-        return false;
-      default:
-        return true; // business plan
-    }
+  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
+
+  // Calculate reconciliation progress
+  const getReconciliationProgress = () => {
+    const used = user?.payment_plan?.reconciliations_used || 0;
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 20;
+
+    // Handle unlimited reconciliations for Business plan
+    if (limit === -1) return { used, limit: "∞", progress: 0 };
+
+    const progress = Math.min((used / limit) * 100, 100); // Ensure progress doesn't exceed 100%
+    return { used, limit, progress };
+  };
+
+  const { used, limit, progress } = getReconciliationProgress();
+
+  // Format date helper
+  const formatDate = (date: string | null | undefined) => {
+    if (!date) return "Not available";
+    return new Date(date).toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   };
 
   return (
@@ -38,7 +52,7 @@ export const DashboardInfoCards = () => {
             <span className="text-primary capitalize">{userPlan}</span>
           </h2>
           <Button
-            className="bg-primary transition-all duration-300 hover:bg-primary/90"
+            className="bg-primary transition-all duration-300 hover:bg-primary/90 cursor-pointer"
             size="lg"
             disabled={userPlan === "business"}
           >
@@ -49,22 +63,36 @@ export const DashboardInfoCards = () => {
 
       <Card className="shadow-sm">
         <CardContent className="p-5 h-40 flex flex-col justify-between md:p-6">
-          <h2 className="font-medium mb-2">Number of reconciliation left</h2>
-          <p className="text-xl font-bold mb-1">12/20</p>
-          <Progress value={60} className="h-2 bg-gray-200" />
+          <h2 className="font-medium mb-2">Reconciliations this month</h2>
+          <div>
+            <p className="text-xl font-bold mb-1">
+              {used} {typeof limit === "string" ? "/ ∞" : `/ ${limit}`}
+            </p>
+            <Progress
+              value={progress}
+              className="h-2 bg-gray-200"
+              color={progress > 80 ? "destructive" : "primary"}
+            />
+          </div>
+          {typeof limit !== "string" && (
+            <p className="text-sm text-gray-500 mt-1">
+              {limit - used} reconciliations remaining
+            </p>
+          )}
         </CardContent>
       </Card>
 
       <Card className="shadow-sm">
         <CardContent className="p-5 md:p-6 flex flex-col justify-between h-40">
           <h2 className="font-medium mb-2">
-            {hasPlanAccess() ? "Next billing date" : "Usage reset"}
+            {userPlan === "business" ? "Next billing date" : "Plan renews on"}
           </h2>
           <p className="text-xl font-bold">
-            {userPlan === "business"
-              ? "24 April, 2025"
-              : "24 April, 2025, 15:52:16"}
+            {formatDate(user?.payment_plan?.expire_date)}
           </p>
+          {user?.payment_plan?.is_active && (
+            <p className="text-sm text-green-600">Active</p>
+          )}
         </CardContent>
       </Card>
     </div>

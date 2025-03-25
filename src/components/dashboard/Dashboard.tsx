@@ -43,7 +43,11 @@ export const Dashboard = () => {
 
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-xl font-bold">Pending activites</h2>
-        <Button className="bg-primary hover:bg-primary/90 md:!px-10" size="lg">
+        <Button
+          className="bg-primary hover:bg-primary/90 md:!px-10 cursor-pointer"
+          size="lg"
+          onClick={() => (window.location.href = "/file-upload")}
+        >
           <Plus className="mr-2 !size-5" /> Upload Files
         </Button>
       </div>
