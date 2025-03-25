@@ -5,9 +5,6 @@ import { Suspense } from "react";
 const HeroSection = dynamic(
   () => import("@/src/components/financial-pro/hero-section"),
 );
-const Features1 = dynamic(
-  () => import("@/src/components/financial-pro/Features"),
-);
 const VideoFeature = dynamic(
   () => import("@/src/components/financial-pro/Video"),
 );
