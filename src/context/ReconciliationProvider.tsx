@@ -20,6 +20,7 @@ import { updateReconciliation, fetchReconciliation } from "@/src/lib/api";
 import { ManualRequestBody } from "@/src/types/reconciliation";
 import { toast } from "sonner";
 import { transformReconciliationData } from "../helpers/transformReconciliationData";
+import { useSession } from "next-auth/react";
 
 interface ReconciliationContextProps {
   data: ReconciliationResponse;
@@ -95,9 +96,10 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
   const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
     null
   );
-  const [authenticated, setAuthenticated] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const path = usePathname();
+  const { data: session } = useSession();
 
   useEffect(() => {
     // const dummyReconciliationData = transformReconciliationData(
@@ -106,8 +108,12 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     // setData(dummyReconciliationData);
 
     const reconciliationId = path.split("/")[2];
+
+    if (session) {
+      setAuthenticated(true);
+    }
+
     const fetch = async () => {
-      setLoading(true);
       try {
         const response = await fetchReconciliation(reconciliationId as string);
 
@@ -116,14 +122,13 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
           console.log({ reconciliationData });
 
           setData(reconciliationData);
+          setAuthenticated(true);
           setLoading(false);
         }else {
-          setAuthenticated(false);
           setLoading(false);
         }
       } catch (e) {
         console.error("Error: ", e);
-        setAuthenticated(false);
         setLoading(false);
       }
     };

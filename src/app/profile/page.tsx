@@ -18,6 +18,7 @@ import { useRequireAuth } from "@/src/hooks/useRequireAuth";
 import { updateProfile } from "@/src/lib/api";
 import { Loader } from "@/src/components/ui/loader";
 import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 interface ProfileManagementSectionProps {
   darkMode: boolean;
@@ -147,17 +148,8 @@ export default function ProfileManagementSection({
       toast.error("Failed to delete account.");
     }
   };
-
-  if (isLoading || isAuthenticated === null) {
-
-    return <Loader />;
-  }
-
-  if (!isAuthenticated) {
-    return <UnAuthorized />;
-  }
   return (
-    <>
+    <ProtectedRoute>
       <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1
           className={`text-xl sm:text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-6`}
@@ -363,6 +355,6 @@ export default function ProfileManagementSection({
           </TabsContent>
         </Tabs>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }
