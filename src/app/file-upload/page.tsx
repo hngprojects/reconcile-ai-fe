@@ -26,7 +26,7 @@ export default function FileUploadPage() {
     }
   };
 
-  if (isLoading || isAuthenticated === null) {
+  if (isLoading) {
     return <Loader />;
   }
 

@@ -113,7 +113,7 @@ export default function ManagePlanPage() {
     window.location.href = planLink;
   };
 
-  if (isLoading || isAuthenticated === null) {
+  if (isLoading) {
     return <Loader />;
   }
 
