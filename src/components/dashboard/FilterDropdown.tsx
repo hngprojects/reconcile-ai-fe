@@ -58,7 +58,7 @@ export function FilterDropdown({
           Filter
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[400px] p-4" align="start">
+      <DropdownMenuContent className="max-w-[400px] sm:w-[400px] p-4" align="start">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium">Filter</h3>
           <Button
