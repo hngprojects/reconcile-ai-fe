@@ -19,7 +19,8 @@ export default function HeroSection() {
             ReconXi simplifies financial reconciliation for accountants,
             auditors, financial analysts, small businesses, and schools. Whether
             you’re managing transactions, handling business accounts, or
-            reconciling school fees and payroll, experience a faster, more accurate way to reconcile your finances.
+            reconciling school fees and payroll, experience a faster, more
+            accurate way to reconcile your finances.
           </p>
           <div className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8">
             <TypeWriterButton
