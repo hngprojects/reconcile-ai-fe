@@ -113,7 +113,7 @@ export default function ManagePlanPage() {
     window.location.href = planLink;
   };
 
-  if (isLoading || isAuthenticated === null) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -121,13 +121,13 @@ export default function ManagePlanPage() {
     return <UnAuthorized />;
   }
 
-
   return (
     <>
       <Container className="py-8 pb-[100px]">
         {/* Back button and Header */}
         <div className="pb-8 px-4 border-b border-[#EAECF0]">
           <button
+            type="button"
             onClick={() => router.back()}
             className="flex items-center gap-2 mb-6 group cursor-pointer"
           >
@@ -150,7 +150,7 @@ export default function ManagePlanPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-8 flex flex-col lg:flex-row justify-between gap-8 px-4"
+          className="mt-8 flex flex-col lg:flex-row justify-between gap-8 px-4 xl:gap-12"
         >
           {pricingPlans.map((plan) => {
             const isCurrentPlan = activeCard === plan.id;
@@ -160,7 +160,7 @@ export default function ManagePlanPage() {
               <div
                 key={plan.id}
                 className={cn(
-                  "relative w-full lg:w-[383px] h-[563px] rounded-[13px] p-[60px_24px] md:p-[80px_28px] lg:p-[94.7px_32px_94.7px_32px] transition-all duration-300",
+                  "relative w-full lg:w-1/3 rounded-[13px] transition-all duration-300 p-[60px_24px] md:p-[40px_24px] xl:p-[94.7px_32px_40px_32px]",
                   isCurrentPlan
                     ? "bg-[#2E604A] scale-105"
                     : "border-2 border-[#38B43C] hover:scale-105",
@@ -172,38 +172,53 @@ export default function ManagePlanPage() {
                 tabIndex={0}
                 aria-label={`${plan.name} pricing plan`}
               >
-                <div className="border-b border-[#BFB8B8] pb-5">
-                  <h3
-                    className={cn(
-                      "font-[500] text-[16px] leading-[100%] font-inter",
-                      activeCard === plan.id ? "text-white" : "text-black"
-                    )}
-                  >
-                    {plan.name}
-                  </h3>
-                </div>
+                <div className="flex flex-col justify-between gap-10 h-full">
+                  <div>
+                    <div className="border-b border-[#BFB8B8] pb-5">
+                      <h3
+                        className={cn(
+                          "font-[500] text-[16px] leading-[100%] font-inter",
+                          activeCard === plan.id ? "text-white" : "text-black"
+                        )}
+                      >
+                        {plan.name}
+                      </h3>
+                    </div>
 
-                <div className="mt-11 space-y-6 -mx-3">
-                  <p
-                    className={cn(
-                      "font-[600] text-[32px] leading-[100%]",
-                      activeCard === plan.id ? "text-white" : "text-black"
-                    )}
-                  >
-                    <span className="text-2xl">$</span>
-                    {plan.price}
-                  </p>
-                  {renderFeaturesList(plan.features, activeCard === plan.id)}
+                    <div className="mt-11 space-y-6">
+                      <p
+                        className={cn(
+                          "font-[600] text-[32px] leading-[100%]",
+                          activeCard === plan.id ? "text-white" : "text-black"
+                        )}
+                      >
+                        <span className="text-2xl">$</span>
+                        {plan.price}
+                        {plan.price !== "Free" && (
+                          <span className="text-sm font-normal">/month</span>
+                        )}
+                      </p>
+
+                      <div className="flex-grow">
+                        {renderFeaturesList(
+                          plan.features,
+                          activeCard === plan.id
+                        )}
+                      </div>
+                    </div>
+                  </div>
 
                   {isCurrentPlan ? (
                     <button
+                      type="button"
                       disabled
-                      className="w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] bg-gray-400 text-white cursor-not-allowed"
+                      className="w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] bg-gray-200 text-primary cursor-not-allowed"
                     >
                       Current Plan
                     </button>
                   ) : (
                     <button
+                      type="button"
                       onClick={() => handlePlanClick(plan.link)}
                       className={cn(
                         "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",
