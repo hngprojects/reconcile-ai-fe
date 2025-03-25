@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import {
   type ColumnDef,
   flexRender,
@@ -19,14 +19,15 @@ import {
   TableRow,
 } from "@/src/components/ui/table";
 import { PaginationControls } from "@/src/components/PaginationControl";
+import {
+  ReconciliationHistoryTypes,
+  reconciliations,
+} from "./dashboardDummyData";
 import { cn } from "@/src/lib/utils";
 import { parse, isWithinInterval } from "date-fns";
-import { fetchReconciliationHistory } from "@/src/lib/api";
-import { ReconciliationHistory } from "@/src/types/reconciliation";
-import Link from "next/link";
 
 // Columns definition
-const columns: ColumnDef<ReconciliationHistory>[] = [
+const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
   {
     accessorKey: "serial_number",
     header: "S/N",
@@ -39,14 +40,14 @@ const columns: ColumnDef<ReconciliationHistory>[] = [
     header: "Date",
   },
   {
-    accessorKey: "title",
+    accessorKey: "reconciliationId",
     header: "Reconciliation ID",
   },
   {
     accessorKey: "progress",
     header: "Status",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "Completed";
+      const isComplete = row.original.status === "complete";
 
       return (
         <div
@@ -61,10 +62,9 @@ const columns: ColumnDef<ReconciliationHistory>[] = [
     id: "action",
     header: "Action",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "Completed";
+      const isComplete = row.original.status === "complete";
 
       return (
-        <Link href={`/reconciliation/${row.original.id}`}>
         <Button
           variant="outline"
           size="sm"
@@ -73,7 +73,6 @@ const columns: ColumnDef<ReconciliationHistory>[] = [
         >
           View <ArrowUpRight className="h-3 w-3" />
         </Button>
-        </Link>
       );
     },
   },
@@ -91,17 +90,6 @@ export function ReconciliationHistoryTable({
   isFilterApplied,
 }: ReconciliationHistoryTableProps) {
   const [pageSize, setPageSize] = useState(10);
-  const [reconciliations, setReconciliations] = useState<ReconciliationHistory[]>([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await fetchReconciliationHistory();
-      setReconciliations(res.data as ReconciliationHistory[]);
-    }
-
-    fetch();
-  },[]);
-
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
@@ -129,7 +117,7 @@ export function ReconciliationHistoryTable({
 
       return true;
     });
-  }, [fromDate, toDate, isFilterApplied, reconciliations]);
+  }, [fromDate, toDate, isFilterApplied]);
 
   const table = useReactTable({
     data: filteredData,

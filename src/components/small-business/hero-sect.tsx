@@ -16,7 +16,7 @@ export default function HeroSection() {
             id="hero-title"
             className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
           >
-          Transaction Matching for Small Business Owners: Simplify Your Financial Reconciliation
+          Transaction Matching for Startups & SMEs: Simplify Your Financial Reconciliation
           </h1>
 
           <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
