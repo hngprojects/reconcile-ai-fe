@@ -528,6 +528,30 @@ export const MinusIcon = ({ className = defaultSize }: IconClassProps) => {
   );
 };
 
+export const ErrorIcon = ({ className = defaultSize }: IconClassProps)=> {
+  return (
+    <svg className={cn("text-[#98A2B3] aspect-auto", className)} width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.49935 6.6665V9.99984M9.49935 13.3332H9.50768M17.8327 9.99984C17.8327 14.6022 14.1017 18.3332 9.49935 18.3332C4.89698 18.3332 1.16602 14.6022 1.16602 9.99984C1.16602 5.39746 4.89698 1.6665 9.49935 1.6665C14.1017 1.6665 17.8327 5.39746 17.8327 9.99984Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )
+}
+
+export const EditIcon = ({ className = defaultSize }: IconClassProps)=> {
+  return (
+    <svg className={cn("text-[#98A2B3] aspect-auto", className)} width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 4.00023H5.8C4.11984 4.00023 3.27976 4.00023 2.63803 4.32721C2.07354 4.61483 1.6146 5.07377 1.32698 5.63826C1 6.27999 1 7.12007 1 8.80023V17.2002C1 18.8804 1 19.7205 1.32698 20.3622C1.6146 20.9267 2.07354 21.3856 2.63803 21.6732C3.27976 22.0002 4.11984 22.0002 5.8 22.0002H14.2C15.8802 22.0002 16.7202 22.0002 17.362 21.6732C17.9265 21.3856 18.3854 20.9267 18.673 20.3622C19 19.7205 19 18.8804 19 17.2002V13.0002M6.99997 16.0002H8.67452C9.1637 16.0002 9.40829 16.0002 9.63846 15.945C9.84254 15.896 10.0376 15.8152 10.2166 15.7055C10.4184 15.5818 10.5914 15.4089 10.9373 15.063L20.5 5.50023C21.3284 4.6718 21.3284 3.32865 20.5 2.50023C19.6716 1.6718 18.3284 1.6718 17.5 2.50022L7.93723 12.063C7.59133 12.4089 7.41838 12.5818 7.29469 12.7837C7.18504 12.9626 7.10423 13.1577 7.05523 13.3618C6.99997 13.5919 6.99997 13.8365 6.99997 14.3257V16.0002Z" stroke="#2A5743" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )
+}
+
+export const NoteIcon = ({ className = defaultSize }: IconClassProps)=> {
+  return (
+    <svg className={cn("text-[#98A2B3] aspect-auto", className)} width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 10H5M7 14H5M13 6H5M17 5.8V16.2C17 17.8802 17 18.7202 16.673 19.362C16.3854 19.9265 15.9265 20.3854 15.362 20.673C14.7202 21 13.8802 21 12.2 21H5.8C4.11984 21 3.27976 21 2.63803 20.673C2.07354 20.3854 1.6146 19.9265 1.32698 19.362C1 18.7202 1 17.8802 1 16.2V5.8C1 4.11984 1 3.27976 1.32698 2.63803C1.6146 2.07354 2.07354 1.6146 2.63803 1.32698C3.27976 1 4.11984 1 5.8 1H12.2C13.8802 1 14.7202 1 15.362 1.32698C15.9265 1.6146 16.3854 2.07354 16.673 2.63803C17 3.27976 17 4.11984 17 5.8Z" stroke="#2A5743" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  )
+}
+
 const Icons = {
   File: FileIcon,
   Speed: SpeedIcon,
@@ -553,6 +577,9 @@ const Icons = {
   X: XIcon,
   Plus: PlusIcon,
   Minus: MinusIcon,
+  Error: ErrorIcon,
+  Edit: EditIcon,
+  Note: NoteIcon,
 };
 
 export default Icons;
