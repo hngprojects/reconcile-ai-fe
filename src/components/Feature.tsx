@@ -2,25 +2,16 @@
 import React from "react";
 import Image from "next/image";
 import Container from "./Container";
-import { motion } from "framer-motion";
 
 export default function Features1() {
   return (
     <section className="w-full overflow-hidden">
       <Container className="py-10">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+        <div
           className="flex flex-col justify-center lg:flex-row items-center gap-10 lg:gap-24 h-full"
         >
           {/* Left Text Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <div
             className="flex flex-col text-center sm:text-left items-start gap-[32px] flex-1"
           >
             <div className="flex flex-col items-start gap-[24px] w-full">
@@ -38,14 +29,10 @@ export default function Features1() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Image Section */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          <div
             className="flex justify-center items-center flex-1"
           >
             <div className="relative md:h-[500px] h-[300px] w-full max-w-[536px]">
@@ -57,8 +44,8 @@ export default function Features1() {
                 className="flex-shrink-0 rounded-[10px] bg-gray-300 bg-[50%] bg-cover bg-no-repeat border-[4px] border-[#101828] object-contain max-w-full h-auto"
               />
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </Container>
     </section>
   );
