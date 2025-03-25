@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import CTASection from "@/src/components/CTASection";
 import Footer from "@/src/components/Footer";
+import Link from "next/link";
 
 const PrivacyPage = () => {
   // Text animation variants for smoother transitions
@@ -197,14 +198,14 @@ const PrivacyPage = () => {
                 </p>
 
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Account Information: Name, email, and authentication details if signing up via Google.
+                </p>
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
                   Transactional Data: Details of financial records, transfers,
                   and reconciliation transactions.
                 </p>
-
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
-                  Personal Information: Such as account details, names, email
-                  addresses, and phone numbers provided during registration or
-                  service use
+                  Payment Information: When upgrading to a paid plan via Stripe, we process your payment securely but do not store sensitive payment details.
                 </p>
 
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
@@ -230,29 +231,26 @@ const PrivacyPage = () => {
                 </h3>
 
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
-                  We collect information to deliver and improve our
-                  reconciliation services, including:
+                We use your information to:
                 </p>
 
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
-                  Transactional Data: Details of financial records, transfers,
-                  and reconciliation transactions.
+                Provide and enhance our reconciliation services.
                 </p>
-
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
-                  Personal Information: Such as account details, names, email
-                  addresses, and phone numbers provided during registration or
-                  service use
+                Allow seamless login and authentication via Google.
                 </p>
-
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
-                  Usage Data: Log files, device information, and analytics that
-                  help us understand how you interact with our platform.
+                Process secure payments via Stripe.
                 </p>
-
-                <p className="font-normal text-[16px] text-[#475467] ">
-                  Other Data: Additional information you provide or that is
-                  automatically collected to enhance your experience.
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Send account-related emails, including security updates and transaction confirmations.
+                </p>
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Improve platform functionality through analytics and user insights.
+                </p>
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Ensure compliance with legal and regulatory requirements.
                 </p>
               </motion.div>
 
@@ -271,11 +269,11 @@ const PrivacyPage = () => {
                   We do not sell your personal information to third parties.{" "}
                 </p>
 
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                We implement industry-standard security measures to protect your data from unauthorized access, disclosure, or misuse.
+                </p>
                 <p className="font-normal text-[16px] text-[#475467] ">
-                  We implement industry-standard security measures to protect
-                  your data from unauthorized access, disclosure, or misuse.
-                  While we strive for maximum security, please be aware that no
-                  system is completely foolproof.
+                While we strive for maximum security, please be aware that no system is completely foolproof.
                 </p>
               </motion.div>
 
@@ -295,13 +293,17 @@ const PrivacyPage = () => {
                   including:{" "}
                 </p>
 
-                <p className="font-normal text-[16px] text-[#475467] ">
-                  Access & Correct Your Data: Update or modify your account
-                  details anytime. <br />
-                  Delete Your Data: Request data deletion, subject to compliance
-                  with legal obligations. <br />
-                  Manage Cookies & Tracking: Adjust settings in your browser to
-                  control cookies and tracking mechanisms.
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                  Access & Correct Your Data: Update or modify your account details anytime.
+                </p>
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Delete Your Data: Request data deletion, subject to compliance with legal obligations.
+                </p>
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Manage Cookies & Tracking: Adjust settings in your browser to control cookies and tracking mechanisms.
+                </p>
+                <p className="font-normal text-[16px] mb-4 text-[#475467] ">
+                Email Preferences: Opt in or out of receiving marketing and service-related emails.
                 </p>
               </motion.div>
 
@@ -317,9 +319,7 @@ const PrivacyPage = () => {
                 </h3>
 
                 <p className="font-normal text-[16px] text-[#475467] ">
-                  Policy Updates We may revise this Privacy Policy periodically.
-                  Any updates will be posted on our platform, and significant
-                  changes will be communicated to you.
+                We may revise this Privacy Policy periodically. Any updates will be posted on our platform, and significant changes will be communicated to you.
                 </p>
               </motion.div>
 
@@ -335,8 +335,8 @@ const PrivacyPage = () => {
                 </h3>
 
                 <p className="font-normal text-[16px] text-[#475467] ">
-                  For any privacy-related concerns, reach out to us at
-                 support@reconxi.com.
+                  For any privacy-related concerns, reach out to us at{" "}
+                  <Link className="font-medium" href="mailto:support@reconxi.com">support@reconxi.com</Link>.
                 </p>
               </motion.div>
 
@@ -352,12 +352,12 @@ const PrivacyPage = () => {
                 </h3>
 
                 <p className="font-normal text-[16px] mb-4 text-[#475467] ">
-                  This Privacy Policy was last updated on 05/03/2025.
+                  This Privacy Policy was last updated on 25/03/2025.
                 </p>
 
                 <p className="font-normal text-[16px] text-[#475467] ">
                   For more information about our terms and conditions, please
-                  visit our Terms and Conditions page.
+                  visit our <Link className="underline font-medium" href="/terms-conditions">Terms and Conditions</Link> page.
                 </p>
               </motion.div>
             </div>
