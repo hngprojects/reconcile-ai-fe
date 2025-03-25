@@ -3,6 +3,7 @@ import CTASection from "@/src/components/CTASection";
 import Footer from "@/src/components/Footer";
 import { getFormattedCurrentDate } from "@/src/helpers/getCurrentDate";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function TermsConditionPage() {
   const textVariants = {
@@ -90,7 +91,9 @@ export default function TermsConditionPage() {
             </h2>
             <p className="text-sm text-center lg:text-start text-[#475467]">
               ReconXi is a financial reconciliation tool that uses AI to
-              reconcile bank statement with company ledger.
+              reconcile bank statement with company ledger. Users can sign up or log in using Google for a seamless experience.
+              Additionally, users can upgrade to a paid plan via Stripe for enhanced features.
+              We also send important notifications and updates via email, including transaction confirmations, feature updates, and account security alerts.
             </p>
           </motion.div>
 
@@ -109,26 +112,18 @@ export default function TermsConditionPage() {
               tool, including:
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Transactional Data: Details of financial records, i.e bank
+              Transactional Data: Details of financial records,including bank statements.
               statement.
             </p>
             <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Company Data: Details of your Company&apos;s records. i.e bank
-              statement.
+              Company Data: Details of your Company&apos;s records, such as bank statements and ledger information.
             </p>
-            {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Personal Information: Such as account details, names, email
-              addresses, and phone numbers provided during registration or
-              service use.
-            </p> */}
-            {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Usage Data: Log files, device information, and analytics that help
-              us understand how you interact with our platform.
-            </p> */}
-            {/* <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Other Data: Additional information you provide or that is
-              automatically collected to enhance your experience.
-            </p> */}
+            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+              Personal Information: When upgrading to a paid plan via Stripe, we process your payment securely but do not store sensitive payment details.
+            </p> 
+            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+            Communication Preferences: We collect your preferences for receiving emails and notifications.
+            </p>
           </motion.div>
 
           {/* <div className="mt-5">
@@ -215,7 +210,7 @@ export default function TermsConditionPage() {
             </h2>
             <p className="text-sm text-center lg:text-start text-[#475467]">
               You may have rights regarding your financial information, For more
-              detailed information, please review our Privacy Policy.
+              detailed information, please review our <Link className="underline font-medium" href="/privacy">Privacy Policy</Link>.
             </p>
           </motion.div>
 
