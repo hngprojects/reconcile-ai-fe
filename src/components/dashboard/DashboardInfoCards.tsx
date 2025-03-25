@@ -34,7 +34,8 @@ export const DashboardInfoCards = () => {
       <Card className="shadow-sm">
         <CardContent className="p-5 h-40 flex flex-col items-start justify-between md:p-6">
           <h2 className="text-xl font-medium mb-2">
-            Current Plan - <span className="text-primary">Basic</span>
+            Current Plan -{" "}
+            <span className="text-primary capitalize">{userPlan}</span>
           </h2>
           <Button
             className="bg-primary transition-all duration-300 hover:bg-primary/90"
