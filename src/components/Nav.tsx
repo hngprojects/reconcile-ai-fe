@@ -47,10 +47,10 @@ const industryPaths = [
     name: "Financial Professionals",
     href: "/financial-pro",
   },
-  {
-    name: "Enterprise",
-    href: "/enterprise",
-  },
+  // {
+  //   name: "Enterprise",
+  //   href: "/enterprise",
+  // },
   // {
   //   name: "Freelancer",
   //   href: "/freelancer",
