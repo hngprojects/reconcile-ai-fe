@@ -18,6 +18,7 @@ const StartReconcile = dynamic(
   () => import("@/src/components/financial-pro/Ready"),
 );
 const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
+const Benefits = dynamic(() => import("@/src/components/financial-pro/Benefits"));
 const Footer = dynamic(() => import("@/src/components/Footer"));
 
 export default function HomePage() {
@@ -26,9 +27,11 @@ export default function HomePage() {
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <HeroSection />
       </Suspense>
+     
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <Features1 />
+        <Benefits/>
       </Suspense>
+     
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <StartReconcile />
       </Suspense>

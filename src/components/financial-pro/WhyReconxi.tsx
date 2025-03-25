@@ -6,24 +6,24 @@ import { smoothScroll } from "@/src/utils/smoothScroll";
 
 const features = [
   {
-    title: "Automated Bank Reconciliation",
+    title: "Save Time",
     description:
-      "Reconcile multiple bank statements in a fraction of the time with AI-powered matching technology.",
+      "Reduce hours spent on manual reconciliation.",
   },
   {
-    title: "Accurate & Reliable Results",
+    title: "Improve Accuracy",
     description:
-      "Reduce human errors in reconciliation with automated transaction matching..",
+      "Minimize errors with AI-powered matching",
   },
   {
-    title: "Quick Reconciliation Setup",
+    title: "Enhance Compliance",
     description:
-      " Simply upload your bank statements in CSV format and let ReconXi take care of the rest.",
+      "Meet financial reporting and auditing standards.",
   },
   {
-    title: "Save Time with ReconXi",
+    title: "Scale with Ease",
     description:
-      "Spend less time on manual checks and more time providing insights to your clients or company.",
+      "Works for small finance teams and large instituitions.",
   },
 ];
 
@@ -46,7 +46,7 @@ export default function WhyReconXi() {
             id="why-reconxi-title"
             className="w-full text-[24px] sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] text-center tracking-[-0.02em] mb-8 md:mb-12"
           >
-            Why Financial Professionals Need ReconXi
+            ReconXi: Smart Financial Tracking
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
@@ -69,10 +69,10 @@ export default function WhyReconXi() {
                       />
                     </div>
                     <div className="flex flex-col gap-1 sm:gap-2">
-                      <h3 className="font-inter text-base sm:text-lg md:text-[20px] leading-tight md:leading-[30px] font-semibold text-[#101828]">
+                      <h3 className="font-inter text-base sm:text-lg md:text-[20px] leading-tight md:leading-[30px] font-semibold text-[#333333]">
                         {feature.title}
                       </h3>
-                      <p className="font-inter text-sm sm:text-base md:text-[16px] leading-normal md:leading-[24px] text-[#101828]">
+                      <p className="font-inter text-sm sm:text-base md:text-[16px] leading-normal md:leading-[24px] text-[#475467]">
                         {feature.description}
                       </p>
                     </div>
@@ -82,10 +82,10 @@ export default function WhyReconXi() {
 
               <button
                 onClick={handleDemoClick}
-                className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer ml-8"
+                className="h-[44px] px-6 py-3 w-full  bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
                 aria-label="Open signup modal"
               >
-                Get a Free Demo
+                Try ReconXi Now
               </button>
             </div>
 
