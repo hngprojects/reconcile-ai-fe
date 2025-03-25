@@ -11,11 +11,25 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRequireAuth } from "@/src/hooks/useRequireAuth";
 import { Loader } from "@/src/components/ui/loader";
-import { Button } from "@/src/components/ui/button";
-import Link from "next/link";
+// import { Button } from "@/src/components/ui/button";
+// import Link from "next/link";
+
 import CancelSubscriptionModal from "@/src/components/modal/CancelSubscriptionModal";
 import { EditIcon, NoteIcon } from "@/src/components/Icon/Icons"
 import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
+import { Button } from "@/src/components/ui/button"
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/src/components/ui/dialog"
+import Link from "next/link"
+import { ErrorIcon } from "@/src/components/Icon/Icons";
 
 interface PlanMap {
   [key: string]: number;
@@ -31,6 +45,9 @@ export default function ManagePlanPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openPlanDialog, setOpenPlanDialog] = useState(false);
+  const [openCancelDialog, setOpenCancelDialog] = useState(false);
+
 
   useEffect(() => {
     if (user?.payment_plan?.plan) {
@@ -41,7 +58,7 @@ export default function ManagePlanPage() {
         Business: 3,
       };
       const currentPlan = user.payment_plan.plan; // Access the plan property
-      if (currentPlan in planMap) {
+      if (typeof currentPlan === "string" && currentPlan in planMap) {
         setActiveCard(planMap[currentPlan]);
       }
     }
@@ -150,20 +167,127 @@ export default function ManagePlanPage() {
           </p>
         </div>
 
-        {/* buttons */}
-        <div className="flex items-center md:justify-end w-full my-[32px] px-4 md:px-2">
-          <div className="flex space-x-2">
-            <Button onClick={() => setIsModalOpen(true)} variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm cursor-pointer font-medium bg-white shadow-none">
-              <EditIcon className="w-4 h-4" />
-              My plan
-            </Button>
-            <Link href={"/billing-history"}>
-              <Button variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium cursor-pointer shadow-none bg-white">
-                <NoteIcon className="w-4 h-4" />
-                Billing history
+        <div className="flex items-center md:justify-end w-full my-[32px] px-4 md:px-2 gap-[32px]">
+          {/* My Plan */}
+          <Dialog open={openPlanDialog} onOpenChange={setOpenPlanDialog}>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm cursor-pointer font-medium bg-white shadow-none"
+                onClick={() => setOpenPlanDialog(true)}
+              >
+                <EditIcon className="w-4 h-4" />
+                My Plan
               </Button>
-            </Link>
-          </div>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle className="text-[20px] text-[#000000] font-semibold">My Plan</DialogTitle>
+                <DialogDescription>
+                  <div className="space-y-[12px] p-2">
+                    <div className="flex justify-between">
+                      <h3 className="font-semibold text-[#475467]">Current Plan</h3>
+                      <p className="text-[14px] text-[#475467] font-semibold">Starter</p>
+                    </div>
+
+                    <div className="space-y-[12px]">
+                      <div className="flex justify-between">
+                        <h3 className="font-semibold text-[#475467]">Price</h3>
+                        <p className="text-[14px] text-[#475467] font-semibold">$10</p>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <h3 className="font-semibold text-[#475467]">Billing interval</h3>
+                        <p className="text-[14px] text-[#475467] font-semibold">Monthly</p>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex justify-between">
+                          <h3 className="font-semibold text-[#475467]">Reconcilation</h3>
+                          <p className="text-[14px] text-[#475467] font-semibold">12/20</p>
+                        </div>
+                        <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
+                          <div className="w-[60%] h-full bg-[#2E604A]"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="sm:justify-start">
+
+                <Button
+                  variant="outline"
+                  className="h-[48px] w-[80%] mx-auto cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946]"
+                  onClick={() => {
+                    setOpenPlanDialog(false);
+                    setTimeout(() => setOpenCancelDialog(true), 200);
+                  }}
+                >
+                  Cancel Subscription
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          {/* Cancel Subscription */}
+          <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogDescription className="space-y-4">
+                  <div className="border rounded-[12px] p-[16px] border-[#FDA29B] bg-[#FFFBFA] flex flex-col gap-4">
+                    <ErrorIcon className="text-[#D92D20]" />
+                    <div className="space-y-2">
+                      <h3 className="text-[#B42318] font-semibold">Important</h3>
+                      <p className="text-[#B42318]">Canceling your subscription will downgrade your account to the Free plan at the end of your current billing period.</p>
+                    </div>
+                  </div>
+
+                  <div className="py-[24px] px-[16px]">
+                    <h2 className="text-[#101828] text-[18px]">What you will loose</h2>
+
+                    <div className="space-y-4">
+                      <div className="flex gap-2">
+                        <ErrorIcon className="text-[#333333]" />
+                        <p>Reconcile up to 20 transaction/month</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <ErrorIcon className="text-[#333333]" />
+                        <p>Basic AI matching (date, amount, description).</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <ErrorIcon className="text-[#333333]" />
+                        <p>Export results to CSV.</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <ErrorIcon className="text-[#333333]" />
+                        <p>Manual adjustments ( unlink and match errors)</p>
+                      </div>
+                    </div>
+                  </div>
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="justify-end">
+                <DialogClose asChild>
+                  <Button variant="outline" className="cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946]" onClick={() => alert("Subscription Canceled!")}>
+                    Cancel Subscription
+                  </Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" className="cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946]" onClick={() => setOpenCancelDialog(false)}>
+                    Keep Subscription
+                  </Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
+          <Link href={"/billing-history"}>
+            <Button variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium cursor-pointer shadow-none bg-white">
+              <NoteIcon className="w-4 h-4" />
+              Billing history
+            </Button>
+          </Link>
         </div>
 
         {/* Existing pricing cards section */}
@@ -257,7 +381,8 @@ export default function ManagePlanPage() {
           })}
         </motion.div>
         {/* Cancel Subscription Modal */}
-      <CancelSubscriptionModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+        <CancelSubscriptionModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+
 
       </Container>
 
