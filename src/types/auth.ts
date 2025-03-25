@@ -11,6 +11,8 @@ export interface User {
   id: number;
   email: string;
   name: string;
+  country:string | null;
+  city:string | null;
   avatar: string;
   image?: string;
   email_verified_at: string | null;

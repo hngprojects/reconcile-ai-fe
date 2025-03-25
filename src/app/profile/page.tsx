@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Button } from "@/src/components/ui/button";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -10,11 +10,12 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
-import { User } from "@/src/types/auth";
+import { User } from "@/src/types/auth";  // eslint-disable-line @typescript-eslint/no-unused-vars
 import { Card, CardContent } from "@/src/components/ui/card";
-import { Save, AlertTriangle } from "lucide-react";
-import { toast } from "sonner"; // Replace useToast with sonner
+import { Save, AlertTriangle, Upload } from "lucide-react";
+import { toast } from "sonner";
 import { useRequireAuth } from "@/src/hooks/useRequireAuth";
+import { updateProfile } from "@/src/lib/api";
 import { Loader } from "@/src/components/ui/loader";
 import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
 
@@ -27,30 +28,26 @@ export default function ProfileManagementSection({
   darkMode,
 }: ProfileManagementSectionProps) {
   const { isLoading, isAuthenticated } = useRequireAuth();
-  const { user } = useAuth();
-  // Remove useToast hook
-  const [formState, setFormState] = useState({
-    firstName: user?.name?.split(" ")[0] || "",
-    surname: user?.name?.split(" ")[1] || "",
-    email: user?.email || "",
-    country: "",
-    city: "",
+  const { user, setUser, deleteUserDetails } = useAuth();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);  // eslint-disable-line @typescript-eslint/no-unused-vars
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    country: user?.country || "",
+    city: user?.city || "",
+    file: null as File | null
   });
   const [isFormChanged, setIsFormChanged] = useState(false);
 
-  // Update form state when user data is available
   useEffect(() => {
     if (user) {
-      const names = user.name?.split(" ") || ["", ""];
-      setFormState({
-        firstName: names[0] || "",
-        surname: names[1] || "",
-        email: user.email || "",
-        country: formState.country, // Preserve existing values
-        city: formState.city, // Preserve existing values
-      });
+      setFormData(prev => ({
+        ...prev,
+        country: user.country || "",
+        city: user.city || "",
+      }));
     }
-  }, [user, formState.country, formState.city]);
+  }, [user]);
 
   const getUserInitials = (name?: string) => {
     return name && name.length > 0 ? name[0].toUpperCase() : "";
@@ -58,39 +55,107 @@ export default function ProfileManagementSection({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setIsFormChanged(true);
+  };
 
-    // Only check changes for country and city
-    if (name === "country" || name === "city") {
-      const hasChanges = value.trim() !== "";
-      setIsFormChanged(hasChanges);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      
+      // Validate file type and size
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      const maxSize = 5 * 1024 * 1024; // 5MB
+
+      if (!validTypes.includes(file.type)) {
+        toast.error("Invalid file type. Please upload a JPEG, PNG, or GIF.");
+        return;
+      }
+
+      if (file.size > maxSize) {
+        toast.error("File is too large. Maximum size is 5MB.");
+        return;
+      }
+
+      setSelectedFile(file);
+      setFormData((prev) => ({ ...prev, file }));
+      setIsFormChanged(true);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.info("Coming Soon!", {
-      description: "This feature will be available soon. Stay tuned!",
-      duration: 3000,
-    });
+  const handleClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
-  const handleDeleteAccount = () => {
-    toast.warning("Coming Soon!", {
-      description:
-        "Account deletion feature will be available soon. Stay tuned!",
-      duration: 3000,
-    });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+  
+    try {
+      const formDataToSend = new FormData();
+  
+      // Only append city and country if they are changed
+      if (formData.country !== user?.country) {
+        formDataToSend.append("country", formData.country);
+      }
+  
+      if (formData.city !== user?.city) {
+        formDataToSend.append("city", formData.city);
+      }
+  
+      // Only append avatar if a new file is selected
+      if (formData.file) {
+        formDataToSend.append("avatar", formData.file);
+      }
+  
+      // Make the API request with the selected fields
+      const result = await updateProfile(formDataToSend);
+  
+      if (result.success) {
+        // Update the user context with the updated data if it's available
+        if (result.data?.user) {
+          setUser(prevUser => ({
+            ...prevUser!,
+            country: result.data.user.country,
+            city: result.data.user.city,
+            avatar: result.data.user.avatar
+          }));
+        }
+  
+        toast.success("Profile details updated successfully!");
+        setIsFormChanged(false);
+      } else if (result.error) {
+        toast.error("Error submitting: " + result.error);
+      }
+    } catch (error) {
+      console.error("Exception when submitting profile:", error);
+      toast.error("An error occurred while submitting profile details");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteUserDetails(); 
+      toast.success("Your account has been deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      toast.error("Failed to delete account.");
+    }
   };
 
   if (isLoading || isAuthenticated === null) {
+
     return <Loader />;
   }
 
   if (!isAuthenticated) {
     return <UnAuthorized />;
   }
-
   return (
     <>
       <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -119,25 +184,41 @@ export default function ProfileManagementSection({
           </TabsList>
 
           <TabsContent value="personal" className="pt-0 mt-0">
-            <div className="flex justify-start mb-8">
+            <div className="flex flex-col items-left mb-8 space-y-4">
               <div
-                className={`flex items-center justify-center ${darkMode ? "bg-gray-800" : "bg-gray-100"} text-[#297B65] size-10 text-xl rounded-full`}
+                className={`relative flex items-center justify-center ${darkMode ? "bg-gray-800" : "bg-gray-100"} text-[#297B65] size-24 text-xl rounded-full`}
               >
-                {(user as User)?.avatar ? (
+                {user?.avatar ? (
                   <Image
-                    src={(user as User).avatar}
-                    alt={(user as User).name}
-                    width={80}
-                    height={80}
-                    className="rounded-full"
+                    src={user.avatar}
+                    alt={user.name || "User"}
+                    fill
+                    className="rounded-full object-cover"
                   />
                 ) : (
-                  <p>{getUserInitials((user as User)?.name)}</p>
+                  <p>{getUserInitials(user?.name)}</p>
                 )}
+                <button
+                  type="button"
+                  onClick={handleClick}
+                  className="absolute bottom-0 right-0 bg-teal-600 text-white rounded-full p-2 hover:bg-teal-700 transition-colors"
+                  aria-label="Upload Profile Picture"
+                >
+                  <Upload size={16} />
+                </button>
               </div>
+              <p className="text-sm text-gray-500">Click to update profile picture</p>
             </div>
 
             <form className="space-y-6" onSubmit={handleSubmit}>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange} 
+                accept="image/jpeg,image/png,image/gif"
+                style={{ display: 'none' }} 
+              />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label
@@ -149,8 +230,7 @@ export default function ProfileManagementSection({
                   <Input
                     id="firstName"
                     name="firstName"
-                    value={formState.firstName}
-                    onChange={handleInputChange}
+                    value={user?.name?.split(" ")[0] || ""}
                     className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
                     readOnly
                   />
@@ -166,8 +246,7 @@ export default function ProfileManagementSection({
                   <Input
                     id="surname"
                     name="surname"
-                    value={formState.surname}
-                    onChange={handleInputChange}
+                    value={user?.name?.split(" ")[1] || ""}
                     className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
                     readOnly
                   />
@@ -185,8 +264,7 @@ export default function ProfileManagementSection({
                   id="email"
                   name="email"
                   type="email"
-                  value={formState.email}
-                  onChange={handleInputChange}
+                  value={user?.email || ""}
                   className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
                   readOnly
                 />
@@ -203,7 +281,7 @@ export default function ProfileManagementSection({
                   <Input
                     id="country"
                     name="country"
-                    value={formState.country}
+                    value={formData.country}
                     onChange={handleInputChange}
                     className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
                   />
@@ -219,7 +297,7 @@ export default function ProfileManagementSection({
                   <Input
                     id="city"
                     name="city"
-                    value={formState.city}
+                    value={formData.city}
                     onChange={handleInputChange}
                     className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
                   />
@@ -229,9 +307,9 @@ export default function ProfileManagementSection({
               <div className="flex justify-center pt-4">
                 <Button
                   type="submit"
-                  className={`h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 ${!isFormChanged ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                  disabled={!isFormChanged || isSubmitting}
+                  className={`h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 ${!isFormChanged ? "opacity-50" : "cursor-pointer"}`}
                   aria-label="Save Changes"
-                  disabled={!isFormChanged}
                 >
                   <Save size={16} className="mr-2" />
                   Save Changes
@@ -250,7 +328,6 @@ export default function ProfileManagementSection({
                   <Switch checked={darkMode} onCheckedChange={setDarkMode} />
                 </CardContent>
               </Card> */}
-
               <Card className="dark:bg-gray-800">
                 <CardContent className="p-4 dark:text-gray-100">
                   <h3 className="text-lg font-semibold">Delete My Account</h3>

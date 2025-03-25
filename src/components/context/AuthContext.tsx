@@ -23,6 +23,7 @@ interface AuthContextType {
   signInWithGoogle: () => void;
   logout: () => void;
   getUserDetails: (token: string) => Promise<void>;
+  deleteUserDetails: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -92,6 +93,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+const deleteUserDetails = async () => {
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      toast.error("No authentication token found");
+      return;
+    }
+
+    const response = await fetch(USER_API_URL, { 
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to delete user account");
+    }
+
+    // Cleanup after successful deletion
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    setUser(null);
+    
+    // Sign out and redirect
+    await signOut({ callbackUrl: "/" });
+    toast.success("Account deleted successfully");
+
+  } catch (e) {
+    console.error("Account deletion error:", e);
+    toast.error(e instanceof Error ? e.message : "Failed to delete account");
+  }
+};
+
+
   // Check for authenticated user on mount
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -117,6 +155,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signInWithGoogle,
         logout,
         getUserDetails,
+        deleteUserDetails,
       }}
     >
       <SessionProvider>{children}</SessionProvider>

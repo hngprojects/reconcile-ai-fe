@@ -10,7 +10,8 @@ import {
   RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
   GOOGLE_LOGIN_URL,
-  TOKEN_VALIDATOR_URL
+  TOKEN_VALIDATOR_URL,
+  USER_PROFILE_UPDATE_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -214,7 +215,7 @@ export async function handleAddToNewsLetter(email: string): Promise<{
 
 export async function updateReconciliation(
   reconciliation: string,
-  data: ManualRequestBody,
+  data: ManualRequestBody
 ) {
   try {
     const response = await fetch(`${MANUAL_API_URL}${reconciliation}`, {
@@ -263,7 +264,7 @@ export async function handleMarketingDemo(data: MarketingDemoData) {
 }
 
 export const handlePartnerSubmission = async (
-  data: PartnerFormData,
+  data: PartnerFormData
 ): Promise<PartnerResponse> => {
   try {
     const response = await fetch(PARTNER_API_URL, {
@@ -338,7 +339,7 @@ export const fetchReconciliation = async (reconciliationId: string) => {
   try {
     const response = await fetch(
       `${RECONCILIATION_RESULT_API_URL}${reconciliationId}`,
-       { headers }
+      { headers }
     );
 
     const data = await response.json();
@@ -359,7 +360,7 @@ export const fetchReconciliation = async (reconciliationId: string) => {
   }
 };
 export async function updatePaymentPlan(
-  data: PaymentPlanData,
+  data: PaymentPlanData
 ): Promise<PaymentPlanResponse> {
   const token = localStorage.getItem("access_token");
 
@@ -389,7 +390,7 @@ export async function updatePaymentPlan(
 
 export const exportReconciliation = async (reconciliationId: string) => {
   const response = await fetch(
-    `${RECONCILIATION_RESULT_API_URL}${reconciliationId}/export`,
+    `${RECONCILIATION_RESULT_API_URL}${reconciliationId}/export`
   );
   const blob = await response.blob();
 
@@ -406,7 +407,6 @@ export const exportReconciliation = async (reconciliationId: string) => {
 };
 
 export const loginWithGoogle = async (id_token: string) => {
-
   try {
     const response = await fetch(GOOGLE_LOGIN_URL, {
       method: "POST",
@@ -426,18 +426,49 @@ export const loginWithGoogle = async (id_token: string) => {
       return { status: "error", error: resData };
     }
   } catch (error) {
-    return { status: "error", error: error instanceof Error ? error.message : "An unexpected error occurred" };
+    return {
+      status: "error",
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    };
   }
 };
 
 export const validateToken = async (accessToken: string) => {
-    const response = await fetch(TOKEN_VALIDATOR_URL, {
-      method: 'GET',
+  const response = await fetch(TOKEN_VALIDATOR_URL, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`, // Pass the access token
+    },
+  });
+
+  return response.ok;
+};
+
+export async function updateProfile(formData: FormData) {
+  const token = localStorage.getItem("access_token");
+  try {
+    const response = await fetch(USER_PROFILE_UPDATE_API_URL, {
+      method: "POST",
+      body: formData,
       headers: {
-        'Authorization': `Bearer ${accessToken}`, // Pass the access token
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    return response.ok;
-  };
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update profile");
+    }
 
+    const responseData = await response.json();
+    return { success: true, data: responseData };
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "An unexpected error occurred",
+    };
+  }
+}
