@@ -13,6 +13,7 @@ import { useRequireAuth } from "@/src/hooks/useRequireAuth";
 import { Loader } from "@/src/components/ui/loader";
 // import { Button } from "@/src/components/ui/button";
 // import Link from "next/link";
+
 import CancelSubscriptionModal from "@/src/components/modal/CancelSubscriptionModal";
 import { EditIcon, NoteIcon } from "@/src/components/Icon/Icons"
 import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
@@ -46,6 +47,7 @@ export default function ManagePlanPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openPlanDialog, setOpenPlanDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+
 
   useEffect(() => {
     if (user?.payment_plan?.plan) {
@@ -380,6 +382,7 @@ export default function ManagePlanPage() {
         </motion.div>
         {/* Cancel Subscription Modal */}
         <CancelSubscriptionModal open={isModalOpen} onOpenChange={setIsModalOpen} />
+
 
       </Container>
 

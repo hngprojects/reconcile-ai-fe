@@ -2,9 +2,11 @@ import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Progress } from "@/src/components/ui/progress";
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export const DashboardInfoCards = () => {
   const { user } = useAuth();
+  const router = useRouter();
 
   const getUserPlan = (plan: string | undefined) => {
     switch (plan) {
@@ -25,11 +27,22 @@ export const DashboardInfoCards = () => {
 
     if (limit === -1) return { used, limit: "∞", progress: 0 };
 
-    const progress = Math.min((used / limit) * 100, 100); // Ensure progress doesn't exceed 100%
+    const progress = Math.min((used / limit) * 100, 100);
     return { used, limit, progress };
   };
 
   const { used, limit, progress } = getReconciliationProgress();
+
+  // const calculateTimeLeft = (date: string) => {
+  //   const end = new Date(date);
+  //   const now = new Date();
+  //   const diff = end.getTime() - now.getTime();
+
+  //   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  //   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+  //   return `${days}d ${hours}h left`;
+  // };
 
   // Format date helper
   const formatDate = (date: string | null | undefined) => {
@@ -41,6 +54,10 @@ export const DashboardInfoCards = () => {
     });
   };
 
+  const handleUpgrade = () => {
+    router.push("/manage-plan");
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:gap-6">
       <Card className="shadow-sm">
@@ -50,9 +67,10 @@ export const DashboardInfoCards = () => {
             <span className="text-primary capitalize">{userPlan}</span>
           </h2>
           <Button
-            className="bg-primary transition-all duration-300 hover:bg-primary/90 cursor-pointer"
+            className="bg-primary transition-all duration-300 hover:bg-primary/90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
             disabled={userPlan === "business"}
+            onClick={handleUpgrade}
           >
             Upgrade plan
           </Button>
@@ -83,14 +101,16 @@ export const DashboardInfoCards = () => {
       <Card className="shadow-sm">
         <CardContent className="p-5 md:p-6 flex flex-col justify-between h-40">
           <h2 className="font-medium mb-2">
-            {userPlan === "business" ? "Next billing date" : "Plan renews on"}
+            {userPlan === "basic" ? "Usage reset" : "Next billing date"}
           </h2>
-          <p className="text-xl font-bold">
-            {formatDate(user?.payment_plan?.expire_date)}
-          </p>
-          {user?.payment_plan?.is_active && (
+          <div>
+            <p className="text-xl font-bold">
+              {formatDate(user?.payment_plan?.expire_date)}
+            </p>
+          </div>
+          {/* {user?.payment_plan?.is_active && (
             <p className="text-sm text-green-600">Active</p>
-          )}
+          )} */}
         </CardContent>
       </Card>
     </div>
