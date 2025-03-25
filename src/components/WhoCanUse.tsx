@@ -8,7 +8,7 @@ import Container from "./Container";
 const whoCanUseContent = [
   {
     id: 1,
-    title: "Startups & Small Business Owners",
+    title: "Small Business Owners",
     content:
       "ReconXi helps small businesses reconcile transactions with ease, improving record accuracy and eliminating the burden of manual processes.",
     linkUrl: "/small-business",

@@ -77,7 +77,7 @@ const Features = () => {
               src="/assets/images/picture1.png"
               fill
               alt="file upload page"
-              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
+              className="object-contain"
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ const Features = () => {
               src="/assets/images/picture2.png"
               fill
               alt="Reconciliation dashboard"
-              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
+              className="object-contain"
             />
           </div>
 
