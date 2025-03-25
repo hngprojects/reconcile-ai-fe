@@ -13,14 +13,14 @@ export default function HeroSection() {
         <div className="flex flex-col items-center md:items-start w-full">
           <h1 className="font-semibold text-[28px] md:text-4xl text-[#101828] max-w-[1024px] flex-wrap lg:leading-[3.5rem] lg:text-5xl leading-[-2]">
             Reconcile Your
-            <br className="hidden md:block" /> Finances with ReconXi
+            <br className="hidden md:block" /> Finances with Ease
           </h1>
           <p className="text-[#475467] text-sm sm:text-xl max-w-[620px] text-left mt-6 md:pr-8 max-md:text-center">
             ReconXi simplifies financial reconciliation for accountants,
             auditors, financial analysts, small businesses, and schools. Whether
             you’re managing transactions, handling business accounts, or
-            reconciling school fees and payroll, ReconXi helps you finish
-            quickly, accurately, and with minimal effort.
+            reconciling school fees and payroll, experience a faster, more
+            accurate way to reconcile your finances.
           </p>
           <div className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8">
             <TypeWriterButton
