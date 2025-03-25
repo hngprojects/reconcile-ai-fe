@@ -11,10 +11,10 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRequireAuth } from "@/src/hooks/useRequireAuth";
 import { Loader } from "@/src/components/ui/loader";
-import { Button } from "@/src/components/ui/button";
+// import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import CancelSubscriptionModal from "@/src/components/modal/CancelSubscriptionModal";
-import { EditIcon, NoteIcon } from "@/src/components/Icon/Icons"
+// import { EditIcon, NoteIcon } from "@/src/components/Icon/Icons"
 import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
 
 interface PlanMap {
@@ -153,15 +153,15 @@ export default function ManagePlanPage() {
         {/* buttons */}
         <div className="flex items-center md:justify-end w-full my-[32px] px-4 md:px-2">
           <div className="flex space-x-2">
-            <Button onClick={() => setIsModalOpen(true)} variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm cursor-pointer font-medium bg-white shadow-none">
+            {/* <Button onClick={() => setIsModalOpen(true)} variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm cursor-pointer font-medium bg-white shadow-none">
               <EditIcon className="w-4 h-4" />
               My plan
-            </Button>
+            </Button> */}
             <Link href={"/billing-history"}>
-              <Button variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium cursor-pointer shadow-none bg-white">
+              {/* <Button variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium cursor-pointer shadow-none bg-white">
                 <NoteIcon className="w-4 h-4" />
                 Billing history
-              </Button>
+              </Button> */}
             </Link>
           </div>
         </div>
