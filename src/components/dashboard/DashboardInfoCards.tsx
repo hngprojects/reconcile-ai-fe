@@ -108,9 +108,9 @@ export const DashboardInfoCards = () => {
               {formatDate(user?.payment_plan?.expire_date)}
             </p>
           </div>
-          {user?.payment_plan?.is_active && (
+          {/* {user?.payment_plan?.is_active && (
             <p className="text-sm text-green-600">Active</p>
-          )}
+          )} */}
         </CardContent>
       </Card>
     </div>
