@@ -7,13 +7,9 @@ export default function Features1() {
   return (
     <section className="w-full overflow-hidden">
       <Container className="py-16 px-4 md:px-16 lg:px-24">
-        <div
-          className="flex flex-col justify-center lg:flex-row items-center gap-10 lg:gap-24 h-full"
-        >
+        <div className="flex flex-col justify-center lg:flex-row items-center gap-10 lg:gap-24 h-full">
           {/* Left Text Section */}
-          <div
-            className="flex flex-col text-center sm:text-left items-start gap-[32px] flex-1"
-          >
+          <div className="flex flex-col text-center sm:text-left items-start gap-[32px] flex-1">
             <div className="flex flex-col items-start gap-[24px] w-full">
               <p className="w-full text-primary font-inter font-semibold leading-[24px]">
                 Problem Statement
@@ -23,19 +19,18 @@ export default function Features1() {
                   Financial Reconciliation Doesn&apos;t Have to Be Hard
                 </h1>
                 <p className="text-[#475467] font-inter sm:text-lg">
-                  Spending hours matching transactions manually? Errors slipping
-                  through the cracks? Our tool makes reconciliation simple so
-                  you can focus on what really matters.
+                  Tired of spending hours matching transactions manually? Errors
+                  slipping through the cracks? ReconXi’s AI-powered platform
+                  makes reconciliation quick, accurate, and easy, so you can
+                  focus on growing your business or managing clients.
                 </p>
               </div>
             </div>
           </div>
 
           {/* Right Image Section */}
-          <div
-            className="flex justify-center items-center flex-1"
-          >
-            <div className="relative md:h-[500px] h-[300px] w-full max-w-[536px]">
+          <div className="flex justify-center items-center flex-1">
+            <div className="relative w-full max-w-[536px]">
               <Image
                 src="/assets/images/screen-mockup.png"
                 alt="screen mockup"

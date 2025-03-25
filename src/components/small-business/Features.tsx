@@ -33,7 +33,7 @@ export default function Features1() {
           </div>
 
           <div
-            className="flex-1 flex flex-col gap-6"
+            className="flex-1 flex flex-col gap-3"
           >
             <h2
               id="features-title"
@@ -42,7 +42,7 @@ export default function Features1() {
               Tired of Manual Bank Reconciliations?
             </h2>
 
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2">
               <p className="font-inter text-base sm:text-lg md:text-[18px] leading-[1.5] md:leading-[28px] font-normal text-[#475467]">
                 As a startup or small business owner, tracking transactions and
                 balancing books can be time-consuming and prone to errors.

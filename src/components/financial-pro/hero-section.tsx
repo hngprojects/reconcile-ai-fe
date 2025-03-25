@@ -6,7 +6,7 @@ import Container from "@/src/components/Container";
 export default function FinancialHero() {
   return (
     <section
-      className="w-full py-8 lg:pb-[29px] lg:pt-[143px] bg-gray-100 overflow-hidden"
+      className="w-full py-8 lg:pb-[29px] lg:pt-[80px] bg-gray-100 overflow-hidden"
       aria-labelledby="hero-heading"
     >
       <Container>

@@ -51,10 +51,10 @@ const industryPaths = [
     name: "Enterprise",
     href: "/enterprise",
   },
-  {
-    name: "Freelancer",
-    href: "/freelancer",
-  },
+  // {
+  //   name: "Freelancer",
+  //   href: "/freelancer",
+  // },
   {
     name: "Schools & Educational Institutions",
     href: "/school-and-education",
