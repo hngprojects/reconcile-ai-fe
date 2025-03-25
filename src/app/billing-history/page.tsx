@@ -12,6 +12,7 @@ import {
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
 import Footer from "@/src/components/Footer";
+import Container from "@/src/components/Container";
 
 interface BillingRecord {
   id: string;
@@ -131,11 +132,8 @@ export default function BillingHistory() {
 
   return (
     <>
-      <div className="max-w-[1280px] mx-auto mt-5 p-6 flex flex-col gap-6 self-stretch">
-        <Link
-          href="/"
-          className="flex items-center gap-2 self-stretch cursor-pointer"
-        >
+      <Container className="mt-8 flex flex-col gap-6 self-stretch">
+        <Link href="/" className="flex items-center gap-2 w-fit cursor-pointer">
           <ArrowLeft className="w-6 h-6" />
           <p className="text-[#333] font-inter text-base font-medium leading-[38px]">
             Go back
@@ -147,7 +145,7 @@ export default function BillingHistory() {
             Billing History
           </h1>
           {!!billingHistory.length && (
-            <button className="flex items-center justify-center gap-2 px-4 py-[10px] rounded-lg border border-gray-300 bg-white shadow-sm cursor-pointer ">
+            <button className="flex items-center justify-center gap-2 px-4 py-[10px] rounded-lg border border-gray-300 bg-white hover:bg-accent shadow-sm cursor-pointer ">
               <Download className="w-6 h-6" />
               <p className="text-gray-700 text-sm font-semibold leading-5">
                 Download all
@@ -297,18 +295,17 @@ export default function BillingHistory() {
                   It looks like you haven’t made any payments yet. Once you do,
                   you’ll see them here.
                 </p>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="mt-4 cursor-pointer w-full text-primary hover:text-primary border-primary"
+                <Link
+                  href="/pricing"
+                  className="mt-4 cursor-pointer w-full text-sm font-medium hover:bg-accent border rounded-md h-10 flex justify-center items-center text-primary hover:text-primary border-primary"
                 >
                   View Pricing Plan
-                </Button>
+                </Link>
               </div>
             </div>
           </div>
         )}
-      </div>
+      </Container>
       <Footer />
     </>
   );
