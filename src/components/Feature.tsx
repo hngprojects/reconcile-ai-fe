@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export default function Features1() {
   return (
     <section className="w-full overflow-hidden">
-      <Container className="py-10">
+      <Container className="py-16 px-4 md:px-16 lg:px-24">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

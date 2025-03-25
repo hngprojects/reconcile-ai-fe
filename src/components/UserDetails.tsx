@@ -75,7 +75,7 @@ export default function UserDetails() {
               <DropdownMenuItem className="hover:bg-[#2E604A]/10 cursor-pointer px-4 py-3 transition-colors rounded-md">
                 <div className="flex gap-3 items-center text-[#101828] w-full">
                   <ClockIcon className="w-4 h-4 text-[#2E604A]" />
-                  <p>Plan & Billing</p>
+                  <p>Billing History</p>
                 </div>
               </DropdownMenuItem>
             </Link>

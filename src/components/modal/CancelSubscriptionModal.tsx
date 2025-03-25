@@ -29,7 +29,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
       >
         <button
           type="button"
-          onClick={onOpenChange}
+          onClick={() => onOpenChange(false)}
           className="absolute right-4 md:right-6 top-4 md:top-6 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer"
           aria-label="Close authentication modal"
         >
@@ -38,17 +38,15 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
 
         <div className="p-4 sm:p-6">
           <div className="mt-6 flex flex-col bg-[#FFFBFA] border border-[#FDA29B] rounded-xl p-4 gap-3">
-              <CircleAlertIcon
-                className="w-5 h-5 flex-shrink-0 text-[#D92D20]"
-              />
-              <div>
-                <h4 className="font-inter font-semibold text-sm text-[#B42318]">
-                  Important
-                </h4>
-                <p className="text-sm text-[#B42318]">
-                  Canceling your subscription will downgrade your account to the
-                  Free plan at the end of your current billing period.
-                </p>
+            <CircleAlertIcon className="w-5 h-5 flex-shrink-0 text-[#D92D20]" />
+            <div>
+              <h4 className="font-inter font-semibold text-sm text-[#B42318]">
+                Important
+              </h4>
+              <p className="text-sm text-[#B42318]">
+                Canceling your subscription will downgrade your account to the
+                Free plan at the end of your current billing period.
+              </p>
             </div>
           </div>
 
