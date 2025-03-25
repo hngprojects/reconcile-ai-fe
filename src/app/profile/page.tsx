@@ -135,77 +135,78 @@ export default function ProfileManagement() {
     <>
       <section className="p-[25px] pt-[35px] md:bg-[#F8F8F8] flex-grow min-h-[calc(100vh-var(--navbar-height,80px))] md:flex justify-center items-center md:p-4">
         <div className="md:max-w-2xl w-full flex flex-col gap-[40px] md:gap-6 ">
-          <h1 className="h-[39px] font-inter text-[#101828] text-[32px] leading-[100%] tracking-[0%] font-semibold">Profile and Settings</h1>
-        <Container className=" w-full bg-white rounded-[24px] md:p-4 md:p-[40px] p-0">
-          <div className="flex flex-col mb-6">
-            <div className="md:w-[120px] md:h-[120px] w-[160px] h-[160px] rounded-full overflow-hidden mb-4">
-              {user?.avatar ? (
-                <Image
-                  src={user.avatar}
-                  alt={user?.name || "User"}
-                  width={120}
-                  height={120}
-                  className="object-cover w-full h-full"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gray-300 text-white font-medium rounded-full">
-                  {getUserInitials(user?.name)}
+          <h1 className="h-[39px] font-inter text-[#101828] text-[32px] leading-[100%] tracking-[0%] font-semibold">
+            Profile and Settings
+          </h1>
+          <Container className=" w-full bg-white rounded-[24px] md:p-4 md:p-[40px] p-0">
+            <div className="flex flex-col mb-6">
+              <div className="md:w-[120px] md:h-[120px] w-[160px] h-[160px] rounded-full overflow-hidden mb-4">
+                {user?.avatar ? (
+                  <Image
+                    src={user.avatar}
+                    alt={user?.name || "User"}
+                    width={120}
+                    height={120}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-300 text-white font-medium rounded-full">
+                    {getUserInitials(user?.name)}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%]">
+                  {user?.name}
                 </div>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%]">
-                {user?.name}
-              </div>
-              <div className="text-[#475467] text-[16px] leading-[24px]">
-                {user?.email}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex gap-[40px] flex-col">
-            <div>
-              <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%] mb-4">
-                Personal Info
-              </div>
-
-              <div className="flex flex-col gap-[24px]">
-                {renderField("Name", user?.name || "", "name")}
-                {renderField("Email", user?.email || "", "email")}
-                {renderField("City", user?.city || "", "city")}
-                {renderField("Country", user?.country || "", "country")}
-              </div>
-            </div>
-
-            <div>
-              <div className="text-[#101828] text-[24px] font-medium mb-4 leading-[100%] tracking-[0%]">
-                Manage Account
-              </div>
-              <div className="">
-                <div className="flex flex-col gap-2">
-                  <div className="text-[#101828] text-[16px] font-medium leading-[100%] tracking-[0%]">
-                    Delete Account
-                  </div>
-
-                  <div className="flex justify-between">
-                    <p className="text-[#101828] font-light text-[14px] leading-[100%] tracking-[0%]">
-                      Permanently delete your account
-                    </p>
-                    <button
-                      className="text-[#E63946] font-medium text-[16px] cursor-pointer tracking-[0%] leading-[100%]"
-                      onClick={() => setIsDeleteModalOpen(true)}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                <div className="text-[#475467] text-[16px] leading-[24px]">
+                  {user?.email}
                 </div>
               </div>
             </div>
-          </div>
-        </Container>
+
+            <div className="flex flex-col gap-[40px]">
+              <div>
+                <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%] mb-4">
+                  Personal Info
+                </div>
+
+                <div className="flex flex-col gap-[24px]">
+                  {renderField("Name", user?.name || "", "name")}
+                  {renderField("Email", user?.email || "", "email")}
+                  {renderField("City", user?.city || "", "city")}
+                  {renderField("Country", user?.country || "", "country")}
+                </div>
+              </div>
+
+              <div>
+                <div className="text-[#101828] text-[24px] font-medium mb-4 leading-[100%] tracking-[0%]">
+                  Manage Account
+                </div>
+                <div className="">
+                  <div className="flex flex-col gap-2">
+                    <div className="text-[#101828] text-[16px] font-medium leading-[100%] tracking-[0%]">
+                      Delete Account
+                    </div>
+
+                    <div className="flex justify-between">
+                      <p className="text-[#101828] font-light text-[14px] leading-[100%] tracking-[0%]">
+                        Permanently delete your account
+                      </p>
+                      <button
+                        className="text-[#E63946] font-medium text-[16px] cursor-pointer tracking-[0%] leading-[100%]"
+                        onClick={() => setIsDeleteModalOpen(true)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Container>
         </div>
-
       </section>
 
       {/* Delete Account Modal */}
