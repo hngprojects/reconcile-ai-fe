@@ -15,8 +15,15 @@ import {
   ReconciliationHistoryTypes,
   reconciliations,
 } from "./dashboardDummyData";
-import { format, parse, isWithinInterval } from "date-fns";
-
+import {
+  format,
+  parse,
+  isWithinInterval,
+  startOfDay,
+  endOfDay,
+  isAfter,
+  isBefore,
+} from "date-fns";
 
 // Columns definition
 const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
@@ -83,29 +90,27 @@ export function ReconciliationHistoryCard({
 }: ReconciliationHistoryTableProps) {
   const [pageSize, setPageSize] = useState(10);
 
-
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
       return reconciliations;
     }
 
     return reconciliations.filter((item) => {
-      // Parse the date string to a Date object
       const itemDate = parse(item.date, "dd/MM/yyyy", new Date());
 
-      // If only fromDate is provided
-      if (fromDate && !toDate) {
-        return itemDate >= fromDate;
-      }
-
-      // If only toDate is provided
-      if (!fromDate && toDate) {
-        return itemDate <= toDate;
-      }
-
-      // If both dates are provided
       if (fromDate && toDate) {
-        return isWithinInterval(itemDate, { start: fromDate, end: toDate });
+        return isWithinInterval(itemDate, {
+          start: startOfDay(fromDate),
+          end: endOfDay(toDate),
+        });
+      }
+
+      if (fromDate) {
+        return isAfter(itemDate, startOfDay(fromDate));
+      }
+
+      if (toDate) {
+        return isBefore(itemDate, endOfDay(toDate));
       }
 
       return true;
@@ -131,13 +136,13 @@ export function ReconciliationHistoryCard({
       <div className="space-y-4">
         {table.getRowModel().rows.length ? (
           table.getRowModel().rows.map((row) => (
-            <Card
-              key={row.id}
-              className="w-full border border-[#E4E7EC]"
-            >
+            <Card key={row.id} className="w-full border border-[#E4E7EC]">
               <CardContent className="p-4 space-y-2">
                 <div className="text-xs text-[#333333]">
-                {format(parse(row.original.date, "dd/MM/yyyy", new Date()), "MMM d, yyyy")}
+                  {format(
+                    parse(row.original.date, "dd/MM/yyyy", new Date()),
+                    "MMM d, yyyy"
+                  )}
                 </div>
                 <div className="text-[14px] text-[#333333] font-medium">
                   {row.original.reconciliationId}
@@ -193,7 +198,11 @@ export function ReconciliationHistoryCard({
 
                 <Button
                   variant="outline"
-                  className="w-full border-primary border-2 text-primary hover:text-primary py-[10px] mt-[10px]"
+                  className={`w-full border-primary border-2 text-primary hover:text-primary py-[10px] mt-[10px] ${
+                    row.original.status !== "complete"
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:bg-primary/10"
+                  }`}
                   disabled={row.original.status !== "complete"}
                 >
                   View <ArrowUpRight className="h-4 w-4 ml-2" />

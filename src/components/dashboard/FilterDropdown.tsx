@@ -50,6 +50,15 @@ export function FilterDropdown({
     setToCalendarOpen(false);
   };
 
+  const handleApply = () => {
+    if (fromDate && toDate && fromDate > toDate) {
+      alert("Start date cannot be after end date");
+      return;
+    }
+    onApply();
+    setOpen(false);
+  };
+
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -58,7 +67,10 @@ export function FilterDropdown({
           Filter
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="max-w-[400px] sm:w-[400px] p-4" align="start">
+      <DropdownMenuContent
+        className="max-w-[400px] sm:w-[400px] p-4"
+        align="start"
+      >
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium">Filter</h3>
           <Button
@@ -106,6 +118,7 @@ export function FilterDropdown({
                   mode="single"
                   selected={fromDate}
                   onSelect={handleFromDateSelect}
+                  disabled={(date) => (toDate ? date > toDate : false)}
                   initialFocus
                 />
               </PopoverContent>
@@ -132,6 +145,7 @@ export function FilterDropdown({
                   mode="single"
                   selected={toDate}
                   onSelect={handleToDateSelect}
+                  disabled={(date) => (fromDate ? date < fromDate : false)}
                   initialFocus
                 />
               </PopoverContent>
@@ -145,10 +159,8 @@ export function FilterDropdown({
           </Button>
           <Button
             className="bg-primary hover:bg-primary/90"
-            onClick={() => {
-              onApply();
-              setOpen(false);
-            }}
+            onClick={handleApply}
+            disabled={!fromDate && !toDate}
           >
             Apply Now
           </Button>
