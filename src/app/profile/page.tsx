@@ -1,142 +1,130 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import { Button } from "@/src/components/ui/button";
+import { useState, useEffect } from "react"; // eslint-disable-line
 import { useAuth } from "@/src/components/context/AuthContext";
+import Image from "next/image";
+import { Button } from "@/src/components/ui/button"; // eslint-disable-line
 import { Input } from "@/src/components/ui/input";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/src/components/ui/tabs";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { Save, AlertTriangle, Upload } from "lucide-react";
+import { Dialog, DialogContent } from "@/src/components/ui/dialog";
+import Container from "@/src/components/Container";
+import circleAlertIcon from "@/public/assets/images/circleAlertIcon.svg";
 import { toast } from "sonner";
 import { updateProfile } from "@/src/lib/api";
-import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
-interface ProfileManagementSectionProps {
-  darkMode: boolean;
-  setDarkMode: (value: boolean) => void;
-}
-
-export default function ProfileManagementSection({
-  darkMode,
-}: ProfileManagementSectionProps) {
+export default function ProfileManagement() {
   const { user, setUser, deleteUserDetails } = useAuth();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);  // eslint-disable-line @typescript-eslint/no-unused-vars
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    country: user?.country || "",
-    city: user?.city || "",
-    file: null as File | null
-  });
-  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [editedValue, setEditedValue] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      setFormData(prev => ({
-        ...prev,
-        country: user.country || "",
-        city: user.city || "",
-      }));
-    }
-  }, [user]);
-
+  const handleEditClick = (field: string) => {
+    setEditingField(field);
+    setEditedValue(user[field as keyof typeof user]);
+  };
   const getUserInitials = (name?: string) => {
-    return name && name.length > 0 ? name[0].toUpperCase() : "";
+    if (!name) return "";
+    const names = name.split(" ");
+    const initials = names.map((n) => n[0].toUpperCase()).join("");
+    return initials;
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setIsFormChanged(true);
-  };
+  const handleSave = async () => {
+    if (!editingField) return;
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const file = files[0];
-      
-      // Validate file type and size
-      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
-      const maxSize = 5 * 1024 * 1024; // 5MB
-
-      if (!validTypes.includes(file.type)) {
-        toast.error("Invalid file type. Please upload a JPEG, PNG, or GIF.");
-        return;
-      }
-
-      if (file.size > maxSize) {
-        toast.error("File is too large. Maximum size is 5MB.");
-        return;
-      }
-
-      setSelectedFile(file);
-      setFormData((prev) => ({ ...prev, file }));
-      setIsFormChanged(true);
-    }
-  };
-
-  const handleClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-  
     try {
-      const formDataToSend = new FormData();
-  
-      // Only append city and country if they are changed
-      if (formData.country !== user?.country) {
-        formDataToSend.append("country", formData.country);
-      }
-  
-      if (formData.city !== user?.city) {
-        formDataToSend.append("city", formData.city);
-      }
-  
-      // Only append avatar if a new file is selected
-      if (formData.file) {
-        formDataToSend.append("avatar", formData.file);
-      }
-  
-      // Make the API request with the selected fields
-      const result = await updateProfile(formDataToSend);
-  
+      const result = await updateProfile({
+        [editingField]: editedValue,
+      });
+
       if (result.success) {
-        // Update the user context with the updated data if it's available
-        if (result.data?.user) {
-          setUser(prevUser => ({
-            ...prevUser!,
-            country: result.data.user.country,
-            city: result.data.user.city,
-            avatar: result.data.user.avatar
-          }));
-        }
-  
-        toast.success("Profile details updated successfully!");
-        setIsFormChanged(false);
-      } else if (result.error) {
-        toast.error("Error submitting: " + result.error);
+        setUser((prev) => ({
+          ...prev,
+          [editingField]: editedValue,
+        }));
+        toast.success("Profile updated successfully");
+      } else {
+        toast.error("Failed to update profile");
       }
     } catch (error) {
-      console.error("Exception when submitting profile:", error);
-      toast.error("An error occurred while submitting profile details");
-    } finally {
-      setIsSubmitting(false);
+      console.error("Error updating profile:", error);
+      toast.error("An error occurred while updating the profile");
     }
+    setEditingField(null);
   };
-  
+
+  const handleCancel = () => {
+    setEditingField(null);
+  };
+
+  const renderField = (label: string, value: string, field: string) => {
+    const editable = field === "city" || field === "country";
+
+    if (!editable) {
+      return (
+        <div className="border-b border-[#E4E7EC]">
+          <div className="text-[#101828] h-[19px] text-[16px] font-medium leading-[100%] tracking-[0%]">
+            {label}
+          </div>
+          <div className="text-[#101828] pt-[10px] pb-[10px] pr-[10px] text-[16px] font-light leading-[100%] tracking-[0%]">
+            {value}
+          </div>
+        </div>
+      );
+    }
+
+    if (editingField === field) {
+      return (
+        <div>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-[#101828] text-[16px] font-semibold">
+              {label}
+            </span>
+            <button
+              onClick={handleCancel}
+              className="text-[#E63946] text-[16px] leading-[100%] tracking-[0%] cursor-pointer font-medium"
+            >
+              Cancel
+            </button>
+          </div>
+          <Input
+            value={editedValue}
+            onChange={(e) => setEditedValue(e.target.value)}
+            className="mb-4 border-[#DEDEDE] py-[12px] px-[16px] text-[20px] font-normal font-inter focus:border-[#DEDEDE] focus:ring-[#12B76A]/30 color-[#333333]"
+          />
+          <button
+            type="button"
+            className="h-[50px] w-[160px] nowrap py-[8px] px-[20px] bg-[#2E604A] text-white rounded-[12px] font-inter font-semibold text-[14px] leading-[28px] tracking-[0%] hover:bg-[#2E604A]/90 cursor-pointer"
+            aria-label="Save changes"
+            onClick={handleSave}
+          >
+            Save
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div className="mb-4 border-b border-[#E4E7EC]">
+        <div className="flex justify-between items-center pr-[10px]">
+          <span className="text-[#101828] text-[16px] font-medium leading-[100%] tracking-[0%]">
+            {label}
+          </span>
+          <button
+            onClick={() => handleEditClick(field)}
+            className="text-[14px] text-[#2E604A] font-medium leading-[100%] tracking-[0%] cursor-pointer"
+          >
+            Edit
+          </button>
+        </div>
+        <div className="text-[#101828] pt-[10px] pb-[10px] pr-[10px] text-[16px] font-light leading-[100%] tracking-[0%]">
+          {value}
+        </div>
+      </div>
+    );
+  };
+
   const handleDeleteAccount = async () => {
     try {
-      await deleteUserDetails(); 
+      await deleteUserDetails();
       toast.success("Your account has been deleted successfully.");
     } catch (error) {
       console.error("Error deleting account:", error);
@@ -144,212 +132,114 @@ export default function ProfileManagementSection({
     }
   };
   return (
-    <ProtectedRoute>
-      <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1
-          className={`text-xl sm:text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-6`}
-        >
-          Profile Management
-        </h1>
-
-        <Tabs defaultValue="personal" className="w-full mb-8">
-          <TabsList
-            className={`flex flex-row flex-wrap w-full border-b ${darkMode ? "dark:border-gray-700" : "border-gray-200"} rounded-sm p-2 gap-2 h-auto mb-8`}
-          >
-            <TabsTrigger
-              value="personal"
-              className={`data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 cursor-pointer data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:${darkMode ? "bg-gray-800" : "bg-gray-100"} hover:bg-white h-12 rounded-sm`}
-            >
-              Personal Information
-            </TabsTrigger>
-            <TabsTrigger
-              value="security"
-              className={`data-[state=active]:border-b-2 data-[state=active]:border-b-teal-600 cursor-pointer data-[state=active]:text-teal-600 data-[state=active]:shadow-none data-[state=active]:${darkMode ? "bg-gray-800" : "bg-gray-100"} hover:bg-white h-12 rounded-sm`}
-            >
-              Settings
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="personal" className="pt-0 mt-0">
-            <div className="flex flex-col items-left mb-8 space-y-4">
-              <div
-                className={`relative flex items-center justify-center ${darkMode ? "bg-gray-800" : "bg-gray-100"} text-[#297B65] size-24 text-xl rounded-full`}
-              >
-                {user?.avatar ? (
-                  <Image
-                    src={user.avatar}
-                    alt={user.name || "User"}
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                ) : (
-                  <p>{getUserInitials(user?.name)}</p>
-                )}
-                <button
-                  type="button"
-                  onClick={handleClick}
-                  className="absolute bottom-0 right-0 bg-teal-600 text-white rounded-full p-2 hover:bg-teal-700 transition-colors"
-                  aria-label="Upload Profile Picture"
-                >
-                  <Upload size={16} />
-                </button>
-              </div>
-              <p className="text-sm text-gray-500">Click to update profile picture</p>
+    <>
+      <section className="bg-[#F8F8F8] min-h-screen flex justify-center items-center p-4">
+        <Container className="max-w-2xl w-full bg-white rounded-[24px] p-4 md:p-[40px]">
+          <div className="flex flex-col mb-6">
+            <div className="w-[120px] h-[120px] rounded-full overflow-hidden mb-4">
+              {user?.avatar ? (
+                <Image
+                  src={user.avatar}
+                  alt={user?.name || "User"}
+                  width={120}
+                  height={120}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-300 text-white font-medium rounded-full">
+                  {getUserInitials(user?.name)}
+                </div>
+              )}
             </div>
 
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleFileChange} 
-                accept="image/jpeg,image/png,image/gif"
-                style={{ display: 'none' }} 
-              />
+            <div className="flex flex-col gap-2">
+              <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%]">
+                {user?.name}
+              </div>
+              <div className="text-[#475467] text-[16px] leading-[24px]">
+                {user?.email}
+              </div>
+            </div>
+          </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="firstName"
-                    className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
-                  >
-                    First Name
-                  </label>
-                  <Input
-                    id="firstName"
-                    name="firstName"
-                    value={user?.name?.split(" ")[0] || ""}
-                    className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
-                    readOnly
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="surname"
-                    className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
-                  >
-                    Surname
-                  </label>
-                  <Input
-                    id="surname"
-                    name="surname"
-                    value={user?.name?.split(" ")[1] || ""}
-                    className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
-                    readOnly
-                  />
-                </div>
+          <div className="space-y-6">
+            <div>
+              <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%] mb-4">
+                Personal Info
               </div>
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
-                >
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={user?.email || ""}
-                  className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base cursor-not-allowed opacity-70`}
-                  readOnly
-                />
+              <div className="flex flex-col gap-[24px]">
+                {renderField("Name", user?.name || "", "name")}
+                {renderField("Email", user?.email || "", "email")}
+                {renderField("City", user?.city || "", "city")}
+                {renderField("Country", user?.country || "", "country")}
               </div>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="country"
-                    className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
-                  >
-                    Country
-                  </label>
-                  <Input
-                    id="country"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label
-                    htmlFor="city"
-                    className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"}`}
-                  >
-                    City
-                  </label>
-                  <Input
-                    id="city"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    className={`h-12 min-h-[48px] ${darkMode ? "bg-gray-700 text-gray-100" : "bg-white"} !text-base`}
-                  />
-                </div>
+            <div>
+              <div className="text-[#101828] text-[24px] font-medium mb-4 leading-[100%] tracking-[0%]">
+                Manage Account
               </div>
-
-              <div className="flex justify-center pt-4">
-                <Button
-                  type="submit"
-                  disabled={!isFormChanged || isSubmitting}
-                  className={`h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 ${!isFormChanged ? "opacity-50" : "cursor-pointer"}`}
-                  aria-label="Save Changes"
-                >
-                  <Save size={16} className="mr-2" />
-                  Save Changes
-                </Button>
-              </div>
-            </form>
-          </TabsContent>
-
-          <TabsContent value="security">
-            <div className="max-w mx-auto">
-              {/* <Card className="mb-4 dark:bg-gray-800">
-                <CardContent className="p-4 flex justify-between items-center dark:text-gray-100">
-                  <span className="text-lg font-medium">
-                    {darkMode ? "Light Mode" : "Dark Mode"}
-                  </span>
-                  <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-                </CardContent>
-              </Card> */}
-              <Card className="dark:bg-gray-800">
-                <CardContent className="p-4 dark:text-gray-100">
-                  <h3 className="text-lg font-semibold">Delete My Account</h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    Deleting your account is permanent and cannot be reversed.
-                  </p>
-
-                  <div className="p-3 bg-red-50 border border-red-200 rounded-md flex items-start space-x-3 mb-4">
-                    <AlertTriangle className="text-red-500 h-5 w-5 mt-0.5" />
-                    <div>
-                      <h4 className="font-medium text-red-800 text-sm">
-                        Warning: This action cannot be undone
-                      </h4>
-                      <p className="text-red-700 text-xs mt-1">
-                        All your data and history will be permanently removed.
-                      </p>
-                    </div>
+              <div className="">
+                <div className="flex flex-col gap-2">
+                  <div className="text-[#101828] text-[16px] font-medium leading-[100%] tracking-[0%]">
+                    Delete Account
                   </div>
 
-                  <div className="max-w-sm mt-6 flex gap-2">
+                  <div className="flex justify-between">
+                    <p className="text-[#101828] font-light text-[14px] leading-[100%] tracking-[0%]">
+                      Permanently delete your account
+                    </p>
                     <button
-                      type="button"
-                      onClick={handleDeleteAccount}
-                      className="!w-full !bg-red-600 !text-white font-medium rounded-md max-w-[280px] h-[44px] hover:bg-red-700 transition-all duration-300 cursor-pointer"
-                      aria-label="Delete Account"
+                      className="text-[#E63946] font-medium text-[16px] cursor-pointer tracking-[0%] leading-[100%]"
+                      onClick={() => setIsDeleteModalOpen(true)}
                     >
-                      Delete Account
+                      Delete
                     </button>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             </div>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </ProtectedRoute>
+          </div>
+        </Container>
+      </section>
+
+      {/* Delete Account Modal */}
+      <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <DialogContent
+          className="w-[90%] max-w-[480px] rounded-[14px] p-0 border-none"
+          closeButton={false}
+        >
+          <div className="flex flex-col gap-[32px] pb-[20px] px-6 ">
+            <div className="flex justify-center">
+              <Image src={circleAlertIcon} alt="Circle Alert Icon" />
+            </div>
+            <div>
+              <h2 className="text-[20px] font-medium leading-[150%] tracking-[0%] text-[#333333]">
+                Are you sure want to permanently delete your account?
+              </h2>
+              <p className="text-[#5A5A5A] font-inter font-normal text-[13px] m-0 leading-[150%] tracking-[0%] p-0 ">
+                By doing this, your account will be deleted permanently and you
+                will no longer be able to recover your account.
+              </p>
+            </div>
+            <div className="flex justify-between h-[42px]">
+              <button
+                className="w-[160px] nowrap px-[10px] text-[14px] text-[#E63946] border border-[#E63946] rounded-[8px]"
+                onClick={handleDeleteAccount}
+              >
+                Delete account
+              </button>
+              <button
+                className="w-[160px] px-[10px] text-[14px] bg-[#2E604A] text-white rounded-[8px]"
+                onClick={() => setIsDeleteModalOpen(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
