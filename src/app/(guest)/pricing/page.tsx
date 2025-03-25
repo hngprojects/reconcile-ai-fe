@@ -152,13 +152,13 @@ export default function PricingPage() {
             {/* My Plan */}
             <Dialog open={openPlanDialog} onOpenChange={setOpenPlanDialog}>
               <DialogTrigger asChild>
-                <Button 
+                {/* <Button 
                   variant="outline" 
                   className="h-[48px] cursor-pointer border border-[#2E604A] py-[12px] px-[28px] rounded-[8px] text-[#2A5743]"
                   onClick={() => setOpenPlanDialog(true)}
                 >
                   My Plan
-                </Button>
+                </Button> */}
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
@@ -266,7 +266,7 @@ export default function PricingPage() {
               </DialogContent>
             </Dialog>
 
-            <Link href="billing-history" className="h-[48px] border border-[#2E604A] py-[12px] px-[28px] rounded-[8px] text-[#2A5743]">Billing History</Link>
+            {/* <Link href="billing-history" className="h-[48px] border border-[#2E604A] py-[12px] px-[28px] rounded-[8px] text-[#2A5743]">Billing History</Link> */}
           </div>
           <motion.div
           initial={{ opacity: 0, y: 20 }}
