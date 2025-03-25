@@ -1,32 +1,34 @@
 "use client";
-import { useAuth } from "@/src/components/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { validateToken } from '@/src/lib/api';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
+import { Loader } from "@/src/components/ui/loader";
 
 export default function ProtectedRoute({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { logout } = useAuth();
-  const router = useRouter();
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
+
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token') as string;
-    const interval = setInterval(() => {
-      if (token && token !== 'undefined') {
-        const valid = validateToken(token);
-
-        if(!valid){
-          logout();
-          router.replace("/");
-        }
+    const fetch = async () => {
+      if (session) {
+        setAuthenticated(true);
       }
-    }, 1 * 60 * 1000); 
-    return () => clearInterval(interval);
-  }, [logout, router]);
+    };
 
-
-  return <>{children}</>;
+    setLoading(false);
+    fetch();
+  }, [session]);
+  return (<>
+  {
+    loading ? <Loader /> 
+      : authenticated ? <>{children}</> 
+        : <Unauthenticated />
+  }
+  </>);
 }
