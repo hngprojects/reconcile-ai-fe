@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { ArrowDown, ArrowLeft, Download } from "lucide-react";
 import Image from "next/image";
 import {
@@ -11,136 +12,83 @@ import {
 } from "@/src/components/ui/select";
 import { Button } from "@/src/components/ui/button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Footer from "@/src/components/Footer";
 import Container from "@/src/components/Container";
+import { getBillingHistory } from "@/src/lib/api";
+import { Loader } from "@/src/components/ui/loader";
 
 interface BillingRecord {
-  id: string;
-  date: string;
+  id: number;
+  amount: number;
   description: string;
-  status: "Successful" | "Pending" | "Failed";
   plan: string;
-  amount: string;
+  transaction_date: string;
+  status: string;
 }
 
-// const billingHistory: BillingRecord[] = [
-//   {
-//     id: "1",
-//     date: "Dec 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "2",
-//     date: "Nov 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "3",
-//     date: "Oct 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "4",
-//     date: "Sep 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "5",
-//     date: "Aug 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "6",
-//     date: "Jul 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "7",
-//     date: "Jun 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "8",
-//     date: "May 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "9",
-//     date: "Apr 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-//   {
-//     id: "10",
-//     date: "Mar 1, 2024",
-//     description: "Monthly Subscription",
-//     status: "Successful",
-//     plan: "Starter Plan",
-//     amount: "USD $10.00",
-//   },
-// ];
-
-const billingHistory: BillingRecord[] = [];
-export default function BillingHistory() {
+const BillingHistory = () => {
+  const [billingHistory, setBillingHistory] = useState<BillingRecord[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const router = useRouter();
-  const totalRows = billingHistory.length;
-  const totalPages = Math.ceil(totalRows / rowsPerPage);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalRows, setTotalRows] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const startRow = (currentPage - 1) * rowsPerPage + 1;
-  const endRow = Math.min(currentPage * rowsPerPage, totalRows);
-  const currentData = billingHistory.slice(startRow - 1, endRow);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getBillingHistory(currentPage, rowsPerPage);
+        if (response.data) {
+          setBillingHistory(response.data);
+          setTotalRows(response.meta.total);
+          setTotalPages(response.meta.last_page);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const handleNext = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+    fetchData();
+  }, [currentPage, rowsPerPage]);
+
+  const handleNext = () =>
+    currentPage < totalPages && setCurrentPage((p) => p + 1);
+  const handlePrev = () => currentPage > 1 && setCurrentPage((p) => p - 1);
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+
+  const getStatusStyle = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "completed":
+        return "bg-[#ECFDF3] text-[#027A48]";
+      case "pending":
+        return "bg-[#FFFAEB] text-[#B54708]";
+      case "failed":
+        return "bg-[#FEF3F2] text-[#B42318]";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
   };
 
-  const handlePrev = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-
-  const handleRowsPerPageChange = (value: string) => {
-    setRowsPerPage(Number(value));
-    setCurrentPage(1);
-  };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
       <Container className="mt-8 flex flex-col gap-6 self-stretch">
-        <div onClick={() => router.back()} className="flex items-center gap-2 w-fit cursor-pointer">
+        <Link href="/" className="flex items-center gap-2 w-fit cursor-pointer">
           <ArrowLeft className="w-6 h-6" />
           <p className="text-[#333] font-inter text-base font-medium leading-[38px]">
             Go back
           </p>
-        </div>
+        </Link>
 
         <div className="flex justify-between items-center">
           <h1 className="self-stretch text-[#101828] font-inter text-lg font-semibold leading-7">
@@ -155,12 +103,10 @@ export default function BillingHistory() {
             </button>
           )}
         </div>
-
-        {billingHistory.length ? (
+        {billingHistory.length > 0 ? (
           <>
             <div className="overflow-x-auto rounded-[12px] border border-gray-200 bg-white">
               <table className="w-full border-collapse text-sm">
-                {/* Table Head */}
                 <thead>
                   <tr className="text-left font-semibold border-b border-gray-200 bg-gray-50 h-[44px]">
                     <th className="p-3 cursor-pointer flex items-center gap-1">
@@ -192,37 +138,39 @@ export default function BillingHistory() {
                     <th className="p-3"></th>
                   </tr>
                 </thead>
-                {/* Table Body */}
                 <tbody>
-                  {currentData.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="h-18 px-6 py-4 items-center w-full border-b border-gray-200"
-                    >
-                      <td className="p-3 text-[#151515] text-sm font-normal leading-5">
-                        {item.date}
-                      </td>
-                      <td className="text-[#151515] text-sm font-medium leading-5">
-                        {item.description}
-                      </td>
+                  {billingHistory.map((item) => (
+                    <tr key={item.id} className="border-b border-gray-200">
                       <td className="p-3">
-                        <span className="inline-flex items-center gap-1 px-2 py-[2px] rounded-[16px] bg-[#ECFDF3] mix-blend-multiply text-[#027A48] text-center font-inter text-xs font-medium leading-[18px]">
-                          <Image
-                            src="/assets/images/check.svg"
-                            alt="Success"
-                            width={12}
-                            height={12}
-                          />
-                          {item.status}
+                        {formatDate(item.transaction_date)}
+                      </td>
+
+                      <td className="py-3">
+                        {item.description || "Monthly Subscription"}
+                      </td>
+                      <td className="py-3">
+                        <span
+                          className={`${getStatusStyle(item.status)} inline-flex items-center gap-1 px-2 py-[2px] rounded-[16px]`}
+                        >
+                          {item.status === "completed" ? (
+                            <>
+                              <Image
+                                src="/assets/images/check.svg"
+                                alt="Success"
+                                width={12}
+                                height={12}
+                              />
+                              Successful
+                            </>
+                          ) : (
+                            item.status.charAt(0).toUpperCase() +
+                            item.status.slice(1)
+                          )}
                         </span>
                       </td>
-                      <td className="p-3 text-[#151515] text-sm font-normal leading-5">
-                        {item.plan}
-                      </td>
-                      <td className="p-3 text-[#151515] text-sm font-normal leading-5">
-                        {item.amount}
-                      </td>
-                      <td className="p-3 text-[#151515] text-sm font-normal leading-5">
+                      <td className="py-3">{item.plan}</td>
+                      <td className="py-3">${item.amount.toFixed(2)}</td>
+                      <td className="py-3">
                         <Download className="w-6 h-6 cursor-pointer" />
                       </td>
                     </tr>
@@ -231,44 +179,44 @@ export default function BillingHistory() {
               </table>
             </div>
 
-            <div className="hidden md:flex w-full max-w-[1200px] pt-4 pb-2 justify-between items-center border-t border-[#EFF1F3]">
+            {/* Pagination controls */}
+            <div className="hidden md:flex justify-between items-center border-t border-[#EFF1F3]">
               <div className="flex items-center gap-4">
-                <p className="text-[#344054] font-inter text-[14px] font-medium leading-[20px]">
-                  Rows per page
-                </p>
-                <Select onValueChange={handleRowsPerPageChange}>
-                  <SelectTrigger className=" flex justify-center items-center p-2 gap-[10px] rounded-[4px] border border-[#EFF1F3] cursor-pointer">
-                    <SelectValue placeholder={`${rowsPerPage}`} />
+                <Select
+                  value={rowsPerPage.toString()}
+                  onValueChange={(v) => {
+                    setRowsPerPage(Number(v));
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger className="w-[80px]">
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {[2, 5, 10].map((value) => (
-                      <SelectItem
-                        key={value}
-                        value={value.toString()}
-                        className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer text-[#344054] text-[14px]"
-                      >
+                    {[10, 20, 30].map((value) => (
+                      <SelectItem key={value} value={value.toString()}>
                         {value}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                <p className="text-[14px] font-medium leading-[20px] text-[#344054] font-inter">
-                  {startRow}-{endRow} of {totalRows} rows
+                <p className="text-sm">
+                  Showing {(currentPage - 1) * rowsPerPage + 1}-
+                  {Math.min(currentPage * rowsPerPage, totalRows)} of{" "}
+                  {totalRows} entries
                 </p>
               </div>
-              <div className="flex items-center gap-4">
+
+              <div className="flex items-center gap-2">
                 <Button
-                  className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === 1 ? "bg-white cursor-not-allowed text-[#344054]" : "bg-[#297B65] text-white cursor-pointer"}`}
+                  variant="outline"
                   onClick={handlePrev}
                   disabled={currentPage === 1}
                 >
                   Previous
                 </Button>
-                <p>
-                  {currentPage} of {totalPages}
-                </p>
                 <Button
-                  className={`px-4 py-2 rounded-[8px] border border-[#D0D5DD] ${currentPage === totalPages ? "bg-white cursor-not-allowed text-[#344054]" : "bg-[#297B65] text-white cursor-pointer"}`}
+                  variant="outline"
                   onClick={handleNext}
                   disabled={currentPage === totalPages}
                 >
@@ -311,4 +259,6 @@ export default function BillingHistory() {
       <Footer />
     </>
   );
-}
+};
+
+export default BillingHistory;
