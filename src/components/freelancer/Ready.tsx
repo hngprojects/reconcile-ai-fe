@@ -2,29 +2,21 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 
 const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
 
 export default function StartReconcile() {
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 100 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8 }}
+    <section
       className="py-10 md:py-20 bg-white"
       aria-labelledby="ready-section-title"
       id="demo-form"
     >
       <Container>
         <div className="flex flex-col lg:flex-row-reverse gap-8 lg:gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
+
             className="flex-1 w-full"
           >
             <div className="w-full">
@@ -38,13 +30,9 @@ export default function StartReconcile() {
                 priority={false}
               />
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
             className="flex-1 space-y-6 md:space-y-8"
           >
             <div className="space-y-3 md:space-y-4">
@@ -61,18 +49,14 @@ export default function StartReconcile() {
             </div>
 
             <div className="rounded-lg" aria-label="Start free trial form">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+              <div
               >
                 <DemoForm buttonText="Get your Demo" />
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
-    </motion.section>
+    </section>
   );
 }

@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import { motion } from "framer-motion";
 import { smoothScroll } from "@/src/utils/smoothScroll";
 
 export default function Features1() {
@@ -17,18 +16,10 @@ export default function Features1() {
       aria-labelledby="features-title"
     >
       <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+        <div
           className="flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
         >
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <div
             className="flex-1 border-4 border-[#101828] rounded-lg overflow-hidden bg-[#101828]"
           >
             <Image
@@ -39,13 +30,9 @@ export default function Features1() {
               className="object-cover w-full h-full"
               priority={false}
             />
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          <div
             className="flex-1 flex flex-col gap-6"
           >
             <h2
@@ -67,17 +54,15 @@ export default function Features1() {
                 statements and keep your finances on track.
               </p>
             </div>
-            <motion.button
+            <button
               onClick={handleDemoClick}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               className="h-[44px] px-6 py-3 bg-[#2E604A] text-white w-fit rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
               aria-label="Open signup modal"
             >
               Get a Free Demo
-            </motion.button>
-          </motion.div>
-        </motion.div>
+            </button>
+          </div>
+        </div>
       </Container>
     </section>
   );

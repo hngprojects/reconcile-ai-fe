@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Container from "@/src/components/Container";
-import { motion } from "framer-motion";
 
 export default function HeroSection() {
   return (
@@ -10,10 +9,7 @@ export default function HeroSection() {
       aria-labelledby="hero-title"
     >
       <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+        <div
           className="flex flex-col items-center gap-4 md:gap-6"
         >
           <h1
@@ -26,12 +22,9 @@ export default function HeroSection() {
           <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
           Reconcile your business’s bank statements and accounting records with ReconXi. Say goodbye to the headache of manual reconciliation and enjoy accurate, fast results every time.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
+        <div
           className="mt-8 md:mt-16 w-full max-w-[1200px] mx-auto"
         >
           {/* <div className="relative w-full aspect-[2/1]">
@@ -44,7 +37,7 @@ export default function HeroSection() {
               priority
             />
           </div> */}
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Container from "../Container";
-import { motion } from "framer-motion";
 import { smoothScroll } from "@/src/utils/smoothScroll";
 
 const features = [
@@ -40,10 +39,7 @@ export default function WhyReconXi() {
       aria-labelledby="why-reconxi-title"
     >
       <Container>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+        <div
           className="flex flex-col items-center"
         >
           <h2
@@ -54,10 +50,7 @@ export default function WhyReconXi() {
           </h2>
 
           <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <div
               className="flex-1 space-y-6 md:space-y-8 w-full"
             >
               <div role="list" className="space-y-6 md:space-y-8">
@@ -87,21 +80,16 @@ export default function WhyReconXi() {
                 ))}
               </div>
 
-              <motion.button
+              <button
                 onClick={handleDemoClick}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 className="h-[44px] px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer ml-8"
                 aria-label="Open signup modal"
               >
                 Get a Free Demo
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <div
               className="flex-1"
             >
               <Image
@@ -111,9 +99,9 @@ export default function WhyReconXi() {
                 height={400}
                 className="w-full h-auto rounded-lg"
               />
-            </motion.div>
+            </div>
           </div>
-        </motion.div>
+        </div>
       </Container>
     </section>
   );

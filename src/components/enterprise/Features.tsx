@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import { motion } from "framer-motion";
 import { smoothScroll } from "@/src/utils/smoothScroll";
 
 const features = [
@@ -37,11 +36,7 @@ export default function Features() {
       <Container>
         <div className="flex flex-col gap-12">
           {/* Image - Moves to top on mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+          <div
             className="w-full lg:hidden"
             role="presentation"
           >
@@ -53,25 +48,17 @@ export default function Features() {
               className="w-full h-auto rounded-lg border-4 border-[#101828]"
               priority={false}
             />
-          </motion.div>
+          </div>
 
           <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
             {/* Left Content - Feature List */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+            <div
               className="flex-1 max-w-[560px] w-full my-auto"
             >
               <div className="space-y-0 mb-8">
                 {features.map((feature, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
                     className="border-l-4 border-[#2E604A] py-4 pl-6"
                   >
                     <h3 className="font-inter text-[20px] leading-[30px] font-semibold text-[#333333] mb-2">
@@ -80,27 +67,21 @@ export default function Features() {
                     <p className="font-inter text-[16px] leading-[24px] font-normal text-[#475467]">
                       {feature.description}
                     </p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
-              <motion.button
+              <button
                 onClick={handleDemoClick}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
                 className="h-[44px] inline-flex items-center px-6 py-3 bg-[#2E604A] text-white rounded-[8px] font-inter font-semibold text-[14px] leading-[20px] hover:bg-[#2E604A]/90 cursor-pointer"
                 aria-label="Open signup modal"
               >
                 Get a Free Demo
-              </motion.button>
-            </motion.div>
+              </button>
+            </div>
 
             {/* Right Image - Hidden on mobile */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            <div
               className="hidden lg:block flex-1 border-4 border-[#101828] rounded-lg overflow-hidden"
               role="presentation"
             >
@@ -112,7 +93,7 @@ export default function Features() {
                 className="w-full h-auto"
                 priority={false}
               />
-            </motion.div>
+            </div>
           </div>
         </div>
       </Container>

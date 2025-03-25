@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { cn } from "../lib/utils";
 import Container from "./Container";
-import { motion } from "framer-motion";
 
 const whoCanUseContent = [
   {
@@ -48,34 +47,23 @@ const WhoCanUse = () => {
   return (
     <section className="bg-white md:bg-[#F5F5F5] py-8 md:py-24 px-8">
       <Container>
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
+        <h2
           className="text-3xl md:text-4xl font-semibold text-center"
         >
           Who can use ReconXi?
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+        </h2>
+        <p
           className="text-[#475467] mt-6 max-w-[1002px] mx-auto md:text-center text-sm md:text-base"
         >
           ReconXi is built for businesses and organizations of all sizes,
           designed to make financial reconciliation simpler and more accurate.
           Whether you&apos;re a small startup or a large enterprise, ReconXi
           offers solutions tailored to your needs.
-        </motion.p>
+        </p>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 items-center gap-x-9 md:gap-y-8 gap-y-6">
-          {whoCanUseContent.map(({ id, title, content, linkUrl }, index) => (
-            <motion.article
+          {whoCanUseContent.map(({ id, title, content, linkUrl }) => (
+            <article
               key={id}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 * index }}
               className={cn(
                 "md:bg-white md:p-8 rounded-[12px] h-[240px]",
                 id === 1 && "rounded-tl-[4rem]",
@@ -98,7 +86,7 @@ const WhoCanUse = () => {
                 <span>Learn more</span>
                 <ArrowRight className="size-4 group-hover:translate-x-2 transition duration-500" />
               </Link>
-            </motion.article>
+            </article>
           ))}
         </div>
       </Container>
