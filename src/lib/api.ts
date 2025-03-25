@@ -12,6 +12,7 @@ import {
   GOOGLE_LOGIN_URL,
   TOKEN_VALIDATOR_URL,
   USER_PROFILE_UPDATE_API_URL,
+  BILLING_HISTORY_API_URL,
 } from "./apiEndpoints";
 
 import { ManualRequestBody } from "@/src/types/reconciliation";
@@ -473,6 +474,28 @@ export async function updateProfile(formData: FormData) {
   }
 }
 
+export const getBillingHistory = async (page: number, perPage: number) => {
+  try {
+    const token = localStorage.getItem("access_token");
+    const response = await fetch(
+      `${BILLING_HISTORY_API_URL}?page=${page}&per_page=${perPage}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An error occurred",
+    };
+  }
+};
+
 export const fetchReconciliationHistory = async () => {
   const token = localStorage.getItem("access_token");
   const headers: HeadersInit = {
@@ -484,10 +507,9 @@ export const fetchReconciliationHistory = async () => {
   }
 
   try {
-    const response = await fetch(
-      `${RECONCILIATION_RESULT_API_URL}`,
-      { headers }
-    );
+    const response = await fetch(`${RECONCILIATION_RESULT_API_URL}`, {
+      headers,
+    });
 
     const data = await response.json();
 
@@ -506,4 +528,3 @@ export const fetchReconciliationHistory = async () => {
     };
   }
 };
-
