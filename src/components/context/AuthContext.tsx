@@ -18,6 +18,7 @@ import { SessionProvider } from "next-auth/react";
 interface AuthContextType {
   user: User | null;
   setUser: Dispatch<SetStateAction<User | null>>;
+  setIsLoading: Dispatch<SetStateAction<boolean>>;
   isAuthenticated: boolean;
   isLoading: boolean;
   signInWithGoogle: () => void;
@@ -30,10 +31,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const signInWithGoogle = async () => {
-    const result = await signIn("google", { callbackUrl: "/file-upload" });
+    const result = await signIn("google", { callbackUrl: "/dashboard" });
 
     if (result?.error) {
       alert(result.error);
@@ -77,6 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const getUserDetails = async (token: string) => {
     try {
+      setIsLoading(true);
       const response = await fetch(USER_API_URL, {
         // const response = await fetch(USER_API_URL, {
         headers: {
@@ -133,13 +135,9 @@ const deleteUserDetails = async () => {
   // Check for authenticated user on mount
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    const userDetails = localStorage.getItem("user");
 
     if (token) {
-      if (userDetails && userDetails !== "undefined") {
-        setUser(JSON.parse(userDetails));
         setIsLoading(false);
-      }
     } else {
       setIsLoading(false);
     }
@@ -150,6 +148,7 @@ const deleteUserDetails = async () => {
       value={{
         user,
         setUser,
+        setIsLoading,
         isAuthenticated: !!user,
         isLoading,
         signInWithGoogle,

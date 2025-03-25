@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { updateProfile } from "@/src/lib/api";
 
 export default function ProfileManagement() {
+
   const { user, setUser, deleteUserDetails } = useAuth();
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editedValue, setEditedValue] = useState("");
@@ -131,7 +132,6 @@ export default function ProfileManagement() {
       toast.error("Failed to delete account.");
     }
   };
-
   return (
     <>
       <section className="bg-[#F8F8F8] min-h-screen flex justify-center items-center p-4">

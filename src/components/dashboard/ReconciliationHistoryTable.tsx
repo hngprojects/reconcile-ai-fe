@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   type ColumnDef,
   flexRender,
@@ -24,6 +24,7 @@ import {
   reconciliations,
 } from "./dashboardDummyData";
 import { cn } from "@/src/lib/utils";
+import { parse, isWithinInterval } from "date-fns";
 
 // Columns definition
 const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
@@ -77,11 +78,49 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
   },
 ];
 
-export function ReconciliationHistoryTable() {
+interface ReconciliationHistoryTableProps {
+  fromDate?: Date;
+  toDate?: Date;
+  isFilterApplied: boolean;
+}
+
+export function ReconciliationHistoryTable({
+  fromDate,
+  toDate,
+  isFilterApplied,
+}: ReconciliationHistoryTableProps) {
   const [pageSize, setPageSize] = useState(10);
 
+  const filteredData = useMemo(() => {
+    if (!isFilterApplied || (!fromDate && !toDate)) {
+      return reconciliations;
+    }
+
+    return reconciliations.filter((item) => {
+      // Parse the date string to a Date object
+      const itemDate = parse(item.date, "dd/MM/yyyy", new Date());
+
+      // If only fromDate is provided
+      if (fromDate && !toDate) {
+        return itemDate >= fromDate;
+      }
+
+      // If only toDate is provided
+      if (!fromDate && toDate) {
+        return itemDate <= toDate;
+      }
+
+      // If both dates are provided
+      if (fromDate && toDate) {
+        return isWithinInterval(itemDate, { start: fromDate, end: toDate });
+      }
+
+      return true;
+    });
+  }, [fromDate, toDate, isFilterApplied]);
+
   const table = useReactTable({
-    data: reconciliations,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -91,6 +130,8 @@ export function ReconciliationHistoryTable() {
       },
     },
   });
+
+  const totalItems = filteredData.length;
 
   return (
     <div>
@@ -111,7 +152,7 @@ export function ReconciliationHistoryTable() {
                         "border-r": header.column.id !== "action",
                       },
                       {
-                        "md:w-[190px]": header.column.id === "action",
+                        "w-[190px]": header.column.id === "action",
                       },
                       {
                         "w-[84px] text-center md:text-start":
@@ -172,7 +213,7 @@ export function ReconciliationHistoryTable() {
       <PaginationControls
         pageIndex={table.getState().pagination.pageIndex}
         pageSize={pageSize}
-        totalItems={reconciliations.length}
+        totalItems={totalItems}
         onPreviousPage={() => table.previousPage()}
         onNextPage={() => table.nextPage()}
         canPreviousPage={table.getCanPreviousPage()}

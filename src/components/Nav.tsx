@@ -51,10 +51,10 @@ const industryPaths = [
     name: "Enterprise",
     href: "/enterprise",
   },
-  {
-    name: "Freelancer",
-    href: "/freelancer",
-  },
+  // {
+  //   name: "Freelancer",
+  //   href: "/freelancer",
+  // },
   {
     name: "Schools & Educational Institutions",
     href: "/school-and-education",
@@ -62,7 +62,7 @@ const industryPaths = [
 ];
 
 const Nav = () => {
-  const pathname = usePathname();
+  const pathname: string = usePathname();
   const { user } = useAuth();
   const isIndustryPaths = industryPaths.some(({ href }) =>
     pathname.startsWith(href)
@@ -75,6 +75,7 @@ const Nav = () => {
     "/profile",
     "/manage-plan",
     "/reconciliation",
+    "/dashboard",
   ];
 
   const isPathWithoutNavlinks = pathNamesWithoutNavlinks.some((path) =>
@@ -95,8 +96,65 @@ const Nav = () => {
 
         {!isPathWithoutNavlinks && (
           <nav className="hidden md:block">
-            <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
-              <li>
+            {
+              pathname === "/dashboard" as string ? 
+              <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
+                <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/dashboard"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/dashboard"
+                >
+                  Dashboard
+                </Link>
+                </li>
+                <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/file-upload"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/file-upload"
+                >
+                  File Upload
+                </Link>
+                </li>
+                <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/"
+                >
+                  Settings
+                </Link>
+                </li>
+                <li>
+                <Link
+                  className={cn(
+                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                    pathname === "/"
+                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                      : ""
+                  )}
+                  href="/"
+                >
+                  Subscription
+                </Link>
+                </li>
+              </ul>
+            :
+              <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
+                <li>
                 <Link
                   className={cn(
                     "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
@@ -108,8 +166,8 @@ const Nav = () => {
                 >
                   Home
                 </Link>
-              </li>
-              <li>
+                </li>
+                <li>
                 <NavigationMenu>
                   <NavigationMenuList>
                     <NavigationMenuItem>
@@ -142,8 +200,8 @@ const Nav = () => {
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
-              </li>
-              <li>
+                </li>
+                <li>
                 <Link
                   className={cn(
                     "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
@@ -155,8 +213,8 @@ const Nav = () => {
                 >
                   Blog
                 </Link>
-              </li>
-              <li>
+                </li>
+                <li>
                 <Link
                   className={cn(
                     "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
@@ -168,8 +226,9 @@ const Nav = () => {
                 >
                   Pricing
                 </Link>
-              </li>
-            </ul>
+                </li>
+              </ul>
+            }
           </nav>
         )}
 
