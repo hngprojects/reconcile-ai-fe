@@ -23,11 +23,12 @@ import {
   ReconciliationHistoryTypes,
   reconciliations,
 } from "./dashboardDummyData";
+import { cn } from "@/src/lib/utils";
 
 // Columns definition
 const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "serial_number",
     header: "S/N",
     cell: ({ row }) => {
       return <div>{row.index + 1}</div>;
@@ -49,7 +50,7 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
 
       return (
         <div
-          className={`font-medium ${isComplete ? "text-green-700" : "text-amber-600"}`}
+          className={`font-medium ${isComplete ? "text-green-600" : "text-amber-600"}`}
         >
           {isComplete ? "Complete" : "Pending"}
         </div>
@@ -57,13 +58,22 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     },
   },
   {
-    id: "actions",
+    id: "action",
     header: "Action",
-    cell: () => (
-      <Button variant="outline" size="sm" className="flex items-center gap-1">
-        View <ArrowUpRight className="h-3 w-3" />
-      </Button>
-    ),
+    cell: ({ row }) => {
+      const isComplete = row.original.status === "complete";
+
+      return (
+        <Button
+          variant="outline"
+          size="sm"
+          className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
+          disabled={!isComplete}
+        >
+          View <ArrowUpRight className="h-3 w-3" />
+        </Button>
+      );
+    },
   },
 ];
 
@@ -84,13 +94,31 @@ export function ReconciliationHistoryTable() {
 
   return (
     <div>
-      <div className="border rounded-lg">
+      <div className="border rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="bg-gray-100 hover:bg-gray-100 h-12"
+              >
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={cn(
+                      "px-5 text-black",
+                      {
+                        "border-r": header.column.id !== "action",
+                      },
+                      {
+                        "md:w-[190px]": header.column.id === "action",
+                      },
+                      {
+                        "w-[84px] text-center md:text-start":
+                          header.column.id === "serial_number",
+                      }
+                    )}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -106,8 +134,21 @@ export function ReconciliationHistoryTable() {
             {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn(
+                        "px-5 py-3",
+                        {
+                          "border-r text-left":
+                            index !== row.getVisibleCells().length - 1,
+                        },
+                        {
+                          "text-center md:text-start":
+                            cell.column.id === "serial_number",
+                        }
+                      )}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
