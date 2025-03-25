@@ -33,7 +33,7 @@ export const releases: ReleaseItem[] = [
     bannerTitle: "Reconciliation Made Simple and  Stress-Free",
     bannerColor: "#e0f7e0",
     content: {
-      heading: "Hey Community",
+      heading: "Hey Community,",
       intro:
         "Welcome to ReconXi 0.1! The best AI-powered reconciliation tool that makes financial reconciliation faster, and easier. What is good about this? Everything can be done in minutes! Just smart automation that gets the job done! Get ready to experience smarter and faster way on reconciling data with ReconXi!",
       mainText: "What’s in Today?",
@@ -174,7 +174,7 @@ export const releases: ReleaseItem[] = [
   },
   {
     id: "release-0-4",
-    date: "10 March 2025",
+    date: "11 March 2025",
     version: "ReconXi Version Release 0.4",
     isNew: true,
     bannerIntro: "Welcome to ReconXi 1.4! ",
@@ -219,7 +219,7 @@ export const releases: ReleaseItem[] = [
   },
   {
     id: "release-0-5",
-    date: "11 March 2025",
+    date: "12 March 2025",
     version: "ReconXi Version Release 0.5",
     isNew: true,
     bannerIntro: "Welcome to ReconXi 1.5! ",
@@ -335,7 +335,7 @@ export const releases: ReleaseItem[] = [
 
   {
     id: "release-0-7",
-    date: "17 March 2025",
+    date: "18 March 2025",
     version: "ReconXi Version Release 0.7",
     isNew: true,
     bannerIntro: "Welcome to ReconXi 0.7! ",
@@ -431,13 +431,7 @@ export const releases: ReleaseItem[] = [
           ],
         },
         {
-          title: "What’s Coming Next?",
-          items: [
-            "Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete.",
-          ],
-        },
-        {
-          title: "What's Coming Soon?",
+          title: "What's Coming Next?",
           items: ["Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete.", "Stay tuned for upcoming versions with even more improvements!"],
         },
       ],
@@ -486,12 +480,6 @@ export const releases: ReleaseItem[] = [
             "Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete.",
           ],
         },
-        {
-          title: "What's Coming Soon?",
-          items: [
-            "Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete. ",
-          ],
-        },
       ],
       feedback: {
         text: "Got feedback? Tell us at support@reconxi.com",
@@ -507,12 +495,12 @@ export const releases: ReleaseItem[] = [
     version: "ReconXi Version Release 0.10",
     isNew: true,
     bannerIntro: "Welcome to ReconXi 0.10! ",
-    bannerTitle: "Email Notifications for Reconciled Results",
+    bannerTitle: "Merging Multiple Records",
     bannerColor: "#e0f7e0",
     content: {
       heading: "Hey Community,",
       intro:
-        "Version 1.0 introduces the ability to merge multiple records into a single transaction match, reducing discrepancies caused by split payments or duplicate entries.This version introduces the ability to merge multiple records either from the bank statement or company ledger into a single matched entry. For example, if a client paid for two projects in one transaction, the system allows the user to merge two separate company ledger entries into one matched transaction from the bank statement.",
+        "Version 0.10 introduces the ability to merge multiple records into a single transaction match, reducing discrepancies caused by split payments or duplicate entries.This version introduces the ability to merge multiple records either from the bank statement or company ledger into a single matched entry. For example, if a client paid for two projects in one transaction, the system allows the user to merge two separate company ledger entries into one matched transaction from the bank statement.",
       mainText: "What's New?",
       // videoUrl: "/assets/video/version0-9.mp4",
       sections: [
@@ -530,12 +518,6 @@ export const releases: ReleaseItem[] = [
           items: [
             "Only manual merging is supported; AI-driven merging recommendations are not yet available.",
             "Once merged, transactions cannot be split again (the undo function is not available in this version).",
-          ],
-        },
-        {
-          title: "What’s Coming Next?",
-          items: [
-            "Email notification for reconciled results. This update aims to make large reconciliations easier by sending an automatic email when the reconciliation process is complete.",
           ],
         },
         {
