@@ -133,12 +133,12 @@ export default function ProfileManagement() {
   };
   return (
     <>
-      <section className="bg-[#F8F8F8] flex-grow min-h-[calc(100vh-var(--navbar-height,80px))] flex justify-center items-center p-4">
-        <div className="max-w-2xl w-full flex flex-col gap-6">
+      <section className="p-[25px] pt-[35px] md:bg-[#F8F8F8] flex-grow min-h-[calc(100vh-var(--navbar-height,80px))] md:flex justify-center items-center md:p-4">
+        <div className="md:max-w-2xl w-full flex flex-col gap-[40px] md:gap-6 ">
           <h1 className="h-[39px] font-inter text-[#101828] text-[32px] leading-[100%] tracking-[0%] font-semibold">Profile and Settings</h1>
-        <Container className=" w-full bg-white rounded-[24px] p-4 md:p-[40px]">
+        <Container className=" w-full bg-white rounded-[24px] md:p-4 md:p-[40px] p-0">
           <div className="flex flex-col mb-6">
-            <div className="w-[120px] h-[120px] rounded-full overflow-hidden mb-4">
+            <div className="md:w-[120px] md:h-[120px] w-[160px] h-[160px] rounded-full overflow-hidden mb-4">
               {user?.avatar ? (
                 <Image
                   src={user.avatar}
@@ -164,7 +164,7 @@ export default function ProfileManagement() {
             </div>
           </div>
 
-          <div className="space-y-6">
+          <div className="flex gap-[40px] flex-col">
             <div>
               <div className="text-[#101828] font-medium text-[24px] leading-[100%] tracking-[0%] mb-4">
                 Personal Info
@@ -229,13 +229,13 @@ export default function ProfileManagement() {
             </div>
             <div className="flex justify-between h-[42px]">
               <button
-                className="w-[160px] nowrap px-[10px] text-[14px] text-[#E63946] border border-[#E63946] rounded-[8px]"
+                className="w-[140px] md:w-[160px] nowrap px-[10px] text-[14px] text-[#E63946] border border-[#E63946] rounded-[8px]"
                 onClick={handleDeleteAccount}
               >
                 Delete account
               </button>
               <button
-                className="w-[160px] px-[10px] text-[14px] bg-[#2E604A] text-white rounded-[8px]"
+                className="w-[140px] md:w-[160px] px-[10px] text-[14px] bg-[#2E604A] text-white rounded-[8px]"
                 onClick={() => setIsDeleteModalOpen(false)}
               >
                 Cancel
