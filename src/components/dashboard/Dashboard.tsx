@@ -54,7 +54,7 @@ export const Dashboard = () => {
           <div className="flex items-center justify-center">
             <Image
               src="/assets/images/no_billing.png"
-              alt="No Billing History"
+              alt="No Pending Activity"
               width={350}
               height={270}
               className=""
@@ -63,7 +63,7 @@ export const Dashboard = () => {
             />
           </div>
           <div className="flex flex-col items-center gap-1 max-w-md">
-            <h5 className="font-medium text-2xl">No Billing History Yet</h5>
+            <h5 className="font-medium text-2xl">No Pending Activity</h5>
             <p className="text-center text-[#333333]">
               It looks like you haven&apos;t made started reconciling. Once you
               do, you&apos;ll see there progress here.
