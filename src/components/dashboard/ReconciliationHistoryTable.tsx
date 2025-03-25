@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   type ColumnDef,
   flexRender,
@@ -19,15 +19,14 @@ import {
   TableRow,
 } from "@/src/components/ui/table";
 import { PaginationControls } from "@/src/components/PaginationControl";
-import {
-  ReconciliationHistoryTypes,
-  reconciliations,
-} from "./dashboardDummyData";
 import { cn } from "@/src/lib/utils";
 import { parse, isWithinInterval } from "date-fns";
+import { fetchReconciliationHistory } from "@/src/lib/api";
+import { ReconciliationHistory } from "@/src/types/reconciliation";
+import Link from "next/link";
 
 // Columns definition
-const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
+const columns: ColumnDef<ReconciliationHistory>[] = [
   {
     accessorKey: "serial_number",
     header: "S/N",
@@ -40,14 +39,14 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     header: "Date",
   },
   {
-    accessorKey: "reconciliationId",
+    accessorKey: "title",
     header: "Reconciliation ID",
   },
   {
     accessorKey: "progress",
     header: "Status",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "complete";
+      const isComplete = row.original.status === "Completed";
 
       return (
         <div
@@ -62,9 +61,10 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     id: "action",
     header: "Action",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "complete";
+      const isComplete = row.original.status === "Completed";
 
       return (
+        <Link href={`/reconciliation/${row.original.id}`}>
         <Button
           variant="outline"
           size="sm"
@@ -73,6 +73,7 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
         >
           View <ArrowUpRight className="h-3 w-3" />
         </Button>
+        </Link>
       );
     },
   },
@@ -90,6 +91,17 @@ export function ReconciliationHistoryTable({
   isFilterApplied,
 }: ReconciliationHistoryTableProps) {
   const [pageSize, setPageSize] = useState(10);
+  const [reconciliations, setReconciliations] = useState<ReconciliationHistory[]>([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await fetchReconciliationHistory();
+      setReconciliations(res.data as ReconciliationHistory[]);
+    }
+
+    fetch();
+  },[]);
+
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
@@ -117,7 +129,7 @@ export function ReconciliationHistoryTable({
 
       return true;
     });
-  }, [fromDate, toDate, isFilterApplied]);
+  }, [fromDate, toDate, isFilterApplied, reconciliations]);
 
   const table = useReactTable({
     data: filteredData,
