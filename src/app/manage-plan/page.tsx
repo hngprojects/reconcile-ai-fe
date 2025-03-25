@@ -134,13 +134,13 @@ export default function ManagePlanPage() {
     window.location.href = planLink;
   };
 
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+  if (isLoading) {
+    return <Loader />;
+  }
 
-  // if (!isAuthenticated) {
-  //   return <UnAuthorized />;
-  // }
+  if (!isAuthenticated) {
+    return <UnAuthorized />;
+  }
 
   return (
     <>
