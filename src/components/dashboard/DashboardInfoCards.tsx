@@ -19,12 +19,10 @@ export const DashboardInfoCards = () => {
 
   const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
 
-  // Calculate reconciliation progress
   const getReconciliationProgress = () => {
     const used = user?.payment_plan?.reconciliations_used || 0;
     const limit = user?.payment_plan?.plan?.reconciliations_per_month || 20;
 
-    // Handle unlimited reconciliations for Business plan
     if (limit === -1) return { used, limit: "∞", progress: 0 };
 
     const progress = Math.min((used / limit) * 100, 100); // Ensure progress doesn't exceed 100%
