@@ -115,7 +115,7 @@ const Nav = () => {
                     <NavigationMenuItem>
                       <NavigationMenuTrigger
                         className={cn(
-                          "text-[#333333] font-medium text-base bg-transparent p-0 h-auto hover:bg-transparent hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                          "navigation-menu-trigger text-[#333333] font-medium text-base bg-transparent p-0 h-auto hover:bg-transparent hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300 [&>svg]:!ml-0",
                           isIndustryPaths
                             ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
                             : ""
@@ -218,14 +218,17 @@ const Nav = () => {
                           <div className="w-fit">
                             <AccordionTrigger
                               className={cn(
-                                "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-2",
+                                "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-0.5",
                                 isIndustryPaths
                                   ? "text-white font-semibold underline underline-offset-2"
                                   : ""
                               )}
                             >
                               <span>Industries</span>
-                              <ChevronDown />
+                              <ChevronDown
+                                className="ml-0"
+                                style={{ marginLeft: "0" }}
+                              />
                             </AccordionTrigger>
                           </div>
                           <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
