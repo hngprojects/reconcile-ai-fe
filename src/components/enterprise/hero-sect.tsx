@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import { motion } from "framer-motion";
 
 export default function EnterpriseHero() {
   return (
@@ -13,10 +12,7 @@ export default function EnterpriseHero() {
       <Container>
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+          <div
             className="flex-1 max-w-[640px]"
           >
             <div className="space-y-6 md:space-y-8 w-full flex items-center lg:items-start flex-col">
@@ -33,13 +29,10 @@ export default function EnterpriseHero() {
                 organizations. Lets show you the ReconXi way.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <div
             className="flex-1 flex justify-end"
           >
             <div className="w-full max-w-[460px] -my-4">
@@ -52,7 +45,7 @@ export default function EnterpriseHero() {
                 priority
               />
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
     </section>
