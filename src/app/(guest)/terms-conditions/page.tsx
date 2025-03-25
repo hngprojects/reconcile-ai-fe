@@ -1,6 +1,7 @@
 "use client";
 import CTASection from "@/src/components/CTASection";
 import Footer from "@/src/components/Footer";
+import { getFormattedCurrentDate } from "@/src/helpers/getCurrentDate";
 import { motion } from "framer-motion";
 
 export default function TermsConditionPage() {
@@ -33,6 +34,8 @@ export default function TermsConditionPage() {
     }),
   };
 
+  const currentDate = getFormattedCurrentDate()
+
   return (
     <main>
       <div className="font-inter">
@@ -49,7 +52,7 @@ export default function TermsConditionPage() {
             variants={textVariants}
             className="bg-[#E6FFF2] rounded-lg py-2 px-3 text-[1rem]"
           >
-            Current as of 05 Mar 2025
+            Current as of {currentDate}
           </motion.p>
           <motion.h1
             initial="hidden"
