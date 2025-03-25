@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import { motion } from "framer-motion";
 
 export default function FinancialHero() {
   return (
@@ -13,10 +12,7 @@ export default function FinancialHero() {
       <Container>
         <div className="flex flex-col lg:flex-row items-center gap-[64px] lg:gap-4">
           {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+          <div
             className="flex-1 max-w-[780px]"
           >
             <div className="space-y-6">
@@ -34,13 +30,10 @@ export default function FinancialHero() {
                 That’s where ReconXi comes in.
               </p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <div
             className=" flex items-center"
           >
             <div className="w-full max-w-[570px] lg:h-[417px] -my-4">
@@ -53,7 +46,7 @@ export default function FinancialHero() {
                 priority
               />
             </div>
-          </motion.div>
+          </div>
         </div>
       </Container>
     </section>
