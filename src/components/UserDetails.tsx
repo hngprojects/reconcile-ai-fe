@@ -3,7 +3,6 @@ import {
   ChevronDown,
   CreditCard,
   User,
-  ClockIcon,
   LayoutDashboardIcon,
 } from "lucide-react";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -66,19 +65,19 @@ export default function UserDetails() {
               <DropdownMenuItem className="hover:bg-[#2E604A]/10 cursor-pointer px-4 py-3 transition-colors rounded-md">
                 <div className="flex gap-3 items-center text-[#101828] w-full">
                   <CreditCard className="w-4 h-4 text-[#2E604A]" />
-                  <p>Manage Plan</p>
+                  <p>Plan and Billing</p>
                 </div>
               </DropdownMenuItem>
             </Link>
 
-            <Link href="/billing-history" className="block w-full">
+            {/* <Link href="/billing-history" className="block w-full">
               <DropdownMenuItem className="hover:bg-[#2E604A]/10 cursor-pointer px-4 py-3 transition-colors rounded-md">
                 <div className="flex gap-3 items-center text-[#101828] w-full">
                   <ClockIcon className="w-4 h-4 text-[#2E604A]" />
                   <p>Billing History</p>
                 </div>
               </DropdownMenuItem>
-            </Link>
+            </Link> */}
 
             <Link href="/profile" className="block w-full">
               <DropdownMenuItem className="hover:bg-[#2E604A]/10 cursor-pointer px-4 py-3 transition-colors rounded-md">
