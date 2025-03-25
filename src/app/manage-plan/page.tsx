@@ -11,6 +11,8 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { useRequireAuth } from "@/src/hooks/useRequireAuth";
 import { Loader } from "@/src/components/ui/loader";
+import { Button } from "@/src/components/ui/button";
+import {EditIcon, NoteIcon} from "@/src/components/Icon/Icons"
 import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
 
 interface PlanMap {
@@ -26,9 +28,7 @@ export default function ManagePlanPage() {
   const router = useRouter();
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
-    "monthly"
-  );
+
 
   useEffect(() => {
     if (user?.payment_plan?.plan) {
@@ -149,38 +149,16 @@ export default function ManagePlanPage() {
         </div>
 
         {/* buttons */}
-        <div className="flex items-center justify-between w-full my-[16px]">
-          <div className="flex items-center bg-gray-100 rounded-full p-1">
-            <button
-              className={cn(
-                "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-                billingCycle === "monthly"
-                  ? "bg-[#2E604A] text-white"
-                  : "text-gray-600 hover:bg-gray-200"
-              )}
-              onClick={() => setBillingCycle("monthly")}
-            >
-              Monthly
-            </button>
-            <button
-              className={cn(
-                "px-4 py-2 rounded-full text-sm font-medium transition-colors",
-                billingCycle === "yearly"
-                  ? "bg-[#2E604A] text-white"
-                  : "text-gray-600 hover:bg-gray-200"
-              )}
-              onClick={() => setBillingCycle("yearly")}
-            >
-              Yearly
-            </button>
-          </div>
+        <div className="flex items-center md:justify-end w-full my-[32px] px-4 md:px-2">
           <div className="flex space-x-2">
-            <button className="bg-[#2E604A] text-white px-4 py-2 rounded-md text-sm font-medium">
+            <Button variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm cursor-pointer font-medium bg-white">
+              <EditIcon className="w-4 h-4" />
               My plan
-            </button>
-            <button className="border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium">
-              Download
-            </button>
+            </Button>
+            <Button variant={"secondary"} className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium cursor-pointer bg-white">
+              <NoteIcon className="w-4 h-4" />
+              Billing history
+            </Button>
           </div>
         </div>
 
