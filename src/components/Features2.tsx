@@ -74,10 +74,10 @@ const Features = () => {
             className="w-full relative flex items-center h-[400px]"
           >
             <Image
-              src="/assets/images/upload_file.svg"
+              src="/assets/images/picture1.png"
               fill
               alt="file upload page"
-              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
+              className="object-contain"
             />
           </div>
         </div>
@@ -89,10 +89,10 @@ const Features = () => {
             className="w-full relative flex items-center h-[400px]"
           >
             <Image
-              src="/assets/images/feature2-mockup.svg"
+              src="/assets/images/picture2.png"
               fill
               alt="Reconciliation dashboard"
-              className="border-[3.13px] border-[#101828] rounded-[7.61px] object-contain"
+              className="object-contain"
             />
           </div>
 
