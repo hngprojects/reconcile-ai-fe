@@ -69,7 +69,7 @@ const WhoCanUse = () => {
                 id === 4 && "rounded-br-[4rem]",
                 // For the last card, span both columns, center it, and add the decorative rounded edge
                 id === 5 &&
-                  "md:col-span-2 md:w-[600px] md:mx-auto rounded-br-[4rem]",
+                  "md:col-span-2 md:w-[600px] md:mx-auto rounded-br-[4rem] rounded-bl-[4rem]",
               )}
             >
               <h2 className="font-bold md:text-xl">{title}</h2>
