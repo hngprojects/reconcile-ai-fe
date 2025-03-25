@@ -10,14 +10,11 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/ui/tabs";
-import { User } from "@/src/types/auth";  // eslint-disable-line @typescript-eslint/no-unused-vars
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Save, AlertTriangle, Upload } from "lucide-react";
 import { toast } from "sonner";
-import { useRequireAuth } from "@/src/hooks/useRequireAuth";
 import { updateProfile } from "@/src/lib/api";
-import { Loader } from "@/src/components/ui/loader";
-import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 interface ProfileManagementSectionProps {
   darkMode: boolean;
@@ -27,7 +24,6 @@ interface ProfileManagementSectionProps {
 export default function ProfileManagementSection({
   darkMode,
 }: ProfileManagementSectionProps) {
-  const { isLoading, isAuthenticated } = useRequireAuth();
   const { user, setUser, deleteUserDetails } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);  // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -147,17 +143,8 @@ export default function ProfileManagementSection({
       toast.error("Failed to delete account.");
     }
   };
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isAuthenticated) {
-    return <UnAuthorized />;
-  }
-  
   return (
-    <>
+    <ProtectedRoute>
       <div className="min-h-screen w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1
           className={`text-xl sm:text-2xl font-semibold ${darkMode ? "text-gray-100" : "text-gray-800"} mb-6`}
@@ -363,6 +350,6 @@ export default function ProfileManagementSection({
           </TabsContent>
         </Tabs>
       </div>
-    </>
+    </ProtectedRoute>
   );
 }

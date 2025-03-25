@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import Container from "./Container";
-import StartReconciliationButton from "./buttons/StartReconciliationButton";
+import { motion } from "framer-motion";
+import TypeWriterButton from "./buttons/TypeWriterButton";
 
 const CTASection = () => {
   return (
@@ -19,8 +20,9 @@ const CTASection = () => {
             </p>
           </div>
           <div>
-            <StartReconciliationButton
+            <TypeWriterButton
               text="Get Started"
+              path="/file-upload"
               // className="bg-primary whitespace-nowrap w-full sm:w-fit py-2 px-4 rounded-md font-semibold justify-center items-center h-12 sm:h-9 text-sm text-white hover:bg-primary/90 flex cursor-pointer"
               className="bg-primary whitespace-nowrap w-full sm:w-64 h-12 py-2 px-4 rounded-md font-semibold justify-center items-center text-sm text-white hover:bg-primary/90 hover:scale-105 transition-transform duration-200 flex"
               aria-label="Get started with ReconXi"
