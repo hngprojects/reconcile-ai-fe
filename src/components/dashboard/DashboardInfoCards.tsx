@@ -22,7 +22,9 @@ export const DashboardInfoCards = () => {
   const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
 
   const getReconciliationProgress = () => {
-    const used = user?.payment_plan?.reconciliations_used || 0;
+    // const used = user?.payment_plan?.reconciliations_used || 0;
+    // Get count from localStorage, default to 0 if not set
+    const used = parseInt(localStorage.getItem("reconcileCount") || "0");
     const limit = user?.payment_plan?.plan?.reconciliations_per_month || 20;
 
     if (limit === -1) return { used, limit: "∞", progress: 0 };
@@ -41,17 +43,6 @@ export const DashboardInfoCards = () => {
       year: "numeric",
     });
   };
-
-  // const calculateTimeLeft = (date: string) => {
-  //   const end = new Date(date);
-  //   const now = new Date();
-  //   const diff = end.getTime() - now.getTime();
-
-  //   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  //   const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-
-  //   return `${days}d ${hours}h left`;
-  // };
 
   const handleUpgrade = () => {
     router.push("/manage-plan");
@@ -98,20 +89,13 @@ export const DashboardInfoCards = () => {
       </Card>
 
       <Card className="shadow-sm">
-        <CardContent className="p-5 md:p-6 flex flex-col justify-between h-40">
+        <CardContent className="p-5 md:p-6 flex flex-col justify-center gap-4 h-auto">
           <h2 className="font-medium mb-2">
             {userPlan === "basic" ? "Usage reset" : "Next billing date"}
           </h2>
-          <div>
-            <p className="text-xl font-bold">
-              {formatDate(user?.payment_plan?.expire_date)}
-            </p>
-            {/* {user?.payment_plan?.expire_date && (
-              <p className="text-sm text-gray-600 mt-1">
-                {calculateTimeLeft(user.payment_plan.expire_date)}
-              </p>
-            )} */}
-          </div>
+          <p className="text-xl font-bold">
+            {formatDate(user?.payment_plan?.expire_date)}
+          </p>
         </CardContent>
       </Card>
     </div>

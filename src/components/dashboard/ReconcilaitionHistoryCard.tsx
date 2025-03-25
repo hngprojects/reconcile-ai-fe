@@ -67,8 +67,18 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
         <Button
           variant="outline"
           size="sm"
-          className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
+          className={`border-primary border-2 text-primary ${
+            !isComplete
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-primary/10 cursor-pointer"
+          }`}
           disabled={!isComplete}
+          onClick={(e) => {
+            if (!isComplete) {
+              e.preventDefault();
+              return;
+            }
+          }}
         >
           View <ArrowUpRight className="h-3 w-3" />
         </Button>
@@ -198,12 +208,18 @@ export function ReconciliationHistoryCard({
 
                 <Button
                   variant="outline"
-                  className={`w-full border-primary border-2 text-primary hover:text-primary py-[10px] mt-[10px] ${
+                  className={`w-full border-primary border-2 text-primary ${
                     row.original.status !== "complete"
-                      ? "opacity-50 cursor-not-allowed"
-                      : "hover:bg-primary/10"
+                      ? "opacity-50 cursor-not-allowed pointer-events-none"
+                      : "hover:bg-primary/10 cursor-pointer"
                   }`}
                   disabled={row.original.status !== "complete"}
+                  onClick={(e) => {
+                    if (row.original.status !== "complete") {
+                      e.preventDefault();
+                      return;
+                    }
+                  }}
                 >
                   View <ArrowUpRight className="h-4 w-4 ml-2" />
                 </Button>
