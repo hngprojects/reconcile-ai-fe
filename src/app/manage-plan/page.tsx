@@ -26,6 +26,9 @@ export default function ManagePlanPage() {
   const router = useRouter();
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
+    "monthly"
+  );
 
   useEffect(() => {
     if (user?.payment_plan?.plan) {
@@ -121,7 +124,6 @@ export default function ManagePlanPage() {
     return <UnAuthorized />;
   }
 
-
   return (
     <>
       <Container className="py-8 pb-[100px]">
@@ -143,6 +145,42 @@ export default function ManagePlanPage() {
           <p className="font-inter font-normal text-[16px] leading-[24px] text-[#333333]">
             Manage your billing and payment details.
           </p>
+        </div>
+
+        {/* buttons */}
+        <div className="flex items-center justify-between w-full my-[16px]">
+          <div className="flex items-center bg-gray-100 rounded-full p-1">
+            <button
+              className={cn(
+                "px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                billingCycle === "monthly"
+                  ? "bg-[#2E604A] text-white"
+                  : "text-gray-600 hover:bg-gray-200"
+              )}
+              onClick={() => setBillingCycle("monthly")}
+            >
+              Monthly
+            </button>
+            <button
+              className={cn(
+                "px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                billingCycle === "yearly"
+                  ? "bg-[#2E604A] text-white"
+                  : "text-gray-600 hover:bg-gray-200"
+              )}
+              onClick={() => setBillingCycle("yearly")}
+            >
+              Yearly
+            </button>
+          </div>
+          <div className="flex space-x-2">
+            <button className="bg-[#2E604A] text-white px-4 py-2 rounded-md text-sm font-medium">
+              My plan
+            </button>
+            <button className="border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium">
+              Download
+            </button>
+          </div>
         </div>
 
         {/* Existing pricing cards section */}
