@@ -56,7 +56,7 @@ export default function ManagePlanPage() {
         Business: 3,
       };
       const currentPlan = user.payment_plan.plan; // Access the plan property
-      if (currentPlan in planMap) {
+      if (typeof currentPlan === "string" && currentPlan in planMap) {
         setActiveCard(planMap[currentPlan]);
       }
     }
