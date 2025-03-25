@@ -126,7 +126,6 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
           setLoading(false);
         }else {
           setLoading(false);
-          setAuthenticated(false);
         }
       } catch (e) {
         console.error("Error: ", e);

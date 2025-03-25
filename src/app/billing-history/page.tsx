@@ -84,10 +84,15 @@ const BillingHistory = () => {
     <>
       <Container className="mt-8 flex flex-col gap-6 self-stretch">
         <Link href="/" className="flex items-center gap-2 w-fit cursor-pointer">
-          <ArrowLeft className="w-6 h-6" />
-          <p className="text-[#333] font-inter text-base font-medium leading-[38px]">
-            Go back
-          </p>
+          <Link
+            href="/"
+            className="flex items-center gap-2 w-fit cursor-pointer"
+          >
+            <ArrowLeft className="w-6 h-6" />
+            <p className="text-[#333] font-inter text-base font-medium leading-[38px]">
+              Go back
+            </p>
+          </Link>
         </Link>
 
         <div className="flex justify-between items-center">
