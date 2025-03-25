@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const signInWithGoogle = async () => {
-    const result = await signIn("google", { callbackUrl: "/file-upload" });
+    const result = await signIn("google", { callbackUrl: "/dashboard" });
 
     if (result?.error) {
       alert(result.error);
@@ -169,4 +169,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

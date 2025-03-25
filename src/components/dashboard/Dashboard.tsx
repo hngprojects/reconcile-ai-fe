@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { DashboardInfoCards } from "./DashboardInfoCards";
 import { FilterDropdown } from "./FilterDropdown";
-import ReconciliationHistory from "./ReconciliationHistory";
+import { ReconciliationHistoryTable } from "./ReconciliationHistoryTable";
 // import Image from "next/image";
 // import Link from "next/link";
 
@@ -79,7 +79,7 @@ export const Dashboard = () => {
       </div> */}
 
       {/* <ReconciliationHistoryTable /> */}
-      <ReconciliationHistory
+      <ReconciliationHistoryTable
         fromDate={fromDate}
         toDate={toDate}
         isFilterApplied={isFilterApplied}

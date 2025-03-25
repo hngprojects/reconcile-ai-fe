@@ -41,7 +41,7 @@ export function PaginationControls({
 
   return (
     <div className="flex items-center justify-between py-4">
-      <div className="sm:flex items-center space-x-2 hidden">
+      <div className="flex items-center space-x-2">
         <span className="text-sm text-gray-700">Rows per page</span>
         <Select
           value={pageSize.toString()}
@@ -66,9 +66,6 @@ export function PaginationControls({
           {startItem} - {endItem} of {totalItems} rows
         </span>
       </div>
-      <p className="block sm:hidden text-sm font-medium text-[#344054]">
-        Showing {endItem} out of {totalItems}
-      </p>
       <div className="flex items-center space-x-2">
         <Button
           variant="outline"
