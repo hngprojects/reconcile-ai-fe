@@ -28,7 +28,7 @@ const whoCanUseContent = [
   //   linkUrl: "/enterprise",
   // },
   {
-    id: 4,
+    id: 5,
     title: "Schools & Educational Institutions",
     content:
       "For schools and educational institutions, ReconXi automates the reconciliation of fees, payroll, and other financial records, reducing errors and saving valuable time.",
