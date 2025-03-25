@@ -50,8 +50,8 @@ export const authOptions = {
       return false; // Deny other login methods
     },
     async jwt({ token, account }) {
-
       if (account?.provider === "google") {
+
         if (!account?.id_token) {
           return token; // Return existing token if no id_token is present
         }
@@ -63,13 +63,22 @@ export const authOptions = {
           // Update the token with user data and access token
           token.accessToken = response.data.access_token;
           token.user = { ...response.data.data.user, payment_plan: response.data.data.plan };
+          token.accessTokenExpires = Date.now() + (10800 * 1000); // Sync with API token
         } else {
           console.error("Error in loginWithGoogle:", response.error); // Debugging
         }
       }
+
+      // If the token has expired, return null (forces reauthentication)
+      if (Date.now() > token.accessTokenExpires) {
+        return null;
+      }
       return token;
     },
     async session({ session, token }) {
+      if(!token){
+        return null;
+      }
       session.accessToken = token.accessToken;
       session.user = {
         ...session.user,
