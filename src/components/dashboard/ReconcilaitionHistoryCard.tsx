@@ -45,7 +45,6 @@ const columns: ColumnDef<ReconciliationHistoryType>[] = [
     header: "Status",
     cell: ({ row }) => {
       const isComplete = row.original.status === "Completed";
-      const isComplete = row.original.status === "Completed";
 
       return (
         <div
@@ -61,16 +60,16 @@ const columns: ColumnDef<ReconciliationHistoryType>[] = [
     header: "Action",
     cell: ({ row }) => {
       const isComplete = row.original.status === "Completed";
-      const isComplete = row.original.status === "Completed";
 
       return (
         <Button
           variant="outline"
           size="sm"
-          className={`border-primary border-2 text-primary ${!isComplete
+          className={`border-primary border-2 text-primary ${
+            !isComplete
               ? "opacity-50 cursor-not-allowed"
               : "hover:bg-primary/10 cursor-pointer"
-            }`}
+          }`}
           disabled={!isComplete}
           onClick={(e) => {
             if (!isComplete) {
@@ -142,122 +141,123 @@ export function ReconciliationHistoryCard({
       return true;
     });
   }, [fromDate, toDate, isFilterApplied, reconciliations]);
-}, [fromDate, toDate, isFilterApplied, reconciliations]);
 
-const table = useReactTable({
-  data: filteredData,
-  columns,
-  getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  initialState: {
-    pagination: {
-      pageSize,
+  const table = useReactTable({
+    data: filteredData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize,
+      },
     },
-  },
-});
+  });
 
-const totalItems = filteredData.length;
+  const totalItems = filteredData.length;
 
-return (
-  <div>
-    <div className="space-y-4">
-      {table.getRowModel().rows.length ? (
-        table.getRowModel().rows.map((row) => (
-          <Card key={row.id} className="w-full border border-[#E4E7EC]">
-            <CardContent className="p-4 space-y-3">
-              <div className="text-sm text-[#333333]">
-                {formatDate(row.original.date)}
-              </div>
-              <div className="text-[#333333] font-medium">
-                {row.original.id}
-              </div>
+  return (
+    <div>
+      <div className="space-y-4">
+        {table.getRowModel().rows.length ? (
+          table.getRowModel().rows.map((row) => (
+            <Card key={row.id} className="w-full border border-[#E4E7EC]">
+              <CardContent className="p-4 space-y-3">
+                <div className="text-sm text-[#333333]">
+                  {formatDate(row.original.date)}
+                </div>
+                <div className="text-[#333333] font-medium">
+                  {row.original.title}
+                </div>
 
-              <div
-                className={`px-2 py-1 rounded-full text-xs font-medium w-fit ${row.original.status === "Completed"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-amber-100 text-amber-700"
+                <div
+                  className={`px-2 py-1 rounded-full text-xs font-medium w-fit ${
+                    row.original.status === "Completed"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-amber-100 text-amber-700"
                   }`}
-              >
-                {row.original.status === "Completed" ? (
-                  <p className="flex items-center gap-[6px]">
-                    Complete{" "}
-                    <svg
-                      width="10"
-                      height="8"
-                      viewBox="0 0 10 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9 1L3.5 6.5L1 4"
-                        stroke="#12B76A"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </p>
-                ) : (
-                  <p className="flex items-center gap-[6px]">
-                    Pending{" "}
-                    <svg
-                      width="10"
-                      height="8"
-                      viewBox="0 0 10 8"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9 1L3.5 6.5L1 4"
-                        stroke="#E17100"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </p>
-                )}
-              </div>
+                >
+                  {row.original.status === "Completed" ? (
+                    <p className="flex items-center gap-[6px]">
+                      Complete{" "}
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="#12B76A"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </p>
+                  ) : (
+                    <p className="flex items-center gap-[6px]">
+                      Pending{" "}
+                      <svg
+                        width="10"
+                        height="8"
+                        viewBox="0 0 10 8"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 1L3.5 6.5L1 4"
+                          stroke="#E17100"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </p>
+                  )}
+                </div>
 
-              <Button
-                variant="outline"
-                className={`w-full border-primary border-2 text-primary ${row.original.status !== "Completed"
-                    ? "opacity-50 cursor-not-allowed pointer-events-none"
-                    : "hover:bg-primary/10 cursor-pointer"
+                <Button
+                  variant="outline"
+                  className={`w-full border-primary border-2 text-primary ${
+                    row.original.status !== "Completed"
+                      ? "opacity-50 cursor-not-allowed pointer-events-none"
+                      : "hover:bg-primary/10 cursor-pointer"
                   }`}
-                disabled={row.original.status !== "Completed"}
-                onClick={(e) => {
-                  if (row.original.status !== "Completed") {
-                    e.preventDefault();
-                    return;
-                  }
-                  router.push(`/reconciliation/${row.original.id}`);
-                }}
-              >
-                View <ArrowUpRight className="h-4 w-4 ml-2" />
-              </Button>
-            </CardContent>
-          </Card>
-        ))
-      ) : (
-        <div className="text-center py-4">No results.</div>
-      )}
+                  disabled={row.original.status !== "Completed"}
+                  onClick={(e) => {
+                    if (row.original.status !== "Completed") {
+                      e.preventDefault();
+                      return;
+                    }
+                    router.push(`/reconciliation/${row.original.id}`);
+                  }}
+                >
+                  View <ArrowUpRight className="h-4 w-4 ml-2" />
+                </Button>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="text-center py-4">No results.</div>
+        )}
+      </div>
+
+      {/* Pagination */}
+      <PaginationControls
+        pageIndex={table.getState().pagination.pageIndex}
+        pageSize={pageSize}
+        totalItems={totalItems}
+        onPreviousPage={() => table.previousPage()}
+        onNextPage={() => table.nextPage()}
+        canPreviousPage={table.getCanPreviousPage()}
+        canNextPage={table.getCanNextPage()}
+        onRowsPerPageChange={(value) => {
+          setPageSize(value);
+          table.setPageSize(value);
+        }}
+      />
     </div>
-
-    {/* Pagination */}
-    <PaginationControls
-      pageIndex={table.getState().pagination.pageIndex}
-      pageSize={pageSize}
-      totalItems={totalItems}
-      onPreviousPage={() => table.previousPage()}
-      onNextPage={() => table.nextPage()}
-      canPreviousPage={table.getCanPreviousPage()}
-      canNextPage={table.getCanNextPage()}
-      onRowsPerPageChange={(value) => {
-        setPageSize(value);
-        table.setPageSize(value);
-      }}
-    />
-  </div>
-);
+  );
 }
