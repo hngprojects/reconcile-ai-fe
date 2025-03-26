@@ -40,23 +40,44 @@ export function FilterDropdown({
   const [fromCalendarOpen, setFromCalendarOpen] = useState(false);
   const [toCalendarOpen, setToCalendarOpen] = useState(false);
 
+  // Temporary state to store selected dates before applying
+  const [tempFromDate, setTempFromDate] = useState<Date | undefined>(fromDate);
+  const [tempToDate, setTempToDate] = useState<Date | undefined>(toDate);
+
   const handleFromDateSelect = (date: Date | undefined) => {
-    onFromDateChange(date);
+    setTempFromDate(date);
     setFromCalendarOpen(false);
   };
 
   const handleToDateSelect = (date: Date | undefined) => {
-    onToDateChange(date);
+    setTempToDate(date);
     setToCalendarOpen(false);
   };
 
   const handleApply = () => {
-    if (fromDate && toDate && fromDate > toDate) {
-      alert("Start date cannot be after end date");
-      return;
-    }
+    // Update the actual dates when Apply is clicked
+    onFromDateChange(tempFromDate);
+    onToDateChange(tempToDate);
     onApply();
     setOpen(false);
+  };
+
+  const handleReset = () => {
+    // Reset both temporary and actual dates
+    setTempFromDate(undefined);
+    setTempToDate(undefined);
+    onFromDateChange(undefined);
+    onToDateChange(undefined);
+    onReset();
+  };
+
+  const handleClear = () => {
+    // Clear both temporary and actual dates
+    setTempFromDate(undefined);
+    setTempToDate(undefined);
+    onFromDateChange(undefined);
+    onToDateChange(undefined);
+    onClear();
   };
 
   return (
@@ -68,7 +89,7 @@ export function FilterDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="max-w-[400px] sm:w-[400px] p-4"
+        className="max-w-[400px] sm:min-w-[400px] p-4"
         align="start"
       >
         <div className="flex items-center justify-between mb-4">
@@ -91,7 +112,7 @@ export function FilterDropdown({
           <Button
             variant="ghost"
             className="text-primary hover:text-primary/90 h-8 px-2 py-0"
-            onClick={onClear}
+            onClick={handleClear}
           >
             Clear
           </Button>
@@ -106,19 +127,21 @@ export function FilterDropdown({
                   variant="outline"
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    !fromDate && "text-muted-foreground"
+                    !tempFromDate && "text-muted-foreground"
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {fromDate ? format(fromDate, "MMMM do, yyyy") : "Select date"}
+                  <CalendarIcon className="h-4 w-4" />
+                  {tempFromDate
+                    ? format(tempFromDate, "MMMM do, yyyy")
+                    : "Select date"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={fromDate}
+                  selected={tempFromDate}
                   onSelect={handleFromDateSelect}
-                  disabled={(date) => (toDate ? date > toDate : false)}
+                  disabled={(date) => (tempToDate ? date > tempToDate : false)}
                   initialFocus
                 />
               </PopoverContent>
@@ -133,19 +156,23 @@ export function FilterDropdown({
                   variant="outline"
                   className={cn(
                     "w-full justify-start text-left font-normal",
-                    !toDate && "text-muted-foreground"
+                    !tempToDate && "text-muted-foreground"
                   )}
                 >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {toDate ? format(toDate, "MMMM do, yyyy") : "Select date"}
+                  <CalendarIcon className="h-4 w-4" />
+                  {tempToDate
+                    ? format(tempToDate, "MMMM do, yyyy")
+                    : "Select date"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   mode="single"
-                  selected={toDate}
+                  selected={tempToDate}
                   onSelect={handleToDateSelect}
-                  disabled={(date) => (fromDate ? date < fromDate : false)}
+                  disabled={(date) =>
+                    tempFromDate ? date < tempFromDate : false
+                  }
                   initialFocus
                 />
               </PopoverContent>
@@ -154,13 +181,13 @@ export function FilterDropdown({
         </div>
 
         <div className="flex justify-between">
-          <Button variant="outline" onClick={onReset}>
+          <Button variant="outline" onClick={handleReset}>
             Reset
           </Button>
           <Button
             className="bg-primary hover:bg-primary/90"
             onClick={handleApply}
-            disabled={!fromDate && !toDate}
+            disabled={!tempFromDate && !tempToDate}
           >
             Apply Now
           </Button>
