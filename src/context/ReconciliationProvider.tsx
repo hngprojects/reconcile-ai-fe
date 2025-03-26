@@ -323,7 +323,7 @@ export const useReconciliation = () => {
     }
   };
 
-  const userPlan = getUserPlan(user?.payment_plan?.plan);
+  const userPlan = getUserPlan((user?.payment_plan?.plan || user?.payment_plan?.plan.plan) as string);
 
   return {
     ...context,

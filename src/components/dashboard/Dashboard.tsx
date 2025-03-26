@@ -1,13 +1,13 @@
 "use client";
 
+import { fetchReconciliationHistory } from "@/src/lib/api";
+import { ReconciliationHistoryType } from "@/src/types/reconciliation";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
 import { DashboardInfoCards } from "./DashboardInfoCards";
 import { FilterDropdown } from "./FilterDropdown";
 import ReconciliationHistory from "./ReconciliationHistory";
-import { ReconciliationHistoryType } from "@/src/types/reconciliation";
-import { fetchReconciliationHistory } from "@/src/lib/api";
 
 export const Dashboard = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
@@ -20,7 +20,7 @@ export const Dashboard = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await fetchReconciliationHistory();
-      setReconciliations(res.data as ReconciliationHistoryType[]);
+      setReconciliations(res.data.reverse() as ReconciliationHistoryType[]);
     };
 
     fetch();
@@ -54,14 +54,13 @@ export const Dashboard = () => {
       </div>
 
       <div className="flex justify-between items-center mb-3">
-        <h2 className="text-xl font-bold">Pending activites</h2>
-        <Button
-          className="bg-primary hover:bg-primary/90 md:!px-10 cursor-pointer"
-          size="lg"
-          onClick={() => (window.location.href = "/file-upload")}
+        <h2 className="text-xl font-bold">Reconciliation History</h2>
+        <Link
+          href="/file-upload"
+          className="cursor-pointer text-sm font-medium border rounded-md h-12 flex justify-center items-center bg-primary hover:bg-primary/90 text-white px-10"
         >
           <Plus className="mr-2 !size-5" /> Upload Files
-        </Button>
+        </Link>
       </div>
 
       {/* <ReconciliationHistoryTable /> */}

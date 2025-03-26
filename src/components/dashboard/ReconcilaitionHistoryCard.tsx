@@ -37,7 +37,7 @@ const columns: ColumnDef<ReconciliationHistoryType>[] = [
     header: "Date",
   },
   {
-    accessorKey: "reconciliationId",
+    accessorKey: "title",
     header: "Reconciliation ID",
   },
   {
@@ -167,7 +167,7 @@ export function ReconciliationHistoryCard({
                   {formatDate(row.original.date)}
                 </div>
                 <div className="text-[#333333] font-medium">
-                  {row.original.id}
+                  {row.original.title}
                 </div>
 
                 <div
