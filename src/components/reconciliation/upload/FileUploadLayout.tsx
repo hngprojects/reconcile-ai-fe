@@ -154,8 +154,6 @@ export default function FileUploadLayout({
   return (
     <Container className="my-10">
       <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
-        {isAuthenticated && (
-          <>
             <UploadCard
               title="Upload Bank Statement"
               type="bank"
@@ -172,8 +170,6 @@ export default function FileUploadLayout({
               onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
               existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
             />
-          </>
-        )}
       </div>
 
       <Button
