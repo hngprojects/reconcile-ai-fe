@@ -25,7 +25,7 @@ const whoCanUseContent = [
     title: "Accounting and Audit Firms",
     content:
       "ReconXi helps accounting and audit firms automate financial reconciliation, reducing manual work, minimizing errors, and ensuring compliance with financial regulations. Its AI-powered matching improves accuracy, allowing firms to focus on higher-value financial analysis and decision-making.",
-    linkUrl: "/enterprise",
+    linkUrl: "/accounting",
   },
   {
     id: 4,
@@ -57,12 +57,12 @@ const WhoCanUse = () => {
           business owner, or an educational institution, ReconXi provides a
           fast, accurate, and hassle-free solution.
         </p>
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 items-center gap-x-9 md:gap-y-8 gap-y-6">
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 items-start gap-x-9 md:gap-y-8 gap-y-6">
           {whoCanUseContent.map(({ id, title, content, linkUrl }) => (
             <article
               key={id}
               className={cn(
-                "md:bg-white md:p-8 rounded-[12px] min-h-[240px]",
+                "md:bg-white md:p-8 rounded-[12px] min-h-[280px]",
               )}
             >
               <h2 className="font-bold md:text-xl">{title}</h2>

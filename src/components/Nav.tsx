@@ -49,7 +49,7 @@ const industryPaths = [
   },
   {
     name: "Accounting and Audit firm",
-    href: "/enterprise",
+    href: "/accounting",
   },
   {
     name: "Corporations (Finance Department)",
