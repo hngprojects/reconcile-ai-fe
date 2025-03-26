@@ -10,21 +10,19 @@ export default function HeroSection() {
   return (
     <section className="overflow-x-hidden pt-8 md:pt-0">
       <div className="flex flex-col lg:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-14 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
-        <div
-          className="flex flex-col items-center md:items-start w-full"
-        >
+        <div className="flex flex-col items-center md:items-start w-full">
           <h1 className="font-semibold text-[28px] md:text-4xl text-[#101828] max-w-[1024px] flex-wrap lg:leading-[3.5rem] lg:text-5xl leading-[-2]">
             Reconcile Your
-            <br className="hidden md:block" /> Finances with ReconXi
+            <br className="hidden md:block" /> Finances with Ease
           </h1>
           <p className="text-[#475467] text-sm sm:text-xl max-w-[620px] text-left mt-6 md:pr-8 max-md:text-center">
-            ReconXi is the perfect solution for small and medium-sized
-            businesses, schools, financial professionals, freelancers that need
-            quick and affordable financial reconciliation.
+            ReconXi simplifies financial reconciliation for accountants,
+            auditors, financial analysts, small businesses, and schools. Whether
+            you’re managing transactions, handling business accounts, or
+            reconciling school fees and payroll, experience a faster, more
+            accurate way to reconcile your finances.
           </p>
-          <div
-            className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8"
-          >
+          <div className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8">
             <TypeWriterButton
               path={isAuthenticated ? "/dashboard" : "/file-upload"}
               aria-label={
@@ -43,9 +41,7 @@ export default function HeroSection() {
         </div>
 
         {/* Hero Image for desktop */}
-        <div
-          className="lg:flex items-center w-full relative h-full hidden"
-        >
+        <div className="lg:flex items-center w-full relative h-full hidden">
           <Image
             src="/assets/images/iPhone_mockup.png"
             alt="Iphone mockup"
@@ -71,9 +67,7 @@ export default function HeroSection() {
         </div>
 
         {/* Hero Image for mobile */}
-        <div
-          className="lg:hidden w-full flex justify-center"
-        >
+        <div className="lg:hidden w-full flex justify-center">
           <Image
             src="/assets/images/screen-mockup-for-mobile.png"
             alt="Big screen mockup"

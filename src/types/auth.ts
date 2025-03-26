@@ -1,36 +1,54 @@
+export interface PlanDetails {
+  id: string;
+  name: string;
+  description: string;
+  plan_length: number;
+  plan: "Basic" | "Starter" | "Business";
+  reconciliations_per_month: number;
+  amount: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface PaymentPlan {
   id: number;
   user_id: number;
   price: string;
-  plan: "Basic" | "Starter Plan" | "Business Plan";
+  plan: PlanDetails;
   created_at: string;
   updated_at: string;
+  plan_id: string;
+  stripe_reference: string | null;
+  start_date: string | null;
+  expire_date: string | null;
+  is_active: boolean;
+  reconciliations_used: number;
 }
 
 export interface User {
   id: number;
   email: string;
   name: string;
-  country:string | null;
-  city:string | null;
+  country: string | null;
+  city: string | null;
   avatar: string;
-  image?: string;
   email_verified_at: string | null;
   created_at: string;
   updated_at: string;
   payment_plan: PaymentPlan;
 }
 
-export interface Response {
-  status: string;
-  status_code: number;
-  message: string;
-  data: AuthResponse;
+export interface AuthData {
+  user: User;
+  plan: PaymentPlan;
+  userPlan: PlanDetails;
 }
 
-export interface AuthResponse {
-  user: User;
-  access_token: string;
+export interface Response {
+  status_code: number;
+  status: string;
+  message: string;
+  data: AuthData;
 }
 
 export interface GoogleTokens {

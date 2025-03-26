@@ -10,6 +10,8 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
 import GoogleAuthModal from "@/src/components/modal/GoogleAuthModal";
 
+
+
 export default function PricingPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -131,12 +133,14 @@ export default function PricingPage() {
           </motion.p>
         </motion.div>
 
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-[111px] flex flex-col lg:flex-row justify-between gap-8 px-4"
+          className="flex flex-col lg:flex-row justify-between gap-8 mt-[111px] px-4"
         >
+
           {pricingPlans.map((plan) => (
             <div
               key={plan.id}
@@ -205,6 +209,7 @@ export default function PricingPage() {
           ))}
         </motion.div>
 
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -235,9 +240,8 @@ export default function PricingPage() {
                 >
                   <div className="flex mb-2">
                     <Image
-                      src={`/assets/images/${
-                        i === 0 ? "dollar" : "security"
-                      }.svg`}
+                      src={`/assets/images/${i === 0 ? "dollar" : "security"
+                        }.svg`}
                       alt={`${title} icon`}
                       width={25}
                       height={25}
@@ -266,9 +270,8 @@ export default function PricingPage() {
                   >
                     <div className="flex justify-left items-center mb-2">
                       <Image
-                        src={`/assets/images/${
-                          i === 0 ? "upload" : "aiReconcillation"
-                        }.svg`}
+                        src={`/assets/images/${i === 0 ? "upload" : "aiReconcillation"
+                          }.svg`}
                         alt={`${title} icon`}
                         width={25}
                         height={25}
