@@ -34,7 +34,7 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter full name"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-[20px]"
+            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-sm lg:text-[20px]"
           />
         </div>
 
@@ -50,7 +50,7 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="email@address.com"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-[20px]"
+            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-sm lg:text-[20px]"
           />
         </div>
 
@@ -66,7 +66,7 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter phone number"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-[20px]"
+            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-sm lg:text-[20px]"
           />
         </div>
 
