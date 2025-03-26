@@ -178,7 +178,7 @@ export default function ManagePlanPage() {
                         Current Plan
                       </h3>
                       <p className="text-[14px] text-[#475467] font-semibold">
-                        {user?.payment_plan.plan.plan}
+                        {user?.payment_plan.plan.plan ? user?.payment_plan.plan.plan : "Basic"}
                       </p>
                     </div>
 
@@ -186,7 +186,7 @@ export default function ManagePlanPage() {
                       <div className="flex justify-between">
                         <h3 className="font-semibold text-[#475467]">Price</h3>
                         <p className="text-[14px] text-[#475467] font-semibold">
-                          {user?.payment_plan.price}
+                          ${user?.payment_plan.price ? user?.payment_plan.price : "Free"}
                         </p>
                       </div>
 
@@ -205,7 +205,7 @@ export default function ManagePlanPage() {
                             Reconcilation
                           </h3>
                           <p className="text-[14px] text-[#475467] font-semibold">
-                            {user?.payment_plan.reconciliations_used}/{user?.payment_plan.plan.reconciliations_per_month}
+                            {user?.payment_plan.reconciliations_used}/{user?.payment_plan.plan.reconciliations_per_month ? user?.payment_plan.plan.reconciliations_per_month : "5"}
                           </p>
                         </div>
                         <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
