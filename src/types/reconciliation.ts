@@ -71,9 +71,9 @@ export type ManualRequestBody = {
   action: string;
 };
 
-export interface ReconciliationHistory {
-  id: string,
-  title: string,
-  status: string,
-  date: string
+export interface ReconciliationHistoryType {
+  id: string;
+  title: string;
+  status: string;
+  date: string;
 }
