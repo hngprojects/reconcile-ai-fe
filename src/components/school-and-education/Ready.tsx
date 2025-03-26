@@ -1,59 +1,82 @@
 "use client";
+
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import dynamic from "next/dynamic";
-
-const DemoForm = dynamic(() => import("@/src/app/demo/demo-form"));
 
 export default function StartReconcile() {
   return (
     <section
-      className="py-10 md:py-20 bg-white"
-      aria-labelledby="ready-section-title"
+      className="flex w-full max-w-[1440px] px-6 md:px-12 lg:px-[143px] py-10 md:py-16 lg:py-[80px] 
+      justify-center items-center gap-10 lg:gap-[40px] bg-[#F9FAFB] flex-col lg:flex-row"
       id="demo-form"
     >
       <Container>
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
-          <div
-            className="flex-1 w-full"
-          >
-            <div className="w-full">
-              <Image
-                src="/assets/images/education-contact.svg"
-                alt="Visual representation of ReconXi's reconciliation process"
-                width={536}
-                height={410}
-                className="rounded-lg shadow-lg object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 580px"
-                priority={false}
-              />
-            </div>
+        <div className="flex flex-col lg:flex-row justify-center items-center gap-6 md:gap-10 lg:gap-[40px] w-full">
+          {/* Image Section - Appears below form on mobile, first on large screens */}
+          <div className="w-full max-w-[398.667px] flex-shrink-0 overflow-hidden rounded-[18px] 
+            order-1 lg:order-none">
+            <Image
+              src="/assets/images/education-contact.svg"
+              alt="Education contact illustration"
+              width={398.667}
+              height={598}
+              className="h-auto w-full object-cover"
+            />
           </div>
 
-          <div
-            className="flex-1 space-y-6 md:space-y-8"
-          >
-            <div className="space-y-3 md:space-y-4">
-              <h2
-                id="ready-section-title"
-                className="font-inter text-[27px] text-center sm:text-[32px] md:text-[36px] leading-[1.2] md:leading-[74px] font-semibold text-[#101828]"
-              >
-                Ready to Simplify Fee Payment Matching?
+          {/* Form Section - Appears first on mobile, second on large screens */}
+          <div className="flex flex-col p-6 md:p-8 lg:p-[40px] px-4 md:px-6 lg:px-[32px] 
+            items-center gap-6 md:gap-8 lg:gap-[32px] rounded-[18px] bg-white shadow-lg 
+            w-full max-w-[624px] order-0 lg:order-none">
+            <div className="text-left w-full">
+              <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-900">
+                Get Started Today
               </h2>
-              <p className="font-inter text-base text-center sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Start simplifying your school’s fee payment reconciliation
-                today! Get in touch to find out how ReconXi can save you time
-                and reduce errors.
+              <p className="mt-2 text-sm md:text-base lg:text-lg text-gray-600">
+                Manage your school&apos;s general ledger with ease - Get automated reconciliation today.
               </p>
             </div>
 
-            <div className="rounded-lg" aria-label="Start free trial form">
-              <div
+            <form className="w-full flex flex-col gap-4 md:gap-6">
+              <label className="flex flex-col gap-1">
+                <span className="text-gray-700 font-medium text-sm md:text-base">Full Name</span>
+                <input
+                  type="text"
+                  placeholder="Enter full name"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md 
+                  focus:outline-none focus:ring-2 focus:ring-[#2E604A]"
+                />
+              </label>
+
+              <label className="flex flex-col gap-1">
+                <span className="text-gray-700 font-medium text-sm md:text-base">Email</span>
+                <input
+                  type="email"
+                  placeholder="email@address.com"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md 
+                  focus:outline-none focus:ring-2 focus:ring-[#2E604A]"
+                />
+              </label>
+
+              <label className="flex flex-col gap-1">
+                <span className="text-gray-700 font-medium text-sm md:text-base">Phone Number</span>
+                <input
+                  type="tel"
+                  placeholder="Enter phone number"
+                  className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-md 
+                  focus:outline-none focus:ring-2 focus:ring-[#2E604A]"
+                />
+              </label>
+
+              <button
+                type="submit"
+                className="w-full bg-[#2E604A] text-white font-semibold py-3 rounded-md 
+                hover:bg-[#2e6d51] cursor-pointer text-sm md:text-base"
               >
-                <DemoForm buttonText="Get your Demo" />
-              </div>
-            </div>
+                Get A Free Demo
+              </button>
+            </form>
           </div>
         </div>
       </Container>
