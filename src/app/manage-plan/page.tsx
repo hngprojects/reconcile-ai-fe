@@ -41,7 +41,7 @@ export default function ManagePlanPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openPlanDialog, setOpenPlanDialog] = useState(true);
+  const [openPlanDialog, setOpenPlanDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
   useEffect(() => {
     if (user?.payment_plan?.plan) {
