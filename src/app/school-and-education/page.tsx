@@ -14,6 +14,12 @@ const WhyReconXi = dynamic(
 const StartReconcile = dynamic(
   () => import("@/src/components/school-and-education/Ready"),
 );
+
+const WhatisReconXi = dynamic(
+  () => import("@/src/components/school-and-education/WhatisReconXi"),
+);
+
+
 const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
 const Footer = dynamic(() => import("@/src/components/Footer"));
 
@@ -27,10 +33,13 @@ export default function HomePage() {
         <StartReconcile />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <WhyReconXi />
+        <WhatisReconXi />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <VideoFeature />
+      </Suspense>
+      <Suspense fallback={<div className="min-h-[200px]" />}>
+        <WhyReconXi />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <FAQSection />
