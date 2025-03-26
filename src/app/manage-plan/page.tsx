@@ -9,14 +9,11 @@ import { useState, useEffect } from "react";
 import { CircleCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/src/components/context/AuthContext";
-import { useRequireAuth } from "@/src/hooks/useRequireAuth";
-import { Loader } from "@/src/components/ui/loader";
-// import { Button } from "@/src/components/ui/button";
+import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 // import Link from "next/link";
 
 import CancelSubscriptionModal from "@/src/components/modal/CancelSubscriptionModal";
 import { EditIcon, NoteIcon } from "@/src/components/Icon/Icons";
-import UnAuthorized from "@/src/components/reconciliation/UnAuthorized";
 import { Button } from "@/src/components/ui/button";
 import {
   Dialog,
@@ -39,7 +36,6 @@ interface PlanMap {
 }
 
 export default function ManagePlanPage() {
-  const { isLoading, isAuthenticated } = useRequireAuth();
   const { user } = useAuth();
   const router = useRouter();
   const [activeCard, setActiveCard] = useState<number | null>(null);
@@ -134,16 +130,8 @@ export default function ManagePlanPage() {
     window.location.href = planLink;
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (!isAuthenticated) {
-    return <UnAuthorized />;
-  }
-
   return (
-    <>
+    <ProtectedRoute>
       <Container className="py-8 pb-[100px]">
         {/* Back button and Header */}
         <div className="pb-8 px-4 border-b border-[#EAECF0]">
@@ -421,6 +409,6 @@ export default function ManagePlanPage() {
       </Container>
 
       <Footer />
-    </>
+    </ProtectedRoute>
   );
 }

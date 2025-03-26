@@ -86,10 +86,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           Accept: "application/json",
         },
       });
-      const data: Response = await response.json();
+    
+      if(response.ok){
+        const data: Response = await response.json();
 
-      localStorage.setItem("user", JSON.stringify(data.data.user));
-      setUser({ ...data.data.user, payment_plan: data.data.plan });
+        setUser({ ...data.data.user });
+      }
     } catch (e) {
       console.error("Failed to fetch", e);
     }

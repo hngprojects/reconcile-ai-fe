@@ -1,32 +1,30 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { PaginationControls } from "@/src/components/PaginationControl";
+import { Button } from "@/src/components/ui/button";
+import { Card, CardContent } from "@/src/components/ui/card";
+import { ReconciliationHistoryType } from "@/src/types/reconciliation";
 import {
   type ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { ArrowUpRight } from "lucide-react";
-import { Button } from "@/src/components/ui/button";
-import { PaginationControls } from "@/src/components/PaginationControl";
 import {
-  ReconciliationHistoryTypes,
-  reconciliations,
-} from "./dashboardDummyData";
-import {
-  format,
-  parse,
-  isWithinInterval,
-  startOfDay,
   endOfDay,
+  format,
   isAfter,
   isBefore,
+  isWithinInterval,
+  parseISO,
+  startOfDay,
 } from "date-fns";
+import { ArrowUpRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 
 // Columns definition
-const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
+const columns: ColumnDef<ReconciliationHistoryType>[] = [
   {
     accessorKey: "serial_number",
     header: "S/N",
@@ -46,7 +44,7 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     accessorKey: "progress",
     header: "Status",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "complete";
+      const isComplete = row.original.status === "Completed";
 
       return (
         <div
@@ -61,7 +59,7 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     id: "action",
     header: "Action",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "complete";
+      const isComplete = row.original.status === "Completed";
 
       return (
         <Button
@@ -87,18 +85,34 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
   },
 ];
 
-interface ReconciliationHistoryTableProps {
+interface ReconciliationHistoryCardProps {
   fromDate?: Date;
   toDate?: Date;
   isFilterApplied: boolean;
+  reconciliations: ReconciliationHistoryType[];
 }
 
 export function ReconciliationHistoryCard({
   fromDate,
   toDate,
   isFilterApplied,
-}: ReconciliationHistoryTableProps) {
+  reconciliations,
+}: ReconciliationHistoryCardProps) {
+  const router = useRouter();
   const [pageSize, setPageSize] = useState(10);
+
+  // Helper function to format date
+  const formatDate = (dateString: string) => {
+    try {
+      // Try parsing ISO format first
+      const parsedDate = parseISO(dateString);
+      return format(parsedDate, "dd MMM yyyy");
+    } catch (error) {
+      // Fallback to original string if parsing fails
+      console.warn(`Date formatting error: ${error}`);
+      return dateString;
+    }
+  };
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
@@ -106,7 +120,8 @@ export function ReconciliationHistoryCard({
     }
 
     return reconciliations.filter((item) => {
-      const itemDate = parse(item.date, "dd/MM/yyyy", new Date());
+      // Parse ISO date
+      const itemDate = parseISO(item.date);
 
       if (fromDate && toDate) {
         return isWithinInterval(itemDate, {
@@ -125,7 +140,7 @@ export function ReconciliationHistoryCard({
 
       return true;
     });
-  }, [fromDate, toDate, isFilterApplied]);
+  }, [fromDate, toDate, isFilterApplied, reconciliations]);
 
   const table = useReactTable({
     data: filteredData,
@@ -147,25 +162,22 @@ export function ReconciliationHistoryCard({
         {table.getRowModel().rows.length ? (
           table.getRowModel().rows.map((row) => (
             <Card key={row.id} className="w-full border border-[#E4E7EC]">
-              <CardContent className="p-4 space-y-2">
-                <div className="text-xs text-[#333333]">
-                  {format(
-                    parse(row.original.date, "dd/MM/yyyy", new Date()),
-                    "MMM d, yyyy"
-                  )}
+              <CardContent className="p-4 space-y-3">
+                <div className="text-sm text-[#333333]">
+                  {formatDate(row.original.date)}
                 </div>
-                <div className="text-[14px] text-[#333333] font-medium">
-                  {row.original.reconciliationId}
+                <div className="text-[#333333] font-medium">
+                  {row.original.id}
                 </div>
 
                 <div
                   className={`px-2 py-1 rounded-full text-xs font-medium w-fit ${
-                    row.original.status === "complete"
+                    row.original.status === "Completed"
                       ? "bg-green-100 text-green-700"
                       : "bg-amber-100 text-amber-700"
                   }`}
                 >
-                  {row.original.status === "complete" ? (
+                  {row.original.status === "Completed" ? (
                     <p className="flex items-center gap-[6px]">
                       Complete{" "}
                       <svg
@@ -209,16 +221,17 @@ export function ReconciliationHistoryCard({
                 <Button
                   variant="outline"
                   className={`w-full border-primary border-2 text-primary ${
-                    row.original.status !== "complete"
+                    row.original.status !== "Completed"
                       ? "opacity-50 cursor-not-allowed pointer-events-none"
                       : "hover:bg-primary/10 cursor-pointer"
                   }`}
-                  disabled={row.original.status !== "complete"}
+                  disabled={row.original.status !== "Completed"}
                   onClick={(e) => {
-                    if (row.original.status !== "complete") {
+                    if (row.original.status !== "Completed") {
                       e.preventDefault();
                       return;
                     }
+                    router.push(`/reconciliation/${row.original.id}`);
                   }}
                 >
                   View <ArrowUpRight className="h-4 w-4 ml-2" />
