@@ -62,7 +62,7 @@ export const authOptions = {
         if (response.status === "success") {
           // Update the token with user data and access token
           token.accessToken = response.data.access_token;
-          token.user = { ...response.data.data.user, payment_plan: response.data.data.plan };
+          token.user = { ...response.data.data.user };
           token.accessTokenExpires = Date.now() + (7200 * 1000); // Sync with API token
         } else {
           console.error("Error in loginWithGoogle:", response.error); // Debugging
