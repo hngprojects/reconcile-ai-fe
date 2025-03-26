@@ -44,7 +44,7 @@ const industryPaths = [
     href: "/small-business",
   },
   {
-    name: "Financial Professionals",
+    name: "Bank and Financial Institutions",
     href: "/financial-pro",
   },
   // {

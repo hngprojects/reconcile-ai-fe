@@ -1,18 +1,30 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { DashboardInfoCards } from "./DashboardInfoCards";
 import { FilterDropdown } from "./FilterDropdown";
 import ReconciliationHistory from "./ReconciliationHistory";
-// import Image from "next/image";
-// import Link from "next/link";
+import { ReconciliationHistoryType } from "@/src/types/reconciliation";
+import { fetchReconciliationHistory } from "@/src/lib/api";
 
 export const Dashboard = () => {
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
+  const [reconciliations, setReconciliations] = useState<
+    ReconciliationHistoryType[]
+  >([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await fetchReconciliationHistory();
+      setReconciliations(res.data as ReconciliationHistoryType[]);
+    };
+
+    fetch();
+  }, []);
 
   const handleResetFilter = () => {
     setFromDate(undefined);
@@ -52,41 +64,12 @@ export const Dashboard = () => {
         </Button>
       </div>
 
-      {/* Reconciliation History Empty State */}
-      {/* <div className="flex flex-col items-center gap-6 mt-12 mb-20">
-        <div>
-          <div className="flex items-center justify-center">
-            <Image
-              src="/assets/images/no_billing.png"
-              alt="No Pending Activity"
-              width={350}
-              height={270}
-              className=""
-              quality={75}
-              priority={true}
-            />
-          </div>
-          <div className="flex flex-col items-center gap-1 max-w-md">
-            <h5 className="font-medium text-2xl">No Pending Activity</h5>
-            <p className="text-center text-[#333333]">
-              It looks like you haven&apos;t made started reconciling. Once you
-              do, you&apos;ll see there progress here.
-            </p>
-            <Link
-              href="/file-upload"
-              className="mt-4 cursor-pointer w-full text-sm font-medium hover:bg-accent border rounded-md h-10 flex justify-center items-center text-primary hover:text-primary border-primary"
-            >
-              Start Reconciliation
-            </Link>
-          </div>
-        </div>
-      </div> */}
-
       {/* <ReconciliationHistoryTable /> */}
       <ReconciliationHistory
         fromDate={fromDate}
         toDate={toDate}
         isFilterApplied={isFilterApplied}
+        reconciliations={reconciliations}
       />
     </div>
   );

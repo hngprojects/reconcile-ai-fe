@@ -1,14 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import { ArrowUpRight } from "lucide-react";
+import { PaginationControls } from "@/src/components/PaginationControl";
 import { Button } from "@/src/components/ui/button";
 import {
   Table,
@@ -18,90 +10,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
-import { PaginationControls } from "@/src/components/PaginationControl";
 import { cn } from "@/src/lib/utils";
-import { parse, isWithinInterval } from "date-fns";
-import { fetchReconciliationHistory } from "@/src/lib/api";
-import { ReconciliationHistory } from "@/src/types/reconciliation";
-import Link from "next/link";
-
-// Columns definition
-const columns: ColumnDef<ReconciliationHistory>[] = [
-  {
-    accessorKey: "serial_number",
-    header: "S/N",
-    cell: ({ row }) => {
-      return <div>{row.index + 1}</div>;
-    },
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-  },
-  {
-    accessorKey: "title",
-    header: "Reconciliation ID",
-  },
-  {
-    accessorKey: "progress",
-    header: "Status",
-    cell: ({ row }) => {
-      const isComplete = row.original.status === "Completed";
-
-      return (
-        <div
-          className={`font-medium ${isComplete ? "text-green-600" : "text-amber-600"}`}
-        >
-          {isComplete ? "Complete" : "Pending"}
-        </div>
-      );
-    },
-  },
-  {
-    id: "action",
-    header: "Action",
-    cell: ({ row }) => {
-      const isComplete = row.original.status === "Completed";
-
-      return (
-        <Link href={`/reconciliation/${row.original.id}`}>
-        <Button
-          variant="outline"
-          size="sm"
-          className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
-          disabled={!isComplete}
-        >
-          View <ArrowUpRight className="h-3 w-3" />
-        </Button>
-        </Link>
-      );
-    },
-  },
-];
+import { ReconciliationHistoryType } from "@/src/types/reconciliation";
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { format, isWithinInterval, parseISO } from "date-fns";
+import { ArrowUpRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 
 interface ReconciliationHistoryTableProps {
   fromDate?: Date;
   toDate?: Date;
   isFilterApplied: boolean;
+  reconciliations: ReconciliationHistoryType[];
 }
 
 export function ReconciliationHistoryTable({
   fromDate,
   toDate,
   isFilterApplied,
+  reconciliations,
 }: ReconciliationHistoryTableProps) {
+  const router = useRouter();
   const [pageSize, setPageSize] = useState(10);
-  const [reconciliations, setReconciliations] = useState<ReconciliationHistory[]>([]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      const res = await fetchReconciliationHistory();
-      setReconciliations(res.data as ReconciliationHistory[]);
+  // Helper function to format date
+  const formatDate = (dateString: string) => {
+    try {
+      // Try parsing ISO format first
+      const parsedDate = parseISO(dateString);
+      return format(parsedDate, "dd-MM-yyyy");
+    } catch (error) {
+      console.warn(`Date formatting error: ${error}`);
+      return dateString;
     }
-
-    fetch();
-  },[]);
-
+  };
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
@@ -110,7 +59,7 @@ export function ReconciliationHistoryTable({
 
     return reconciliations.filter((item) => {
       // Parse the date string to a Date object
-      const itemDate = parse(item.date, "dd/MM/yyyy", new Date());
+      const itemDate = parseISO(item.date);
 
       // If only fromDate is provided
       if (fromDate && !toDate) {
@@ -130,6 +79,62 @@ export function ReconciliationHistoryTable({
       return true;
     });
   }, [fromDate, toDate, isFilterApplied, reconciliations]);
+
+  // Columns definition
+  const columns: ColumnDef<ReconciliationHistoryType>[] = [
+    {
+      accessorKey: "serial_number",
+      header: "S/N",
+      cell: ({ row }) => {
+        return <div>{row.index + 1}</div>;
+      },
+    },
+    {
+      accessorKey: "date",
+      header: "Date",
+      cell: ({ row }) => formatDate(row.original.date),
+    },
+    {
+      accessorKey: "title",
+      header: "Reconciliation ID",
+    },
+    {
+      accessorKey: "progress",
+      header: "Status",
+      cell: ({ row }) => {
+        const isComplete = row.original.status === "Completed";
+
+        return (
+          <div
+            className={`font-medium ${isComplete ? "text-green-600" : "text-amber-600"}`}
+          >
+            {isComplete ? "Complete" : "Pending"}
+          </div>
+        );
+      },
+    },
+    {
+      id: "action",
+      header: "Action",
+      cell: ({ row }) => {
+        const isComplete = row.original.status === "Completed";
+
+        return (
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
+            disabled={!isComplete}
+            onClick={() => {
+              router.push(`/reconciliation/${row.original.id}`);
+            }}
+          >
+            View <ArrowUpRight className="h-3 w-3" />
+          </Button>
+        );
+      },
+    },
+  ];
 
   const table = useReactTable({
     data: filteredData,
