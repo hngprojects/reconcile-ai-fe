@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import Container from "@/src/components/Container";
 
 const VideoFeature = () => {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handlePlay = () => {
@@ -12,7 +12,6 @@ const VideoFeature = () => {
       setIsPlaying(true);
     }
   };
-
   return (
     <section
       className="relative bg-[#F9FAFB] py-16 px-6 sm:px-12 flex flex-col items-center gap-6"
@@ -29,15 +28,13 @@ const VideoFeature = () => {
           <span className="text-sm font-medium text-gray-500 tracking-wide uppercase">
             WHY RECONXI?
           </span>
-          <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-semibold leading-[32px] sm:leading-[40px] text-[#101828]">
+          <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-semibold leading-[32px] sm:leading-[40px] text-[#101828] pb-8">
             How ReconXI Helps School Finance Teams
           </h2>
         </div>
 
         {/* Video Section */}
         <div className="relative rounded-xl overflow-hidden shadow-md w-full max-w-[360px] sm:max-w-[640px] md:max-w-[900px] lg:max-w-[1232px] h-[280px] sm:h-[350px] md:h-[420px] lg:h-[478px]">
-
-        {/* <div className="relative rounded-xl overflow-hidden shadow-md w-full max-w-[327px] sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1232px] h-[200px] sm:h-[300px] md:h-[400px] lg:h-[478px]"> */}
           {!isPlaying && (
             <button
               className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10"
