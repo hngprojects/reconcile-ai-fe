@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import {
   type ColumnDef,
   getCoreRowModel,
@@ -12,10 +12,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { PaginationControls } from "@/src/components/PaginationControl";
 import {
-  ReconciliationHistoryTypes,
-  reconciliations,
-} from "./dashboardDummyData";
-import {
   format,
   parse,
   isWithinInterval,
@@ -24,9 +20,12 @@ import {
   isAfter,
   isBefore,
 } from "date-fns";
+import { fetchReconciliationHistory } from "@/src/lib/api";
+import { ReconciliationHistory } from "@/src/types/reconciliation";
+import Link from "next/link";
 
 // Columns definition
-const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
+const columns: ColumnDef<ReconciliationHistory>[] = [
   {
     accessorKey: "serial_number",
     header: "S/N",
@@ -39,14 +38,14 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     header: "Date",
   },
   {
-    accessorKey: "reconciliationId",
+    accessorKey: "title",
     header: "Reconciliation ID",
   },
   {
     accessorKey: "progress",
     header: "Status",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "complete";
+      const isComplete = row.original.status === "Completed";
 
       return (
         <div
@@ -61,7 +60,7 @@ const columns: ColumnDef<ReconciliationHistoryTypes>[] = [
     id: "action",
     header: "Action",
     cell: ({ row }) => {
-      const isComplete = row.original.status === "complete";
+      const isComplete = row.original.status === "Completed";
 
       return (
         <Button
@@ -99,6 +98,16 @@ export function ReconciliationHistoryCard({
   isFilterApplied,
 }: ReconciliationHistoryTableProps) {
   const [pageSize, setPageSize] = useState(10);
+  const [reconciliations, setReconciliations] = useState<ReconciliationHistory[]>([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await fetchReconciliationHistory();
+      setReconciliations(res.data as ReconciliationHistory[]);
+    }
+
+    fetch();
+  },[]);
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
@@ -125,7 +134,7 @@ export function ReconciliationHistoryCard({
 
       return true;
     });
-  }, [fromDate, toDate, isFilterApplied]);
+  }, [fromDate, toDate, isFilterApplied, reconciliations]);
 
   const table = useReactTable({
     data: filteredData,
@@ -155,7 +164,7 @@ export function ReconciliationHistoryCard({
                   )}
                 </div>
                 <div className="text-[14px] text-[#333333] font-medium">
-                  {row.original.reconciliationId}
+                  {row.original.title}
                 </div>
 
                 <div
@@ -206,23 +215,30 @@ export function ReconciliationHistoryCard({
                   )}
                 </div>
 
-                <Button
-                  variant="outline"
-                  className={`w-full border-primary border-2 text-primary ${
-                    row.original.status !== "complete"
-                      ? "opacity-50 cursor-not-allowed pointer-events-none"
-                      : "hover:bg-primary/10 cursor-pointer"
-                  }`}
-                  disabled={row.original.status !== "complete"}
-                  onClick={(e) => {
-                    if (row.original.status !== "complete") {
-                      e.preventDefault();
-                      return;
-                    }
-                  }}
-                >
-                  View <ArrowUpRight className="h-4 w-4 ml-2" />
-                </Button>
+                <Link
+                  href={`/reconciliation/${row.original.id}`}
+                  target="_blank"
+                  style={{
+                    pointerEvents: row.original.status !== "complete" ? "none" : "auto",
+                  }}>
+                  <Button
+                    variant="outline"
+                    className={`w-full border-primary border-2 text-primary ${
+                      row.original.status !== "complete"
+                        ? "opacity-50 cursor-not-allowed pointer-events-none"
+                        : "hover:bg-primary/10 cursor-pointer"
+                    }`}
+                    disabled={row.original.status !== "complete"}
+                    onClick={(e) => {
+                      if (row.original.status !== "complete") {
+                        e.preventDefault();
+                        return;
+                      }
+                    }}
+                  >
+                    View <ArrowUpRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           ))
