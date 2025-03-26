@@ -21,8 +21,8 @@ export default function ProtectedRoute({
       }
     };
 
-    setLoading(false);
     fetch();
+    setLoading(false);
   }, [session]);
   return (<>
   {
