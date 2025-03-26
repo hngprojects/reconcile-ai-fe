@@ -25,7 +25,7 @@ export const authOptions = {
           const cookieStore = await cookies(); // Await the cookies() function
           cookieStore.set("access_token", response.data.access_token, {
             path: "/",
-            maxAge: 60 * 60 * 24 * 7, // 1 week
+            maxAge: 60 * 60 * 2, // 2 hours
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           });
@@ -33,7 +33,7 @@ export const authOptions = {
           // Set the user data in a cookie
           cookieStore.set("user_data", JSON.stringify(response.data.data), {
             path: "/",
-            maxAge: 60 * 60 * 24 * 7, // 1 week
+            maxAge: 60 * 60 * 2, // 2 hours
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           });
@@ -63,7 +63,7 @@ export const authOptions = {
           // Update the token with user data and access token
           token.accessToken = response.data.access_token;
           token.user = { ...response.data.data.user, payment_plan: response.data.data.plan };
-          token.accessTokenExpires = Date.now() + (10800 * 1000); // Sync with API token
+          token.accessTokenExpires = Date.now() + (7200 * 1000); // Sync with API token
         } else {
           console.error("Error in loginWithGoogle:", response.error); // Debugging
         }
