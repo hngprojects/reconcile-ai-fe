@@ -40,7 +40,7 @@ export const DashboardInfoCards = () => {
     const used = user?.payment_plan?.reconciliations_used || 0;
     // Get count from localStorage, default to 0 if not set
     //const used = parseInt(localStorage.getItem("reconcileCount") || "0");
-    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 20;
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 5;
 
     if (limit === -1) return { used, limit: "∞", progress: 0 };
 
