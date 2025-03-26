@@ -1,3 +1,6 @@
+"use client"
+
+import { useEffect } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Progress } from "@/src/components/ui/progress";
@@ -5,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export const DashboardInfoCards = () => {
-  const { user } = useAuth();
+  const { user, setUser, getUserDetails } = useAuth();
   const router = useRouter();
 
   const getUserPlan = (plan: string | undefined) => {
@@ -19,12 +22,21 @@ export const DashboardInfoCards = () => {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    const fetch = async () => {
+      await getUserDetails(token as string);
+    }
+
+    fetch()
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
 
   const getReconciliationProgress = () => {
-    // const used = user?.payment_plan?.reconciliations_used || 0;
+    const used = user?.payment_plan?.reconciliations_used || 0;
     // Get count from localStorage, default to 0 if not set
-    const used = parseInt(localStorage.getItem("reconcileCount") || "0");
+    //const used = parseInt(localStorage.getItem("reconcileCount") || "0");
     const limit = user?.payment_plan?.plan?.reconciliations_per_month || 20;
 
     if (limit === -1) return { used, limit: "∞", progress: 0 };

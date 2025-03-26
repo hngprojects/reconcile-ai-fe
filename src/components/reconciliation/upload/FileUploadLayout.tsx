@@ -40,13 +40,13 @@ export default function FileUploadLayout({
     try {
       const plan =
         isAuthenticated && user && user.payment_plan?.plan
-          ? user.payment_plan.plan.toLowerCase()
+          ? user.payment_plan.plan.plan.toLowerCase()
           : "basic";
 
       setUserPlan(plan);
 
-      const storedCount = localStorage.getItem("reconcileCount") || "0";
-      setReconciliationCount(parseInt(storedCount, 10));
+      const storedCount = user?.payment_plan?.reconciliations_used || 0;
+      setReconciliationCount(storedCount);
     } catch (error) {
       console.error("Error fetching user plan:", error);
     }
