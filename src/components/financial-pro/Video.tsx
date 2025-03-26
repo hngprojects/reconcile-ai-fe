@@ -10,16 +10,12 @@ const VideoFeature = () => {
           <div
             className="flex flex-col items-center"
           >
-            <span
-              className="inline-block mb-3 text-base font-semibold leading-6 text-[#2A5743] rounded-full"
-            >
-              How it Works
-            </span>
             <h2
-              className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-8 max-w-[768px]"
+              className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-3 lg:mb-5 max-w-[768px]"
             >
-              Let&apos;s show you the ReconXi way!
+              See how ReconXi does it!
             </h2>
+            <p className="mb-4 lg:mb-[50px] text-[#475467] max-w-[1024px] leading-[36px] text-[24px]">ReconXi helps financial teams, accountants, and banks automate transaction matching, detect discrepancies, and generate financial reports. It eliminates the need for manual reconciliation, saving time and reducing human errors.</p>
           </div>
 
           {/* Animated Video Section */}
