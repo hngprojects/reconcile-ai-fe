@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
 
 export const DashboardInfoCards = () => {
-  const { user, setUser, getUserDetails } = useAuth();
+  const { user, getUserDetails } = useAuth();
   const router = useRouter();
 
   const getUserPlan = (plan: string | undefined) => {
