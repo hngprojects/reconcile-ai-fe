@@ -24,7 +24,8 @@ const UserAction = () => {
     };
 
     fetch();
-  }, [session, setUser, user]);
+  }, [session, setUser]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
