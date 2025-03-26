@@ -40,7 +40,7 @@ export default function FileUploadLayout({
     try {
       const plan =
         isAuthenticated && user && user.payment_plan?.plan
-          ? user.payment_plan.plan.plan.toLowerCase()
+          ? (user.payment_plan.plan.plan ? user.payment_plan.plan.plan.toLowerCase() : user.payment_plan.plan.toLowerCase())
           : "basic";
 
       setUserPlan(plan);

@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -24,7 +24,8 @@ const UserAction = () => {
     };
 
     fetch();
-  }, [session, setUser, user]);
+  }, [session, setUser]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
