@@ -44,15 +44,15 @@ const industryPaths = [
     href: "/small-business",
   },
   {
-    name: "Corporations (Finance Department)",
+    name: "Banks and financial institutions",
     href: "/financial-pro",
   },
   {
-    name: "Enterprise",
+    name: "Accounting and Audit firm",
     href: "/enterprise",
   },
   {
-    name: "Freelancer",
+    name: "Corporations (Finance Department)",
     href: "/freelancer",
   },
   {
