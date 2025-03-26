@@ -28,20 +28,33 @@ export default function FinancialHero() {
             </div>
           </div>
 
-          <div className="relative w-full max-w-[729px] h-[497px] flex-1 lg:self-end">
-      {/* Background colored div */}
-      <div className="absolute top-0 right-0 bg-[#2E604A] lg:h-[497px] lg:w-[532px] z-10"></div>
-      
-      {/* Image */}
-      <div className="absolute top-0 left-0 z-20">
-        <Image
-          src="/assets/images/financial-hero.svg"
-          alt="Overlay image"
-          width={700}
-          height={466}
-        />
-      </div>
-    </div>
+          <div className="relative w-full flex-1 h-auto lg:self-end px-5 lg:px-0 hidden lg:block">
+            <div className="relative pt-[75%] bg-[#2E604A] w-[70%] ml-auto">
+              {" "}
+              <div className="absolute bottom-[-6%] right-[5%] h-full w-[140%]">
+                <Image
+                  src="/assets/images/financial-hero.svg"
+                  alt="Financial illustration"
+                  width={700}
+                  height={466}
+                  className="w-full h-full object-cover shadow-[0px_4px_25px_rgba(0,0,0,0.08')]"
+                />
+              </div>
+            </div>
+          </div>
+          <div className="relative w-full px-5 lg:px-0 lg:hidden flex justify-end">
+            <div className="relative pt-[68%] bg-[#2E604A] w-[80%] ml-auto">
+              <div className="absolute bottom-[-6%] left-0 w-[120%] -translate-x-[20%]">
+                <Image
+                  src="/assets/images/financial-hero.svg"
+                  alt="Financial illustration"
+                  width={322}
+                  height={215}
+                  className="w-full h-full object-cover shadow-[0px_4px_25px_rgba(0,0,0,0.08')]"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </Container>
     </section>
