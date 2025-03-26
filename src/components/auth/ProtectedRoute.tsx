@@ -9,19 +9,19 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const [loading, setLoading] = useState(true);
   const { data: session } = useSession();
 
 
   useEffect(() => {
     const fetch = async () => {
-      if (session) {
-        setAuthenticated(true);
+      if (session === null) {
+        setAuthenticated(false);
       }
+      setLoading(false);
     };
 
-    setLoading(false);
     fetch();
   }, [session]);
   return (<>
