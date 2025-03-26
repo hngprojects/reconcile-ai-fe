@@ -2,16 +2,12 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
-import ContactForm from "./FinancialForm";
+import DemoForm from "@/src/app/demo/demo-form";
 
 export default function StartReconcile() {
   return (
-    <section
-      className=""
-      aria-labelledby="ready-section-title"
-      id="demo-form"
-    >
-      <Container className="pt-10 pb-10 px-6 lg:px-20 bg-white">
+    <section className="" aria-labelledby="ready-section-title" id="demo-form">
+      <Container className="pt-10 pb-10 px-6 lg:px-20 bg-white w-full">
         <div className="flex flex-col w-full lg:flex-row gap-8 lg:gap-16 items-center">
           <div className="flex-1 w-full min-w-[300px]">
             <Image
@@ -42,15 +38,13 @@ export default function StartReconcile() {
               aria-label="Start free trial form"
             >
               <div className="w-full">
-                <ContactForm />
+                <DemoForm buttonText="Get your Demo" />
               </div>
             </div>
           </div>
         </div>
       </Container>
-      <div className="h-[58px] hidden lg:block bg-[#F4F5F6] w-full">
-
-      </div>
+      <div className="h-[58px] hidden lg:block bg-[#F4F5F6] w-full"></div>
     </section>
   );
 }

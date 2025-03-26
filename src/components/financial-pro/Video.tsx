@@ -15,7 +15,7 @@ const VideoFeature = () => {
             >
               See how ReconXi does it!
             </h2>
-            <p className="mb-4 lg:mb-[50px] text-[#475467] max-w-[1024px] leading-[36px] text-[24px]">ReconXi helps financial teams, accountants, and banks automate transaction matching, detect discrepancies, and generate financial reports. It eliminates the need for manual reconciliation, saving time and reducing human errors.</p>
+            <p className="mb-4 lg:mb-[50px] text-[#475467] max-w-[1024px] leading-[36px] text-[18px]">ReconXi helps financial teams, accountants, and banks automate transaction matching, detect discrepancies, and generate financial reports. It eliminates the need for manual reconciliation, saving time and reducing human errors.</p>
           </div>
 
           {/* Animated Video Section */}
