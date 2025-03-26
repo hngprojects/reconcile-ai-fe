@@ -76,6 +76,7 @@ const Nav = () => {
     "/manage-plan",
     "/reconciliation",
     "/dashboard",
+    "/billing-history"
   ];
 
   const isPathWithoutNavlinks = pathNamesWithoutNavlinks.some((path) =>

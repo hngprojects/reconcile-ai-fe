@@ -41,9 +41,8 @@ export default function ManagePlanPage() {
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openPlanDialog, setOpenPlanDialog] = useState(false);
+  const [openPlanDialog, setOpenPlanDialog] = useState(true);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
-
   useEffect(() => {
     if (user?.payment_plan?.plan) {
       // Check for the plan property
@@ -179,7 +178,7 @@ export default function ManagePlanPage() {
                         Current Plan
                       </h3>
                       <p className="text-[14px] text-[#475467] font-semibold">
-                        Starter
+                        {user?.payment_plan.plan.plan}
                       </p>
                     </div>
 
@@ -187,7 +186,7 @@ export default function ManagePlanPage() {
                       <div className="flex justify-between">
                         <h3 className="font-semibold text-[#475467]">Price</h3>
                         <p className="text-[14px] text-[#475467] font-semibold">
-                          $10
+                          {user?.payment_plan.price}
                         </p>
                       </div>
 
@@ -206,7 +205,7 @@ export default function ManagePlanPage() {
                             Reconcilation
                           </h3>
                           <p className="text-[14px] text-[#475467] font-semibold">
-                            12/20
+                            {user?.payment_plan.reconciliations_used}/{user?.payment_plan.plan.reconciliations_per_month}
                           </p>
                         </div>
                         <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
