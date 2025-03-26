@@ -40,13 +40,13 @@ export default function FileUploadLayout({
     try {
       const plan =
         isAuthenticated && user && user.payment_plan?.plan
-          ? user.payment_plan.plan.toLowerCase()
+          ? (user.payment_plan.plan.plan ? user.payment_plan.plan.plan.toLowerCase() : user.payment_plan.plan.toLowerCase())
           : "basic";
 
       setUserPlan(plan);
 
-      const storedCount = localStorage.getItem("reconcileCount") || "0";
-      setReconciliationCount(parseInt(storedCount, 10));
+      const storedCount = user?.payment_plan?.reconciliations_used || 0;
+      setReconciliationCount(storedCount);
     } catch (error) {
       console.error("Error fetching user plan:", error);
     }
@@ -154,8 +154,6 @@ export default function FileUploadLayout({
   return (
     <Container className="my-10">
       <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
-        {isAuthenticated && (
-          <>
             <UploadCard
               title="Upload Bank Statement"
               type="bank"
@@ -172,8 +170,6 @@ export default function FileUploadLayout({
               onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
               existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
             />
-          </>
-        )}
       </div>
 
       <Button

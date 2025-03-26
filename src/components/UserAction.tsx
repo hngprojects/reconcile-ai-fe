@@ -17,12 +17,15 @@ const UserAction = () => {
     const fetch = async () => {
       if (session) {
         localStorage.setItem('access_token', session.accessToken as string);
-        setUser(session.user as typeof user);
+        if(!user){
+          setUser(session.user as typeof user);
+        }
       }
     };
 
     fetch();
-  }, [session, setUser]);
+  }, [session, setUser]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
