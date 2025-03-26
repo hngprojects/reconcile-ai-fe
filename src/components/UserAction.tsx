@@ -24,7 +24,7 @@ const UserAction = () => {
     };
 
     fetch();
-  }, [session, setUser]);
+  }, [session, setUser, user]);
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
