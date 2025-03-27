@@ -7,15 +7,17 @@ import Container from "@/src/components/Container";
 export default function StartReconcile() {
   return (
     <section
-      className="flex w-full max-w-[1440px] px-6 md:px-12 lg:px-[143px] py-10 md:py-16 lg:py-[80px] 
+      className="flex w-full max-w-[1440px] px-6 md:px-12 lg:px-[143px] py-6 md:py-16 lg:py-[80px] 
       justify-center items-center gap-10 lg:gap-[40px] bg-[#F9FAFB] flex-col lg:flex-row"
       id="demo-form"
     >
       <Container>
         <div className="flex flex-col lg:flex-row justify-center items-center gap-6 md:gap-10 lg:gap-[40px] w-full">
           {/* Image Section - Appears below form on mobile, first on large screens */}
-          <div className="w-full max-w-[398.667px] flex-shrink-0 overflow-hidden rounded-[18px] 
-            order-1 lg:order-none">
+          <div
+            className="w-full max-w-[398.667px] flex-shrink-0 overflow-hidden rounded-[18px] 
+            order-1 lg:order-none"
+          >
             <Image
               src="/assets/images/education-contact.svg"
               alt="Education contact illustration"
@@ -26,21 +28,26 @@ export default function StartReconcile() {
           </div>
 
           {/* Form Section - Appears first on mobile, second on large screens */}
-          <div className="flex flex-col p-6 md:p-8 lg:p-[40px] px-4 md:px-6 lg:px-[32px] 
-            items-center gap-6 md:gap-8 lg:gap-[32px] rounded-[18px] bg-white shadow-lg 
-            w-full max-w-[624px] order-0 lg:order-none">
+          <div
+            className="flex flex-col p-4 sm:p-2 md:p-8 lg:p-[40px] 
+  items-center gap-6 md:gap-8 lg:gap-[32px] rounded-[18px] bg-white shadow-lg 
+  w-full max-w-full sm:max-w-[95%] md:max-w-[85%] lg:max-w-[624px] order-0 lg:order-none"
+          >
             <div className="text-left w-full">
               <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-900">
                 Get Started Today
               </h2>
               <p className="mt-2 text-sm md:text-base lg:text-lg text-gray-600">
-                Manage your school&apos;s general ledger with ease - Get automated reconciliation today.
+                Manage your school&apos;s general ledger with ease - Get
+                automated reconciliation today.
               </p>
             </div>
 
             <form className="w-full flex flex-col gap-4 md:gap-6">
               <label className="flex flex-col gap-1">
-                <span className="text-gray-700 font-medium text-sm md:text-base">Full Name</span>
+                <span className="text-gray-700 font-medium text-sm md:text-base">
+                  Full Name
+                </span>
                 <input
                   type="text"
                   placeholder="Enter full name"
@@ -50,7 +57,9 @@ export default function StartReconcile() {
               </label>
 
               <label className="flex flex-col gap-1">
-                <span className="text-gray-700 font-medium text-sm md:text-base">Email</span>
+                <span className="text-gray-700 font-medium text-sm md:text-base">
+                  Email
+                </span>
                 <input
                   type="email"
                   placeholder="email@address.com"
@@ -60,7 +69,9 @@ export default function StartReconcile() {
               </label>
 
               <label className="flex flex-col gap-1">
-                <span className="text-gray-700 font-medium text-sm md:text-base">Phone Number</span>
+                <span className="text-gray-700 font-medium text-sm md:text-base">
+                  Phone Number
+                </span>
                 <input
                   type="tel"
                   placeholder="Enter phone number"

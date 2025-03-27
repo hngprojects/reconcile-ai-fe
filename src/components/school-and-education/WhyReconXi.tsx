@@ -36,9 +36,12 @@ export default function WhyReconXi() {
   return (
     <section className="py-10 md:py-20" aria-labelledby="why-reconxi-title">
       <Container>
-        <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-[64px] w-full max-w-[1232px] mx-auto">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-[64px] w-full max-w-[1232px] mx-auto">
           {/* Left Content - Descriptions First on Mobile */}
           <div className="w-full md:w-[674px] flex-shrink-0 gap-6 md:gap-[48px]">
+            <h2 className="text-[#475467] text-sm sm:text-base md:text-lg pb-2 font-medium uppercase">
+              BENEFITS
+            </h2>
             <h2
               id="why-reconxi-title"
               className="text-[22px] sm:text-[28px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] pb-8"
@@ -78,7 +81,7 @@ export default function WhyReconXi() {
                       </defs>
                     </svg>
                   </div>
-                  <p className="text-[14px] sm:text-[16px] md:text-[20px] leading-[24px] text-[#767676] mb-3">
+                  <p className="text-[14px] sm:text-[16px] md:text-[20px] leading-[24px] text-[#767676]">
                     {feature.description}
                   </p>
                 </div>
@@ -87,7 +90,7 @@ export default function WhyReconXi() {
 
             <button
               onClick={handleDemoClick}
-              className="h-[40px] md:h-[44px] px-5 flex items-center justify-center bg-[#2E604A] text-white rounded-lg font-semibold text-sm md:text-base hover:bg-[#26533E] cursor-pointer"
+              className="h-[40px] md:h-[44px] px-5 flex items-center justify-center bg-[#2E604A] text-white rounded-lg font-semibold text-sm md:text-base hover:bg-[#26533E] cursor-pointer mt-8"
               aria-label="Open signup modal"
             >
               Book A Demo
