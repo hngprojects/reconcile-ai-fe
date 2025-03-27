@@ -25,9 +25,8 @@ export const DashboardInfoCards = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
     const fetch = async () => {
-      await getUserDetails(token as string);
+      await getUserDetails();
       setIsLoading(false);
     };
 

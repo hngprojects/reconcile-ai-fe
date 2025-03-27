@@ -12,7 +12,7 @@ import {
 import { User } from "@/src/types/auth";
 import { toast } from "sonner";
 import { LOGOUT_API_URL, USER_API_URL } from "@/src/lib/apiEndpoints";
-import { signIn, signOut } from "next-auth/react";
+import { getSession, signIn, signOut } from "next-auth/react";
 import { SessionProvider } from "next-auth/react";
 
 interface AuthContextType {
@@ -23,7 +23,7 @@ interface AuthContextType {
   isLoading: boolean;
   signInWithGoogle: () => void;
   logout: () => void;
-  getUserDetails: (token: string) => Promise<void>;
+  getUserDetails: () => Promise<void>;
   deleteUserDetails: () => Promise<void>;
 }
 
@@ -76,18 +76,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const getUserDetails = async (token: string) => {
+  const getUserDetails = async () => {
+    const session = await getSession();
+
     try {
       setIsLoading(true);
       const response = await fetch(USER_API_URL, {
         // const response = await fetch(USER_API_URL, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${session.accessToken}`,
           Accept: "application/json",
         },
       });
-    
-      if(response.ok){
+
+      if (response.ok) {
         const data: Response = await response.json();
 
         setUser({ ...data.data.user });
@@ -97,49 +99,47 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-const deleteUserDetails = async () => {
-  try {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      toast.error("No authentication token found");
-      return;
+  const deleteUserDetails = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        toast.error("No authentication token found");
+        return;
+      }
+
+      const response = await fetch(USER_API_URL, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete user account");
+      }
+
+      // Cleanup after successful deletion
+      localStorage.removeItem("access_token");
+      localStorage.removeItem("user");
+      setUser(null);
+
+      // Sign out and redirect
+      await signOut({ callbackUrl: "/" });
+      toast.success("Account deleted successfully");
+    } catch (e) {
+      console.error("Account deletion error:", e);
+      toast.error(e instanceof Error ? e.message : "Failed to delete account");
     }
-
-    const response = await fetch(USER_API_URL, { 
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Failed to delete user account");
-    }
-
-    // Cleanup after successful deletion
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
-    setUser(null);
-    
-    // Sign out and redirect
-    await signOut({ callbackUrl: "/" });
-    toast.success("Account deleted successfully");
-
-  } catch (e) {
-    console.error("Account deletion error:", e);
-    toast.error(e instanceof Error ? e.message : "Failed to delete account");
-  }
-};
-
+  };
 
   // Check for authenticated user on mount
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
     if (token) {
-        setIsLoading(false);
+      setIsLoading(false);
     } else {
       setIsLoading(false);
     }
@@ -171,4 +171,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
