@@ -10,9 +10,10 @@ import circleAlertIcon from "@/public/assets/images/circleAlertIcon.svg";
 import { toast } from "sonner";
 import { updateProfile } from "@/src/lib/api";
 import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
+import LoadingSpinner from "@/src/components/ui/LoadingSpinner";
 
 export default function ProfileManagement() {
-  const { user, setUser, deleteUserDetails } = useAuth();
+  const { user, deleteUserDetails, getUserDetails } = useAuth();
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editedValue, setEditedValue] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -42,15 +43,10 @@ export default function ProfileManagement() {
       const result = await updateProfile(formData);
 
       if (result.success) {
-        // Update the state with the full updated user data (result.data)
-        setUser((prev) => {
-          if (!prev) return prev;
-
-          return {
-            ...prev,
-            ...result.data,
-          };
-        });
+        const token = localStorage.getItem("access_token");
+        if (token) {
+          await getUserDetails(token);
+        }
 
         toast.success("Changes Saved Successfully");
       } else {
@@ -139,6 +135,7 @@ export default function ProfileManagement() {
 
   const handleDeleteAccount = async () => {
     setIsDeleting(true);
+    setIsDeleteModalOpen(false);
     try {
       await deleteUserDetails();
       toast.success("Your account has been deleted successfully.");
@@ -270,6 +267,14 @@ export default function ProfileManagement() {
             </div>
           </DialogContent>
         </Dialog>
+        {isDeleting && (
+          <div className="fixed inset-0 z-[9999] bg-black opacity-50 ">
+            <div className="absolute right-10  bottom-10 flex bg-white h-[80px] w-[80px] rounded-full flex-col items-center justify-center">
+              <LoadingSpinner />
+              <div className=" z-[999999] bg-[#E53E3E] rounded-full p-[12px] absolute top-[-5px] left-[55px]"></div>
+            </div>
+          </div>
+        )}
       </ProtectedRoute>
     </>
   );
