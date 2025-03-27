@@ -52,7 +52,7 @@ export function TransactionTable({
   // Calculate the row height based on number of rows
   const calculateRowHeight = () => {
     // Base height for a single transaction
-    const baseHeight = 60;
+    const baseHeight = 61.4;
 
     // If no transactions or only one, use the base height
     if (transactionsToDisplay.length <= 1) {
@@ -60,7 +60,9 @@ export function TransactionTable({
     }
 
     // Otherwise, calculate height based on number of transactions
-    return (baseHeight / 2) * transactionsToDisplay.length;
+    return (
+      (baseHeight / transactionsToDisplay.length) * transactionsToDisplay.length
+    );
   };
 
   const rowHeight = calculateRowHeight();
@@ -82,7 +84,7 @@ export function TransactionTable({
         <TableBody>
           {status === "empty" ? (
             <TableRow
-              className="hover:bg-white"
+              className="hover:bg-white h-0"
               style={{ height: `${rowHeight + 5}px` }}
             >
               <TableCell className="border-r"></TableCell>
@@ -117,7 +119,7 @@ export function TransactionTable({
                 <TableRow
                   key={txn.id}
                   className={cn(getRowStyles())}
-                  style={{ height: `${rowHeight}px` }}
+                  style={{ height: `${rowHeight + 3}px` }}
                 >
                   <TableCell className="px-6 border-r whitespace-nowrap text-ellipsis">
                     {txn?.date}

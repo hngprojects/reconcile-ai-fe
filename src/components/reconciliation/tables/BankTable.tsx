@@ -389,7 +389,11 @@ export function BankTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransactionRow}
-        potentialMatches={unmatchedLedgerTransactions}
+        potentialMatches={
+          selectedTransactionRow.statements
+            ? unmatchedLedgerTransactions
+            : unmatchedBankTransactions
+        }
         onMatch={onMatch}
       />
     </>
