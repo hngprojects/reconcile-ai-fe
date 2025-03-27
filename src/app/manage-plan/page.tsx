@@ -36,26 +36,46 @@ interface PlanMap {
 }
 
 export default function ManagePlanPage() {
-  const { user } = useAuth();
+  const { user, getUserDetails } = useAuth();
   const router = useRouter();
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openPlanDialog, setOpenPlanDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // useEffect(() => {
+  //   // Fetch user details on mount
+  //   const fetchUserDetails = async () => {
+  //     await getUserDetails();
+  //   };
+  //   fetchUserDetails();
+  // }, [getUserDetails]);
+
   useEffect(() => {
-    if (user?.payment_plan?.plan?.plan) {
-      const planMap: PlanMap = {
-        Basic: 1,
-        Starter: 2,
-        Business: 3,
-      };
-      const currentPlan = user.payment_plan.plan.plan;
-      if (typeof currentPlan === "string" && currentPlan in planMap) {
-        setActiveCard(planMap[currentPlan]);
+    const initializeUserData = async () => {
+      // Only fetch if we don't have user data and it's the initial load
+      if (!user && isInitialLoad) {
+        await getUserDetails();
+        setIsInitialLoad(false);
+      } else if (user) {
+        // If we have user data, update active card
+        const planMap: PlanMap = {
+          Basic: 1,
+          Starter: 2,
+          Business: 3,
+        };
+        const currentPlan = user.payment_plan?.plan?.plan;
+        if (typeof currentPlan === "string" && currentPlan in planMap) {
+          setActiveCard(planMap[currentPlan]);
+        }
+        setIsInitialLoad(false);
       }
-    }
-  }, [user]);
+    };
+  
+    initializeUserData();
+  }, [user, getUserDetails, isInitialLoad]);
 
   const pricingPlans = [
     {
@@ -127,6 +147,33 @@ export default function ManagePlanPage() {
   const handlePlanClick = (planLink: string) => {
     window.location.href = planLink;
   };
+
+  // Add helper function to handle reconciliation display
+  const getReconciliationInfo = () => {
+    const used = user?.payment_plan?.reconciliations_used || 0;
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month;
+
+    if (limit === -1) {
+      return {
+        display: `${used}/∞`,
+        progress: 0,
+        remaining: "Unlimited",
+      };
+    }
+
+    const defaultLimit = 5;
+    const actualLimit = limit || defaultLimit;
+    const progress = Math.min((used / actualLimit) * 100, 100);
+
+    return {
+      display: `${used}/${actualLimit}`,
+      progress,
+      remaining: `${actualLimit - used}`,
+    };
+  };
+
+  // Update the Dialog content section
+  const reconciliationInfo = getReconciliationInfo();
 
   return (
     <ProtectedRoute>
@@ -204,26 +251,22 @@ export default function ManagePlanPage() {
                             Reconcilation
                           </h3>
                           <p className="text-[14px] text-[#475467] font-semibold">
-                            {user?.payment_plan?.reconciliations_used || 0}/
-                            {user?.payment_plan?.plan
-                              ?.reconciliations_per_month || 5}
+                            {reconciliationInfo.display}
                           </p>
                         </div>
                         <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
                           <div
                             className="h-full bg-[#2E604A]"
                             style={{
-                              width: `${Math.min(
-                                ((user?.payment_plan?.reconciliations_used ||
-                                  0) /
-                                  (user?.payment_plan?.plan
-                                    ?.reconciliations_per_month || 5)) *
-                                  100,
-                                100
-                              )}%`,
+                              width: `${reconciliationInfo.progress}%`,
                             }}
                           ></div>
                         </div>
+                        <p className="text-sm text-gray-500">
+                          {reconciliationInfo.remaining === "Unlimited"
+                            ? "Unlimited reconciliations"
+                            : `${reconciliationInfo.remaining} reconciliations remaining`}
+                        </p>
                       </div>
                     </div>
                   </div>
