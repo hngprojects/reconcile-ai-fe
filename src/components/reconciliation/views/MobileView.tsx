@@ -158,8 +158,7 @@ export function MobileView() {
                   Re-upload
                 </button>
               </a>
-              {
-                //hasPlanAccess("export") && (
+              {userPlan === "business" && (
                 <button
                   type="button"
                   className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
@@ -178,8 +177,7 @@ export function MobileView() {
                     </>
                   )}
                 </button>
-                //)
-              }
+              )}
             </div>
           </div>
 
