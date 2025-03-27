@@ -13,23 +13,23 @@ const features = [
 export default function WhatisReconXi() {
   return (
     <section
-      className="py-16 px-6 sm:px-12 lg:px-20"
+      className="w-full py-16 px-4 sm:px-6 md:px-12 lg:px-20"
       aria-labelledby="why-reconxi-title"
     >
       <Container>
         <div className="flex flex-col md:flex-row items-start max-w-[1232px] w-full mx-auto gap-10 md:gap-16 md:justify-between">
           {/* Text Section */}
-          <div className="flex-1 pt-[3rem] inline-flex flex-col justify-center items-start gap-8 text-left max-w-[500px]">
-            <h2 className="text-[#475467] text-sm sm:text-base md:text-lg font-medium uppercase">
+          <div className="flex-1 pt-[2rem] inline-flex flex-col justify-center items-start gap-6 text-left max-w-[500px]">
+            <h2 className="text-[#475467] text-sm sm:text-base md:text-lg font-medium uppercase mb-0">
               ABOUT US
             </h2>
             <h2
               id="why-reconxi-title"
-              className="text-xl sm:text-2xl md:text-[40px] font-semibold text-[#292D32] font-inter tracking-[-0.02em] leading-normal"
+              className="text-xl sm:text-2xl md:text-[40px] font-semibold text-[#292D32] font-inter tracking-[-0.02em] leading-normal mt-0"
             >
               What is ReconXi?
             </h2>
-            <p className="text-sm sm:text-base md:text-lg text-[#475467] leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg sm:max-w[500rem] text-[#475467] leading-relaxed">
               ReconXi helps schools and educational institutions automate
               financial reconciliation, ensuring accurate tracking of student
               payments, tuition, and school expenses.

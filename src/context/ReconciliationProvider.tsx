@@ -74,8 +74,8 @@ interface ReconciliationContextProps {
     React.SetStateAction<ReconciliationItem | null>
   >;
 
-  authenticated: boolean
-  loading: boolean
+  authenticated: boolean;
+  loading: boolean;
 }
 
 const ReconciliationContext = createContext<
@@ -124,7 +124,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
           setData(reconciliationData);
           setAuthenticated(true);
           setLoading(false);
-        }else {
+        } else {
           setLoading(false);
           setAuthenticated(false);
         }
@@ -293,7 +293,7 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         setSelectedRow,
 
         authenticated,
-        loading
+        loading,
       }}
     >
       {children}
@@ -323,7 +323,7 @@ export const useReconciliation = () => {
     }
   };
 
-  const userPlan = getUserPlan((user?.payment_plan?.plan || user?.payment_plan?.plan.plan) as string);
+  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
 
   return {
     ...context,

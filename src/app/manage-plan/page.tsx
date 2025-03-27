@@ -36,27 +36,46 @@ interface PlanMap {
 }
 
 export default function ManagePlanPage() {
-  const { user } = useAuth();
+  const { user, getUserDetails } = useAuth();
   const router = useRouter();
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [openPlanDialog, setOpenPlanDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // useEffect(() => {
+  //   // Fetch user details on mount
+  //   const fetchUserDetails = async () => {
+  //     await getUserDetails();
+  //   };
+  //   fetchUserDetails();
+  // }, [getUserDetails]);
+
   useEffect(() => {
-    if (user?.payment_plan?.plan) {
-      // Check for the plan property
-      const planMap: PlanMap = {
-        Basic: 1,
-        Starter: 2,
-        Business: 3,
-      };
-      const currentPlan = user.payment_plan.plan; // Access the plan property
-      if (typeof currentPlan === "string" && currentPlan in planMap) {
-        setActiveCard(planMap[currentPlan]);
+    const initializeUserData = async () => {
+      // Only fetch if we don't have user data and it's the initial load
+      if (!user && isInitialLoad) {
+        await getUserDetails();
+        setIsInitialLoad(false);
+      } else if (user) {
+        // If we have user data, update active card
+        const planMap: PlanMap = {
+          Basic: 1,
+          Starter: 2,
+          Business: 3,
+        };
+        const currentPlan = user.payment_plan?.plan?.plan;
+        if (typeof currentPlan === "string" && currentPlan in planMap) {
+          setActiveCard(planMap[currentPlan]);
+        }
+        setIsInitialLoad(false);
       }
-    }
-  }, [user]);
+    };
+  
+    initializeUserData();
+  }, [user, getUserDetails, isInitialLoad]);
 
   const pricingPlans = [
     {
@@ -129,6 +148,33 @@ export default function ManagePlanPage() {
     window.location.href = planLink;
   };
 
+  // Add helper function to handle reconciliation display
+  const getReconciliationInfo = () => {
+    const used = user?.payment_plan?.reconciliations_used || 0;
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month;
+
+    if (limit === -1) {
+      return {
+        display: `${used}/∞`,
+        progress: 0,
+        remaining: "Unlimited",
+      };
+    }
+
+    const defaultLimit = 5;
+    const actualLimit = limit || defaultLimit;
+    const progress = Math.min((used / actualLimit) * 100, 100);
+
+    return {
+      display: `${used}/${actualLimit}`,
+      progress,
+      remaining: `${actualLimit - used}`,
+    };
+  };
+
+  // Update the Dialog content section
+  const reconciliationInfo = getReconciliationInfo();
+
   return (
     <ProtectedRoute>
       <Container className="py-8 pb-[100px]">
@@ -178,7 +224,7 @@ export default function ManagePlanPage() {
                         Current Plan
                       </h3>
                       <p className="text-[14px] text-[#475467] font-semibold">
-                        {user?.payment_plan.plan.plan ? user?.payment_plan.plan.plan : "Basic"}
+                        {user?.payment_plan?.plan?.plan || "Basic"}
                       </p>
                     </div>
 
@@ -186,7 +232,7 @@ export default function ManagePlanPage() {
                       <div className="flex justify-between">
                         <h3 className="font-semibold text-[#475467]">Price</h3>
                         <p className="text-[14px] text-[#475467] font-semibold">
-                          ${user?.payment_plan.price ? user?.payment_plan.price : "Free"}
+                          ${user?.payment_plan?.price || "Free"}
                         </p>
                       </div>
 
@@ -205,12 +251,22 @@ export default function ManagePlanPage() {
                             Reconcilation
                           </h3>
                           <p className="text-[14px] text-[#475467] font-semibold">
-                            {user?.payment_plan.reconciliations_used}/{user?.payment_plan.plan.reconciliations_per_month ? user?.payment_plan.plan.reconciliations_per_month : "5"}
+                            {reconciliationInfo.display}
                           </p>
                         </div>
                         <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
-                          <div className="w-[60%] h-full bg-[#2E604A]"></div>
+                          <div
+                            className="h-full bg-[#2E604A]"
+                            style={{
+                              width: `${reconciliationInfo.progress}%`,
+                            }}
+                          ></div>
                         </div>
+                        <p className="text-sm text-gray-500">
+                          {reconciliationInfo.remaining === "Unlimited"
+                            ? "Unlimited reconciliations"
+                            : `${reconciliationInfo.remaining} reconciliations remaining`}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -219,7 +275,7 @@ export default function ManagePlanPage() {
               <DialogFooter className="sm:justify-start">
                 <Button
                   variant="outline"
-                  className="h-[48px] w-[80%] mx-auto cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946]"
+                  className="h-[48px] w-[80%] mx-auto cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946] hover:bg-[#e6394742] hover:text-[#E63946]"
                   onClick={() => {
                     setOpenPlanDialog(false);
                     setTimeout(() => setOpenCancelDialog(true), 200);

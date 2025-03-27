@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/src/components/ui/table";
+import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import { cn } from "@/src/lib/utils";
 import {
   ColumnDef,
@@ -23,20 +24,19 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
-import { useAuth } from "../../context/AuthContext";
-import { useReconciliation } from "@/src/context/ReconciliationProvider";
 import {
   addValueAndLabel,
   TransactionOption,
 } from "../../../helpers/searchComboxOptionExpander";
-import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
-import {
-  ReconciliationItem,
-  FrontendTransaction,
-} from "../../../types/frontendResponseTypes";
-import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 import useRowHeights from "../../../hooks/useRowHeights";
+import {
+  FrontendTransaction,
+  ReconciliationItem,
+} from "../../../types/frontendResponseTypes";
+import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
+import { useAuth } from "../../context/AuthContext";
+import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
+import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
 
 export function BankTable() {
   const { isAuthenticated } = useAuth();
@@ -52,6 +52,7 @@ export function BankTable() {
     setShowUnlinkModal,
     userPlan,
   } = useReconciliation();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTransactionRow, setSelectedTransactionRow] =
     useState<ReconciliationItem>({} as ReconciliationItem);
@@ -59,20 +60,6 @@ export function BankTable() {
     unmatchedBankTransactions
   );
   const rowHeights = useRowHeights(paginatedData);
-
-  // Add plan validation helper
-  const hasPlanAccess = (featureType: "export" | "unlink" | "match") => {
-    if (!featureType) return false;
-
-    switch (userPlan) {
-      case "starter":
-        return true;
-      case "basic":
-        return false;
-      default:
-        return true; // business plan has all features
-    }
-  };
 
   // Base columns that are always visible
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
@@ -205,7 +192,7 @@ export function BankTable() {
   // Combine columns based on authentication
   const bankColumns = [
     ...baseColumns,
-    ...(isAuthenticated && hasPlanAccess("match") ? [actionColumn] : []),
+    ...(isAuthenticated && userPlan === "business" ? [actionColumn] : []),
   ];
 
   const table = useReactTable({
@@ -297,12 +284,13 @@ export function BankTable() {
                     <>
                       <TableCell
                         colSpan={
-                          isAuthenticated && hasPlanAccess("match")
+                          isAuthenticated && userPlan === "business"
                             ? bankColumns.length - 1
                             : bankColumns.length
                         }
                         className={cn("px-4 !h-[0px]", {
-                          "border-r": isAuthenticated && hasPlanAccess("match"),
+                          "border-r":
+                            isAuthenticated && userPlan === "business",
                         })}
                       >
                         <QuickFindAndMatchComboBox
@@ -341,7 +329,7 @@ export function BankTable() {
                           }
                         />
                       </TableCell>
-                      {isAuthenticated && hasPlanAccess("match") && (
+                      {isAuthenticated && userPlan === "business" && (
                         <TableCell className="py-5 flex items-center justify-center">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -401,7 +389,11 @@ export function BankTable() {
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         reconciledDataRow={selectedTransactionRow}
-        potentialMatches={unmatchedLedgerTransactions}
+        potentialMatches={
+          selectedTransactionRow.statements
+            ? unmatchedLedgerTransactions
+            : unmatchedBankTransactions
+        }
         onMatch={onMatch}
       />
     </>

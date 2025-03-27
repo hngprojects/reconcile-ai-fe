@@ -4,6 +4,11 @@ import Image from "next/image";
 import Container from "@/src/components/Container";
 
 export default function HeroSection() {
+  const handleDemoClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    document.getElementById("demo-form")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="w-full py-10 md:py-20 bg-white" aria-labelledby="hero-title">
       <Container>
@@ -29,7 +34,10 @@ export default function HeroSection() {
               <button className="px-4 py-2 sm:px-6 sm:py-3 bg-[#2E604A] text-white rounded-md text-xs sm:text-sm md:text-base font-medium shadow hover:bg-[#254B3A] transition cursor-pointer">
                 Start Reconciliation
               </button>
-              <button className="px-4 py-2 sm:px-6 sm:py-3 border border-[#2E604A] text-[#2E604A] rounded-md text-xs sm:text-sm md:text-base font-medium hover:bg-[#2E604A] hover:text-white transition cursor-pointer">
+              <button
+                onClick={handleDemoClick}
+                className="px-4 py-2 sm:px-6 sm:py-3 border border-[#2E604A] text-[#2E604A] rounded-md text-xs sm:text-sm md:text-base font-medium hover:bg-[#2E604A] hover:text-white transition cursor-pointer"
+              >
                 Book Demo
               </button>
             </div>
@@ -49,7 +57,7 @@ export default function HeroSection() {
                 />
               </div>
 
-              {/* Floating Badges (Unchanged) */}
+              {/* Floating Badges */}
               <div className="absolute top-6 left-[-30px] sm:left-[-40px] bg-white border border-[#4BB543] rounded-lg shadow-md px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-[#4BB543] flex items-center gap-1 sm:gap-2">
                 90% Matched{" "}
                 <Image

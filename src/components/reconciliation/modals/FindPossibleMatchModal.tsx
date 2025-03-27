@@ -261,7 +261,7 @@ export function FindPossibleMatchModal({
     : "Company Ledger";
 
   // Calculate row height for status column in order to align with other tables' height
-  const statusRowHeight = transactionCount * 60;
+  const statusRowHeight = transactionCount * 61.4;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

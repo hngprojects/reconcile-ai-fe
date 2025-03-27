@@ -53,7 +53,7 @@ export function LedgerTable() {
     userPlan,
   } = useReconciliation();
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] =
+  const [selectedTransactionRow, setSelectedTransactionRow] =
     useState<ReconciliationItem>({} as ReconciliationItem);
   const transactionOptions: TransactionOption[] = addValueAndLabel(
     unmatchedLedgerTransactions
@@ -185,7 +185,7 @@ export function LedgerTable() {
               <DropdownMenuItem
                 className="gap-0.5"
                 onClick={() => {
-                  setSelectedTransaction(reconciledDataRow);
+                  setSelectedTransactionRow(reconciledDataRow);
                   setModalOpen(true);
                 }}
               >
@@ -370,7 +370,9 @@ export function LedgerTable() {
                                 <DropdownMenuItem
                                   className="gap-0.5"
                                   onClick={() => {
-                                    setSelectedTransaction(reconciledDataRow);
+                                    setSelectedTransactionRow(
+                                      reconciledDataRow
+                                    );
                                     setModalOpen(true);
                                   }}
                                 >
@@ -396,8 +398,12 @@ export function LedgerTable() {
       <FindPossibleMatchModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        reconciledDataRow={selectedTransaction}
-        potentialMatches={unmatchedBankTransactions}
+        reconciledDataRow={selectedTransactionRow}
+        potentialMatches={
+          selectedTransactionRow.statements
+            ? unmatchedLedgerTransactions
+            : unmatchedBankTransactions
+        }
         onMatch={onMatch}
       />
     </>
