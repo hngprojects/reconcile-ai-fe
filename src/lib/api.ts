@@ -1,3 +1,4 @@
+import { getSession } from "next-auth/react";
 import {
   CONTACT_US_API_URL,
   NEWSLETTER_API_URL,
@@ -476,12 +477,13 @@ export async function updateProfile(formData: FormData) {
 
 export const getBillingHistory = async (page: number, perPage: number) => {
   try {
-    const token = localStorage.getItem("access_token");
+    const session = await getSession();
+
     const response = await fetch(
       `${BILLING_HISTORY_API_URL}?page=${page}&per_page=${perPage}`,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${session.accessToken}`,
           Accept: "application/json",
         },
       }
@@ -497,18 +499,15 @@ export const getBillingHistory = async (page: number, perPage: number) => {
 };
 
 export const fetchReconciliationHistory = async () => {
-  const token = localStorage.getItem("access_token");
-  const headers: HeadersInit = {
-    Accept: "application/json",
-  };
-
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
+  // const token = localStorage.getItem("access_token");
+  const session = await getSession();
 
   try {
     const response = await fetch(`${RECONCILIATION_RESULT_API_URL}`, {
-      headers,
+      headers: {
+        Authorization: `Bearer ${session.accessToken}`,
+        Accept: "application/json",
+      },
     });
 
     const data = await response.json();

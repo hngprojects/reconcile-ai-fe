@@ -1,4 +1,4 @@
-  "use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/src/components/context/AuthContext";
@@ -16,9 +16,9 @@ const UserAction = () => {
   useEffect(() => {
     const fetch = async () => {
       if (session) {
-        localStorage.setItem('access_token', session.accessToken as string);
-        console.log(session);
-        if(!user){
+        localStorage.setItem("access_token", session.accessToken as string);
+        // console.log(session);
+        if (!user) {
           setUser(session.user as typeof user);
         }
       }
@@ -26,7 +26,6 @@ const UserAction = () => {
 
     fetch();
   }, [session, setUser]); // eslint-disable-line react-hooks/exhaustive-deps
-
 
   const handleSwitchToSignup = () => {
     setShowLoginModal(false);
