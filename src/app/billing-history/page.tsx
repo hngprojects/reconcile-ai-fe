@@ -50,7 +50,7 @@ const BillingHistory = () => {
         }
       } catch (error) {
         console.error("Exception when fetching billing history:", error);
-        toast.error("An error occurred while Fetching billing history");
+        // toast.error("An error occurred while Fetching billing history");
       } finally {
         setIsLoading(false);
       }

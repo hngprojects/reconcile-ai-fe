@@ -44,14 +44,13 @@ export default function ManagePlanPage() {
   const [openPlanDialog, setOpenPlanDialog] = useState(false);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
   useEffect(() => {
-    if (user?.payment_plan?.plan) {
-      // Check for the plan property
+    if (user?.payment_plan?.plan?.plan) {
       const planMap: PlanMap = {
         Basic: 1,
         Starter: 2,
         Business: 3,
       };
-      const currentPlan = user.payment_plan.plan; // Access the plan property
+      const currentPlan = user.payment_plan.plan.plan;
       if (typeof currentPlan === "string" && currentPlan in planMap) {
         setActiveCard(planMap[currentPlan]);
       }
@@ -178,7 +177,7 @@ export default function ManagePlanPage() {
                         Current Plan
                       </h3>
                       <p className="text-[14px] text-[#475467] font-semibold">
-                        {user?.payment_plan.plan.plan ? user?.payment_plan.plan.plan : "Basic"}
+                        {user?.payment_plan?.plan?.plan || "Basic"}
                       </p>
                     </div>
 
@@ -186,7 +185,7 @@ export default function ManagePlanPage() {
                       <div className="flex justify-between">
                         <h3 className="font-semibold text-[#475467]">Price</h3>
                         <p className="text-[14px] text-[#475467] font-semibold">
-                          ${user?.payment_plan.price ? user?.payment_plan.price : "Free"}
+                          ${user?.payment_plan?.price || "Free"}
                         </p>
                       </div>
 
@@ -205,11 +204,25 @@ export default function ManagePlanPage() {
                             Reconcilation
                           </h3>
                           <p className="text-[14px] text-[#475467] font-semibold">
-                            {user?.payment_plan.reconciliations_used}/{user?.payment_plan.plan.reconciliations_per_month ? user?.payment_plan.plan.reconciliations_per_month : "5"}
+                            {user?.payment_plan?.reconciliations_used || 0}/
+                            {user?.payment_plan?.plan
+                              ?.reconciliations_per_month || 5}
                           </p>
                         </div>
                         <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
-                          <div className="w-[60%] h-full bg-[#2E604A]"></div>
+                          <div
+                            className="h-full bg-[#2E604A]"
+                            style={{
+                              width: `${Math.min(
+                                ((user?.payment_plan?.reconciliations_used ||
+                                  0) /
+                                  (user?.payment_plan?.plan
+                                    ?.reconciliations_per_month || 5)) *
+                                  100,
+                                100
+                              )}%`,
+                            }}
+                          ></div>
                         </div>
                       </div>
                     </div>
@@ -219,7 +232,7 @@ export default function ManagePlanPage() {
               <DialogFooter className="sm:justify-start">
                 <Button
                   variant="outline"
-                  className="h-[48px] w-[80%] mx-auto cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946]"
+                  className="h-[48px] w-[80%] mx-auto cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946] hover:bg-[#e6394742] hover:text-[#E63946]"
                   onClick={() => {
                     setOpenPlanDialog(false);
                     setTimeout(() => setOpenCancelDialog(true), 200);
