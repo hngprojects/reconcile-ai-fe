@@ -17,6 +17,7 @@ const UserAction = () => {
     const fetch = async () => {
       if (session) {
         localStorage.setItem('access_token', session.accessToken as string);
+        console.log(session);
         if(!user){
           setUser(session.user as typeof user);
         }
