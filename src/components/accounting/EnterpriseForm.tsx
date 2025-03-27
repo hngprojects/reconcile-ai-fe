@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 
-export default function WalkthroughForm() {
+export default function WalkthroughForm({buttonText}: { buttonText: string }) {
   const [formData, setFormData] = useState({
     fullName: "",
     businessEmail: "",
@@ -138,7 +138,7 @@ export default function WalkthroughForm() {
             className="w-full text-white font-semibold py-6 mt-4"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Processing..." : "Schedule Your Free Enterprise Demo Today"}
+            {isSubmitting ? "Processing..." : buttonText || "Schedule Your Free Enterprise Demo Today"}
           </Button>
         </form>
      

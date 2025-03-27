@@ -1,7 +1,7 @@
 "use client";
 import Container from "./Container";
 
-const VideoFeature = () => {
+const VideoFeature = ({videoTitle}:{videoTitle:string}) => {
   return (
     <section>
       <Container className="py-6 sm:py-12">
@@ -18,7 +18,7 @@ const VideoFeature = () => {
             <h2
               className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-8 max-w-[768px]"
             >
-              Watch this quick demo to see ReconXi in action.
+              {videoTitle || 'Watch this quick demo to see ReconXi in action.'}
             </h2>
           </div>
 
