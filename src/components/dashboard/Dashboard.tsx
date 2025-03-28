@@ -24,6 +24,10 @@ export const Dashboard = () => {
     };
 
     fetch();
+
+    const intervalId = setInterval(fetch, 3000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleResetFilter = () => {

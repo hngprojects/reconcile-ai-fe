@@ -1,15 +1,17 @@
-"use client"
+"use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent } from "@/src/components/ui/card";
 import { Progress } from "@/src/components/ui/progress";
 import { useAuth } from "../context/AuthContext";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/src/components/ui/skeleton";
 
 export const DashboardInfoCards = () => {
   const { user, getUserDetails } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const getUserPlan = (plan: string | undefined) => {
     switch (plan) {
@@ -23,12 +25,12 @@ export const DashboardInfoCards = () => {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("access_token");
     const fetch = async () => {
-      await getUserDetails(token as string);
-    }
+      await getUserDetails();
+      setIsLoading(false);
+    };
 
-    fetch()
+    fetch();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
@@ -37,7 +39,7 @@ export const DashboardInfoCards = () => {
     const used = user?.payment_plan?.reconciliations_used || 0;
     // Get count from localStorage, default to 0 if not set
     //const used = parseInt(localStorage.getItem("reconcileCount") || "0");
-    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 20;
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 5;
 
     if (limit === -1) return { used, limit: "∞", progress: 0 };
 
@@ -59,6 +61,40 @@ export const DashboardInfoCards = () => {
   const handleUpgrade = () => {
     router.push("/manage-plan");
   };
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:gap-6">
+        {/* Plan Card Skeleton */}
+        <Card className="shadow-sm">
+          <CardContent className="p-5 h-40 flex flex-col items-start justify-between md:p-6">
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-10 w-32" />
+          </CardContent>
+        </Card>
+
+        {/* Reconciliation Progress Skeleton */}
+        <Card className="shadow-sm">
+          <CardContent className="p-5 h-40 flex flex-col justify-between md:p-6">
+            <Skeleton className="h-6 w-2/3" />
+            <div className="space-y-2">
+              <Skeleton className="h-8 w-24" />
+              <Skeleton className="h-2 w-full" />
+              <Skeleton className="h-4 w-36" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Date Card Skeleton */}
+        <Card className="shadow-sm">
+          <CardContent className="p-5 md:p-6 flex flex-col justify-center gap-4 h-40">
+            <Skeleton className="h-6 w-1/2" />
+            <Skeleton className="h-8 w-40" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:gap-6">

@@ -23,7 +23,7 @@ export default function PricingPage() {
       id: 1,
       name: "Basic",
       price: "Free",
-      link: "/file-upload",
+      link: "/dashboard",
       features: [
         "Reconcile up to 5 reconciliations/month",
         "Upload CSV files",

@@ -21,7 +21,7 @@ export default function FinancialHero() {
                 Easy Bank Statement reconciliation For Financial Teams
               </h1>
 
-              <p className="font-inter text-sm text-center lg:text-left sm:text-lg md:text-[24px] leading-[21px] md:leading-[30px] text-[#475467]">
+              <p className="font-inter text-center lg:text-left sm:text-base md:text-[22px] leading-[21px] md:leading-[30px] text-[#475467]">
                 Get reconciled results with less hassle. Automate
                 reconciliation, reduce errors and save time.
               </p>
@@ -29,9 +29,9 @@ export default function FinancialHero() {
           </div>
 
           <div className="relative w-full flex-1 h-auto lg:self-end px-5 lg:px-0 hidden lg:block">
-            <div className="relative pt-[75%] bg-[#2E604A] w-[70%] ml-auto">
+            <div className="relative pt-[65%] bg-[#2E604A] w-[70%] ml-auto">
               {" "}
-              <div className="absolute bottom-[-6%] right-[5%] h-full w-[140%]">
+              <div className="absolute bottom-[-4%] right-[1%] h-full w-[140%]">
                 <Image
                   src="/assets/images/financial-hero.svg"
                   alt="Financial illustration"
@@ -43,7 +43,7 @@ export default function FinancialHero() {
             </div>
           </div>
           <div className="relative w-full px-5 lg:px-0 lg:hidden flex justify-end">
-            <div className="relative pt-[68%] bg-[#2E604A] w-[80%] ml-auto">
+            <div className="relative pt-[56%] bg-[#2E604A] w-[70%] ml-auto">
               <div className="absolute bottom-[-6%] left-0 w-[120%] -translate-x-[20%]">
                 <Image
                   src="/assets/images/financial-hero.svg"

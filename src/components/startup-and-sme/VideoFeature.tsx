@@ -10,12 +10,16 @@ const VideoFeature = () => {
           <div
             className="flex flex-col items-center"
           >
-            <h2
-              className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-3 lg:mb-5 max-w-[768px]"
+            <span
+              className="inline-block mb-3 text-base font-semibold leading-6 text-[#2A5743] rounded-full"
             >
-              See how ReconXi does it!
+              How it Works
+            </span>
+            <h2
+              className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-8 max-w-[768px]"
+            >
+              Let&apos;s show you the ReconXi way!
             </h2>
-            <p className="mb-4 lg:mb-[50px] text-[#475467] max-w-[1024px] leading-[36px] text-[18px]">ReconXi helps financial teams, accountants, and banks automate transaction matching, detect discrepancies, and generate financial reports. It eliminates the need for manual reconciliation, saving time and reducing human errors.</p>
           </div>
 
           {/* Animated Video Section */}
@@ -29,7 +33,7 @@ const VideoFeature = () => {
               playsInline
               poster="/assets/images/video-thumbnail.png"
             >
-              <source src="/assets/video/financialvidmain.mp4" type="video/mp4" />
+              <source src="/assets/video/smeVideo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

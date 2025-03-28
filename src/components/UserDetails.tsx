@@ -28,7 +28,7 @@ export default function UserDetails() {
   };
 
   return (
-    <ProtectedRoute>
+    <ProtectedRoute showUnauthorized={false}>
       <div className="flex items-center gap-1 sm:gap-3">
         <DropdownMenu onOpenChange={setOpen}>
           <DropdownMenuTrigger asChild>
@@ -52,7 +52,7 @@ export default function UserDetails() {
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="absolute right-[-28px] top-[12px] min-w-[180px] p-1">
-          <Link href="/dashboard" className="block w-full">
+            <Link href="/dashboard" className="block w-full">
               <DropdownMenuItem className="hover:bg-[#2E604A]/10 cursor-pointer px-4 py-3 transition-colors rounded-md">
                 <div className="flex gap-3 items-center text-[#101828] w-full">
                   <LayoutDashboardIcon className="w-4 h-4 text-[#2E604A]" />
