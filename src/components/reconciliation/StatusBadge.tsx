@@ -17,7 +17,7 @@ export function StatusBadge({
         className
       )}
     >
-      {matchScore !== null && `${matchScore}%`}{" "}
+      {matchScore ? `${matchScore}%` : matchScore}{" "}
       {matched ? "Matched" : "Unmatched"}
       <div
         className={cn(
