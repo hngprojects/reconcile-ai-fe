@@ -265,7 +265,10 @@ export function MobileView() {
                                     setSelectedRow(item);
                                   }}
                                 >
-                                  <StatusBadge matched={item.matched} />
+                                  <StatusBadge
+                                    matched={item.matched}
+                                    matchScore={stmt.score}
+                                  />
                                 </button>
                               )}
 
