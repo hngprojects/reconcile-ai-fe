@@ -15,12 +15,13 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <Suspense fallback={<div className="min-h-[400px]" />}>
-        <WhoCanUse />
-      </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <Features1 />
       </Suspense>
+      <Suspense fallback={<div className="min-h-[400px]" />}>
+        <WhoCanUse />
+      </Suspense>
+ 
       <Suspense fallback={<div className="min-h-[400px]" />}>
         <Features2 />
       </Suspense>
