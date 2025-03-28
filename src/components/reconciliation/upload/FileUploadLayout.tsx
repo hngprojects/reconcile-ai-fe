@@ -40,7 +40,9 @@ export default function FileUploadLayout({
     try {
       const plan =
         isAuthenticated && user && user.payment_plan?.plan
-          ? (user.payment_plan.plan.plan ? user.payment_plan.plan.plan.toLowerCase() : user.payment_plan.plan.toLowerCase())
+          ? user.payment_plan.plan.plan
+            ? user.payment_plan.plan.plan.toLowerCase()
+            : user.payment_plan.plan.toLowerCase()
           : "basic";
 
       setUserPlan(plan);
@@ -74,11 +76,6 @@ export default function FileUploadLayout({
   const handleReconciliation = async () => {
     if (bankFiles.length === 0 || ledgerFiles.length === 0) return;
 
-    if (isAuthenticated && reconciliationCount >= currentPlanLimit) {
-      setShowLimitModal(true);
-      return;
-    }
-
     try {
       if (!isAuthenticated) {
         const [bankValid, ledgerValid] = await Promise.all([
@@ -109,8 +106,14 @@ export default function FileUploadLayout({
 
       if (result.status === "error") {
         toast.dismiss(toastId);
-        setErrorCode(result.code);
-        setShowErrorModal(true);
+
+        // Handle rate limit error specifically
+        if (result.code === 429) {
+          setShowLimitModal(true);
+        } else {
+          setErrorCode(result.code);
+          setShowErrorModal(true);
+        }
         return;
       }
 
@@ -142,8 +145,17 @@ export default function FileUploadLayout({
         code?: number;
         status?: number;
       };
-      setErrorCode(reconciliationError.code || reconciliationError.status);
-      setShowErrorModal(true);
+
+      // Check for rate limit error in catch block too
+      if (
+        reconciliationError.code === 429 ||
+        reconciliationError.status === 429
+      ) {
+        setShowLimitModal(true);
+      } else {
+        setErrorCode(reconciliationError.code || reconciliationError.status);
+        setShowErrorModal(true);
+      }
     }
   };
 
@@ -154,22 +166,22 @@ export default function FileUploadLayout({
   return (
     <Container className="my-10">
       <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
-            <UploadCard
-              title="Upload Bank Statement"
-              type="bank"
-              files={bankFiles}
-              onFilesSelect={setBankFiles}
-              onFileDelete={(fileName) => handleFileDelete(fileName, "bank")}
-              existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
-            />
-            <UploadCard
-              title="Upload Company Ledger"
-              type="ledger"
-              files={ledgerFiles}
-              onFilesSelect={setLedgerFiles}
-              onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
-              existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
-            />
+        <UploadCard
+          title="Upload Bank Statement"
+          type="bank"
+          files={bankFiles}
+          onFilesSelect={setBankFiles}
+          onFileDelete={(fileName) => handleFileDelete(fileName, "bank")}
+          existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
+        />
+        <UploadCard
+          title="Upload Company Ledger"
+          type="ledger"
+          files={ledgerFiles}
+          onFilesSelect={setLedgerFiles}
+          onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
+          existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
+        />
       </div>
 
       <Button
