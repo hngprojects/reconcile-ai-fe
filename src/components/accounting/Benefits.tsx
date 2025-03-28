@@ -16,7 +16,7 @@ export default function Benefits() {
       aria-labelledby="features-heading"
     >
       <Container>
-        <div className="flex flex-col md:flex-row gap-12">
+        <div className="flex flex-col items-center md:flex-row gap-12">
             <div className="w-full">
                 <h2 className="text-[#767676] text-sm md:text-base">BENEFITS</h2>
                 <h1 className="text-[#292D32] text-2xl md:text-4xl mt-2 mb-6 font-semibold">Benefits of Using ReconXi for Accounting & Audit Firms</h1>
@@ -73,8 +73,7 @@ export default function Benefits() {
                   </div>
                 </div>
                 <button onClick={handleDemoClick} className="bg-[#2E604A] px-5 md:px-6 py-2 md:py-3 rounded-[8px] mt-6 md:mt-12 text-white cursor-pointer hover:opacity-75 transition">Book A Demo</button>
-              </div>
-          {/* Image - Moves to top on mobile */}
+            </div>
             <div
               className="w-full"
               role="presentation"

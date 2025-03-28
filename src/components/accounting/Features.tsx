@@ -10,7 +10,7 @@ export default function Features() {
       aria-labelledby="features-heading"
     >
       <Container>
-        <div className="flex flex-col md:flex-row gap-12">
+        <div className="flex flex-col items-center md:flex-row gap-12">
             <div className="w-full">
                 <h2 className="text-[#767676] text-sm md:text-base">ABOUT US</h2>
                 <h1 className="text-[#292D32] text-2xl md:text-4xl mt-2 mb-6">What is ReconXi?</h1>
@@ -58,7 +58,6 @@ export default function Features() {
                   </div>
                 </div>
               </div>
-          {/* Image - Moves to top on mobile */}
             <div
               className="w-full"
               role="presentation"
