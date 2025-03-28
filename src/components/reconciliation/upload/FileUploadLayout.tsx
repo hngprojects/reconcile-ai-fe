@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/src/components/ui/button";
 import UploadCard from "./UploadCard";
 import { toast } from "sonner";
@@ -6,16 +6,9 @@ import { reconcileFiles } from "@/src/lib/api";
 import { FileUploadLayoutProps } from "./types";
 import Container from "@/src/components/Container";
 import ErrorModal from "@/src/components/modal/ErrorModal";
-import LimitReachedModal from "@/src/components/modal/LimitReachedModal";
 import { useAuth } from "@/src/components/context/AuthContext";
 import { countCsvRows } from "@/src/utils/csvHelpers";
 import { useRouter } from "next/navigation";
-
-const PLAN_LIMITS: { [key: string]: number } = {
-  basic: 5,
-  starter: 20,
-  business: Infinity,
-};
 
 export default function FileUploadLayout({
   onReconcile,
@@ -24,29 +17,12 @@ export default function FileUploadLayout({
   const [bankFiles, setBankFiles] = useState<File[]>([]);
   const [ledgerFiles, setLedgerFiles] = useState<File[]>([]);
   const [showErrorModal, setShowErrorModal] = useState(false);
-  const [showLimitModal, setShowLimitModal] = useState(false);
   const [errorCode, setErrorCode] = useState<number>();
-  const [userPlan, setUserPlan] = useState<string>("basic");
-  const [reconciliationCount, setReconciliationCount] = useState<number>(0);
   const router = useRouter();
-
-  const getPlanLimit = (plan: string): number => {
-    return PLAN_LIMITS[plan] ?? PLAN_LIMITS["basic"];
-  };
-
-  const currentPlanLimit = useMemo(() => getPlanLimit(userPlan), [userPlan]);
 
   const fetchPlanAndCount = useCallback(async () => {
     try {
-      const plan =
-        isAuthenticated && user && user.payment_plan?.plan
-          ? (user.payment_plan.plan.plan ? user.payment_plan.plan.plan.toLowerCase() : user.payment_plan.plan.toLowerCase())
-          : "basic";
-
-      setUserPlan(plan);
-
-      const storedCount = user?.payment_plan?.reconciliations_used || 0;
-      setReconciliationCount(storedCount);
+      // Plan and count fetching logic commented out
     } catch (error) {
       console.error("Error fetching user plan:", error);
     }
@@ -73,11 +49,6 @@ export default function FileUploadLayout({
 
   const handleReconciliation = async () => {
     if (bankFiles.length === 0 || ledgerFiles.length === 0) return;
-
-    if (isAuthenticated && reconciliationCount >= currentPlanLimit) {
-      setShowLimitModal(true);
-      return;
-    }
 
     try {
       if (!isAuthenticated) {
@@ -127,10 +98,6 @@ export default function FileUploadLayout({
         );
         setBankFiles([]);
         setLedgerFiles([]);
-
-        const newCount = reconciliationCount + 1;
-        setReconciliationCount(newCount);
-        localStorage.setItem("reconcileCount", newCount.toString());
       }
 
       setTimeout(() => {
@@ -147,29 +114,25 @@ export default function FileUploadLayout({
     }
   };
 
-  const handleUpgrade = () => {
-    setShowLimitModal(false);
-  };
-
   return (
     <Container className="my-10">
       <div className="flex flex-col lg:flex-row justify-center gap-[40px]">
-            <UploadCard
-              title="Upload Bank Statement"
-              type="bank"
-              files={bankFiles}
-              onFilesSelect={setBankFiles}
-              onFileDelete={(fileName) => handleFileDelete(fileName, "bank")}
-              existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
-            />
-            <UploadCard
-              title="Upload Company Ledger"
-              type="ledger"
-              files={ledgerFiles}
-              onFilesSelect={setLedgerFiles}
-              onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
-              existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
-            />
+        <UploadCard
+          title="Upload Bank Statement"
+          type="bank"
+          files={bankFiles}
+          onFilesSelect={setBankFiles}
+          onFileDelete={(fileName) => handleFileDelete(fileName, "bank")}
+          existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
+        />
+        <UploadCard
+          title="Upload Company Ledger"
+          type="ledger"
+          files={ledgerFiles}
+          onFilesSelect={setLedgerFiles}
+          onFileDelete={(fileName) => handleFileDelete(fileName, "ledger")}
+          existingFiles={[...bankFiles, ...ledgerFiles].map((f) => f.name)}
+        />
       </div>
 
       <Button
@@ -182,16 +145,6 @@ export default function FileUploadLayout({
         Reconcile
       </Button>
 
-      {/* Limit Reached Modal */}
-      {showLimitModal && (
-        <LimitReachedModal
-          open={showLimitModal}
-          onClose={() => setShowLimitModal(false)}
-          onUpgrade={handleUpgrade}
-        />
-      )}
-
-      {/* General Error Modal */}
       {showErrorModal && (
         <ErrorModal
           open={showErrorModal}
