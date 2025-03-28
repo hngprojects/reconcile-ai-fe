@@ -40,20 +40,20 @@ import { useAuth } from "./context/AuthContext";
 
 const industryPaths = [
   {
-    name: "Small Business Owners",
-    href: "/small-business",
+    name: "Small Businesses",
+    href: "/startup-and-sme",
   },
   {
-    name: "Bank and Financial Institutions",
+    name: "Banks and Financial Institutions",
     href: "/financial-pro",
   },
   {
-    name: "Accounting and Audit firm",
+    name: "Accounting and Audit firms",
     href: "/accounting",
   },
   {
     name: "Corporations (Finance Department)",
-    href: "/freelancer",
+    href: "/finance",
   },
   {
     name: "Schools and Educational Institutions",

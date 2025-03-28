@@ -11,7 +11,7 @@ const whoCanUseContent = [
     title: "Small Businesses",
     content:
       "Save time and reduce financial stress with automated reconciliation. ReconXi helps small businesses identify discrepancies, and maintain accurate records—so you can focus on growing your business.",
-    linkUrl: "/small-business",
+    linkUrl: "/startup-and-sme",
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ const whoCanUseContent = [
     title: "Cooperations(Finance Department)",
     content:
       "ReconXi assists corporations by automating the reconciliation process within finance departments. It helps teams accurately track financial data and reduces the time spent on manual tasks. This allows finance professionals to focus on critical analysis and decision-making, fostering better financial oversight and collaboration across the organization.",
-    linkUrl: "/freelancer",
+    linkUrl: "/finance",
   },
 ];
 
@@ -57,18 +57,20 @@ const WhoCanUse = () => {
           business owner, or an educational institution, ReconXi provides a
           fast, accurate, and hassle-free solution.
         </p>
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 items-start gap-x-9 md:gap-y-8 gap-y-6">
+        <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 grid-rows-[1fr_auto] items-start gap-x-9 md:gap-y-8 gap-y-6">
           {whoCanUseContent.map(({ id, title, content, linkUrl }) => (
             <article
               key={id}
               className={cn(
-                "md:bg-white md:p-8 rounded-[12px] min-h-[280px]",
+                "md:bg-white md:p-8 rounded-[12px] grid grid-rows-subgrid row-span-2",
               )}
             >
-              <h2 className="font-bold md:text-xl">{title}</h2>
-              <p className="text-sm md:text-base text-[#3B3E45] mt-4 mb-8">
-                {content}
-              </p>
+              <div>
+                <h2 className="font-bold md:text-xl">{title}</h2>
+                <p className="text-sm md:text-base text-[#3B3E45] mt-4 mb-8">
+                  {content}
+                </p>
+              </div>
               <Link
                 className="flex items-center gap-2 text-[#2E604A] font-semibold group"
                 href={linkUrl}
