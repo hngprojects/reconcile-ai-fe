@@ -18,6 +18,9 @@ import {
 } from "@/src/components/ui/select";
 import Image from "next/image";
 
+const fullNameRegex = /^[A-Za-z\s]+$/;
+const phoneRegex = /^[0-9]{10,15}$/;
+
 interface Country {
   code: string;
   name: string;
@@ -44,6 +47,43 @@ export default function PartnerForm() {
     loadCountries();
   }, []);
 
+  const validateForm = () => {
+    if (!formData.fullName.trim()) {
+      toast.error("Full name is required");
+      return false;
+    }
+    if (!fullNameRegex.test(formData.fullName)) {
+      toast.error("Full name should only contain alphabets and spaces");
+      return false;
+    }
+    if (!formData.businessName.trim()) {
+      toast.error("Business name is required");
+      return false;
+    }
+    if (!formData.email.trim()) {
+      toast.error("Email is required");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Invalid email address");
+      return false;
+    }
+    if (!formData.phoneNumber.trim()) {
+      toast.error("Phone number is required");
+      return false;
+    }
+    if (!phoneRegex.test(formData.phoneNumber)) {
+      toast.error("Enter a valid phone number with 10 to 15 digits");
+      return false;
+    }
+    if (!formData.serviceInterested) {
+      toast.error("Please select a service you're interested in");
+      return false;
+    }
+    return true;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -59,6 +99,8 @@ export default function PartnerForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     setIsSubmitting(true);
 
     try {
@@ -70,13 +112,10 @@ export default function PartnerForm() {
         service_interested: formData.serviceInterested,
       };
 
-      const response: PartnerResponse =
-        await handlePartnerSubmission(submissionData);
+      const response: PartnerResponse = await handlePartnerSubmission(submissionData);
 
       if (response.success) {
-        toast.success(
-          response.message || "Partnership request submitted successfully!",
-        );
+        toast.success(response.message || "Partnership request submitted successfully!");
         setFormData({
           fullName: "",
           businessName: "",
@@ -92,16 +131,14 @@ export default function PartnerForm() {
             toast.error(errors[0]);
           });
         } else {
-          throw new Error(
-            response.message || "Failed to submit partnership request",
-          );
+          throw new Error(response.message || "Failed to submit partnership request");
         }
       }
     } catch (error) {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to submit partnership request. Please try again.",
+          : "Failed to submit partnership request. Please try again."
       );
     } finally {
       setIsSubmitting(false);

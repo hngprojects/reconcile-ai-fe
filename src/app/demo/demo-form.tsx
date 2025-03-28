@@ -9,6 +9,23 @@ import { handleMarketingDemo } from "@/src/lib/api";
 import { toast } from "sonner";
 import { fetchCountryCodes } from "@/src/lib/constants";
 import Image from "next/image";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/src/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/src/components/ui/select";
 
 interface Country {
   code: string;
@@ -20,18 +37,24 @@ interface DemoFormProps {
   buttonText?: string;
 }
 
+const demoFormSchema = z.object({
+  fullName: z
+    .string()
+    .min(1, "Full name is required")
+    .regex(/^[A-Za-z\s]+$/, "Full name should only contain alphabets and spaces"),
+  businessName: z.string().min(1, "Business name is required"),
+  email: z.string().min(1, "Email is required").email("Invalid email address"),
+  country_code: z.string().min(1, "Country code is required"),
+  phoneNumber: z
+    .string()
+    .min(1, "Phone number is required")
+    .regex(/^[0-9]{10,15}$/, "Enter a valid phone number with 10 to 15 digits."),
+});
+
 export default function DemoForm({
   buttonText = "Get Your Free Demo Now",
 }: DemoFormProps) {
   const [countries, setCountries] = useState<Country[]>([]);
-  const [formData, setFormData] = useState({
-    fullName: "",
-    businessName: "",
-    email: "",
-    countryCode: "+234",
-    phoneNumber: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -41,38 +64,33 @@ export default function DemoForm({
     loadCountries();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const form = useForm<z.infer<typeof demoFormSchema>>({
+    resolver: zodResolver(demoFormSchema),
+    defaultValues: {
+      fullName: "",
+      businessName: "",
+      email: "",
+      country_code: "+234",
+      phoneNumber: "",
+    },
+  });
 
-  const handleCountryCodeChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, countryCode: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  const onSubmit = async (data: z.infer<typeof demoFormSchema>) => {
     try {
-      const result = await handleMarketingDemo({
-        full_name: formData.fullName,
-        business_name: formData.businessName,
-        email: formData.email,
-        phone_number: `${formData.countryCode}${formData.phoneNumber}`,
-      });
+      const formattedData = {
+        full_name: data.fullName,
+        business_name: data.businessName,
+        email: data.email,
+        phone_number: `${data.country_code}${data.phoneNumber}`,
+      };
+
+      const result = await handleMarketingDemo(formattedData);
 
       if (result.success) {
         toast.success(
           "Demo request submitted successfully! We'll be in touch soon.",
         );
-        setFormData({
-          fullName: "",
-          businessName: "",
-          email: "",
-          countryCode: "+234",
-          phoneNumber: "",
-        });
+        form.reset();
       } else {
         throw new Error(result.error);
       }
@@ -82,151 +100,176 @@ export default function DemoForm({
           ? error.message
           : "Failed to submit demo request. Please try again.",
       );
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full md:max-w-[650px] mx-auto bg-white border border-gray-200 rounded-md p-6"
-      aria-labelledby="form-heading"
-    >
-      <h2 id="form-heading" className="sr-only">
-        Request a Demo Form
-      </h2>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full md:max-w-[650px] mx-auto bg-white border border-gray-200 rounded-md p-6"
+        aria-labelledby="form-heading"
+      >
+        <h2 id="form-heading" className="sr-only">
+          Request a Demo Form
+        </h2>
 
-      <div className="space-y-6">
-        <div className="space-y-2">
-          <Label htmlFor="fullName" className="text-sm text-[#717171]">
-            Full Name
-          </Label>
-          <Input
-            id="fullName"
+        <div className="space-y-6">
+          {/* Full Name Field */}
+          <FormField
+            control={form.control}
             name="fullName"
-            type="text"
-            value={formData.fullName}
-            onChange={handleChange}
-            placeholder="Enter full name"
-            required
-            aria-required="true"
-            className="h-12 bg-white !text-base"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="businessName" className="text-sm text-[#717171]">
-            Business Name
-          </Label>
-          <Input
-            id="businessName"
-            name="businessName"
-            type="text"
-            value={formData.businessName}
-            onChange={handleChange}
-            placeholder="Enter business name"
-            required
-            aria-required="true"
-            className="h-12 bg-white !text-base"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm text-[#717171]">
-            Email
-          </Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email address"
-            required
-            aria-required="true"
-            className="h-12 bg-white !text-base"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="phoneNumber" className="text-sm text-[#717171]">
-            Phone Number
-          </Label>
-          <div className="flex gap-2">
-            <div className="relative">
-              <select
-                value={formData.countryCode}
-                onChange={(e) => handleCountryCodeChange(e.target.value)}
-                className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer rounded-md pl-9 pr-8 appearance-none"
-              >
-                {countries.map((country: Country) => (
-                  <option
-                    key={`${country.code}-${country.name}`}
-                    value={country.code}
-                    className="flex items-center gap-2 h-12 px-3 py-2"
-                  >
-                    {country.code}
-                  </option>
-                ))}
-              </select>
-              <div className="absolute left-2 top-1/2 -translate-y-1/2 flex items-center pointer-events-none">
-                {countries.find((c) => c.code === formData.countryCode)
-                  ?.flag && (
-                  <Image
-                    src={
-                      countries.find((c) => c.code === formData.countryCode)
-                        ?.flag || "/assets/images/placeholder-flag.png"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <Label htmlFor="fullName" className="text-sm text-[#717171]">
+                  Full Name
+                </Label>
+                <FormControl>
+                  <Input
+                    id="fullName"
+                    placeholder="Enter full name"
+                    {...field}
+                    className="h-12 bg-white !text-base"
+                    aria-invalid={!!fieldState?.error}
+                    aria-describedby={
+                      fieldState?.error ? `fullName-error` : undefined
                     }
-                    alt={`Flag for ${formData.countryCode}`}
-                    width={20}
-                    height={15}
-                    className="rounded-sm"
                   />
-                )}
-              </div>
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                <svg
-                  width="10"
-                  height="6"
-                  viewBox="0 0 10 6"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-gray-500"
-                >
-                  <path
-                    d="M1 1L5 5L9 1"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </div>
-            </div>
-            <Input
-              id="phoneNumber"
-              name="phoneNumber"
-              type="tel"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              placeholder="Enter phone number"
-              required
-              aria-required="true"
-              className="h-12 min-h-[48px] bg-white !text-base flex-1"
-            />
-          </div>
-        </div>
+                </FormControl>
+                {fieldState?.error && <FormMessage className="text-left" id="fullName-error" />}
+              </FormItem>
+            )}
+          />
 
-        <Button
-          type="submit"
-          className="w-full bg-[#2E604A] text-white font-semibold py-6 text-[18px] cursor-pointer"
-          disabled={isSubmitting}
-          aria-busy={isSubmitting}
-        >
-          {isSubmitting ? "Processing..." : buttonText}
-        </Button>
-      </div>
-    </form>
+          {/* Business Name Field */}
+          <FormField
+            control={form.control}
+            name="businessName"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <Label htmlFor="businessName" className="text-sm text-[#717171]">
+                  Business Name
+                </Label>
+                <FormControl>
+                  <Input
+                    id="businessName"
+                    placeholder="Enter business name"
+                    {...field}
+                    className="h-12 bg-white !text-base"
+                    aria-invalid={!!fieldState?.error}
+                    aria-describedby={
+                      fieldState?.error ? `businessName-error` : undefined
+                    }
+                  />
+                </FormControl>
+                {fieldState?.error && <FormMessage className="text-left" id="businessName-error" />}
+              </FormItem>
+            )}
+          />
+
+          {/* Email Field */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <Label htmlFor="email" className="text-sm text-[#717171]">
+                  Email
+                </Label>
+                <FormControl>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Enter email address"
+                    {...field}
+                    className="h-12 bg-white !text-base"
+                    aria-invalid={!!fieldState?.error}
+                    aria-describedby={
+                      fieldState?.error ? `email-error` : undefined
+                    }
+                  />
+                </FormControl>
+                {fieldState?.error && <FormMessage className="text-left" id="email-error" />}
+              </FormItem>
+            )}
+          />
+
+          {/* Phone Number Field */}
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <Label htmlFor="phoneNumber" className="text-sm text-[#717171]">
+                  Phone Number
+                </Label>
+                <div className="flex gap-2">
+                  <FormField
+                    control={form.control}
+                    name="country_code"
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <SelectTrigger
+                          className="w-[120px] h-12 min-h-[48px] border border-input bg-white cursor-pointer"
+                          id="country-code-select"
+                          aria-label="Select country code"
+                        >
+                          <SelectValue placeholder="+234" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <div role="listbox" id="country-code-list">
+                            {countries.map((country: Country) => (
+                              <SelectItem
+                                key={`${country.code}-${country.name}`}
+                                value={country.code}
+                                className="flex items-center gap-2 h-12 px-3 py-2 cursor-pointer"
+                              >
+                                <Image
+                                  src={country.flag}
+                                  alt={country.name}
+                                  width={16}
+                                  height={16}
+                                  className="object-contain"
+                                />
+                                <span>{country.code}</span>
+                              </SelectItem>
+                            ))}
+                          </div>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  <FormControl>
+                    <Input
+                      id="phoneNumber"
+                      placeholder="Enter phone number"
+                      {...field}
+                      className="h-12 min-h-[48px] bg-white !text-base flex-1"
+                      aria-invalid={!!fieldState?.error}
+                      aria-describedby={
+                        fieldState?.error ? `phoneNumber-error` : undefined
+                      }
+                    />
+                  </FormControl>
+                </div>
+                {fieldState?.error && <FormMessage className="text-left" id="phoneNumber-error" />}
+              </FormItem>
+            )}
+          />
+
+          <Button
+            type="submit"
+            className="w-full bg-[#2E604A] text-white font-semibold py-6 text-[18px] cursor-pointer"
+            disabled={form.formState.isSubmitting}
+            aria-busy={form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting ? "Processing..." : buttonText}
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 }
