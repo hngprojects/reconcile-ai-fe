@@ -17,7 +17,8 @@ export function StatusBadge({
         className
       )}
     >
-      {matchScore}% {matched ? "Matched" : "Unmatched"}
+      {matchScore !== null && `${matchScore}%`}{" "}
+      {matched ? "Matched" : "Unmatched"}
       <div
         className={cn(
           "h-4 w-4 rounded-full ml-2 flex items-center justify-center",
