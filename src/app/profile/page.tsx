@@ -154,7 +154,7 @@ export default function ProfileManagement() {
             <h1 className="h-[39px] font-inter text-[#101828] text-[32px] leading-[100%] tracking-[0%] font-semibold">
               Profile and Settings
             </h1>
-            <Container className=" w-full bg-white rounded-[24px] md:p-4 md:p-[40px] p-0">
+            <Container className=" w-full bg-transparent sm:rounded-[24px] sm:p-4 sm:bg-white md:p-[40px]">
               <div className="flex flex-col mb-6">
                 <div className="md:w-[120px] md:h-[120px] w-[160px] h-[160px] rounded-full overflow-hidden mb-4">
                   {user?.avatar ? (
