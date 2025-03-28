@@ -57,12 +57,12 @@ const WhoCanUse = () => {
           business owner, or an educational institution, ReconXi provides a
           fast, accurate, and hassle-free solution.
         </p>
-        <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 grid-rows-[1fr_auto] items-start gap-x-9 md:gap-y-8 gap-y-6">
+        <div className="mt-12 md:flex flex-wrap justify-center gap-x-6 gap-y-6 max-md:space-y-6">
           {whoCanUseContent.map(({ id, title, content, linkUrl }) => (
             <article
               key={id}
               className={cn(
-                "md:bg-white md:p-8 rounded-[12px] grid grid-rows-subgrid row-span-2",
+                "md:bg-white md:p-8 rounded-[12px] lg:w-[500px] flex flex-col justify-between",
               )}
             >
               <div>
