@@ -109,7 +109,7 @@ export function StatusTable() {
                     <button
                       type="button"
                       title="Unlink matching transactions"
-                      className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer -top-4 -right-6 z-20"
+                      className="absolute hidden group-hover:block hover:bg-black/20 p-1 rounded-full cursor-pointer -top-5 -right-5 z-20"
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedRow(row.original);
