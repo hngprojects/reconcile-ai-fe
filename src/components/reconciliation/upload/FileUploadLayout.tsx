@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export default function FileUploadLayout({
   onReconcile,
 }: FileUploadLayoutProps) {
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated  } = useAuth();
   const [bankFiles, setBankFiles] = useState<File[]>([]);
   const [ledgerFiles, setLedgerFiles] = useState<File[]>([]);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -26,7 +26,7 @@ export default function FileUploadLayout({
     } catch (error) {
       console.error("Error fetching user plan:", error);
     }
-  }, [isAuthenticated, user]);
+  }, []);
 
   useEffect(() => {
     fetchPlanAndCount();

@@ -6,6 +6,7 @@ import {
   LayoutDashboardIcon,
 } from "lucide-react";
 import { useAuth } from "@/src/components/context/AuthContext";
+import { usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -20,8 +21,21 @@ import { User as TUser } from "@/src/types/auth";
 import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
 
 export default function UserDetails() {
+    const pathname: string = usePathname();
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
+  const pathNamesWithoutNavlinks: string[] = [
+    "/file-upload",
+    "/profile",
+    "/manage-plan",
+    "/reconciliation",
+    "/dashboard",
+    "/billing-history"
+  ];
+
+  const isPathWithoutNavlinks = pathNamesWithoutNavlinks.some((path) =>
+    pathname.startsWith(path)
+  );
 
   const getUserInitials = (name: string) => {
     return name[0].toUpperCase();
@@ -46,12 +60,12 @@ export default function UserDetails() {
                   <p>{getUserInitials((user as TUser).name)}</p>
                 )}
               </div>
-              <p className="text-[#297b65]">
+              <p className={`${!isPathWithoutNavlinks ? "text-white" : "text-[#297b65]"}`}>
                 {open ? <ChevronUp /> : <ChevronDown />}
               </p>
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="absolute right-[-28px] top-[12px] min-w-[180px] p-1">
+          <DropdownMenuContent className={`${!isPathWithoutNavlinks ? "relative left-14 top-2 min-w-[180px] p-1" : "absolute right-[-28px] top-[12px] min-w-[180px] p-1"}`}>
             <Link href="/dashboard" className="block w-full">
               <DropdownMenuItem className="hover:bg-[#2E604A]/10 cursor-pointer px-4 py-3 transition-colors rounded-md">
                 <div className="flex gap-3 items-center text-[#101828] w-full">

@@ -98,137 +98,137 @@ const Nav = () => {
         {!isPathWithoutNavlinks && (
           <nav className="hidden md:block">
             {
-              pathname === "/dashboard" as string ? 
-              <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/dashboard"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/dashboard"
-                >
-                  Dashboard
-                </Link>
-                </li>
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/file-upload"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/file-upload"
-                >
-                  File Upload
-                </Link>
-                </li>
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/"
-                >
-                  Settings
-                </Link>
-                </li>
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/"
-                >
-                  Subscription
-                </Link>
-                </li>
-              </ul>
-            :
-              <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/"
-                >
-                  Home
-                </Link>
-                </li>
-                <li>
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    <NavigationMenuItem>
-                      <NavigationMenuTrigger
-                        className={cn(
-                          "navigation-menu-trigger text-[#333333] font-medium text-base bg-transparent p-0 h-auto hover:bg-transparent hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300 [&>svg]:!ml-0",
-                          isIndustryPaths
-                            ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                            : ""
-                        )}
-                        style={isIndustryPaths ? { color: "#2E604A" } : {}}
-                      >
-                        Industries
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent className="p-1">
-                        <ul className="w-48">
-                          {industryPaths.map(({ name, href }) => (
-                            <ListItem
-                              key={href}
-                              href={href}
-                              className={
-                                pathname === href ? "text-primary" : ""
-                              }
-                            >
-                              {name}
-                            </ListItem>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
-                </li>
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/blog"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/blog"
-                >
-                  Blog
-                </Link>
-                </li>
-                <li>
-                <Link
-                  className={cn(
-                    "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
-                    pathname === "/pricing"
-                      ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
-                      : ""
-                  )}
-                  href="/pricing"
-                >
-                  Pricing
-                </Link>
-                </li>
-              </ul>
+              pathname === "/dashboard" as string ?
+                <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/dashboard"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/dashboard"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/file-upload"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/file-upload"
+                    >
+                      File Upload
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/"
+                    >
+                      Settings
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/"
+                    >
+                      Subscription
+                    </Link>
+                  </li>
+                </ul>
+                :
+                <ul className="flex justify-center items-center text-[#333333] gap-6 font-medium">
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/"
+                    >
+                      Home
+                    </Link>
+                  </li>
+                  <li>
+                    <NavigationMenu>
+                      <NavigationMenuList>
+                        <NavigationMenuItem>
+                          <NavigationMenuTrigger
+                            className={cn(
+                              "navigation-menu-trigger text-[#333333] font-medium text-base bg-transparent p-0 h-auto hover:bg-transparent hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300 [&>svg]:!ml-0",
+                              isIndustryPaths
+                                ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                                : ""
+                            )}
+                            style={isIndustryPaths ? { color: "#2E604A" } : {}}
+                          >
+                            Industries
+                          </NavigationMenuTrigger>
+                          <NavigationMenuContent className="p-1">
+                            <ul className="w-48">
+                              {industryPaths.map(({ name, href }) => (
+                                <ListItem
+                                  key={href}
+                                  href={href}
+                                  className={
+                                    pathname === href ? "text-primary" : ""
+                                  }
+                                >
+                                  {name}
+                                </ListItem>
+                              ))}
+                            </ul>
+                          </NavigationMenuContent>
+                        </NavigationMenuItem>
+                      </NavigationMenuList>
+                    </NavigationMenu>
+                  </li>
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/blog"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/blog"
+                    >
+                      Blog
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={cn(
+                        "hover:text-primary relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#2E604A] hover:after:w-full after:transition-all after:duration-300",
+                        pathname === "/pricing"
+                          ? "text-primary font-semibold after:w-full after:bg-[#2E604A] after:h-[2px]"
+                          : ""
+                      )}
+                      href="/pricing"
+                    >
+                      Pricing
+                    </Link>
+                  </li>
+                </ul>
             }
           </nav>
         )}
@@ -238,7 +238,7 @@ const Nav = () => {
         </div>
 
         <div className="flex items-center md:hidden gap-2">
-          <div className="md:hidden">{user && <UserDetails />}</div>
+          {isPathWithoutNavlinks && (<div className="md:hidden">{user && <UserDetails />}</div>)}
 
           {!isPathWithoutNavlinks && (
             <Sheet>
@@ -253,101 +253,107 @@ const Nav = () => {
                   <SheetDescription>Navigation for mobile</SheetDescription>
                 </SheetHeader>
                 <nav className="py-8 mt-4 px-4 flex flex-col h-full justify-between">
-                  <ul className="flex flex-col text-white/80 gap-4 font-medium text-lg">
-                    <li>
-                      <SheetClose asChild>
-                        <Link
-                          className={cn(
-                            "hover:text-white",
-                            pathname === "/"
-                              ? "text-white font-semibold underline underline-offset-2"
-                              : ""
-                          )}
-                          href="/"
-                        >
-                          Home
-                        </Link>
-                      </SheetClose>
-                    </li>
-                    <li>
-                      <Accordion type="single" collapsible>
-                        <AccordionItem
-                          value="industries"
-                          className="border-none"
-                        >
-                          <div className="w-fit">
-                            <AccordionTrigger
-                              className={cn(
-                                "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-0.5",
-                                isIndustryPaths
-                                  ? "text-white font-semibold underline underline-offset-2"
-                                  : ""
-                              )}
-                            >
-                              <span>Industries</span>
-                              <ChevronDown
-                                className="ml-0"
-                                style={{ marginLeft: "0" }}
-                              />
-                            </AccordionTrigger>
-                          </div>
-                          <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
-                            <div className="flex flex-col gap-3">
-                              {industryPaths.map(({ name, href }) => (
-                                <SheetClose key={href} asChild>
-                                  <Link
-                                    href={href}
-                                    className={cn(
-                                      "hover:text-white transition-colors",
-                                      pathname === href &&
-                                        "text-white underline underline-offset-2"
-                                    )}
-                                  >
-                                    <span className="flex gap-0.5">
-                                      <div className="shrink-0">
-                                        <Dot />
-                                      </div>
-                                      {name}
-                                    </span>
-                                  </Link>
-                                </SheetClose>
-                              ))}
+                  <div className="flex flex-col gap-4">
+                    <ul className="flex flex-col text-white/80 gap-4 font-medium text-lg">
+                      <div className="md:hidden">{user && <UserDetails />}</div>
+                      <li className="flex items-center justify-between">
+                        <SheetClose asChild>
+                          <Link
+                            className={cn(
+                              "hover:text-white",
+                              pathname === "/"
+                                ? "text-white font-semibold underline underline-offset-2"
+                                : ""
+                            )}
+                            href="/"
+                          >
+                            Home
+                          </Link>
+                        </SheetClose>
+
+
+                      </li>
+
+                      <li>
+                        <Accordion type="single" collapsible>
+                          <AccordionItem
+                            value="industries"
+                            className="border-none"
+                          >
+                            <div className="w-fit">
+                              <AccordionTrigger
+                                className={cn(
+                                  "font-medium text-lg justify-start text-white/80 py-0 flex items-center gap-0.5",
+                                  isIndustryPaths
+                                    ? "text-white font-semibold underline underline-offset-2"
+                                    : ""
+                                )}
+                              >
+                                <span>Industries</span>
+                                <ChevronDown
+                                  className="ml-0"
+                                  style={{ marginLeft: "0" }}
+                                />
+                              </AccordionTrigger>
                             </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </li>
-                    <li>
-                      <SheetClose asChild>
-                        <Link
-                          className={cn(
-                            "hover:text-white",
-                            pathname === "/blog"
-                              ? "text-white font-semibold underline underline-offset-2"
-                              : ""
-                          )}
-                          href="/blog"
-                        >
-                          Blog
-                        </Link>
-                      </SheetClose>
-                    </li>
-                    <li>
-                      <SheetClose asChild>
-                        <Link
-                          className={cn(
-                            "hover:text-white",
-                            pathname === "/pricing"
-                              ? "text-white font-semibold underline underline-offset-2"
-                              : ""
-                          )}
-                          href="/pricing"
-                        >
-                          Pricing
-                        </Link>
-                      </SheetClose>
-                    </li>
-                  </ul>
+                            <AccordionContent className="text-white/80 pl-4 pb-0 pt-4">
+                              <div className="flex flex-col gap-3">
+                                {industryPaths.map(({ name, href }) => (
+                                  <SheetClose key={href} asChild>
+                                    <Link
+                                      href={href}
+                                      className={cn(
+                                        "hover:text-white transition-colors",
+                                        pathname === href &&
+                                        "text-white underline underline-offset-2"
+                                      )}
+                                    >
+                                      <span className="flex gap-0.5">
+                                        <div className="shrink-0">
+                                          <Dot />
+                                        </div>
+                                        {name}
+                                      </span>
+                                    </Link>
+                                  </SheetClose>
+                                ))}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
+                      </li>
+                      <li>
+                        <SheetClose asChild>
+                          <Link
+                            className={cn(
+                              "hover:text-white",
+                              pathname === "/blog"
+                                ? "text-white font-semibold underline underline-offset-2"
+                                : ""
+                            )}
+                            href="/blog"
+                          >
+                            Blog
+                          </Link>
+                        </SheetClose>
+                      </li>
+                      <li>
+                        <SheetClose asChild>
+                          <Link
+                            className={cn(
+                              "hover:text-white",
+                              pathname === "/pricing"
+                                ? "text-white font-semibold underline underline-offset-2"
+                                : ""
+                            )}
+                            href="/pricing"
+                          >
+                            Pricing
+                          </Link>
+                        </SheetClose>
+                      </li>
+                    </ul>
+                  </div>
 
                   {!user && (
                     <div className="flex flex-col w-full items-center gap-4">
@@ -373,6 +379,7 @@ const Nav = () => {
                       </SheetClose>
                     </div>
                   )}
+
                 </nav>
               </SheetContent>
             </Sheet>
