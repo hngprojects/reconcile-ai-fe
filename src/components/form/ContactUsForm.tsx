@@ -33,7 +33,11 @@ interface Country {
 }
 
 const contactUsSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z
+    .string()
+    .min(1, "Name is required")
+    .regex(/^[A-Za-z\s]+$/, "Name should only contain alphabets and spaces")
+    .transform((value) => value.trim()),
   email: z.string().min(1, "Email is required").email("Invalid email address"),
   country_code: z.string().min(1, "Country code is required"),
   phone_number: z
@@ -50,6 +54,7 @@ const contactUsSchema = z.object({
     })
     .transform((value) => value.trim()),
 });
+
 
 const ContactUsForm = () => {
   const [countries, setCountries] = useState<Country[]>([]);
