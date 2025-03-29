@@ -8,39 +8,39 @@ import Container from "./Container";
 const whoCanUseContent = [
   {
     id: 1,
-    title: "Small Business Owners",
+    title: "Small Businesses",
     content:
-      "ReconXi helps small businesses reconcile transactions with ease, improving record accuracy and eliminating the burden of manual processes.",
-    linkUrl: "/small-business",
+      "Save time and reduce financial stress with automated reconciliation. ReconXi helps small businesses identify discrepancies, and maintain accurate records—so you can focus on growing your business.",
+    linkUrl: "/startup-and-sme",
   },
   {
     id: 2,
-    title: "Financial Professionals",
+    title: "Banks and Financial Institutions",
     content:
-      "ReconXi empowers accountants, auditors, and financial analysts with AI-powered tools that streamline reconciliation, reduce manual effort, and ensure greater accuracy.",
+      "ReconXi helps banks and financial institutions by automating reconciliation processes, ensuring accurate financial records, and reducing the time spent on manual tasks. With user-friendly tools, ReconXi makes handling large volumes of data manageable and reliable for everyone involved.",
     linkUrl: "/financial-pro",
   },
-  // {
-  //   id: 3,
-  //   title: "Enterprises",
-  //   content:
-  //     "For large organizations dealing with a high volume of transactions, ReconXi provides a solution to handle complex reconciliations.",
-  //   linkUrl: "/enterprise",
-  // },
   {
-    id: 5,
+    id: 3,
+    title: "Accounting and Audit Firms",
+    content:
+      "ReconXi helps accounting and audit firms automate financial reconciliation, reducing manual work, minimizing errors, and ensuring compliance with financial regulations. Its AI-powered matching improves accuracy, allowing firms to focus on higher-value financial analysis and decision-making.",
+    linkUrl: "/accounting",
+  },
+  {
+    id: 4,
     title: "Schools & Educational Institutions",
     content:
-      "For schools and educational institutions, ReconXi automates the reconciliation of fees, payroll, and other financial records, reducing errors and saving valuable time.",
+      "ReconXi simplifies fee and expense reconciliation for better financial management. ReconXi helps schools and Educational institutions automate the reconciliation of fees, payroll, and other financial records, minimizing manual work and reducing the risk of errors.",
     linkUrl: "/school-and-education",
   },
-  // {
-  //   id: 5,
-  //   title: "Freelancers",
-  //   content:
-  //     "Freelancers use ReconXi to streamline their financial tracking, automate invoice reconciliation, and ensure accurate payment records, reducing manual effort and minimizing errors.",
-  //   linkUrl: "/freelancer",
-  // },
+  {
+    id: 5,
+    title: "Cooperations(Finance Department)",
+    content:
+      "ReconXi assists corporations by automating the reconciliation process within finance departments. It helps teams accurately track financial data and reduces the time spent on manual tasks. This allows finance professionals to focus on critical analysis and decision-making, fostering better financial oversight and collaboration across the organization.",
+    linkUrl: "/finance",
+  },
 ];
 
 const WhoCanUse = () => {
@@ -57,25 +57,20 @@ const WhoCanUse = () => {
           business owner, or an educational institution, ReconXi provides a
           fast, accurate, and hassle-free solution.
         </p>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 items-center gap-x-9 md:gap-y-8 gap-y-6">
+        <div className="mt-12 md:flex flex-wrap justify-center gap-x-6 gap-y-6 max-md:space-y-6">
           {whoCanUseContent.map(({ id, title, content, linkUrl }) => (
             <article
               key={id}
               className={cn(
-                "md:bg-white md:p-8 rounded-[12px] h-[240px]",
-                id === 1 && "rounded-tl-[4rem]",
-                id === 2 && "rounded-tr-[4rem]",
-                id === 3 && "rounded-bl-[4rem]",
-                id === 4 && "rounded-br-[4rem]",
-                // For the last card, span both columns, center it, and add the decorative rounded edge
-                id === 5 &&
-                  "md:col-span-2 md:w-[600px] md:mx-auto rounded-br-[4rem] rounded-bl-[4rem]",
+                "md:bg-white md:p-8 rounded-[12px] lg:w-[500px] flex flex-col justify-between",
               )}
             >
-              <h2 className="font-bold md:text-xl">{title}</h2>
-              <p className="text-sm md:text-base text-[#3B3E45] mt-4 mb-8">
-                {content}
-              </p>
+              <div>
+                <h2 className="font-bold md:text-xl">{title}</h2>
+                <p className="text-sm md:text-base text-[#3B3E45] mt-4 mb-8">
+                  {content}
+                </p>
+              </div>
               <Link
                 className="flex items-center gap-2 text-[#2E604A] font-semibold group"
                 href={linkUrl}

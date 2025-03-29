@@ -2,8 +2,19 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
+import TypeWriterButton from "../buttons/TypeWriterButton";
+import { useAuth } from "../context/AuthContext";
+
+import { smoothScroll } from "@/src/utils/smoothScroll";
 
 export default function EnterpriseHero() {
+  const { isAuthenticated } = useAuth();
+
+    const handleDemoClick = (e: React.MouseEvent) => {
+      e.preventDefault();
+      smoothScroll("demo-form");
+    };
+
   return (
     <section
       className="w-full py-2 md:py-4 bg-white overflow-hidden"
@@ -28,8 +39,22 @@ export default function EnterpriseHero() {
               Accounting and audit firms need reliable reconciliation accounting. Ensure accuracy, reduce errors, and stay compliant with every transaction.
               </p>
               <div className="flex items-center gap-4">
-                <button className="bg-[#2E604A] px-5 md:px-6 py-2 md:py-3 rounded-[8px]  text-white cursor-pointer hover:opacity-75 transition">Start Reconciliation</button>
-                <button className="bg-white border border-[#C0C0C0] px-5 md:px-6 py-2 md:py-3 rounded-[8px] text-[#2E604A] cursor-pointer hover:opacity-75 transition">Book Demo</button>
+                <TypeWriterButton
+                  path={isAuthenticated ? "/dashboard" : "/file-upload"}
+                  aria-label={
+                    isAuthenticated
+                      ? "Access Your Dashboard"
+                      : "Start Reconciliation"
+                  }
+                  text={
+                    isAuthenticated
+                      ? "Access Your Dashboard"
+                      : "Start Reconciliation"
+                  }
+                  className="bg-[#297B65] py-2 px-4 rounded-[8px] font-semibold justify-center items-center h-12 w-full sm:w-52 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer"
+                />
+                {/* <button className="bg-[#2E604A] px-5 md:px-6 py-2 md:py-3 rounded-[8px]  text-white cursor-pointer hover:opacity-75 transition">Start Reconciliation</button> */}
+                <button onClick={handleDemoClick} className="bg-white border border-[#C0C0C0] px-5 md:px-6 py-2 md:py-3 rounded-[8px] text-[#2E604A] cursor-pointer hover:opacity-75 transition">Book Demo</button>
               </div>
             </div>
           </div>
