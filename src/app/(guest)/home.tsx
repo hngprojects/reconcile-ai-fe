@@ -25,7 +25,7 @@ export default function HomePage() {
         <Features2 />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <VideoFeature />
+        <VideoFeature videoTitle="Watch this quick demo to see ReconXi in action." />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <FAQSection />

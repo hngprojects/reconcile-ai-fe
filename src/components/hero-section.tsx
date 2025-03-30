@@ -67,17 +67,24 @@ export default function HeroSection() {
         </div>
 
         {/* Hero Image for mobile */}
-        <div className="lg:hidden w-full flex justify-center">
+        <div className="lg:hidden px-10 w-full relative">
           <Image
-            src="/assets/images/screen-mockup-for-mobile.png"
-            alt="Big screen mockup"
-            width={224}
-            height={149}
-            className="object-cover border-2 border-[#101828] rounded-[4px] transition-all duration-200 hover:shadow-[0_10px_20px_rgba(0,0,0,0.2)]"
+            src="/assets/images/iPhone_mockup.png"
+            alt="Iphone mockup"
+            width={180}
+            height={252}
+            className="object-contain transition-transform duration-700 ease-in-out hover:scale-110 absolute z-10 top-6"
             quality={75}
             priority={true}
-            placeholder="blur"
-            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAAXNSR0IArs4c6QAAAJBJREFUGFcljUEKwjAABHdjBTXvyFN66bnkVt8gaS59gEVQ0GPTJ5Q+qe+IQtNEQue4szCsqso01+YlKEgSCQkEASBN8/SgruvuZkyfl2NRYIsRCQBTghvHN7XWXdu2vRACUkqAhPceYV3hnNsP1to+i9PljJz5+S+2EDAMw4dlWRql1D3GeNjTGUKQcVmW5x9hfjTwri74OwAAAABJRU5ErkJggg=="
+          />
+          <Image
+            src="/assets/images/screen_mockup.png"
+            alt="Big screen mockup"
+            width={250}
+            height={315}
+            className="object-contain transition-transform duration-700 ease-in-out hover:scale-105"
+            quality={75}
+            priority={true}
           />
         </div>
       </div>
