@@ -2,15 +2,24 @@
 import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
+import TypeWriterButton from "../buttons/TypeWriterButton";
+import { useAuth } from "../context/AuthContext";
 
 export default function HeroSection() {
+  const { isAuthenticated } = useAuth();
+
   const handleDemoClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    document.getElementById("demo-form")?.scrollIntoView({ behavior: "smooth" });
+    document
+      .getElementById("demo-form")
+      ?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <section className="w-full py-10 md:py-20 bg-white" aria-labelledby="hero-title">
+    <section
+      className="w-full py-10 md:py-20 bg-white"
+      aria-labelledby="hero-title"
+    >
       <Container>
         <div className="flex flex-col md:flex-row items-center justify-between gap-12">
           {/* Text Section (Left-Aligned on Mobile) */}
@@ -19,7 +28,10 @@ export default function HeroSection() {
               Save time, reduce errors, and gain real-time insights
             </p>
 
-            <h1 id="hero-title" className="text-[28px] sm:text-[40px] md:text-[48px] leading-tight font-semibold text-[#101828] mb-4">
+            <h1
+              id="hero-title"
+              className="text-[28px] sm:text-[40px] md:text-[48px] leading-tight font-semibold text-[#101828] mb-4"
+            >
               <span className="text-[#2E604A]">General </span> Ledger
               Reconciliation for Schools
             </h1>
@@ -31,9 +43,20 @@ export default function HeroSection() {
 
             {/* Buttons: Smaller on Mobile & Side-by-Side */}
             <div className="flex gap-3">
-              <button className="px-4 py-2 sm:px-6 sm:py-3 bg-[#2E604A] text-white rounded-md text-xs sm:text-sm md:text-base font-medium shadow hover:bg-[#254B3A] transition cursor-pointer">
-                Start Reconciliation
-              </button>
+              <TypeWriterButton
+                path={isAuthenticated ? "/dashboard" : "/file-upload"}
+                aria-label={
+                  isAuthenticated
+                    ? "Access Your Dashboard"
+                    : "Start Reconciliation"
+                }
+                text={
+                  isAuthenticated
+                    ? "Access Your Dashboard"
+                    : "Start Reconciliation"
+                }
+                className="bg-[#297B65] py-2 px-4 rounded-[8px] font-semibold justify-center items-center h-12 w-full sm:w-52 text-sm text-white hover:bg-[#297B65]/90 flex cursor-pointer"
+              />
               <button
                 onClick={handleDemoClick}
                 className="px-4 py-2 sm:px-6 sm:py-3 border border-[#2E604A] text-[#2E604A] rounded-md text-xs sm:text-sm md:text-base font-medium hover:bg-[#2E604A] hover:text-white transition cursor-pointer"
@@ -78,7 +101,8 @@ export default function HeroSection() {
 
               <div className="absolute bottom-[-1rem] left-[-2rem] sm:left-[-3rem] flex flex-col items-start gap-1 sm:gap-2 p-3 sm:p-4 rounded-[18px] sm:rounded-[21px] border border-[#E4E7EC] bg-white shadow-md text-xs sm:text-sm">
                 <span className="text-[#2E604A] font-medium flex justify-between w-full">
-                  Bank Statement <span className="ml-2 sm:ml-[2rem]">681,321</span>
+                  Bank Statement{" "}
+                  <span className="ml-2 sm:ml-[2rem]">681,321</span>
                 </span>
                 <span className="text-black font-normal">27/01/2024</span>
               </div>
