@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
 
-// Dynamic imports
 const HeroSection = dynamic(() => import('@/components/hero-section'))
 const WhoCanUse = dynamic(() => import('@/components/WhoCanUse'))
 const Features1 = dynamic(() => import('@/components/Feature'))

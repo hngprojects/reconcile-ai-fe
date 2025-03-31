@@ -1,7 +1,7 @@
 'use client'
 import Container from './Container'
 
-const VideoFeature = ({ videoTitle }: { videoTitle: string }) => {
+const VideoFeature = ({ videoTitle }: { videoTitle?: string }) => {
   return (
     <section>
       <Container className="py-6 sm:py-12">

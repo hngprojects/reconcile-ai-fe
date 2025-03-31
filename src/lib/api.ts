@@ -1,4 +1,3 @@
-import { getSession } from 'next-auth/react'
 import {
   CONTACT_US_API_URL,
   NEWSLETTER_API_URL,
@@ -15,13 +14,8 @@ import {
   USER_PROFILE_UPDATE_API_URL,
   BILLING_HISTORY_API_URL,
 } from './apiEndpoints'
-
 import { ManualRequestBody } from '@/types/reconciliation'
-
-// interface ApiError extends Error {
-//   code?: number;
-//   status?: number;
-// }
+import { auth } from '@/auth'
 
 interface MarketingDemoData {
   full_name: string
@@ -477,13 +471,13 @@ export async function updateProfile(formData: FormData) {
 
 export const getBillingHistory = async (page: number, perPage: number) => {
   try {
-    const session = await getSession()
+    const session = await auth()
 
     const response = await fetch(
       `${BILLING_HISTORY_API_URL}?page=${page}&per_page=${perPage}`,
       {
         headers: {
-          Authorization: `Bearer ${session.accessToken}`,
+          Authorization: `Bearer ${session?.access_token}`,
           Accept: 'application/json',
         },
       }
@@ -500,12 +494,12 @@ export const getBillingHistory = async (page: number, perPage: number) => {
 
 export const fetchReconciliationHistory = async () => {
   // const token = localStorage.getItem("access_token");
-  const session = await getSession()
+  const session = await auth()
 
   try {
     const response = await fetch(`${RECONCILIATION_RESULT_API_URL}`, {
       headers: {
-        Authorization: `Bearer ${session.accessToken}`,
+        Authorization: `Bearer ${session?.access_token}`,
         Accept: 'application/json',
       },
     })
