@@ -1,48 +1,48 @@
-"use client";
-import { useRef, useState } from "react";
-import Container from "@/src/components/Container";
+'use client'
+import { useRef, useState } from 'react'
+import Container from '@/components/Container'
 
 const VideoFeature = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   const handlePlay = () => {
     if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
+      videoRef.current.play()
+      setIsPlaying(true)
     }
-  };
+  }
   return (
     <section
-      className="relative bg-[#F9FAFB] py-16 px-6 sm:px-12 flex flex-col items-center gap-6"
+      className="relative flex flex-col items-center gap-6 bg-[#F9FAFB] px-6 py-16 sm:px-12"
       style={{
         backgroundImage: "url('/assets/images/video.svg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
       }}
     >
-      <Container className="flex flex-col items-center text-center max-w-[327px] w-full sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1232px]">
+      <Container className="flex w-full max-w-[327px] flex-col items-center text-center sm:max-w-[600px] md:max-w-[900px] lg:max-w-[1232px]">
         {/* Header Section */}
-        <div className="flex flex-col items-center text-center gap-2">
-          <span className="text-sm font-medium text-gray-500 tracking-wide uppercase">
+        <div className="flex flex-col items-center gap-2 text-center">
+          <span className="text-sm font-medium tracking-wide text-gray-500 uppercase">
             WHY RECONXI?
           </span>
-          <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-semibold leading-[32px] sm:leading-[40px] text-[#101828] pb-8">
+          <h2 className="pb-8 text-[24px] leading-[32px] font-semibold text-[#101828] sm:text-[28px] sm:leading-[40px] md:text-[32px]">
             How ReconXI Helps School Finance Teams
           </h2>
         </div>
 
         {/* Video Section */}
-        <div className="relative rounded-xl overflow-hidden shadow-md w-full max-w-[360px] sm:max-w-[640px] md:max-w-[900px] lg:max-w-[1232px] h-[280px] sm:h-[350px] md:h-[420px] lg:h-[478px]">
+        <div className="relative h-[280px] w-full max-w-[360px] overflow-hidden rounded-xl shadow-md sm:h-[350px] sm:max-w-[640px] md:h-[420px] md:max-w-[900px] lg:h-[478px] lg:max-w-[1232px]">
           {!isPlaying && (
             <button
-              className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10"
+              className="bg-opacity-50 absolute inset-0 z-10 flex items-center justify-center bg-black"
               onClick={handlePlay}
             >
-              <div className="bg-white p-4 rounded-full shadow-lg cursor-pointer">
+              <div className="cursor-pointer rounded-full bg-white p-4 shadow-lg">
                 <svg
-                  className="w-10 h-10 text-[#101828]"
+                  className="h-10 w-10 text-[#101828]"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -54,7 +54,7 @@ const VideoFeature = () => {
 
           <video
             ref={videoRef}
-            className="w-full h-full object-cover"
+            className="h-full w-full object-cover"
             controls
             preload="metadata"
             playsInline
@@ -66,12 +66,12 @@ const VideoFeature = () => {
         </div>
 
         {/* Call to Action Button */}
-        <button className="bg-[#2E604A] text-white text-base font-medium rounded-md shadow-sm cursor-pointer w-full max-w-[250px] mt-6 sm:mt-8 md:mt-10 flex justify-center items-center gap-4 px-6 py-[18px]">
+        <button className="mt-6 flex w-full max-w-[250px] cursor-pointer items-center justify-center gap-4 rounded-md bg-[#2E604A] px-6 py-[18px] text-base font-medium text-white shadow-sm sm:mt-8 md:mt-10">
           Try ReconXi Now
         </button>
       </Container>
     </section>
-  );
-};
+  )
+}
 
-export default VideoFeature;
+export default VideoFeature

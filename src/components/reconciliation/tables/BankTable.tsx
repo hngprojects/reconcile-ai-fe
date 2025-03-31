@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu'
 import {
   Table,
   TableBody,
@@ -13,33 +13,34 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/src/components/ui/table";
-import { useReconciliation } from "@/src/context/ReconciliationProvider";
-import { cn } from "@/src/lib/utils";
+} from '@/components/ui/table'
+import { useReconciliation } from '@/context/ReconciliationProvider'
+import { cn } from '@/lib/utils'
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { useState } from "react";
+} from '@tanstack/react-table'
+import { useState } from 'react'
 import {
   addValueAndLabel,
   TransactionOption,
-} from "../../../helpers/searchComboxOptionExpander";
-import useRowHeights from "../../../hooks/useRowHeights";
+} from '../../../helpers/searchComboxOptionExpander'
+import useRowHeights from '../../../hooks/useRowHeights'
 import {
   FrontendTransaction,
   ReconciliationItem,
-} from "../../../types/frontendResponseTypes";
-import { CheckIcon, VerticalDotsIcon } from "../../Icon/Icons";
-import { useAuth } from "../../context/AuthContext";
-import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
-import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
+} from '../../../types/frontendResponseTypes'
+import { CheckIcon, VerticalDotsIcon } from '../../Icon/Icons'
+import { FindPossibleMatchModal } from '../modals/FindPossibleMatchModal'
+import QuickFindAndMatchComboBox from '../quickFind/QuickFindAndMatchComboBox'
+import { useSession } from 'next-auth/react'
 
 export function BankTable() {
-  const { isAuthenticated } = useAuth();
+  const { status } = useSession()
+  const isAuthenticated = status === 'authenticated'
 
   const {
     pagination,
@@ -51,24 +52,29 @@ export function BankTable() {
     setSelectedRow,
     setShowUnlinkModal,
     userPlan,
-  } = useReconciliation();
+  } = useReconciliation()
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
   const [selectedTransactionRow, setSelectedTransactionRow] =
-    useState<ReconciliationItem>({} as ReconciliationItem);
+    useState<ReconciliationItem>({} as ReconciliationItem)
   const transactionOptions: TransactionOption[] = addValueAndLabel(
     unmatchedBankTransactions
-  );
-  const rowHeights = useRowHeights(paginatedData);
+  )
+  const rowHeights = useRowHeights(paginatedData)
 
-  // Base columns that are always visible
+  console.log({
+    paginatedData,
+    unmatchedBankTransactions,
+    // unmatchedLedgerTransactions,
+  })
+
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
-      accessorKey: "bank_txn.date",
-      header: "Date",
+      accessorKey: 'bank_txn.date',
+      header: 'Date',
       cell: ({ row }) => {
-        const statements = row.original.statements;
-        if (!statements || statements.length === 0) return null;
+        const statements = row.original.statements
+        if (!statements || statements.length === 0) return null
 
         return (
           <div className="flex flex-col px-1">
@@ -76,23 +82,23 @@ export function BankTable() {
               <div
                 key={`${statement.bank_txn.id}-${index}`}
                 className={cn(
-                  "px-3 py-5",
-                  index > 0 ? "border-t border-gray-200" : ""
+                  'px-3 py-5',
+                  index > 0 ? 'border-t border-gray-200' : ''
                 )}
               >
                 {statement.bank_txn.date}
               </div>
             ))}
           </div>
-        );
+        )
       },
     },
     {
-      accessorKey: "bank_txn.description",
-      header: "Description",
+      accessorKey: 'bank_txn.description',
+      header: 'Description',
       cell: ({ row }) => {
-        const statements = row.original.statements;
-        if (!statements || statements.length === 0) return null;
+        const statements = row.original.statements
+        if (!statements || statements.length === 0) return null
 
         return (
           <div className="flex flex-col px-1">
@@ -100,23 +106,23 @@ export function BankTable() {
               <div
                 key={`${statement.bank_txn.id}-${index}`}
                 className={cn(
-                  "px-3 py-5",
-                  index > 0 ? "border-t border-gray-200" : ""
+                  'px-3 py-5',
+                  index > 0 ? 'border-t border-gray-200' : ''
                 )}
               >
                 {statement.bank_txn.description}
               </div>
             ))}
           </div>
-        );
+        )
       },
     },
     {
-      accessorKey: "bank_txn.amount",
-      header: "Amount",
+      accessorKey: 'bank_txn.amount',
+      header: 'Amount',
       cell: ({ row }) => {
-        const statements = row.original.statements;
-        if (!statements || statements.length === 0) return null;
+        const statements = row.original.statements
+        if (!statements || statements.length === 0) return null
 
         return (
           <div className="flex flex-col px-1">
@@ -124,31 +130,31 @@ export function BankTable() {
               <div
                 key={`${statement.bank_txn.id}-${index}`}
                 className={cn(
-                  "px-3 py-5",
-                  index > 0 ? "border-t border-gray-200" : ""
+                  'px-3 py-5',
+                  index > 0 ? 'border-t border-gray-200' : ''
                 )}
               >
                 {statement.bank_txn.amount}
               </div>
             ))}
           </div>
-        );
+        )
       },
     },
-  ];
+  ]
 
   // Conditional action column
   const actionColumn: ColumnDef<ReconciliationItem> = {
-    id: "action",
-    header: "Action",
+    id: 'action',
+    header: 'Action',
     cell: ({ row }) => {
-      const reconciledDataRow = row.original;
+      const reconciledDataRow = row.original
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
-              className="cursor-pointer flex justify-center items-center w-full"
+              className="flex w-full cursor-pointer items-center justify-center"
             >
               <span className="sr-only">Open menu</span>
               <VerticalDotsIcon className="h-5 w-5" />
@@ -158,14 +164,14 @@ export function BankTable() {
             {reconciledDataRow.matched ? (
               <DropdownMenuItem
                 onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedRow(row.original);
-                  setShowUnlinkModal(true);
+                  e.stopPropagation()
+                  setSelectedRow(row.original)
+                  setShowUnlinkModal(true)
                 }}
                 className="gap-0.5"
               >
-                <CheckIcon className="text-[#333333] h-7 w-7" />
-                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                <CheckIcon className="h-7 w-7 text-[#333333]" />
+                <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
                   Unlink Matched
                 </span>
               </DropdownMenuItem>
@@ -173,27 +179,27 @@ export function BankTable() {
               <DropdownMenuItem
                 className="gap-0.5"
                 onClick={() => {
-                  setSelectedTransactionRow(reconciledDataRow);
-                  setModalOpen(true);
+                  setSelectedTransactionRow(reconciledDataRow)
+                  setModalOpen(true)
                 }}
               >
-                <CheckIcon className="text-[#333333] h-7 w-7" />
-                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                <CheckIcon className="h-7 w-7 text-[#333333]" />
+                <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
                   Find Possible Match
                 </span>
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
-  };
+  }
 
   // Combine columns based on authentication
   const bankColumns = [
     ...baseColumns,
-    ...(isAuthenticated && userPlan === "business" ? [actionColumn] : []),
-  ];
+    ...(isAuthenticated && userPlan === 'business' ? [actionColumn] : []),
+  ]
 
   const table = useReactTable({
     data: paginatedData,
@@ -206,22 +212,22 @@ export function BankTable() {
     },
     manualPagination: true,
     pageCount: Math.ceil(paginatedData.length / pagination.pageSize),
-  });
+  })
 
   const handleSearch = (query: string) => {
     // Always return full list for empty queries
-    if (!query.trim()) return transactionOptions;
+    if (!query.trim()) return transactionOptions
 
     return transactionOptions.filter(
       (transaction) =>
         transaction.description.toLowerCase().includes(query.toLowerCase()) ||
         transaction.date.toLowerCase().includes(query.toLowerCase())
-    );
-  };
+    )
+  }
 
   return (
     <>
-      <div className="rounded-md border overflow-hidden">
+      <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -230,9 +236,9 @@ export function BankTable() {
                   <TableHead
                     key={header.id}
                     className={
-                      header.column.id === "action"
-                        ? "w-16 max-w-16 text-center px-2 h-12"
-                        : "px-6 h-12"
+                      header.column.id === 'action'
+                        ? 'h-12 w-16 max-w-16 px-2 text-center'
+                        : 'h-12 px-6'
                     }
                   >
                     {header.isPlaceholder
@@ -248,18 +254,18 @@ export function BankTable() {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.map((row, index) => {
-              const reconciledDataRow = row.original;
+              const reconciledDataRow = row.original
 
               return (
                 <TableRow
                   key={row.id}
                   className={cn(
-                    "transition-colors",
+                    'transition-colors',
                     row.original.matched
-                      ? "bg-green-50 hover:bg-green-50"
+                      ? 'bg-green-50 hover:bg-green-50'
                       : row.original.statements
-                        ? "bg-red-50 hover:bg-red-50"
-                        : "hover:bg-white"
+                        ? 'bg-red-50 hover:bg-red-50'
+                        : 'hover:bg-white'
                   )}
                   style={{ height: `${rowHeights[index]}px` }}
                 >
@@ -268,8 +274,8 @@ export function BankTable() {
                     row.getVisibleCells().map((cell, index) => (
                       <TableCell
                         key={cell.id}
-                        className={cn("py-0", {
-                          "border-r":
+                        className={cn('py-0', {
+                          'border-r':
                             index !== row.getVisibleCells().length - 1,
                         })}
                       >
@@ -284,18 +290,18 @@ export function BankTable() {
                     <>
                       <TableCell
                         colSpan={
-                          isAuthenticated && userPlan === "business"
+                          isAuthenticated && userPlan === 'business'
                             ? bankColumns.length - 1
                             : bankColumns.length
                         }
-                        className={cn("px-4 !h-[0px]", {
-                          "border-r":
-                            isAuthenticated && userPlan === "business",
+                        className={cn('!h-[0px] px-4', {
+                          'border-r':
+                            isAuthenticated && userPlan === 'business',
                         })}
                       >
                         <QuickFindAndMatchComboBox
                           commandProps={{
-                            label: "Select possible match",
+                            label: 'Select possible match',
                           }}
                           defaultOptions={transactionOptions}
                           onSearchSync={handleSearch}
@@ -307,8 +313,8 @@ export function BankTable() {
                               description: option.description,
                               date: option.date,
                               amount: option.amount,
-                            };
-                            console.log("Confirmed:", option);
+                            }
+                            console.log('Confirmed:', option)
 
                             if (
                               reconciledDataRow.ledgers &&
@@ -319,7 +325,7 @@ export function BankTable() {
                                 reconciledDataRow.ledgers.map(
                                   (ledg) => ledg.ledger_txn
                                 )
-                              );
+                              )
                             }
                           }}
                           emptyIndicator={
@@ -329,13 +335,13 @@ export function BankTable() {
                           }
                         />
                       </TableCell>
-                      {isAuthenticated && userPlan === "business" && (
-                        <TableCell className="py-5 flex items-center justify-center">
+                      {isAuthenticated && userPlan === 'business' && (
+                        <TableCell className="flex items-center justify-center py-5">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <button
                                 type="button"
-                                className="cursor-pointer flex justify-center items-center"
+                                className="flex cursor-pointer items-center justify-center"
                               >
                                 <span className="sr-only">Open menu</span>
                                 <VerticalDotsIcon className="h-5 w-5" />
@@ -345,14 +351,14 @@ export function BankTable() {
                               {reconciledDataRow.matched ? (
                                 <DropdownMenuItem
                                   onClick={(e) => {
-                                    e.stopPropagation();
-                                    setSelectedRow(row.original);
-                                    setShowUnlinkModal(true);
+                                    e.stopPropagation()
+                                    setSelectedRow(row.original)
+                                    setShowUnlinkModal(true)
                                   }}
                                   className="gap-0.5"
                                 >
-                                  <CheckIcon className="text-[#333333] h-7 w-7" />
-                                  <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                  <CheckIcon className="h-7 w-7 text-[#333333]" />
+                                  <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
                                     Unlink Matched
                                   </span>
                                 </DropdownMenuItem>
@@ -360,14 +366,12 @@ export function BankTable() {
                                 <DropdownMenuItem
                                   className="gap-0.5"
                                   onClick={() => {
-                                    setSelectedTransactionRow(
-                                      reconciledDataRow
-                                    );
-                                    setModalOpen(true);
+                                    setSelectedTransactionRow(reconciledDataRow)
+                                    setModalOpen(true)
                                   }}
                                 >
-                                  <CheckIcon className="text-[#333333] h-7 w-7" />
-                                  <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                  <CheckIcon className="h-7 w-7 text-[#333333]" />
+                                  <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
                                     Find Possible Match
                                   </span>
                                 </DropdownMenuItem>
@@ -379,7 +383,7 @@ export function BankTable() {
                     </>
                   )}
                 </TableRow>
-              );
+              )
             })}
           </TableBody>
         </Table>
@@ -397,5 +401,5 @@ export function BankTable() {
         onMatch={onMatch}
       />
     </>
-  );
+  )
 }

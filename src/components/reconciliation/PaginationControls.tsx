@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import { Button } from "@/src/components/ui/button";
+import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/src/components/ui/select";
-import { useReconciliation } from "@/src/context/ReconciliationProvider";
+} from '@/components/ui/select'
+import { useReconciliation } from '@/context/ReconciliationProvider'
 
 export function PaginationControls() {
   const {
@@ -19,25 +19,25 @@ export function PaginationControls() {
     canPreviousPage,
     canNextPage,
     onRowsPerPageChange,
-  } = useReconciliation();
-  const { pageIndex, pageSize } = pagination;
+  } = useReconciliation()
+  const { pageIndex, pageSize } = pagination
 
-  const startItem = pageIndex * pageSize + 1;
-  const endItem = Math.min((pageIndex + 1) * pageSize, totalItems);
+  const startItem = pageIndex * pageSize + 1
+  const endItem = Math.min((pageIndex + 1) * pageSize, totalItems)
 
   // array of row options
-  const rowOptions = [10, 25, 50];
+  const rowOptions = [10, 25, 50]
 
   // Add a function to determine if an option should be disabled
   const isOptionDisabled = (size: number) => {
-    return (size > 10 && totalItems <= 10) || (size > 25 && totalItems <= 25);
-  };
+    return (size > 10 && totalItems <= 10) || (size > 25 && totalItems <= 25)
+  }
 
   return (
     <div>
       <hr />
 
-      <div className="flex items-center justify-between mt-4">
+      <div className="mt-4 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <span className="text-sm text-gray-700">Rows per page</span>
           <Select
@@ -83,5 +83,5 @@ export function PaginationControls() {
         </div>
       </div>
     </div>
-  );
+  )
 }

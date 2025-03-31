@@ -1,18 +1,18 @@
-import React from "react";
-import { Logo } from "./Icons";
-import Container from "./Container";
-import Link from "next/link";
+import React from 'react'
+import { Logo } from './Icons'
+import Container from './Container'
+import Link from 'next/link'
 
 const Header = () => {
   return (
-    <header className="bg-white py-3 z-50 border-b-[0.5px] border-gray-300 w-[calc(100%+80px)] -ml-10 px-4">
+    <header className="z-50 -ml-10 w-[calc(100%+80px)] border-b-[0.5px] border-gray-300 bg-white px-4 py-3">
       <Container className="flex items-start">
         <Link href="/">
-        <Logo className="w-[97.28px] h-8 md:w-[159px] md:h-[50px]" />
+          <Logo className="h-8 w-[97.28px] md:h-[50px] md:w-[159px]" />
         </Link>
       </Container>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

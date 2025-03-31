@@ -1,50 +1,50 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import Container from "../Container";
-import { smoothScroll } from "@/src/utils/smoothScroll";
+'use client'
+import React from 'react'
+import Image from 'next/image'
+import Container from '../Container'
+import { smoothScroll } from '@/utils/smoothScroll'
 
 const features = [
   {
     description:
-      "Simplifies general ledger reconciliation – Match school transactions with accuracy.",
+      'Simplifies general ledger reconciliation – Match school transactions with accuracy.',
   },
   {
     description:
-      "Reduces errors in payment reconciliation – Keep track of tuition and school expenses.",
+      'Reduces errors in payment reconciliation – Keep track of tuition and school expenses.',
   },
   {
     description:
-      "Organizes financial records – Ensure audit-ready financial management.",
+      'Organizes financial records – Ensure audit-ready financial management.',
   },
   {
     description:
-      "Saves time for finance teams – Automate reconciliation and focus on other tasks.",
+      'Saves time for finance teams – Automate reconciliation and focus on other tasks.',
   },
   {
     description:
-      "Works for all educational institutions – From small schools to large universities.",
+      'Works for all educational institutions – From small schools to large universities.',
   },
-];
+]
 
 export default function WhyReconXi() {
   const handleDemoClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    smoothScroll("demo-form");
-  };
+    e.preventDefault()
+    smoothScroll('demo-form')
+  }
 
   return (
     <section className="py-10 md:py-20" aria-labelledby="why-reconxi-title">
       <Container>
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-[64px] w-full max-w-[1232px] mx-auto">
+        <div className="mx-auto flex w-full max-w-[1232px] flex-col items-center gap-8 md:flex-row md:gap-[64px]">
           {/* Left Content - Descriptions First on Mobile */}
-          <div className="w-full md:w-[674px] flex-shrink-0 gap-6 md:gap-[48px]">
-            <h2 className="text-[#475467] text-sm sm:text-base md:text-lg pb-2 font-medium uppercase">
+          <div className="w-full flex-shrink-0 gap-6 md:w-[674px] md:gap-[48px]">
+            <h2 className="pb-2 text-sm font-medium text-[#475467] uppercase sm:text-base md:text-lg">
               BENEFITS
             </h2>
             <h2
               id="why-reconxi-title"
-              className="text-[22px] sm:text-[28px] md:text-[36px] leading-[1.2] md:leading-[44px] font-semibold text-[#101828] pb-8"
+              className="pb-8 text-[22px] leading-[1.2] font-semibold text-[#101828] sm:text-[28px] md:text-[36px] md:leading-[44px]"
             >
               Benefits of Using ReconXi <br className="hidden md:block" /> for
               Schools
@@ -54,10 +54,10 @@ export default function WhyReconXi() {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex gap-3 md:gap-4 items-start"
+                  className="flex items-start gap-3 md:gap-4"
                   role="listitem"
                 >
-                  <div className="w-6 h-6 md:w-7 md:h-7 flex items-center justify-center">
+                  <div className="flex h-6 w-6 items-center justify-center md:h-7 md:w-7">
                     <svg
                       width="24"
                       height="24"
@@ -81,7 +81,7 @@ export default function WhyReconXi() {
                       </defs>
                     </svg>
                   </div>
-                  <p className="text-[14px] sm:text-[16px] md:text-[20px] leading-[24px] text-[#767676]">
+                  <p className="text-[14px] leading-[24px] text-[#767676] sm:text-[16px] md:text-[20px]">
                     {feature.description}
                   </p>
                 </div>
@@ -90,7 +90,7 @@ export default function WhyReconXi() {
 
             <button
               onClick={handleDemoClick}
-              className="h-[40px] md:h-[44px] px-5 flex items-center justify-center bg-[#2E604A] text-white rounded-lg font-semibold text-sm md:text-base hover:bg-[#26533E] cursor-pointer mt-8"
+              className="mt-8 flex h-[40px] cursor-pointer items-center justify-center rounded-lg bg-[#2E604A] px-5 text-sm font-semibold text-white hover:bg-[#26533E] md:h-[44px] md:text-base"
               aria-label="Open signup modal"
             >
               Book A Demo
@@ -98,17 +98,17 @@ export default function WhyReconXi() {
           </div>
 
           {/* Right Side - Image Appears Below on Mobile */}
-          <div className="w-full md:w-[494px] flex justify-center">
+          <div className="flex w-full justify-center md:w-[494px]">
             <Image
               src="/assets/images/small-education.svg"
               alt="Visual representation of ReconXi features"
               width={494}
               height={616}
-              className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[494px] h-auto rounded-xl shadow-md"
+              className="h-auto w-full max-w-[300px] rounded-xl shadow-md sm:max-w-[400px] md:max-w-[494px]"
             />
           </div>
         </div>
       </Container>
     </section>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { Command as CommandPrimitive } from "cmdk";
+import { Command as CommandPrimitive } from 'cmdk'
 import {
   KeyboardEvent,
   useCallback,
@@ -8,27 +8,27 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
+} from 'react'
 
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/src/components/ui/popover";
-import { cn } from "@/src/lib/utils";
-import { CommandEmpty } from "../../ui/command";
-import { TransactionOption } from "../../../helpers/searchComboxOptionExpander";
-import { Command, CommandGroup, CommandItem, CommandList } from "./command";
-import { GroupOption, QuickFindAndMatchComboBoxProps } from "./types";
-import { removePickedOption, transToGroupOption, useDebounce } from "./utils";
-import { useReconciliation } from "@/src/context/ReconciliationProvider";
-import { SearchIcon } from "@/src/components/Icon/Icons";
+} from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
+import { CommandEmpty } from '../../ui/command'
+import { TransactionOption } from '../../../helpers/searchComboxOptionExpander'
+import { Command, CommandGroup, CommandItem, CommandList } from './command'
+import { GroupOption, QuickFindAndMatchComboBoxProps } from './types'
+import { removePickedOption, transToGroupOption, useDebounce } from './utils'
+import { useReconciliation } from '@/context/ReconciliationProvider'
+import { SearchIcon } from '@/components/Icon/Icons'
 
 export interface QuickFindAndMatchComboBoxRef {
-  selectedValue: TransactionOption | null;
-  input: HTMLInputElement;
-  focus: () => void;
-  reset: () => void;
+  selectedValue: TransactionOption | null
+  input: HTMLInputElement
+  focus: () => void
+  reset: () => void
 }
 
 const QuickFindAndMatchComboBox = ({
@@ -52,21 +52,21 @@ const QuickFindAndMatchComboBox = ({
   inputProps,
   onConfirm,
 }: QuickFindAndMatchComboBoxProps) => {
-  const { isMatching } = useReconciliation();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [open, setOpen] = useState(false);
-  const [onScrollbar, setOnScrollbar] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { isMatching } = useReconciliation()
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [open, setOpen] = useState(false)
+  const [onScrollbar, setOnScrollbar] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const [selected, setSelected] = useState<TransactionOption | null>(
     value || null
-  );
+  )
   const [options, setOptions] = useState<GroupOption>(
     transToGroupOption(arrayDefaultOptions, groupBy)
-  );
-  const [inputValue, setInputValue] = useState("");
-  const debouncedSearchTerm = useDebounce(inputValue, delay || 500);
+  )
+  const [inputValue, setInputValue] = useState('')
+  const debouncedSearchTerm = useDebounce(inputValue, delay || 500)
 
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
     if (
@@ -75,15 +75,15 @@ const QuickFindAndMatchComboBox = ({
       inputRef.current &&
       !inputRef.current.contains(event.target as Node)
     ) {
-      setOpen(false);
-      inputRef.current.blur();
+      setOpen(false)
+      inputRef.current.blur()
     }
-  };
+  }
 
   const handleUnselect = useCallback(() => {
-    setSelected(null);
-    onChange?.(null);
-  }, [onChange]);
+    setSelected(null)
+    onChange?.(null)
+  }, [onChange])
 
   // const handleConfirm = useCallback(() => {
   //   if (selected) {
@@ -93,51 +93,51 @@ const QuickFindAndMatchComboBox = ({
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent<HTMLDivElement>) => {
-      const input = inputRef.current;
+      const input = inputRef.current
       if (input) {
-        if (e.key === "Delete" || e.key === "Backspace") {
-          if (input.value === "" && selected) {
-            handleUnselect();
+        if (e.key === 'Delete' || e.key === 'Backspace') {
+          if (input.value === '' && selected) {
+            handleUnselect()
           }
         }
-        if (e.key === "Escape") {
-          input.blur();
+        if (e.key === 'Escape') {
+          input.blur()
         }
       }
     },
     [handleUnselect, selected]
-  );
+  )
 
   useEffect(() => {
     if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-      document.addEventListener("touchend", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
+      document.addEventListener('touchend', handleClickOutside)
     } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchend", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchend', handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("touchend", handleClickOutside);
-    };
-  }, [open]);
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchend', handleClickOutside)
+    }
+  }, [open])
 
   useEffect(() => {
     if (value) {
-      setSelected(value);
-      onConfirm?.(value);
+      setSelected(value)
+      onConfirm?.(value)
     }
-  }, [value, onConfirm]);
+  }, [value, onConfirm])
 
   useEffect(() => {
     /** If `onSearch` is provided, do not trigger options updated. */
     if (!arrayOptions || onSearch || onSearchSync) {
-      return;
+      return
     }
-    const newOption = transToGroupOption(arrayOptions || [], groupBy);
+    const newOption = transToGroupOption(arrayOptions || [], groupBy)
     if (JSON.stringify(newOption) !== JSON.stringify(options)) {
-      setOptions(newOption);
+      setOptions(newOption)
     }
   }, [
     arrayDefaultOptions,
@@ -146,29 +146,29 @@ const QuickFindAndMatchComboBox = ({
     onSearch,
     onSearchSync,
     options,
-  ]);
+  ])
 
   useEffect(() => {
     /** sync search */
     const doSearchSync = () => {
-      if (!onSearchSync) return;
+      if (!onSearchSync) return
       // When search is empty, reset to default options
       if (!debouncedSearchTerm.trim()) {
-        setOptions(transToGroupOption(arrayDefaultOptions, groupBy));
-        return;
+        setOptions(transToGroupOption(arrayDefaultOptions, groupBy))
+        return
       }
-      const res = onSearchSync(debouncedSearchTerm);
-      setOptions(transToGroupOption(res || [], groupBy));
-    };
+      const res = onSearchSync(debouncedSearchTerm)
+      setOptions(transToGroupOption(res || [], groupBy))
+    }
 
     const exec = async () => {
-      if (!onSearchSync || !open) return;
+      if (!onSearchSync || !open) return
 
       // Always run search when input changes, not just on focus
-      doSearchSync();
-    };
+      doSearchSync()
+    }
 
-    void exec();
+    void exec()
   }, [
     debouncedSearchTerm,
     groupBy,
@@ -176,31 +176,31 @@ const QuickFindAndMatchComboBox = ({
     open,
     triggerSearchOnFocus,
     arrayDefaultOptions,
-  ]);
+  ])
 
   useEffect(() => {
     /** async search */
     const doSearch = async () => {
-      if (!onSearch) return;
-      setIsLoading(true);
-      const res = await onSearch(debouncedSearchTerm);
-      setOptions(transToGroupOption(res || [], groupBy));
-      setIsLoading(false);
-    };
+      if (!onSearch) return
+      setIsLoading(true)
+      const res = await onSearch(debouncedSearchTerm)
+      setOptions(transToGroupOption(res || [], groupBy))
+      setIsLoading(false)
+    }
 
     const exec = async () => {
-      if (!onSearch || !open) return;
+      if (!onSearch || !open) return
 
       if (triggerSearchOnFocus || debouncedSearchTerm) {
-        await doSearch();
+        await doSearch()
       }
-    };
+    }
 
-    void exec();
-  }, [debouncedSearchTerm, groupBy, onSearch, open, triggerSearchOnFocus]);
+    void exec()
+  }, [debouncedSearchTerm, groupBy, onSearch, open, triggerSearchOnFocus])
 
   const EmptyItem = useCallback(() => {
-    if (!emptyIndicator) return undefined;
+    if (!emptyIndicator) return undefined
 
     // For async search that showing emptyIndicator
     if ((onSearch || onSearchSync) && Object.keys(options).length === 0) {
@@ -208,42 +208,42 @@ const QuickFindAndMatchComboBox = ({
         <CommandItem value="-" disabled>
           {emptyIndicator}
         </CommandItem>
-      );
+      )
     }
 
-    return <CommandEmpty>{emptyIndicator}</CommandEmpty>;
-  }, [emptyIndicator, onSearch, onSearchSync, options]);
+    return <CommandEmpty>{emptyIndicator}</CommandEmpty>
+  }, [emptyIndicator, onSearch, onSearchSync, options])
 
   const selectables = useMemo<GroupOption>(
     () => removePickedOption(options, selected),
     [options, selected]
-  );
+  )
 
   /** Avoid Creatable Selector freezing or lagging when paste a long string. */
   const commandFilter = useCallback(() => {
     if (commandProps?.filter) {
-      return commandProps.filter;
+      return commandProps.filter
     }
 
     if (creatable) {
       return (value: string, search: string) => {
-        return value.toLowerCase().includes(search.toLowerCase()) ? 1 : -1;
-      };
+        return value.toLowerCase().includes(search.toLowerCase()) ? 1 : -1
+      }
     }
     // Using default filter in `cmdk`. We don&lsquo;t have to provide it.
-    return undefined;
-  }, [creatable, commandProps?.filter]);
+    return undefined
+  }, [creatable, commandProps?.filter])
 
   return (
     <Command
       ref={dropdownRef}
       {...commandProps}
       onKeyDown={(e) => {
-        handleKeyDown(e);
-        commandProps?.onKeyDown?.(e);
+        handleKeyDown(e)
+        commandProps?.onKeyDown?.(e)
       }}
       className={cn(
-        "h-auto overflow-visible !bg-white !w-full",
+        'h-auto !w-full overflow-visible !bg-white',
         commandProps?.className
       )}
       shouldFilter={
@@ -257,22 +257,22 @@ const QuickFindAndMatchComboBox = ({
         <PopoverTrigger asChild>
           <div
             className={cn(
-              "border-input focus-within:border-ring focus-within:ring-ring/50 dark:has-aria-invalid:ring-destructive/40 has-aria-invalid:border-destructive relative min-h-[38px] rounded-md border text-sm transition-[color,box-shadow] outline-none focus-within:ring-[3px] has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50",
+              'border-input focus-within:border-ring focus-within:ring-ring/50 dark:has-aria-invalid:ring-destructive/40 has-aria-invalid:border-destructive relative min-h-[38px] rounded-md border text-sm transition-[color,box-shadow] outline-none focus-within:ring-[3px] has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50',
               {
-                "p-1": selected !== null,
-                "cursor-text": !disabled && selected !== null,
+                'p-1': selected !== null,
+                'cursor-text': !disabled && selected !== null,
               },
               {
-                "animate-pulse bg-gray-100": isMatching,
+                'animate-pulse bg-gray-100': isMatching,
               },
               className
             )}
             onClick={() => {
-              if (disabled) return;
-              inputRef?.current?.focus();
+              if (disabled) return
+              inputRef?.current?.focus()
             }}
           >
-            <div className="flex flex-wrap gap-1 items-center">
+            <div className="flex flex-wrap items-center gap-1">
               {/* {selected && (
                 <div
                   key={selected.value}
@@ -344,33 +344,33 @@ const QuickFindAndMatchComboBox = ({
                     value={inputValue}
                     disabled={disabled}
                     onValueChange={(value) => {
-                      setInputValue(value);
+                      setInputValue(value)
                       // If using sync search, trigger it immediately
                       if (onSearchSync) {
-                        const res = onSearchSync(value);
-                        setOptions(transToGroupOption(res || [], groupBy));
+                        const res = onSearchSync(value)
+                        setOptions(transToGroupOption(res || [], groupBy))
                       }
-                      inputProps?.onValueChange?.(value);
+                      inputProps?.onValueChange?.(value)
                     }}
                     onBlur={(event) => {
                       if (!onScrollbar) {
-                        setOpen(false);
+                        setOpen(false)
                       }
-                      inputProps?.onBlur?.(event);
+                      inputProps?.onBlur?.(event)
                     }}
                     onFocus={(event) => {
-                      setOpen(true);
+                      setOpen(true)
                       if (triggerSearchOnFocus) {
-                        onSearchSync?.(debouncedSearchTerm);
+                        onSearchSync?.(debouncedSearchTerm)
                       }
-                      inputProps?.onFocus?.(event);
+                      inputProps?.onFocus?.(event)
                     }}
                     onClick={(event) => {
-                      event.stopPropagation();
+                      event.stopPropagation()
                     }}
                     placeholder={placeholder}
                     className={cn(
-                      "placeholder:italic placeholder:text-muted-foreground/80 flex-1 outline-hidden disabled:cursor-not-allowed h-9 px-3 pl-9 w-full",
+                      'placeholder:text-muted-foreground/80 h-9 w-full flex-1 px-3 pl-9 outline-hidden placeholder:italic disabled:cursor-not-allowed',
                       inputProps?.className
                     )}
                   />
@@ -380,20 +380,20 @@ const QuickFindAndMatchComboBox = ({
           </div>
         </PopoverTrigger>
         <PopoverContent
-          className="max-w-[600px] min-w-[345px] overflow-hidden p-0 z-40 sm:!min-w-[500px]"
+          className="z-40 max-w-[600px] min-w-[345px] overflow-hidden p-0 sm:!min-w-[500px]"
           align="start"
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <CommandList
-            className="bg-popover text-popover-foreground max-h-[300px] overflow-y-auto p-0 !w-full"
+            className="bg-popover text-popover-foreground max-h-[300px] !w-full overflow-y-auto p-0"
             onMouseLeave={() => {
-              setOnScrollbar(false);
+              setOnScrollbar(false)
             }}
             onMouseEnter={() => {
-              setOnScrollbar(true);
+              setOnScrollbar(true)
             }}
             onMouseUp={() => {
-              inputRef?.current?.focus();
+              inputRef?.current?.focus()
             }}
           >
             {isLoading ? (
@@ -408,7 +408,7 @@ const QuickFindAndMatchComboBox = ({
                   <CommandGroup
                     key={key}
                     heading={key}
-                    className="overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground !w-full"
+                    className="[&_[cmdk-group-heading]]:text-muted-foreground !w-full overflow-hidden [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium"
                   >
                     {dropdowns.map((option, index) => {
                       return (
@@ -417,36 +417,36 @@ const QuickFindAndMatchComboBox = ({
                           value={option.value}
                           disabled={option.disable}
                           onMouseDown={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
+                            e.preventDefault()
+                            e.stopPropagation()
                           }}
                           onSelect={() => {
-                            setInputValue("");
-                            setSelected(option);
-                            onConfirm?.(option);
-                            onChange?.(option);
-                            setOpen(false);
+                            setInputValue('')
+                            setSelected(option)
+                            onConfirm?.(option)
+                            onChange?.(option)
+                            setOpen(false)
                           }}
                           className={cn(
-                            "cursor-pointer px-2 py-2 border-b last:border-0 h-12",
-                            index % 2 === 0 ? "bg-muted/30" : "bg-background",
+                            'h-12 cursor-pointer border-b px-2 py-2 last:border-0',
+                            index % 2 === 0 ? 'bg-muted/30' : 'bg-background',
                             option.disable &&
-                              "pointer-events-none cursor-not-allowed opacity-50"
+                              'pointer-events-none cursor-not-allowed opacity-50'
                           )}
                         >
-                          <div className="grid grid-cols-7 divide-x !w-full md:grid-cols-4">
-                            <div className="pr-2 col-span-2 text-xs sm:text-sm md:col-span-1">
+                          <div className="grid !w-full grid-cols-7 divide-x md:grid-cols-4">
+                            <div className="col-span-2 pr-2 text-xs sm:text-sm md:col-span-1">
                               {option.date}
                             </div>
-                            <div className="pl-2 text-xs sm:text-sm truncate text-wrap line-clamp-2 col-span-4 max-md:pl-2 md:col-span-2">
+                            <div className="col-span-4 line-clamp-2 truncate pl-2 text-xs text-wrap max-md:pl-2 sm:text-sm md:col-span-2">
                               {option.description}
                             </div>
-                            <div className="text-xs sm:text-sm text-right">
+                            <div className="text-right text-xs sm:text-sm">
                               {option.amount}
                             </div>
                           </div>
                         </CommandItem>
-                      );
+                      )
                     })}
                   </CommandGroup>
                 ))}
@@ -456,8 +456,8 @@ const QuickFindAndMatchComboBox = ({
         </PopoverContent>
       </Popover>
     </Command>
-  );
-};
+  )
+}
 
-QuickFindAndMatchComboBox.displayName = "QuickFindAndMatchComboBox";
-export default QuickFindAndMatchComboBox;
+QuickFindAndMatchComboBox.displayName = 'QuickFindAndMatchComboBox'
+export default QuickFindAndMatchComboBox

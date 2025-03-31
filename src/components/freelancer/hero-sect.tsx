@@ -1,43 +1,39 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import Container from "@/src/components/Container";
+'use client'
+import React from 'react'
+import Image from 'next/image'
+import Container from '@/components/Container'
 
 export default function HeroSection() {
   return (
     <section
-      className="w-full py-10 md:py-20 pb-0 bg-gray-50"
+      className="w-full bg-gray-50 py-10 pb-0 md:py-20"
       aria-labelledby="hero-title"
     >
       <Container>
-        <div
-          className="flex flex-col items-center gap-4 md:gap-6"
-        >
+        <div className="flex flex-col items-center gap-4 md:gap-6">
           <h1
             id="hero-title"
-            className="max-w-[1156px] text-center font-inter text-[28px] sm:text-[45px] md:text-[60px] leading-[1.2] md:leading-[72px] tracking-[-0.02em] font-semibold text-[#101828]"
+            className="font-inter max-w-[1156px] text-center text-[28px] leading-[1.2] font-semibold tracking-[-0.02em] text-[#101828] sm:text-[45px] md:text-[60px] md:leading-[72px]"
           >
             Stop Wasting Hours on Reconciliation - Let ReconXi Do It for You,
             Automatically!
           </h1>
 
-          <p className="max-w-[1216px] text-center font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] font-normal text-[#475467] mt-2 md:mt-4">
+          <p className="font-inter mt-2 max-w-[1216px] text-center text-base leading-[1.5] font-normal text-[#475467] sm:text-lg md:mt-4 md:text-[20px] md:leading-[30px]">
             Tired of manually tracking income and expenses? ReconXi is the
             automated reconciliation software designed for freelancers like you.
             Get accurate bank reconciliation statements in seconds—no
-            spreadsheets, no stress!{" "}
+            spreadsheets, no stress!{' '}
           </p>
         </div>
 
-        <div
-          className="mt-8 md:mt-16 w-full max-w-[1200px] mx-auto"
-        >
-          <div className="relative w-full aspect-[2/1]">
+        <div className="mx-auto mt-8 w-full max-w-[1200px] md:mt-16">
+          <div className="relative aspect-[2/1] w-full">
             <Image
               src="/assets/images/freelancer.svg"
               alt="Demonstration of ReconXi's reconciliation software interface"
               fill
-              className="w-full h-auto object-contain"
+              className="h-auto w-full object-contain"
               sizes="(max-width: 1200px) 100vw, 1200px"
               priority
             />
@@ -45,5 +41,5 @@ export default function HeroSection() {
         </div>
       </Container>
     </section>
-  );
+  )
 }
