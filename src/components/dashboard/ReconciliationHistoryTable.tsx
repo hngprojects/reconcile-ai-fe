@@ -1,5 +1,6 @@
 'use client'
 
+import { useReconcilations } from '@/app/queries'
 import { PaginationControls } from '@/components/PaginationControl'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,8 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { useReconciliationStore } from '@/hooks/use-reconcilation'
 import { cn } from '@/lib/utils'
-import { ReconciliationHistoryType } from '@/types/reconciliation'
+import { RecordItem } from '@/types/global'
 import {
   type ColumnDef,
   flexRender,
@@ -24,23 +26,12 @@ import { ArrowUpRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 
-interface ReconciliationHistoryTableProps {
-  fromDate?: Date
-  toDate?: Date
-  isFilterApplied: boolean
-  reconciliations: ReconciliationHistoryType[]
-}
-
-export function ReconciliationHistoryTable({
-  fromDate,
-  toDate,
-  isFilterApplied,
-  reconciliations,
-}: ReconciliationHistoryTableProps) {
+export function ReconciliationHistoryTable() {
   const router = useRouter()
   const [pageSize, setPageSize] = useState(10)
+  const { data: reconciliations } = useReconcilations()
+  const { fromDate, isFilterApplied, toDate } = useReconciliationStore()
 
-  // Helper function to format date
   const formatDate = (dateString: string) => {
     try {
       // Try parsing ISO format first
@@ -57,11 +48,9 @@ export function ReconciliationHistoryTable({
       return reconciliations
     }
 
-    return reconciliations.filter((item) => {
-      // Parse the date string to a Date object
+    return reconciliations?.filter((item) => {
       const itemDate = parseISO(item.date)
 
-      // If only fromDate is provided
       if (fromDate && !toDate) {
         return itemDate >= fromDate
       }
@@ -81,7 +70,7 @@ export function ReconciliationHistoryTable({
   }, [fromDate, toDate, isFilterApplied, reconciliations])
 
   // Columns definition
-  const columns: ColumnDef<ReconciliationHistoryType>[] = [
+  const columns: ColumnDef<RecordItem>[] = [
     {
       accessorKey: 'serial_number',
       header: 'S/N',
@@ -106,7 +95,10 @@ export function ReconciliationHistoryTable({
 
         return (
           <div
-            className={`font-medium ${isComplete ? 'text-green-600' : 'text-amber-600'}`}
+            className={cn(
+              'font-medium',
+              isComplete ? 'text-green-600' : 'text-amber-600'
+            )}
           >
             {isComplete ? 'Complete' : 'Pending'}
           </div>
@@ -137,7 +129,7 @@ export function ReconciliationHistoryTable({
   ]
 
   const table = useReactTable({
-    data: filteredData,
+    data: filteredData as RecordItem[],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -148,7 +140,7 @@ export function ReconciliationHistoryTable({
     },
   })
 
-  const totalItems = filteredData.length
+  const totalItems = filteredData?.length
 
   return (
     <div>
@@ -230,7 +222,7 @@ export function ReconciliationHistoryTable({
       <PaginationControls
         pageIndex={table.getState().pagination.pageIndex}
         pageSize={pageSize}
-        totalItems={totalItems}
+        totalItems={totalItems ?? 1}
         onPreviousPage={() => table.previousPage()}
         onNextPage={() => table.nextPage()}
         canPreviousPage={table.getCanPreviousPage()}

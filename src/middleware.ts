@@ -9,6 +9,7 @@ export default async function middleware(req: NextRequest) {
   }
   const session = await auth()
   const isLoggedIn = !!session
+  console.log('isLoggedIn', session)
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   )

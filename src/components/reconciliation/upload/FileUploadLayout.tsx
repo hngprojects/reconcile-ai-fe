@@ -1,18 +1,16 @@
-import { useState, useEffect, useCallback } from 'react'
+'use client'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import UploadCard from './UploadCard'
 import { toast } from 'sonner'
-import { reconcileFiles } from '@/lib/api'
-import { FileUploadLayoutProps } from './types'
 import Container from '@/components/Container'
 import ErrorModal from '@/components/modal/ErrorModal'
 import { countCsvRows } from '@/utils/csvHelpers'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { reconcileFiles } from '@/actions/reconcilation'
 
-export default function FileUploadLayout({
-  onReconcile,
-}: FileUploadLayoutProps) {
+export default function FileUploadLayout() {
   const { status } = useSession()
   const isAuthenticated = status === 'authenticated'
   const [bankFiles, setBankFiles] = useState<File[]>([])
@@ -20,18 +18,6 @@ export default function FileUploadLayout({
   const [showErrorModal, setShowErrorModal] = useState(false)
   const [errorCode, setErrorCode] = useState<number>()
   const router = useRouter()
-
-  const fetchPlanAndCount = useCallback(async () => {
-    try {
-      // Plan and count fetching logic commented out
-    } catch (error) {
-      console.error('Error fetching user plan:', error)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchPlanAndCount()
-  }, [fetchPlanAndCount])
 
   const handleFileDelete = (fileName: string, type: 'bank' | 'ledger') => {
     if (type === 'bank') {
@@ -57,14 +43,12 @@ export default function FileUploadLayout({
           validateRowCount(bankFiles),
           validateRowCount(ledgerFiles),
         ])
-
         if (!bankValid || !ledgerValid) {
           setErrorCode(403)
           setShowErrorModal(true)
           return
         }
       }
-
       const toastId = toast.loading(
         <div className="flex flex-col gap-2">
           <h2 className="font-semibold">Processing Reconciliation</h2>
@@ -73,34 +57,24 @@ export default function FileUploadLayout({
               ? "You will get an email notification when it's ready"
               : 'Your files are being processed'}
           </p>
-        </div>,
-        { duration: Infinity }
+        </div>
       )
-
       const result = await reconcileFiles(bankFiles, ledgerFiles)
-
+      console.log(result, 'result from reconcile files')
       if (result.status === 'error') {
         toast.dismiss(toastId)
         setErrorCode(result.code)
         setShowErrorModal(true)
         return
       }
-
       if (result.status === 'success') {
         setTimeout(() => {
           toast.dismiss(toastId)
         }, 5000)
-
         router.push('/dashboard')
-
-        localStorage.setItem('reconciliation_id', result.data.reconciliation_id)
         setBankFiles([])
         setLedgerFiles([])
       }
-
-      setTimeout(() => {
-        onReconcile(bankFiles, ledgerFiles)
-      }, 1000)
     } catch (error) {
       console.error('Error in reconciliation handler:', error)
       const reconciliationError = error as Error & {

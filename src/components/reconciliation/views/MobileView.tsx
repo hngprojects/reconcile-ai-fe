@@ -1,14 +1,12 @@
 'use client'
 
-import Unauthenticated from '@/components/reconciliation/UnAuthorized'
 import { Button } from '@/components/ui/button'
 import { Loader } from '@/components/ui/loader'
 import { useReconciliation } from '@/context/ReconciliationProvider'
 import { exportReconciliation } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import { DownloadCloudIcon, Loader2, MoreVertical } from 'lucide-react'
-import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import {
   addValueAndLabel,
   TransactionOption,
@@ -26,8 +24,9 @@ import { StatusBadge } from '../StatusBadge'
 import { SuccessToast } from '../SuccessToast'
 import { FindPossibleMatchModal } from '../modals/FindPossibleMatchModal'
 import QuickFindAndMatchComboBox from '../quickFind/QuickFindAndMatchComboBox'
+import { useReconcilationsById } from '@/app/queries'
 
-export function MobileView() {
+export function MobileView({ id }: { id: string }) {
   const {
     paginatedData,
     pagination,
@@ -47,20 +46,16 @@ export function MobileView() {
     userPlan,
     setSelectedRow,
     selectedRow,
-    authenticated,
     loading,
   } = useReconciliation()
+  const { isPending } = useReconcilationsById(id)
+
   const [showErrorModal, setShowErrorModal] = useState(false)
-  const [isExporting, setIsExporting] = useState(false)
   const [showSuccessToast, setShowSuccessToast] = useState(false)
   const [showErrorToast, setShowErrorToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
-  const path = usePathname()
-
+  const [isExporting, startExporting] = useTransition()
   const [modalOpen, setModalOpen] = useState(false)
-  // const [selectedTransactionRow, setSelectedRow] = useState<ReconciliationItem>(
-  //   {} as ReconciliationItem
-  // );
 
   const possibleMatches =
     selectedRow?.statements === null
@@ -72,29 +67,19 @@ export function MobileView() {
   const startItem = pageIndex * pageSize + 1
   const endItem = Math.min((pageIndex + 1) * pageSize, totalItems)
 
-  // Export function
   const handleExport = async () => {
-    try {
-      setIsExporting(true)
-
-      const reconciliationId = path.split('/')[2]
-
-      if (!reconciliationId) {
-        throw new Error('No reconciliation id found')
+    startExporting(async () => {
+      try {
+        await exportReconciliation(id)
+        setToastMessage('Your data has been exported successfully!')
+        setShowSuccessToast(true)
+      } catch (error: unknown) {
+        console.error('Export error:', error)
+        setToastMessage(
+          error instanceof Error ? error.message : 'Failed to export data'
+        )
       }
-
-      await exportReconciliation(reconciliationId)
-
-      setToastMessage('Your data has been exported successfully!')
-      setShowSuccessToast(true)
-    } catch (error: unknown) {
-      console.error('Export error:', error)
-      setToastMessage(
-        error instanceof Error ? error.message : 'Failed to export data'
-      )
-    } finally {
-      setIsExporting(false)
-    }
+    })
   }
 
   useEffect(() => {
@@ -133,9 +118,9 @@ export function MobileView() {
 
   return (
     <>
-      {loading ? (
+      {isPending || loading ? (
         <Loader />
-      ) : authenticated ? (
+      ) : (
         <div className="space-y-3 py-6">
           {showSuccessToast && (
             <div className="animate-in fade-in fixed top-4 right-4 z-50 duration-500">
@@ -481,8 +466,6 @@ export function MobileView() {
             />
           )}
         </div>
-      ) : (
-        <Unauthenticated />
       )}
     </>
   )

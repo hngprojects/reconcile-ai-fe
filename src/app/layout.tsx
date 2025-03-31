@@ -1,10 +1,10 @@
 import './globals.css'
 import { auth } from '@/auth'
 import type React from 'react'
-import { Toaster } from 'sonner'
 import { cn } from '@/lib/utils'
 import Nav from '@/components/Nav'
 import type { Metadata } from 'next'
+import { Providers } from './provider'
 import { SessionProvider } from 'next-auth/react'
 import { Inter, Baloo_Paaji_2 } from 'next/font/google'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -115,6 +115,13 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={cn('antialiased', inter.variable, balooPaaji2.variable)}>
+        <SessionProvider session={session}>
+          <Providers>
+            <Nav />
+            <main>{children}</main>
+          </Providers>
+        </SessionProvider>
+        <GoogleAnalytics gaId={process.env.GA_ID || ''} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -127,12 +134,6 @@ export default async function RootLayout({
             }),
           }}
         />
-        <GoogleAnalytics gaId={process.env.GA_ID || ''} />
-        <SessionProvider session={session}>
-          <Nav />
-          <main>{children}</main>
-          <Toaster position="top-right" expand={false} richColors />
-        </SessionProvider>
       </body>
     </html>
   )

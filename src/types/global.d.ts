@@ -14,6 +14,16 @@ export type APIResponse<T> = {
   }
 }
 
+export interface RecordItem {
+  id: string
+  title: string
+  status: 'Completed' | 'Pending' | 'In Progress' | string
+  date: string
+}
+
+export type RecordList = RecordItem[]
+
 export type SearchParams = Promise<{
   [key: string]: string | string[] | undefined
 }>
+export type Params = Promise<{ [key: string]: string }>

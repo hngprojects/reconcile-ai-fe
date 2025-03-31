@@ -1,9 +1,12 @@
 'use client'
 
+import { useReconcilations } from '@/app/queries'
 import { PaginationControls } from '@/components/PaginationControl'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { ReconciliationHistoryType } from '@/types/reconciliation'
+import { useReconciliationStore } from '@/hooks/use-reconcilation'
+import { cn } from '@/lib/utils'
+import { RecordItem } from '@/types/global'
 import {
   type ColumnDef,
   getCoreRowModel,
@@ -23,8 +26,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
 
-// Columns definition
-const columns: ColumnDef<ReconciliationHistoryType>[] = [
+const columns: ColumnDef<RecordItem>[] = [
   {
     accessorKey: 'serial_number',
     header: 'S/N',
@@ -48,7 +50,10 @@ const columns: ColumnDef<ReconciliationHistoryType>[] = [
 
       return (
         <div
-          className={`font-medium ${isComplete ? 'text-green-600' : 'text-amber-600'}`}
+          className={cn(
+            'font-medium',
+            isComplete ? 'text-green-600' : 'text-amber-600'
+          )}
         >
           {isComplete ? 'Complete' : 'Pending'}
         </div>
@@ -65,11 +70,12 @@ const columns: ColumnDef<ReconciliationHistoryType>[] = [
         <Button
           variant="outline"
           size="sm"
-          className={`border-primary text-primary border-2 ${
+          className={cn(
+            'border-primary text-primary border-2',
             !isComplete
               ? 'cursor-not-allowed opacity-50'
               : 'hover:bg-primary/10 cursor-pointer'
-          }`}
+          )}
           disabled={!isComplete}
           onClick={(e) => {
             if (!isComplete) {
@@ -85,65 +91,52 @@ const columns: ColumnDef<ReconciliationHistoryType>[] = [
   },
 ]
 
-interface ReconciliationHistoryCardProps {
-  fromDate?: Date
-  toDate?: Date
-  isFilterApplied: boolean
-  reconciliations: ReconciliationHistoryType[]
-}
-
-export function ReconciliationHistoryCard({
-  fromDate,
-  toDate,
-  isFilterApplied,
-  reconciliations,
-}: ReconciliationHistoryCardProps) {
+export function ReconciliationHistoryCard() {
   const router = useRouter()
+  const { data: reconciliations } = useReconcilations()
+  const { fromDate, isFilterApplied, toDate } = useReconciliationStore()
   const [pageSize, setPageSize] = useState(10)
 
-  // Helper function to format date
   const formatDate = (dateString: string) => {
     try {
-      // Try parsing ISO format first
       const parsedDate = parseISO(dateString)
       return format(parsedDate, 'dd MMM yyyy')
     } catch (error) {
-      // Fallback to original string if parsing fails
       console.warn(`Date formatting error: ${error}`)
       return dateString
     }
   }
 
   const filteredData = useMemo(() => {
-    if (!isFilterApplied || (!fromDate && !toDate)) {
-      return reconciliations
+    if (!isFilterApplied || (!fromDate && !toDate) || !reconciliations) {
+      return reconciliations || []
     }
 
     return reconciliations.filter((item) => {
-      // Parse ISO date
-      const itemDate = parseISO(item.date)
-
-      if (fromDate && toDate) {
-        return isWithinInterval(itemDate, {
-          start: startOfDay(fromDate),
-          end: endOfDay(toDate),
-        })
+      try {
+        const itemDate = parseISO(item.date)
+        if (fromDate && toDate) {
+          return isWithinInterval(itemDate, {
+            start: startOfDay(fromDate),
+            end: endOfDay(toDate),
+          })
+        }
+        if (fromDate) {
+          return isAfter(itemDate, startOfDay(fromDate))
+        }
+        if (toDate) {
+          return isBefore(itemDate, endOfDay(toDate))
+        }
+        return true
+      } catch (error) {
+        console.log(error)
+        return false
       }
-
-      if (fromDate) {
-        return isAfter(itemDate, startOfDay(fromDate))
-      }
-
-      if (toDate) {
-        return isBefore(itemDate, endOfDay(toDate))
-      }
-
-      return true
     })
   }, [fromDate, toDate, isFilterApplied, reconciliations])
 
   const table = useReactTable({
-    data: filteredData,
+    data: filteredData as RecordItem[],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -154,7 +147,7 @@ export function ReconciliationHistoryCard({
     },
   })
 
-  const totalItems = filteredData.length
+  const totalItems = filteredData?.length
 
   return (
     <div>
@@ -171,11 +164,12 @@ export function ReconciliationHistoryCard({
                 </div>
 
                 <div
-                  className={`w-fit rounded-full px-2 py-1 text-xs font-medium ${
+                  className={cn(
+                    'w-fit rounded-full px-2 py-1 text-xs font-medium',
                     row.original.status === 'Completed'
                       ? 'bg-green-100 text-green-700'
                       : 'bg-amber-100 text-amber-700'
-                  }`}
+                  )}
                 >
                   {row.original.status === 'Completed' ? (
                     <p className="flex items-center gap-[6px]">
@@ -220,11 +214,12 @@ export function ReconciliationHistoryCard({
 
                 <Button
                   variant="outline"
-                  className={`border-primary text-primary w-full border-2 ${
+                  className={cn(
+                    'border-primary text-primary w-full border-2',
                     row.original.status !== 'Completed'
                       ? 'pointer-events-none cursor-not-allowed opacity-50'
                       : 'hover:bg-primary/10 cursor-pointer'
-                  }`}
+                  )}
                   disabled={row.original.status !== 'Completed'}
                   onClick={(e) => {
                     if (row.original.status !== 'Completed') {
@@ -244,11 +239,10 @@ export function ReconciliationHistoryCard({
         )}
       </div>
 
-      {/* Pagination */}
       <PaginationControls
         pageIndex={table.getState().pagination.pageIndex}
         pageSize={pageSize}
-        totalItems={totalItems}
+        totalItems={totalItems ?? 1}
         onPreviousPage={() => table.previousPage()}
         onNextPage={() => table.nextPage()}
         canPreviousPage={table.getCanPreviousPage()}

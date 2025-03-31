@@ -8,7 +8,6 @@ import { useSession } from 'next-auth/react'
 
 export const DashboardInfoCards = () => {
   const { data } = useSession()
-  const user = data?.user
   const router = useRouter()
 
   const getUserPlan = (plan: string | undefined) => {
@@ -24,8 +23,8 @@ export const DashboardInfoCards = () => {
 
   const userPlan = getUserPlan(data?.plan?.plan.plan)
   const getReconciliationProgress = () => {
-    const used = user?.payment_plan?.reconciliations_used || 0
-    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 5
+    const used = data?.plan?.reconciliations_used || 0
+    const limit = data?.plan?.plan?.reconciliations_per_month || 5
     if (limit === -1) return { used, limit: '∞', progress: 0 }
     const progress = Math.min((used / limit) * 100, 100)
     return { used, limit, progress }
@@ -92,7 +91,7 @@ export const DashboardInfoCards = () => {
             {userPlan === 'basic' ? 'Usage reset' : 'Next billing date'}
           </h2>
           <p className="text-xl font-bold">
-            {formatDate(user?.payment_plan?.expire_date)}
+            {formatDate(data?.plan?.expire_date)}
           </p>
         </CardContent>
       </Card>

@@ -13,7 +13,8 @@ export function SubscriptionSuccessContent({
   plan: 'starter' | 'business'
 }) {
   const router = useRouter()
-  const { update } = useSession()
+  const { update, data } = useSession()
+  const user = data?.user
   const [isUpdating, startUpdating] = useTransition()
 
   useEffect(() => {
@@ -36,6 +37,12 @@ export function SubscriptionSuccessContent({
               })
               await update({
                 plan: res.data?.plan,
+                user: {
+                  ...user,
+                  payment_plan: {
+                    plan: res.data?.plan,
+                  },
+                },
               })
               router.push('/file-upload')
             } else {

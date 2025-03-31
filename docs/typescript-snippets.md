@@ -1,3 +1,4 @@
+
 # Typescript snippets
 
 - `np` - nextPage
@@ -94,7 +95,7 @@ export default FileName
 ```typescript
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
-    props: {},
+    props: {}
   }
 }
 ```
@@ -124,7 +125,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 ```typescript
 FileName.getInitialProps = async (ctx) => {
-  return {}
+  return {
+    
+  }
 }
 ```
 
@@ -178,10 +181,9 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 interface Data {}
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {}
+export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
+  
+}
 ```
 
 ## `nmid` - nextMiddleware
@@ -190,7 +192,9 @@ export default async function handler(
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {}
+export async function middleware(request: NextRequest) {
+  
+}
 
 export const config = {
   matcher: '/about/:path*',

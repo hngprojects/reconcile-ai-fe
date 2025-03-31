@@ -1,26 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { BankTable } from '../tables/BankTable'
 import { LedgerTable } from '../tables/LedgerTable'
 import { PaginationControls } from '../PaginationControls'
 import { StatusTable } from '../tables/StatusTable'
 import { DownloadCloudIcon, Loader2 } from 'lucide-react'
-import { SuccessToast } from '../SuccessToast'
 import UnlinkModal from '../../modal/UnlinkModal'
 import { useReconciliation } from '@/context/ReconciliationProvider'
 import { exportReconciliation } from '@/lib/api'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import Unauthenticated from '@/components/reconciliation/UnAuthorized'
 import { Loader } from '@/components/ui/loader'
+import { useReconcilationsById } from '@/app/queries'
 
-export default function DesktopView() {
+export default function DesktopView({ id }: { id: string }) {
   const [showErrorModal, setShowErrorModal] = useState(false)
-  const [isExporting, setIsExporting] = useState(false)
-  const [showSuccessToast, setShowSuccessToast] = useState(false)
-  const [showErrorToast, setShowErrorToast] = useState(false)
-  const [toastMessage, setToastMessage] = useState('')
+  const [isExporting, startExporting] = useTransition()
+  // const [showSuccessToast, setShowSuccessToast] = useState(false)
+  // const [showErrorToast, setShowErrorToast] = useState(false)
+  const { isPending } = useReconcilationsById(id)
 
   const {
     handleUnlink: onUnlink,
@@ -30,10 +29,8 @@ export default function DesktopView() {
     selectedRow,
     setSelectedRow,
     userPlan,
-    authenticated,
     loading,
   } = useReconciliation()
-  const path = usePathname()
 
   // Add plan validation helper
   const hasPlanAccess = (featureType: 'export' | 'unlink' | 'match') => {
@@ -49,75 +46,31 @@ export default function DesktopView() {
     }
   }
 
-  // Show CSV structure error toast
-  useEffect(() => {
-    if (showErrorModal) {
-      setToastMessage('CSV Table Structure not currently supported!')
-      setShowErrorToast(true)
-      setShowErrorModal(false)
-    }
-  }, [showErrorModal, setShowErrorModal])
+  // useEffect(() => {
+  //   if (showErrorModal) {
+  //     // setToastMessage('CSV Table Structure not currently supported!')
+  //     setShowErrorToast(true)
+  //     setShowErrorModal(false)
+  //   }
+  // }, [showErrorModal, setShowErrorModal])
 
-  // Auto-hide toast after 5 seconds
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | undefined
-
-    if (showSuccessToast || showErrorToast) {
-      timer = setTimeout(() => {
-        setShowSuccessToast(false)
-        setShowErrorToast(false)
-      }, 5000)
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer)
-    }
-  }, [showSuccessToast, showErrorToast])
-
-  // Export function
   const handleExport = async () => {
-    try {
-      setIsExporting(true)
-      const reconciliationId = path.split('/')[2]
-
-      if (!reconciliationId) {
-        throw new Error('No reconciliation id found')
+    startExporting(async () => {
+      try {
+        await exportReconciliation(id)
+        // setShowSuccessToast(true)
+      } catch (error: unknown) {
+        console.error('Export error:', error)
       }
-
-      await exportReconciliation(reconciliationId)
-
-      setToastMessage('Your data has been exported successfully!')
-      setShowSuccessToast(true)
-    } catch (error) {
-      console.error('Export error:', error)
-      setToastMessage(
-        error instanceof Error ? error.message : 'Failed to export data'
-      )
-      setShowErrorToast(true)
-    } finally {
-      setIsExporting(false)
-    }
+    })
   }
 
   return (
     <>
-      {loading ? (
+      {isPending || loading ? (
         <Loader />
-      ) : authenticated ? (
+      ) : (
         <div className="space-y-6 py-6">
-          {/* Custom Toast Message */}
-          {showSuccessToast && (
-            <div className="animate-in fade-in fixed top-4 right-4 z-50 duration-500">
-              <SuccessToast
-                message={toastMessage}
-                onClose={() => {
-                  setShowSuccessToast(!setShowSuccessToast)
-                }}
-              />
-            </div>
-          )}
-
-          {/* header section with conditional export button */}
           <div className="mb-4 flex items-center justify-between">
             <h1 className="text-2xl font-semibold">Matched Results</h1>
             <div className="flex gap-4">
@@ -200,8 +153,6 @@ export default function DesktopView() {
             //)
           }
         </div>
-      ) : (
-        <Unauthenticated />
       )}
     </>
   )

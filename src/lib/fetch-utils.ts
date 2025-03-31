@@ -131,6 +131,7 @@ export const createFetchUtil = (config: FetchConfig) => {
       fetchOptions.body = JSON.stringify(body)
     }
 
+    console.log(body)
     const response = await fetch(url.toString(), fetchOptions)
 
     let responseBody

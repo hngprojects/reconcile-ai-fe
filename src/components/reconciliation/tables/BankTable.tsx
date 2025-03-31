@@ -62,7 +62,12 @@ export function BankTable() {
   )
   const rowHeights = useRowHeights(paginatedData)
 
-  // Base columns that are always visible
+  console.log({
+    paginatedData,
+    unmatchedBankTransactions,
+    // unmatchedLedgerTransactions,
+  })
+
   const baseColumns: ColumnDef<ReconciliationItem>[] = [
     {
       accessorKey: 'bank_txn.date',

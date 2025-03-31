@@ -1,7 +1,6 @@
 import {
   CONTACT_US_API_URL,
   NEWSLETTER_API_URL,
-  RECONCILE_API_URL,
   WAITLIST_API_URL,
   MANUAL_API_URL,
   MARKETING_DEMO_API_URL,
@@ -9,13 +8,12 @@ import {
   CUSTOMER_FEEDBACK_API_URL,
   RECONCILIATION_RESULT_API_URL,
   PAYMENT_PLAN_API_URL,
-  GOOGLE_LOGIN_URL,
   TOKEN_VALIDATOR_URL,
   USER_PROFILE_UPDATE_API_URL,
   BILLING_HISTORY_API_URL,
 } from './apiEndpoints'
 import { ManualRequestBody } from '@/types/reconciliation'
-import { auth } from '@/auth'
+import { getSession } from 'next-auth/react'
 
 interface MarketingDemoData {
   full_name: string
@@ -60,71 +58,6 @@ interface PaymentPlanResponse {
     created_at: string
     updated_at: string
   } | null
-}
-
-export async function reconcileFiles(bankFiles: File[], ledgerFiles: File[]) {
-  const formData = new FormData()
-  bankFiles.forEach((file) => formData.append('bank_statements[]', file))
-  ledgerFiles.forEach((file) => formData.append('ledgers[]', file))
-
-  const token = localStorage.getItem('access_token')
-  const headers: HeadersInit = {
-    Accept: 'application/json',
-  }
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`
-  }
-
-  try {
-    const response = await fetch(RECONCILE_API_URL, {
-      method: 'POST',
-      headers,
-      body: formData,
-    })
-
-    console.log(response.status)
-
-    const data = await response.json()
-    localStorage.setItem('reconciliation_id', data.data.reconciliation_id)
-
-    if (response.status === 429) {
-      return {
-        status: 'error',
-        code: 429,
-        message:
-          'Maximum number of requests reached. Please login to continue.',
-      }
-    }
-
-    if (response.status === 408) {
-      return {
-        status: 'error',
-        code: 408,
-        message: 'File processing took too long. Please try again later.',
-      }
-    }
-
-    if (!response.ok) {
-      return {
-        status: 'error',
-        code: response.status,
-        message: data.message || 'Reconciliation failed',
-      }
-    }
-
-    return {
-      status: 'success',
-      data: data,
-    }
-  } catch (error) {
-    console.error('Reconciliation error:', error)
-    return {
-      status: 'error',
-      code: 500,
-      message: 'An unexpected error occurred',
-    }
-  }
 }
 
 // Waitlist API
@@ -323,13 +256,10 @@ export const handleCustomerFeedback = async (formData: FormData) => {
 }
 
 export const fetchReconciliation = async (reconciliationId: string) => {
-  const token = localStorage.getItem('access_token')
+  const session = await getSession()
   const headers: HeadersInit = {
     Accept: 'application/json',
-  }
-
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`
+    Authorization: `Bearer ${session?.user.access_token}`,
   }
 
   try {
@@ -358,7 +288,7 @@ export const fetchReconciliation = async (reconciliationId: string) => {
 export async function updatePaymentPlan(
   data: PaymentPlanData
 ): Promise<PaymentPlanResponse> {
-  const token = localStorage.getItem('access_token')
+  const session = await getSession()
 
   try {
     const response = await fetch(PAYMENT_PLAN_API_URL, {
@@ -366,7 +296,7 @@ export async function updatePaymentPlan(
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${session?.user.access_token}`,
       },
       body: JSON.stringify(data),
     })
@@ -402,34 +332,6 @@ export const exportReconciliation = async (reconciliationId: string) => {
   document.body.removeChild(a)
 }
 
-export const loginWithGoogle = async (id_token: string) => {
-  try {
-    const response = await fetch(GOOGLE_LOGIN_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id_token,
-      }),
-    })
-
-    const resData = await response.json()
-
-    if (response.ok) {
-      return { status: 'success', data: resData }
-    } else {
-      return { status: 'error', error: resData }
-    }
-  } catch (error) {
-    return {
-      status: 'error',
-      error:
-        error instanceof Error ? error.message : 'An unexpected error occurred',
-    }
-  }
-}
-
 export const validateToken = async (accessToken: string) => {
   const response = await fetch(TOKEN_VALIDATOR_URL, {
     method: 'GET',
@@ -442,13 +344,13 @@ export const validateToken = async (accessToken: string) => {
 }
 
 export async function updateProfile(formData: FormData) {
-  const token = localStorage.getItem('access_token')
+  const session = await getSession()
   try {
     const response = await fetch(USER_PROFILE_UPDATE_API_URL, {
       method: 'POST',
       body: formData,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${session?.user.access_token}`,
       },
     })
 
@@ -471,14 +373,13 @@ export async function updateProfile(formData: FormData) {
 
 export const getBillingHistory = async (page: number, perPage: number) => {
   try {
-    const session = await auth()
+    const session = await getSession()
 
     const response = await fetch(
       `${BILLING_HISTORY_API_URL}?page=${page}&per_page=${perPage}`,
       {
         headers: {
-          // @ts-expect-error NEXT
-          Authorization: `Bearer ${session?.access_token}`,
+          Authorization: `Bearer ${session?.user.access_token}`,
           Accept: 'application/json',
         },
       }
@@ -494,14 +395,12 @@ export const getBillingHistory = async (page: number, perPage: number) => {
 }
 
 export const fetchReconciliationHistory = async () => {
-  // const token = localStorage.getItem("access_token");
-  const session = await auth()
+  const session = await getSession()
 
   try {
     const response = await fetch(`${RECONCILIATION_RESULT_API_URL}`, {
       headers: {
-        // @ts-expect-error NEXT
-        Authorization: `Bearer ${session?.access_token}`,
+        Authorization: `Bearer ${session?.user.access_token}`,
         Accept: 'application/json',
       },
     })

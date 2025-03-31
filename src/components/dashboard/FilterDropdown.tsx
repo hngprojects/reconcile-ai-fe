@@ -16,26 +16,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import { useReconciliationStore } from '@/hooks/use-reconcilation'
 
-interface FilterDropdownProps {
-  fromDate: Date | undefined
-  toDate: Date | undefined
-  onFromDateChange: (date: Date | undefined) => void
-  onToDateChange: (date: Date | undefined) => void
-  onReset: () => void
-  onApply: () => void
-  onClear: () => void
-}
-
-export function FilterDropdown({
-  fromDate,
-  toDate,
-  onFromDateChange,
-  onToDateChange,
-  onReset,
-  onApply,
-  onClear,
-}: FilterDropdownProps) {
+export function FilterDropdown() {
+  const { fromDate, toDate, resetFilter, applyFilter, setFromDate, setToDate } =
+    useReconciliationStore()
   const [open, setOpen] = useState(false)
   const [fromCalendarOpen, setFromCalendarOpen] = useState(false)
   const [toCalendarOpen, setToCalendarOpen] = useState(false)
@@ -55,31 +40,11 @@ export function FilterDropdown({
   }
 
   const handleApply = () => {
-    // Update the actual dates when Apply is clicked
-    onFromDateChange(tempFromDate)
-    onToDateChange(tempToDate)
-    onApply()
+    setFromDate(tempFromDate)
+    setToDate(tempToDate)
+    applyFilter()
     setOpen(false)
   }
-
-  const handleReset = () => {
-    // Reset both temporary and actual dates
-    setTempFromDate(undefined)
-    setTempToDate(undefined)
-    onFromDateChange(undefined)
-    onToDateChange(undefined)
-    onReset()
-  }
-
-  const handleClear = () => {
-    // Clear both temporary and actual dates
-    setTempFromDate(undefined)
-    setTempToDate(undefined)
-    onFromDateChange(undefined)
-    onToDateChange(undefined)
-    onClear()
-  }
-
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
@@ -112,7 +77,7 @@ export function FilterDropdown({
           <Button
             variant="ghost"
             className="text-primary hover:text-primary/90 h-8 px-2 py-0"
-            onClick={handleClear}
+            onClick={() => resetFilter()}
           >
             Clear
           </Button>
@@ -142,7 +107,7 @@ export function FilterDropdown({
                   selected={tempFromDate}
                   onSelect={handleFromDateSelect}
                   disabled={(date) => (tempToDate ? date > tempToDate : false)}
-                  initialFocus
+                  autoFocus
                 />
               </PopoverContent>
             </Popover>
@@ -173,7 +138,7 @@ export function FilterDropdown({
                   disabled={(date) =>
                     tempFromDate ? date < tempFromDate : false
                   }
-                  initialFocus
+                  autoFocus
                 />
               </PopoverContent>
             </Popover>
@@ -181,7 +146,7 @@ export function FilterDropdown({
         </div>
 
         <div className="flex justify-between">
-          <Button variant="outline" onClick={handleReset}>
+          <Button variant="outline" onClick={() => resetFilter()}>
             Reset
           </Button>
           <Button
