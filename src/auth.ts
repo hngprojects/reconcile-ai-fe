@@ -1,6 +1,6 @@
 import type { DefaultSession } from 'next-auth'
 import NextAuth from 'next-auth'
-import { User } from './types/auth'
+import { PaymentPlan, User } from './types/auth'
 import { authConfig } from './config/auth.config'
 
 export const {
@@ -15,7 +15,7 @@ export const {
 
 declare module 'next-auth' {
   interface Session {
-    user: User & DefaultSession['user']
-    access_token: string
+    user: User & Omit<DefaultSession['user'], 'id'> & { id: number }
+    plan?: PaymentPlan
   }
 }

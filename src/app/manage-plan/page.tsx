@@ -79,7 +79,7 @@ export default function ManagePlanPage() {
       id: 3,
       name: 'Business Plan',
       price: '25',
-      link: 'https://buy.stripe.com/6oEdUPag8dCAbuw14r',
+      link: 'https://buy.stripe.com/test_8wM28u6Y7gpZ2DSeUU',
       features: [
         'Everything in Starter Plan',
         'Unlimited reconciliation/month',

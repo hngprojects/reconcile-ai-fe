@@ -4,15 +4,14 @@ import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import Container from '@/components/Container'
-import circleAlertIcon from '@/public/assets/images/circleAlertIcon.svg'
 import { toast } from 'sonner'
-import { updateProfile } from '@/lib/api'
 import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { signOut, useSession } from 'next-auth/react'
-import { delete_user_account } from '@/actions/user'
+import { delete_user_account, update_user_details } from '@/actions/user'
 
 export default function ProfileManagement() {
   const { data, update } = useSession()
+  const [isLoading, startUpdating] = useTransition()
   const user = data?.user
   const [isDeleting, startTransition] = useTransition()
   const [editingField, setEditingField] = useState<string | null>(null)
@@ -47,27 +46,26 @@ export default function ProfileManagement() {
 
   const handleSave = async () => {
     if (!editingField) return
-    try {
-      const formData = new FormData()
-      formData.append(editingField, editedValue)
-
-      const result = await updateProfile(formData)
-      if (result.success) {
-        update({
-          user: {
-            ...user,
-            [editingField]: editedValue,
-          },
-        })
-        toast.success('Changes Saved Successfully')
-      } else {
-        toast.error('Failed to update changes')
-      }
-    } catch (error) {
-      console.error('Error updating profile:', error)
-      toast.error('An error occurred while updating the changes')
-    }
-    setEditingField(null)
+    startUpdating(async () => {
+      const data = { [editingField]: editedValue }
+      await update_user_details(data).then(async (res) => {
+        if (res.success) {
+          await update({
+            user: {
+              ...user,
+              [editingField]: editedValue,
+            },
+          })
+          toast.success('Changes Saved Successfully', {
+            description: res.message,
+          })
+          setEditingField(null)
+        } else
+          toast.error('Failed to update changes', {
+            description: res.message,
+          })
+      })
+    })
   }
 
   const handleCancel = () => {
@@ -111,12 +109,13 @@ export default function ProfileManagement() {
             className="font-inter color-[#333333] mb-4 border-[#DEDEDE] px-[16px] py-[12px] text-[20px] font-normal focus:border-[#DEDEDE] focus:ring-[#12B76A]/30"
           />
           <button
+            disabled={isLoading}
             type="button"
-            className="nowrap font-inter h-[50px] w-[160px] cursor-pointer rounded-[12px] bg-[#2E604A] px-[20px] py-[8px] text-[14px] leading-[28px] font-semibold tracking-[0%] text-white hover:bg-[#2E604A]/90"
+            className="nowrap font-inter h-[50px] w-[160px] cursor-pointer rounded-[12px] bg-[#2E604A] px-[20px] py-[8px] text-[14px] leading-[28px] font-semibold tracking-[0%] text-white hover:bg-[#2E604A]/90 disabled:opacity-15"
             aria-label="Save changes"
             onClick={handleSave}
           >
-            Save
+            {isLoading ? 'saving ....' : 'Save'}
           </button>
         </div>
       )
@@ -228,7 +227,12 @@ export default function ProfileManagement() {
         >
           <div className="flex w-full flex-col gap-[32px] break-words">
             <div className="flex justify-center">
-              <Image src={circleAlertIcon} alt="Circle Alert Icon" />
+              <Image
+                src="/assets/images/circleAlertIcon.svg"
+                alt="Circle Alert Icon"
+                width={40}
+                height={40}
+              />
             </div>
             <div className="w-full overflow-hidden break-words">
               <h2 className="text-[20px] leading-[150%] font-medium tracking-[0%] text-[#333333]">

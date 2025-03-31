@@ -36,6 +36,7 @@ export interface User {
   created_at: string
   updated_at: string
   payment_plan: PaymentPlan
+  access_token: string
 }
 
 export interface AuthData {

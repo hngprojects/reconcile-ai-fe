@@ -22,14 +22,11 @@ export const DashboardInfoCards = () => {
     }
   }
 
-  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan)
-
+  const userPlan = getUserPlan(data?.plan?.plan.plan)
   const getReconciliationProgress = () => {
     const used = user?.payment_plan?.reconciliations_used || 0
     const limit = user?.payment_plan?.plan?.reconciliations_per_month || 5
-
     if (limit === -1) return { used, limit: '∞', progress: 0 }
-
     const progress = Math.min((used / limit) * 100, 100)
     return { used, limit, progress }
   }

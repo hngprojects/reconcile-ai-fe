@@ -477,6 +477,7 @@ export const getBillingHistory = async (page: number, perPage: number) => {
       `${BILLING_HISTORY_API_URL}?page=${page}&per_page=${perPage}`,
       {
         headers: {
+          // @ts-expect-error NEXT
           Authorization: `Bearer ${session?.access_token}`,
           Accept: 'application/json',
         },
@@ -499,6 +500,7 @@ export const fetchReconciliationHistory = async () => {
   try {
     const response = await fetch(`${RECONCILIATION_RESULT_API_URL}`, {
       headers: {
+        // @ts-expect-error NEXT
         Authorization: `Bearer ${session?.access_token}`,
         Accept: 'application/json',
       },

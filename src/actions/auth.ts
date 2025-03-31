@@ -1,7 +1,7 @@
 'use server'
-import { User } from '../types/auth'
+import { PaymentPlan, User } from '../types/auth'
 import { APIResponse } from '../types/global'
-import { createFetchUtil, HttpError } from '../lib/fetch-utils'
+import { createFetchUtil, HttpError, withAuth } from '../lib/fetch-utils'
 
 const apiHandler = createFetchUtil({
   baseUrl: process.env.BASE_API_URL as string,
@@ -9,17 +9,36 @@ const apiHandler = createFetchUtil({
 
 export const google_login = async (
   id_token: string
-): Promise<APIResponse<{ user: User } | null>> => {
+): Promise<APIResponse<{ user: User; plan: PaymentPlan } | null>> => {
   try {
-    const res = await apiHandler<APIResponse<{ user: User }>>(
-      '/auth/google-login',
-      {
-        method: 'POST',
-        body: { id_token },
-      }
-    )
-    return { ...res, success: true }
+    const res = await apiHandler<
+      APIResponse<{ user: User; plan: PaymentPlan }>
+    >('/auth/google-login', {
+      method: 'POST',
+      body: { id_token },
+    })
+    const res2 = await apiHandler<
+      APIResponse<{ user: User; plan: PaymentPlan }>
+    >('/user', {
+      method: 'GET',
+      headers: {
+        ...withAuth(res.access_token as string),
+      },
+    })
+    return {
+      success: true,
+      access_token: res.access_token,
+      data: {
+        user: {
+          ...res.data.user,
+          access_token: res.access_token as string,
+        },
+        plan: res2.data.plan,
+      },
+      message: res.message,
+    }
   } catch (error) {
+    console.log(error, 'error in google login')
     if (error instanceof HttpError) {
       return {
         success: error.responseBody?.success || false,

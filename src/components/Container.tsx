@@ -17,7 +17,7 @@ const Container = ({
   return (
     <Variant
       {...variantProps}
-      className={cn(`mx-auto max-w-[90rem] px-6 md:px-8`, className)}
+      className={cn('mx-auto max-w-[90rem] px-6 md:px-8', className)}
     >
       {children}
     </Variant>

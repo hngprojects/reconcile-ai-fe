@@ -13,3 +13,7 @@ export type APIResponse<T> = {
     has_previous: boolean
   }
 }
+
+export type SearchParams = Promise<{
+  [key: string]: string | string[] | undefined
+}>
