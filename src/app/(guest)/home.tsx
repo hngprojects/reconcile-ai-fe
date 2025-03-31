@@ -4,7 +4,6 @@ import { Suspense } from "react";
 // Dynamic imports
 const HeroSection = dynamic(() => import("@/src/components/hero-section"));
 const WhoCanUse = dynamic(() => import("@/src/components/WhoCanUse"));
-const Features1 = dynamic(() => import("@/src/components/Feature"));
 const Features2 = dynamic(() => import("@/src/components/Features2"));
 const VideoFeature = dynamic(() => import("@/src/components/VideoFeature"));
 const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
@@ -15,9 +14,6 @@ export default function HomePage() {
   return (
     <main>
       <HeroSection />
-      <Suspense fallback={<div className="min-h-[200px]" />}>
-        <Features1 />
-      </Suspense>
       <Suspense fallback={<div className="min-h-[400px]" />}>
         <WhoCanUse />
       </Suspense>
@@ -25,7 +21,7 @@ export default function HomePage() {
         <Features2 />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <VideoFeature videoTitle="Watch this quick demo to see ReconXi in action." />
+        <VideoFeature videoTitle="See how ReconXi does it!" />
       </Suspense>
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <FAQSection />

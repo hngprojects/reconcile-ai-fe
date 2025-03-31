@@ -12,15 +12,13 @@ export default function HeroSection() {
       <div className="flex flex-col lg:flex-row items-center md:h-[602px] w-screen max-md:p-4 md:pl-14 max-w-[90rem] mx-auto overflow-hidden max-md:text-center gap-8">
         <div className="flex flex-col items-center md:items-start w-full">
           <h1 className="font-semibold text-[28px] md:text-4xl text-[#101828] max-w-[1024px] flex-wrap lg:leading-[3.5rem] lg:text-5xl leading-[-2]">
-            Reconcile Your
-            <br className="hidden md:block" /> Finances with Ease
+          AI-Powered Financial
+            <br className="hidden md:block" />Reconciliation with 
+            <br className="hidden md:block" />ReconXi
           </h1>
           <p className="text-[#475467] text-sm sm:text-xl max-w-[620px] text-left mt-6 md:pr-8 max-md:text-center">
-            ReconXi simplifies financial reconciliation for accountants,
-            auditors, financial analysts, small businesses, and schools. Whether
-            you’re managing transactions, handling business accounts, or
-            reconciling school fees and payroll, experience a faster, more
-            accurate way to reconcile your finances.
+          ReconXi is built to take the effort out of financial reconciliation. 
+          Whether you&apos;re managing bank statements, company ledgers, or school accounts, our AI identifies and matches transactions quickly and accurately.
           </p>
           <div className="flex flex-col items-center justify-center w-[245px] gap-6 my-6 sm:flex-row mt-8">
             <TypeWriterButton
@@ -43,7 +41,7 @@ export default function HeroSection() {
         {/* Hero Image for desktop */}
         <div className="lg:flex items-center w-full relative h-full hidden">
           <Image
-            src="/assets/images/iPhone_mockup.png"
+            src="/assets/images/herosectmobileimage.svg"
             alt="Iphone mockup"
             width={314}
             height={440}
@@ -54,7 +52,7 @@ export default function HeroSection() {
             blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAYAAAB4ka1VAAAAAXNSR0IArs4c6QAAAJBJREFUGFcljUEKwjAABHdjBTXvyFN66bnkVt8gaS59gEVQ0GPTJ5Q+qe+IQtNEQue4szCsqso01+YlKEgSCQkEASBN8/SgruvuZkyfl2NRYIsRCQBTghvHN7XWXdu2vRACUkqAhPceYV3hnNsP1to+i9PljJz5+S+2EDAMw4dlWRql1D3GeNjTGUKQcVmW5x9hfjTwri74OwAAAABJRU5ErkJggg=="
           />
           <Image
-            src="/assets/images/screen_mockup.png"
+            src="/assets/images/herosectimage.svg"
             alt="Big screen mockup"
             width={621}
             height={782}
