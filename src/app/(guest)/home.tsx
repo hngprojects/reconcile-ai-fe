@@ -1,15 +1,14 @@
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
-// Dynamic imports
-const HeroSection = dynamic(() => import("@/src/components/hero-section"));
-const WhoCanUse = dynamic(() => import("@/src/components/WhoCanUse"));
-const Features1 = dynamic(() => import("@/src/components/Feature"));
-const Features2 = dynamic(() => import("@/src/components/Features2"));
-const VideoFeature = dynamic(() => import("@/src/components/VideoFeature"));
-const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
-const CTASection = dynamic(() => import("@/src/components/CTASection"));
-const Footer = dynamic(() => import("@/src/components/Footer"));
+const HeroSection = dynamic(() => import('@/components/hero-section'))
+const WhoCanUse = dynamic(() => import('@/components/WhoCanUse'))
+const Features1 = dynamic(() => import('@/components/Feature'))
+const Features2 = dynamic(() => import('@/components/Features2'))
+const VideoFeature = dynamic(() => import('@/components/VideoFeature'))
+const FAQSection = dynamic(() => import('@/components/FAQs/FAQSection'))
+const CTASection = dynamic(() => import('@/components/CTASection'))
+const Footer = dynamic(() => import('@/components/Footer'))
 
 export default function HomePage() {
   return (
@@ -33,5 +32,5 @@ export default function HomePage() {
       <CTASection />
       <Footer />
     </main>
-  );
+  )
 }

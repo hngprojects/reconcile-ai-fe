@@ -1,24 +1,24 @@
-import { UploadProgressProps } from "@/src/types/upload";
-import { CSVIcon } from "../../Icon/Icons";
+import { UploadProgressProps } from '@/types/upload'
+import { CSVIcon } from '../../Icon/Icons'
 
 export function UploadProgress({ progress, fileName }: UploadProgressProps) {
   return (
-    <div className="flex flex-col items-center gap-4 w-full px-4 md:px-[16px] py-[58px]">
-      <CSVIcon className="w-10 h-10" />
+    <div className="flex w-full flex-col items-center gap-4 px-4 py-[58px] md:px-[16px]">
+      <CSVIcon className="h-10 w-10" />
       <div className="w-full space-y-2">
-        <div className="flex justify-between items-center">
-          <span className="text-[14px] text-[#344054] truncate max-w-[150px] md:max-w-none">
+        <div className="flex items-center justify-between">
+          <span className="max-w-[150px] truncate text-[14px] text-[#344054] md:max-w-none">
             {fileName}
           </span>
           <span className="text-[14px] text-[#344054]">{progress}%</span>
         </div>
-        <div className="w-full h-2 bg-[#E9ECEF] rounded-[4px] overflow-hidden">
+        <div className="h-2 w-full overflow-hidden rounded-[4px] bg-[#E9ECEF]">
           <div
-            className="h-full bg-[#2E604A] rounded-[4px] transition-all duration-300"
+            className="h-full rounded-[4px] bg-[#2E604A] transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
       </div>
     </div>
-  );
+  )
 }

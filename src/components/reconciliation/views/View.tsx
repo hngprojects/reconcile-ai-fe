@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import { ReconciliationProvider } from "@/src/context/ReconciliationProvider";
-import DesktopView from "./DesktopView";
-import { MobileView } from "./MobileView";
+import { ReconciliationProvider } from '@/context/ReconciliationProvider'
+import DesktopView from './DesktopView'
+import { MobileView } from './MobileView'
 
-export function View() {
+export function View({ id }: { id: string }) {
   return (
     <ReconciliationProvider>
       <div className="md:hidden">
-        <MobileView />
+        <MobileView id={id} />
       </div>
       <div className="hidden md:block">
-        <DesktopView />
+        <DesktopView id={id} />
       </div>
     </ReconciliationProvider>
-  );
+  )
 }

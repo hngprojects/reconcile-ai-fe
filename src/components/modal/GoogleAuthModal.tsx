@@ -1,41 +1,24 @@
-import { Dialog, DialogContent } from "@/src/components/ui/dialog";
-import { X } from "lucide-react";
-import { useState } from "react";
-import { useAuth } from "@/src/components/context/AuthContext";
-import { GoogleIcon, LogoIcon } from "../Icon/Icons";
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { X } from 'lucide-react'
+import { GoogleIcon, LogoIcon } from '../Icon/Icons'
+import { signIn } from 'next-auth/react'
 
 interface GoogleAuthModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSwitchToLogin: () => void;
-  onSuccess?: () => void;
+  isOpen: boolean
+  onClose: () => void
+  onSwitchToLogin: () => void
+  onSuccess?: () => void
 }
 
 const GoogleAuthModal = ({
   isOpen,
   onClose,
   onSwitchToLogin,
-  onSuccess,
 }: GoogleAuthModalProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { signInWithGoogle } = useAuth();
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      await signInWithGoogle();
-      onSuccess?.(); // Call the success callback if provided
-    } catch (error) {
-      console.error("Failed to initialize Google Sign In:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="w-[90%] md:!max-w-[535px] h-auto rounded-[12px] bg-white p-0 border-none mx-auto"
+        className="mx-auto h-auto w-[90%] rounded-[12px] border-none bg-white p-0 md:!max-w-[535px]"
         closeButton={false}
         aria-labelledby="auth-title"
         aria-describedby="auth-description"
@@ -43,24 +26,24 @@ const GoogleAuthModal = ({
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-4 md:right-6 top-4 md:top-6 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer"
+          className="absolute top-4 right-4 cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 md:top-6 md:right-6"
           aria-label="Close authentication modal"
         >
           <X className="h-4 w-4 text-gray-500" />
         </button>
 
-        <div className="px-4 md:px-6 py-8 md:py-[76px] flex flex-col items-center justify-center gap-6">
+        <div className="flex flex-col items-center justify-center gap-6 px-4 py-8 md:px-6 md:py-[76px]">
           <div className="flex flex-col items-center gap-4">
-            <LogoIcon className="w-9 h-9 sm:w-12 sm:h-12" />
+            <LogoIcon className="h-9 w-9 sm:h-12 sm:w-12" />
             <h2
               id="auth-title"
-              className="font-baloo font-extrabold text-2xl md:text-[28px] leading-none text-[#2E604A] -mt-4"
+              className="font-baloo -mt-4 text-2xl leading-none font-extrabold text-[#2E604A] md:text-[28px]"
             >
               ReconXi
             </h2>
             <p
               id="auth-description"
-              className="font-openSans text-[14px] leading-[140%] text-[#475569] text-center max-w-[400px]"
+              className="font-openSans max-w-[400px] text-center text-[14px] leading-[140%] text-[#475569]"
             >
               Use your Google account to get started quickly
             </p>
@@ -68,27 +51,24 @@ const GoogleAuthModal = ({
 
           <button
             type="button"
-            onClick={handleGoogleSignIn}
-            disabled={isLoading}
-            className="w-full md:w-[487px] h-[48px] md:h-[64px] cursor-pointer rounded-[8px] 
-                     border border-[#CBD5E1] flex items-center justify-center gap-[10px] 
-                     px-4 py-2 hover:bg-gray-50 transition-colors disabled:opacity-50"
+            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+            className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#CBD5E1] px-4 py-2 transition-colors hover:bg-gray-50 disabled:opacity-50 md:h-[64px] md:w-[487px]"
             aria-label="Continue with Google"
           >
-            <GoogleIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-            <span className="text-[#475569] font-medium text-sm md:text-base">
-              {isLoading ? "Loading..." : "Continue with Google"}
+            <GoogleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            <span className="text-sm font-medium text-[#475569] md:text-base">
+              Continue with Google
             </span>
           </button>
 
           <div className="flex items-center gap-2">
-            <span className="font-inter font-semibold text-[13px] leading-[120%] text-[#525252]">
+            <span className="font-inter text-[13px] leading-[120%] font-semibold text-[#525252]">
               Already Have an Account?
             </span>
             <button
               type="button"
               onClick={onSwitchToLogin}
-              className="font-inter font-bold text-[13px] leading-[120%] text-[#2E604A] hover:underline cursor-pointer"
+              className="font-inter cursor-pointer text-[13px] leading-[120%] font-bold text-[#2E604A] hover:underline"
               aria-label="Switch to login"
             >
               Login
@@ -97,7 +77,7 @@ const GoogleAuthModal = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default GoogleAuthModal;
+export default GoogleAuthModal

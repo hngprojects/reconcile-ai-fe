@@ -1,22 +1,18 @@
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
 // Dynamic imports
 const HeroSection = dynamic(
-  () => import("@/src/components/financial-pro/hero-section"),
-);
-const VideoFeature = dynamic(
-  () => import("@/src/components/financial-pro/Video"),
-);
+  () => import('@/components/financial-pro/hero-section')
+)
+const VideoFeature = dynamic(() => import('@/components/financial-pro/Video'))
 const WhyReconXi = dynamic(
-  () => import("@/src/components/financial-pro/WhyReconxi"),
-);
-const StartReconcile = dynamic(
-  () => import("@/src/components/financial-pro/Ready"),
-);
-const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
-const Benefits = dynamic(() => import("@/src/components/financial-pro/Benefits"));
-const Footer = dynamic(() => import("@/src/components/Footer"));
+  () => import('@/components/financial-pro/WhyReconxi')
+)
+const StartReconcile = dynamic(() => import('@/components/financial-pro/Ready'))
+const FAQSection = dynamic(() => import('@/components/FAQs/FAQSection'))
+const Benefits = dynamic(() => import('@/components/financial-pro/Benefits'))
+const Footer = dynamic(() => import('@/components/Footer'))
 
 export default function HomePage() {
   return (
@@ -24,11 +20,11 @@ export default function HomePage() {
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <HeroSection />
       </Suspense>
-     
+
       <Suspense fallback={<div className="min-h-[200px]" />}>
-        <Benefits/>
+        <Benefits />
       </Suspense>
-     
+
       <Suspense fallback={<div className="min-h-[200px]" />}>
         <StartReconcile />
       </Suspense>
@@ -43,5 +39,5 @@ export default function HomePage() {
       </Suspense>
       <Footer />
     </main>
-  );
+  )
 }

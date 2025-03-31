@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { FAQ } from "@/src/types/faq";
-import { PlusIcon, MinusIcon } from "../Icon/Icons";
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { FAQ } from '@/types/faq'
+import { PlusIcon, MinusIcon } from '../Icon/Icons'
 
 const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   const toggleFAQ = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+    setOpenIndex(openIndex === index ? null : index)
+  }
 
   return (
     <div className="space-y-4">
       {faqs.map((faq, index) => (
         <div
           key={index}
-          className="border border-gray-300 rounded-lg p-4 cursor-pointer transition-all duration-300 hover:bg-gray-100"
+          className="cursor-pointer rounded-lg border border-gray-300 p-4 transition-all duration-300 hover:bg-gray-100"
           onClick={() => toggleFAQ(index)}
         >
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <h3
               className={`text-lg font-medium ${
-                openIndex === index ? "text-[#297B65]" : "text-gray-900"
+                openIndex === index ? 'text-[#297B65]' : 'text-gray-900'
               }`}
             >
               {faq.question}
@@ -43,7 +43,7 @@ const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
           {openIndex === index && (
             <motion.p
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
               className="mt-2 text-gray-700"
@@ -54,7 +54,7 @@ const FAQAccordion = ({ faqs }: { faqs: FAQ[] }) => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default FAQAccordion;
+export default FAQAccordion

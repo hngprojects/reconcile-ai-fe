@@ -1,41 +1,44 @@
-import Footer from "@/src/components/Footer";
-import { Check } from "lucide-react";
-import Link from "next/link";
+import Footer from '@/components/Footer'
+import { Check } from 'lucide-react'
+import Link from 'next/link'
 
 export default function UpgradeConfirmationPage() {
-    const features = [
-        "Reconcile up to 20 transactions/month",
-        "Do basic AI matching (date, amount, description)",
-        "Export results to CSV",
-        "Manual adjustments (unlink and match errors)",
-      ];
+  const features = [
+    'Reconcile up to 20 transactions/month',
+    'Do basic AI matching (date, amount, description)',
+    'Export results to CSV',
+    'Manual adjustments (unlink and match errors)',
+  ]
   return (
     <div>
-        <div className="flex items-center justify-center h-screen bg-gray-50 font-inter">
-            <div className="max-w-lg w-[90%] mx-auto bg-white shadow-lg rounded-lg p-6 text-center flex flex-col items-center space-y-4">
-                <Check className="w-12 h-12 mx-auto text-[#096012] border-1 borde-solid bg-[#E7F7E9] border-[#91DA98] rounded-full outline-2 ouline-solid outline-[#B5E6BA] p-2" />
-                <div>
-                    <h2 className="text-xl font-semibold mt-4">Success You&apos;ve Upgraded Your Plan</h2>
-                    <p className="text-[#64748B] mt-2">
-                    Congratulations You&apos;ve successfully upgraded to the Starter plan. This means you now have access to:
-                    </p>
-                    <div className="flex justify-center items-center">    
-                        <ul className="mt-4 text-left space-y-2 text-[#64748B]">
-                            {features.map((feature, index) => (
-                            <li key={index}>• {feature}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-                <Link
-                    className="bg-primary whitespace-nowrap w-full  py-2 px-4 rounded-md font-semibold justify-center items-center h-12 sm:h-9 text-sm text-white hover:bg-primary/90 flex mt-3"
-                    href="/file-upload"
-                >
-                    Start Reconciling
-                </Link>
+      <div className="font-inter flex h-screen items-center justify-center bg-gray-50">
+        <div className="mx-auto flex w-[90%] max-w-lg flex-col items-center space-y-4 rounded-lg bg-white p-6 text-center shadow-lg">
+          <Check className="borde-solid ouline-solid mx-auto h-12 w-12 rounded-full border-1 border-[#91DA98] bg-[#E7F7E9] p-2 text-[#096012] outline-2 outline-[#B5E6BA]" />
+          <div>
+            <h2 className="mt-4 text-xl font-semibold">
+              Success You&apos;ve Upgraded Your Plan
+            </h2>
+            <p className="mt-2 text-[#64748B]">
+              Congratulations You&apos;ve successfully upgraded to the Starter
+              plan. This means you now have access to:
+            </p>
+            <div className="flex items-center justify-center">
+              <ul className="mt-4 space-y-2 text-left text-[#64748B]">
+                {features.map((feature, index) => (
+                  <li key={index}>• {feature}</li>
+                ))}
+              </ul>
             </div>
+          </div>
+          <Link
+            className="bg-primary hover:bg-primary/90 mt-3 flex h-12 w-full items-center justify-center rounded-md px-4 py-2 text-sm font-semibold whitespace-nowrap text-white sm:h-9"
+            href="/file-upload"
+          >
+            Start Reconciling
+          </Link>
         </div>
-        <Footer/>
+      </div>
+      <Footer />
     </div>
-  );
+  )
 }

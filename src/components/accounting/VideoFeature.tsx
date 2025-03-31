@@ -1,33 +1,25 @@
-"use client";
-import Container from "@/src/components/Container";
+'use client'
+import Container from '@/components/Container'
 
 const VideoFeature = () => {
   return (
     <section>
       <Container className="py-6 sm:py-12">
-        <div className="flex flex-col items-center justify-center w-full">
+        <div className="flex w-full flex-col items-center justify-center">
           {/* Animated Text Section */}
-          <div
-            className="flex flex-col items-center"
-          >
-            <span
-              className="inline-block mb-3 text-base font-semibold leading-6 text-[#2A5743] rounded-full"
-            >
+          <div className="flex flex-col items-center">
+            <span className="mb-3 inline-block rounded-full text-base leading-6 font-semibold text-[#2A5743]">
               How it Works
             </span>
-            <h2
-              className="text-[28px] sm:text-[36px] font-semibold leading-[36px] sm:leading-[44px] tracking-[-0.02em] text-[#101828] text-center mb-8 max-w-[768px]"
-            >
-            Let&apos;s show you the ReconXi way!
+            <h2 className="mb-8 max-w-[768px] text-center text-[28px] leading-[36px] font-semibold tracking-[-0.02em] text-[#101828] sm:text-[36px] sm:leading-[44px]">
+              Let&apos;s show you the ReconXi way!
             </h2>
           </div>
 
           {/* Animated Video Section */}
-          <div
-            className="w-full aspect-video max-w-[1024px] rounded-2xl overflow-hidden shadow-lg"
-          >
+          <div className="aspect-video w-full max-w-[1024px] overflow-hidden rounded-2xl shadow-lg">
             <video
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
               controls
               preload="metadata"
               playsInline
@@ -43,7 +35,7 @@ const VideoFeature = () => {
         </div>
       </Container>
     </section>
-  );
-};
+  )
+}
 
-export default VideoFeature;
+export default VideoFeature

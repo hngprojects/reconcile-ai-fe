@@ -1,16 +1,16 @@
 <!-- "use client";
 
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
-import { cn } from "@/src/lib/utils";
-import { useReconciliationLogic } from "@/src/hooks/useReconciliationLogic";
+import { cn } from "@/lib/utils";
+import { useReconciliationLogic } from "@/hooks/useReconciliationLogic";
 import Image from "next/image";
 import exportIcon from "@/public/assets/images/download-cloud-02.png";
 import { Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SearchCombobox } from "./SearchComboBox";
 import { SuccessToast } from "./SuccessToast";
-import { Transaction } from "@/src/types/reconciliation";
+import { Transaction } from "@/types/reconciliation";
 
 interface ReconciliationData {
   matches: Array<{
