@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import { PaginationControls } from "@/src/components/PaginationControl";
-import { Button } from "@/src/components/ui/button";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { ReconciliationHistoryType } from "@/src/types/reconciliation";
+import { PaginationControls } from '@/components/PaginationControl'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { ReconciliationHistoryType } from '@/types/reconciliation'
 import {
   type ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table'
 import {
   endOfDay,
   format,
@@ -18,78 +18,78 @@ import {
   isWithinInterval,
   parseISO,
   startOfDay,
-} from "date-fns";
-import { ArrowUpRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+} from 'date-fns'
+import { ArrowUpRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 
 // Columns definition
 const columns: ColumnDef<ReconciliationHistoryType>[] = [
   {
-    accessorKey: "serial_number",
-    header: "S/N",
+    accessorKey: 'serial_number',
+    header: 'S/N',
     cell: ({ row }) => {
-      return <div>{row.index + 1}</div>;
+      return <div>{row.index + 1}</div>
     },
   },
   {
-    accessorKey: "date",
-    header: "Date",
+    accessorKey: 'date',
+    header: 'Date',
   },
   {
-    accessorKey: "title",
-    header: "Reconciliation ID",
+    accessorKey: 'title',
+    header: 'Reconciliation ID',
   },
   {
-    accessorKey: "progress",
-    header: "Status",
+    accessorKey: 'progress',
+    header: 'Status',
     cell: ({ row }) => {
-      const isComplete = row.original.status === "Completed";
+      const isComplete = row.original.status === 'Completed'
 
       return (
         <div
-          className={`font-medium ${isComplete ? "text-green-600" : "text-amber-600"}`}
+          className={`font-medium ${isComplete ? 'text-green-600' : 'text-amber-600'}`}
         >
-          {isComplete ? "Complete" : "Pending"}
+          {isComplete ? 'Complete' : 'Pending'}
         </div>
-      );
+      )
     },
   },
   {
-    id: "action",
-    header: "Action",
+    id: 'action',
+    header: 'Action',
     cell: ({ row }) => {
-      const isComplete = row.original.status === "Completed";
+      const isComplete = row.original.status === 'Completed'
 
       return (
         <Button
           variant="outline"
           size="sm"
-          className={`border-primary border-2 text-primary ${
+          className={`border-primary text-primary border-2 ${
             !isComplete
-              ? "opacity-50 cursor-not-allowed"
-              : "hover:bg-primary/10 cursor-pointer"
+              ? 'cursor-not-allowed opacity-50'
+              : 'hover:bg-primary/10 cursor-pointer'
           }`}
           disabled={!isComplete}
           onClick={(e) => {
             if (!isComplete) {
-              e.preventDefault();
-              return;
+              e.preventDefault()
+              return
             }
           }}
         >
           View <ArrowUpRight className="h-3 w-3" />
         </Button>
-      );
+      )
     },
   },
-];
+]
 
 interface ReconciliationHistoryCardProps {
-  fromDate?: Date;
-  toDate?: Date;
-  isFilterApplied: boolean;
-  reconciliations: ReconciliationHistoryType[];
+  fromDate?: Date
+  toDate?: Date
+  isFilterApplied: boolean
+  reconciliations: ReconciliationHistoryType[]
 }
 
 export function ReconciliationHistoryCard({
@@ -98,49 +98,49 @@ export function ReconciliationHistoryCard({
   isFilterApplied,
   reconciliations,
 }: ReconciliationHistoryCardProps) {
-  const router = useRouter();
-  const [pageSize, setPageSize] = useState(10);
+  const router = useRouter()
+  const [pageSize, setPageSize] = useState(10)
 
   // Helper function to format date
   const formatDate = (dateString: string) => {
     try {
       // Try parsing ISO format first
-      const parsedDate = parseISO(dateString);
-      return format(parsedDate, "dd MMM yyyy");
+      const parsedDate = parseISO(dateString)
+      return format(parsedDate, 'dd MMM yyyy')
     } catch (error) {
       // Fallback to original string if parsing fails
-      console.warn(`Date formatting error: ${error}`);
-      return dateString;
+      console.warn(`Date formatting error: ${error}`)
+      return dateString
     }
-  };
+  }
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
-      return reconciliations;
+      return reconciliations
     }
 
     return reconciliations.filter((item) => {
       // Parse ISO date
-      const itemDate = parseISO(item.date);
+      const itemDate = parseISO(item.date)
 
       if (fromDate && toDate) {
         return isWithinInterval(itemDate, {
           start: startOfDay(fromDate),
           end: endOfDay(toDate),
-        });
+        })
       }
 
       if (fromDate) {
-        return isAfter(itemDate, startOfDay(fromDate));
+        return isAfter(itemDate, startOfDay(fromDate))
       }
 
       if (toDate) {
-        return isBefore(itemDate, endOfDay(toDate));
+        return isBefore(itemDate, endOfDay(toDate))
       }
 
-      return true;
-    });
-  }, [fromDate, toDate, isFilterApplied, reconciliations]);
+      return true
+    })
+  }, [fromDate, toDate, isFilterApplied, reconciliations])
 
   const table = useReactTable({
     data: filteredData,
@@ -152,9 +152,9 @@ export function ReconciliationHistoryCard({
         pageSize,
       },
     },
-  });
+  })
 
-  const totalItems = filteredData.length;
+  const totalItems = filteredData.length
 
   return (
     <div>
@@ -162,24 +162,24 @@ export function ReconciliationHistoryCard({
         {table.getRowModel().rows.length ? (
           table.getRowModel().rows.map((row) => (
             <Card key={row.id} className="w-full border border-[#E4E7EC]">
-              <CardContent className="p-4 space-y-3">
+              <CardContent className="space-y-3 p-4">
                 <div className="text-sm text-[#333333]">
                   {formatDate(row.original.date)}
                 </div>
-                <div className="text-[#333333] font-medium">
+                <div className="font-medium text-[#333333]">
                   {row.original.title}
                 </div>
 
                 <div
-                  className={`px-2 py-1 rounded-full text-xs font-medium w-fit ${
-                    row.original.status === "Completed"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-amber-100 text-amber-700"
+                  className={`w-fit rounded-full px-2 py-1 text-xs font-medium ${
+                    row.original.status === 'Completed'
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-amber-100 text-amber-700'
                   }`}
                 >
-                  {row.original.status === "Completed" ? (
+                  {row.original.status === 'Completed' ? (
                     <p className="flex items-center gap-[6px]">
-                      Complete{" "}
+                      Complete{' '}
                       <svg
                         width="10"
                         height="8"
@@ -198,7 +198,7 @@ export function ReconciliationHistoryCard({
                     </p>
                   ) : (
                     <p className="flex items-center gap-[6px]">
-                      Pending{" "}
+                      Pending{' '}
                       <svg
                         width="10"
                         height="8"
@@ -220,27 +220,27 @@ export function ReconciliationHistoryCard({
 
                 <Button
                   variant="outline"
-                  className={`w-full border-primary border-2 text-primary ${
-                    row.original.status !== "Completed"
-                      ? "opacity-50 cursor-not-allowed pointer-events-none"
-                      : "hover:bg-primary/10 cursor-pointer"
+                  className={`border-primary text-primary w-full border-2 ${
+                    row.original.status !== 'Completed'
+                      ? 'pointer-events-none cursor-not-allowed opacity-50'
+                      : 'hover:bg-primary/10 cursor-pointer'
                   }`}
-                  disabled={row.original.status !== "Completed"}
+                  disabled={row.original.status !== 'Completed'}
                   onClick={(e) => {
-                    if (row.original.status !== "Completed") {
-                      e.preventDefault();
-                      return;
+                    if (row.original.status !== 'Completed') {
+                      e.preventDefault()
+                      return
                     }
-                    router.push(`/reconciliation/${row.original.id}`);
+                    router.push(`/reconciliation/${row.original.id}`)
                   }}
                 >
-                  View <ArrowUpRight className="h-4 w-4 ml-2" />
+                  View <ArrowUpRight className="ml-2 h-4 w-4" />
                 </Button>
               </CardContent>
             </Card>
           ))
         ) : (
-          <div className="text-center py-4">No results.</div>
+          <div className="py-4 text-center">No results.</div>
         )}
       </div>
 
@@ -254,10 +254,10 @@ export function ReconciliationHistoryCard({
         canPreviousPage={table.getCanPreviousPage()}
         canNextPage={table.getCanNextPage()}
         onRowsPerPageChange={(value) => {
-          setPageSize(value);
-          table.setPageSize(value);
+          setPageSize(value)
+          table.setPageSize(value)
         }}
       />
     </div>
-  );
+  )
 }

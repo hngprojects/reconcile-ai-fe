@@ -1,9 +1,9 @@
 export interface UploadModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  progress: number;
+  isOpen: boolean
+  onClose: () => void
+  progress: number
 }
 export interface UploadProgressProps {
-  progress: number;
-  fileName: string;
+  progress: number
+  fileName: string
 }

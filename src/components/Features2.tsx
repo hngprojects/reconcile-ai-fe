@@ -1,78 +1,59 @@
-"use client";
-import Image from "next/image";
-import { CheckCircle2Icon } from "lucide-react";
-import Container from "./Container";
-import { FileIcon, SpeedIcon } from "./Icon/Icons";
+'use client'
+import Image from 'next/image'
+import { CheckCircle2Icon } from 'lucide-react'
+import Container from './Container'
+import { FileIcon, SpeedIcon } from './Icon/Icons'
 
 const Features = () => {
-  const firstFeature = ["Leverage AI to move fast", "Easy upload feature"];
+  const firstFeature = ['Leverage AI to move fast', 'Easy upload feature']
   const secondFeature = [
-    "Instant records matching",
-    "Clear status indicators: Matched, Unmatched",
-    "Export data quickly",
-  ];
+    'Instant records matching',
+    'Clear status indicators: Matched, Unmatched',
+    'Export data quickly',
+  ]
 
   return (
     <section>
-      <Container className="py-16 px-4 md:px-16 lg:px-24">
-        <div
-          className="flex text-center items-center justify-center flex-col mb-9 sm:mb-12"
-        >
-          <h3
-            className="text-4xl font-semibold mb-2 sm:mb-4 text-[#101828] leading-11 tracking-[-0.02em] sm:text-[32px] sm:leading-[40px] 
-            md:text-[36px] md:leading-[44px] 
-            lg:text-[40px] lg:leading-[48px]"
-          >
+      <Container className="px-4 py-16 md:px-16 lg:px-24">
+        <div className="mb-9 flex flex-col items-center justify-center text-center sm:mb-12">
+          <h3 className="mb-2 text-4xl leading-11 font-semibold tracking-[-0.02em] text-[#101828] sm:mb-4 sm:text-[32px] sm:leading-[40px] md:text-[36px] md:leading-[44px] lg:text-[40px] lg:leading-[48px]">
             Simple Steps to Get Started
           </h3>
-          <p className="sm:text-lg max-w-[768px] text-[#475467]">
+          <p className="max-w-[768px] text-[#475467] sm:text-lg">
             Self-serve product to help you reconcile your bank statement and
             company ledger with AI.
           </p>
         </div>
 
-        <div
-          className="flex flex-col sm:flex-row items-start justify-between w-full gap-16"
-        >
-          <div
-            className="w-full text-center sm:mt-9 items-center sm:items-start sm:text-left flex flex-col"
-          >
-            <div
-              className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3"
-            >
+        <div className="flex w-full flex-col items-start justify-between gap-16 sm:flex-row">
+          <div className="flex w-full flex-col items-center text-center sm:mt-9 sm:items-start sm:text-left">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border-7 border-[#C8FFE6] bg-[#B0F1D4]">
               <FileIcon />
             </div>
 
-            <h3 className="text-3xl font-semibold mb-4 text-[#101828]">
+            <h3 className="mb-4 text-3xl font-semibold text-[#101828]">
               Upload Financial & Customer Records
             </h3>
 
-            <p className="sm:text-lg max-w-[560px] text-[#475467] mb-6">
+            <p className="mb-6 max-w-[560px] text-[#475467] sm:text-lg">
               Upload bank statement and company ledger in just a few clicks. The
               only supported file format is CSV.
             </p>
 
-            <ul
-              className="list-none self-start flex flex-col gap-3 items-start"
-            >
+            <ul className="flex list-none flex-col items-start gap-3 self-start">
               {firstFeature.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-start text-start pl-4"
-                >
+                <li key={index} className="flex items-start pl-4 text-start">
                   <CheckCircle2Icon
-                    className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6"
+                    className="text-primary mr-3 h-5 w-5 sm:h-6 sm:w-6"
                     aria-hidden="true"
                   />
-                  <span className="sm:text-lg text-[#475467]">{feature}</span>
+                  <span className="text-[#475467] sm:text-lg">{feature}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div
-            className="w-full relative flex items-center h-[400px]"
-          >
+          <div className="relative flex h-[400px] w-full items-center">
             <Image
               src="/assets/images/picture1.png"
               fill
@@ -82,12 +63,8 @@ const Features = () => {
           </div>
         </div>
 
-        <div
-          className="flex flex-col-reverse sm:flex-row items-start justify-between w-full pt-10 sm:pt-28 gap-16"
-        >
-          <div
-            className="w-full relative flex items-center h-[400px]"
-          >
+        <div className="flex w-full flex-col-reverse items-start justify-between gap-16 pt-10 sm:flex-row sm:pt-28">
+          <div className="relative flex h-[400px] w-full items-center">
             <Image
               src="/assets/images/picture2.png"
               fill
@@ -96,36 +73,27 @@ const Features = () => {
             />
           </div>
 
-          <div
-            className="w-full text-center items-center sm:items-start sm:mt-9 sm:text-left flex flex-col"
-          >
-            <div
-              className="flex items-center justify-center w-12 h-12 bg-[#B0F1D4] border-7 border-[#C8FFE6] rounded-full mb-3"
-            >
+          <div className="flex w-full flex-col items-center text-center sm:mt-9 sm:items-start sm:text-left">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full border-7 border-[#C8FFE6] bg-[#B0F1D4]">
               <SpeedIcon />
             </div>
 
-            <h3 className="text-3xl font-semibold mb-4 text-[#101828]">
+            <h3 className="mb-4 text-3xl font-semibold text-[#101828]">
               Let AI do the Work
             </h3>
 
-            <p className="sm:text-lg max-w-[560px] text-[#475467] mb-6">
+            <p className="mb-6 max-w-[560px] text-[#475467] sm:text-lg">
               Watch as AI automatically matches your records.
             </p>
 
-            <ul
-              className="list-none flex self-start flex-col gap-3 items-start"
-            >
+            <ul className="flex list-none flex-col items-start gap-3 self-start">
               {secondFeature.map((feature, index) => (
-                <li
-                  key={index}
-                  className="flex items-start text-start pl-4"
-                >
+                <li key={index} className="flex items-start pl-4 text-start">
                   <CheckCircle2Icon
-                    className="text-primary mr-3 w-5 sm:w-6 h-5 sm:h-6"
+                    className="text-primary mr-3 h-5 w-5 sm:h-6 sm:w-6"
                     aria-hidden="true"
                   />
-                  <span className="sm:text-lg text-[#475467]">{feature}</span>
+                  <span className="text-[#475467] sm:text-lg">{feature}</span>
                 </li>
               ))}
             </ul>
@@ -133,7 +101,7 @@ const Features = () => {
         </div>
       </Container>
     </section>
-  );
-};
+  )
+}
 
-export default Features;
+export default Features

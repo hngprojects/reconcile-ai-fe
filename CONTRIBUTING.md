@@ -14,10 +14,12 @@ Welcome to our team project! To maintain code quality and prevent accidental dir
 ## Forking and Cloning
 
 1. **Fork the Repository:**
+
    - Navigate to [https://github.com/hngprojects/reconcile-ai-fe.git](https://github.com/hngprojects/reconcile-ai-fe.git) on GitHub.
    - Click the **Fork** button at the top right to create your personal copy.
 
 2. **Clone Your Fork:**
+
    - Clone the forked repository to your local machine:
 
      ```bash
@@ -50,6 +52,7 @@ Our repository uses two primary branches:
 ### Creating Feature Branches
 
 1. **From Your Fork:**
+
    - Ensure you are on the latest version of the `dev` branch:
 
      ```bash
@@ -64,6 +67,7 @@ Our repository uses two primary branches:
      ```
 
 2. **Commit and Push:**
+
    - Work on your feature, then commit your changes:
 
      ```bash
@@ -80,26 +84,27 @@ Our repository uses two primary branches:
 ## Pull Request Workflow
 
 1. **Open a PR:**
+
    - Navigate to your fork on GitHub.
    - Open a pull request (PR) from your `feature/<feature-name>` branch to the team repository’s `dev` branch.
    - template
 
-    # What does the PR do?
+   # What does the PR do?
 
-    This PR initializes a NextJS 15 project and sets up ShadCN
+   This PR initializes a NextJS 15 project and sets up ShadCN
 
-    # How should this be manually tested?
+   # How should this be manually tested?
 
-    N/A
+   N/A
 
-    ### Checklist of what you did
+   ### Checklist of what you did
 
-    - [x] Initialized a version 15 NextJS project
-    - [x] Configured ShadCN
+   - [x] Initialized a version 15 NextJS project
+   - [x] Configured ShadCN
 
-    ### Reference Issue
+   ### Reference Issue
 
-    N/A
+   N/A
 
 2. **Review and Merge:**
    - The PR will undergo code review and automated checks.
@@ -123,5 +128,7 @@ The following rules are enforced on the team repository to ensure code quality:
 If you have any questions or run into issues, please reach out to a project maintainer.
 
 Happy coding!
+
+```
 
 ```

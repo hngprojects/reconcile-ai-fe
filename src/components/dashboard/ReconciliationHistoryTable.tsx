@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { PaginationControls } from "@/src/components/PaginationControl";
-import { Button } from "@/src/components/ui/button";
+import { PaginationControls } from '@/components/PaginationControl'
+import { Button } from '@/components/ui/button'
 import {
   Table,
   TableBody,
@@ -9,26 +9,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/src/components/ui/table";
-import { cn } from "@/src/lib/utils";
-import { ReconciliationHistoryType } from "@/src/types/reconciliation";
+} from '@/components/ui/table'
+import { cn } from '@/lib/utils'
+import { ReconciliationHistoryType } from '@/types/reconciliation'
 import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
-} from "@tanstack/react-table";
-import { format, isWithinInterval, parseISO } from "date-fns";
-import { ArrowUpRight } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+} from '@tanstack/react-table'
+import { format, isWithinInterval, parseISO } from 'date-fns'
+import { ArrowUpRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 
 interface ReconciliationHistoryTableProps {
-  fromDate?: Date;
-  toDate?: Date;
-  isFilterApplied: boolean;
-  reconciliations: ReconciliationHistoryType[];
+  fromDate?: Date
+  toDate?: Date
+  isFilterApplied: boolean
+  reconciliations: ReconciliationHistoryType[]
 }
 
 export function ReconciliationHistoryTable({
@@ -37,104 +37,104 @@ export function ReconciliationHistoryTable({
   isFilterApplied,
   reconciliations,
 }: ReconciliationHistoryTableProps) {
-  const router = useRouter();
-  const [pageSize, setPageSize] = useState(10);
+  const router = useRouter()
+  const [pageSize, setPageSize] = useState(10)
 
   // Helper function to format date
   const formatDate = (dateString: string) => {
     try {
       // Try parsing ISO format first
-      const parsedDate = parseISO(dateString);
-      return format(parsedDate, "dd-MM-yyyy");
+      const parsedDate = parseISO(dateString)
+      return format(parsedDate, 'dd-MM-yyyy')
     } catch (error) {
-      console.warn(`Date formatting error: ${error}`);
-      return dateString;
+      console.warn(`Date formatting error: ${error}`)
+      return dateString
     }
-  };
+  }
 
   const filteredData = useMemo(() => {
     if (!isFilterApplied || (!fromDate && !toDate)) {
-      return reconciliations;
+      return reconciliations
     }
 
     return reconciliations.filter((item) => {
       // Parse the date string to a Date object
-      const itemDate = parseISO(item.date);
+      const itemDate = parseISO(item.date)
 
       // If only fromDate is provided
       if (fromDate && !toDate) {
-        return itemDate >= fromDate;
+        return itemDate >= fromDate
       }
 
       // If only toDate is provided
       if (!fromDate && toDate) {
-        return itemDate <= toDate;
+        return itemDate <= toDate
       }
 
       // If both dates are provided
       if (fromDate && toDate) {
-        return isWithinInterval(itemDate, { start: fromDate, end: toDate });
+        return isWithinInterval(itemDate, { start: fromDate, end: toDate })
       }
 
-      return true;
-    });
-  }, [fromDate, toDate, isFilterApplied, reconciliations]);
+      return true
+    })
+  }, [fromDate, toDate, isFilterApplied, reconciliations])
 
   // Columns definition
   const columns: ColumnDef<ReconciliationHistoryType>[] = [
     {
-      accessorKey: "serial_number",
-      header: "S/N",
+      accessorKey: 'serial_number',
+      header: 'S/N',
       cell: ({ row }) => {
-        return <div>{row.index + 1}</div>;
+        return <div>{row.index + 1}</div>
       },
     },
     {
-      accessorKey: "date",
-      header: "Date",
+      accessorKey: 'date',
+      header: 'Date',
       cell: ({ row }) => formatDate(row.original.date),
     },
     {
-      accessorKey: "title",
-      header: "Reconciliation ID",
+      accessorKey: 'title',
+      header: 'Reconciliation ID',
     },
     {
-      accessorKey: "progress",
-      header: "Status",
+      accessorKey: 'progress',
+      header: 'Status',
       cell: ({ row }) => {
-        const isComplete = row.original.status === "Completed";
+        const isComplete = row.original.status === 'Completed'
 
         return (
           <div
-            className={`font-medium ${isComplete ? "text-green-600" : "text-amber-600"}`}
+            className={`font-medium ${isComplete ? 'text-green-600' : 'text-amber-600'}`}
           >
-            {isComplete ? "Complete" : "Pending"}
+            {isComplete ? 'Complete' : 'Pending'}
           </div>
-        );
+        )
       },
     },
     {
-      id: "action",
-      header: "Action",
+      id: 'action',
+      header: 'Action',
       cell: ({ row }) => {
-        const isComplete = row.original.status === "Completed";
+        const isComplete = row.original.status === 'Completed'
 
         return (
           <Button
             variant="outline"
             size="sm"
-            className="border-primary border-2 text-primary hover:text-primary cursor-pointer"
+            className="border-primary text-primary hover:text-primary cursor-pointer border-2"
             disabled={!isComplete}
             onClick={() => {
-              router.push(`/reconciliation/${row.original.id}`);
+              router.push(`/reconciliation/${row.original.id}`)
             }}
           >
             View <ArrowUpRight className="h-3 w-3" />
           </Button>
-        );
+        )
       },
     },
-  ];
+  ]
 
   const table = useReactTable({
     data: filteredData,
@@ -146,34 +146,34 @@ export function ReconciliationHistoryTable({
         pageSize,
       },
     },
-  });
+  })
 
-  const totalItems = filteredData.length;
+  const totalItems = filteredData.length
 
   return (
     <div>
-      <div className="border rounded-lg overflow-hidden">
+      <div className="overflow-hidden rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="bg-gray-100 hover:bg-gray-100 h-12"
+                className="h-12 bg-gray-100 hover:bg-gray-100"
               >
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
                     className={cn(
-                      "px-5 text-black",
+                      'px-5 text-black',
                       {
-                        "border-r": header.column.id !== "action",
+                        'border-r': header.column.id !== 'action',
                       },
                       {
-                        "w-[190px]": header.column.id === "action",
+                        'w-[190px]': header.column.id === 'action',
                       },
                       {
-                        "w-[84px] text-center md:text-start":
-                          header.column.id === "serial_number",
+                        'w-[84px] text-center md:text-start':
+                          header.column.id === 'serial_number',
                       }
                     )}
                   >
@@ -196,14 +196,14 @@ export function ReconciliationHistoryTable({
                     <TableCell
                       key={cell.id}
                       className={cn(
-                        "px-5 py-3",
+                        'px-5 py-3',
                         {
-                          "border-r text-left":
+                          'border-r text-left':
                             index !== row.getVisibleCells().length - 1,
                         },
                         {
-                          "text-center md:text-start":
-                            cell.column.id === "serial_number",
+                          'text-center md:text-start':
+                            cell.column.id === 'serial_number',
                         }
                       )}
                     >
@@ -236,10 +236,10 @@ export function ReconciliationHistoryTable({
         canPreviousPage={table.getCanPreviousPage()}
         canNextPage={table.getCanNextPage()}
         onRowsPerPageChange={(value) => {
-          setPageSize(value);
-          table.setPageSize(value);
+          setPageSize(value)
+          table.setPageSize(value)
         }}
       />
     </div>
-  );
+  )
 }

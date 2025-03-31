@@ -1,7 +1,5 @@
-"use client";
-
-import { useAuth } from "@/src/components/context/AuthContext";
-import { usePathname } from "next/navigation";
+'use client'
+import { usePathname } from 'next/navigation'
 import React, {
   createContext,
   ReactNode,
@@ -9,97 +7,97 @@ import React, {
   useEffect,
   useMemo,
   useState,
-} from "react";
-import { ColumnFiltersState } from "@tanstack/react-table";
+} from 'react'
+import { ColumnFiltersState } from '@tanstack/react-table'
 import {
   ReconciliationItem,
   ReconciliationResponse,
   FrontendTransaction,
-} from "../types/frontendResponseTypes";
-import { updateReconciliation, fetchReconciliation } from "@/src/lib/api";
-import { ManualRequestBody } from "@/src/types/reconciliation";
-import { toast } from "sonner";
-import { transformReconciliationData } from "../helpers/transformReconciliationData";
-import { useSession } from "next-auth/react";
+} from '../types/frontendResponseTypes'
+import { updateReconciliation, fetchReconciliation } from '@/lib/api'
+import { ManualRequestBody } from '@/types/reconciliation'
+import { toast } from 'sonner'
+import { transformReconciliationData } from '../helpers/transformReconciliationData'
+import { useSession } from 'next-auth/react'
 
 interface ReconciliationContextProps {
-  data: ReconciliationResponse;
-  paginatedData: ReconciliationItem[];
-  unmatchedBankTransactions: FrontendTransaction[];
-  unmatchedLedgerTransactions: FrontendTransaction[];
+  data: ReconciliationResponse
+  paginatedData: ReconciliationItem[]
+  unmatchedBankTransactions: FrontendTransaction[]
+  unmatchedLedgerTransactions: FrontendTransaction[]
 
   // Pagination
-  pagination: { pageIndex: number; pageSize: number };
-  totalItems: number;
-  totalPages: number;
+  pagination: { pageIndex: number; pageSize: number }
+  totalItems: number
+  totalPages: number
   setPagination: React.Dispatch<
     React.SetStateAction<{ pageIndex: number; pageSize: number }>
-  >;
+  >
 
   // Table state
-  columnFilters: ColumnFiltersState;
-  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>;
-  searchQuery: string;
-  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  columnFilters: ColumnFiltersState
+  setColumnFilters: React.Dispatch<React.SetStateAction<ColumnFiltersState>>
+  searchQuery: string
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>
 
   // Actions
   handleMatch: (
     bankTransaction: FrontendTransaction[],
     ledgerTransaction: FrontendTransaction[]
-  ) => Promise<void>;
-  canPreviousPage: boolean;
-  canNextPage: boolean;
-  onPreviousPage: () => void;
-  onNextPage: () => void;
-  onRowsPerPageChange: (size: number) => void;
-  handleSearch: (query: string) => void;
+  ) => Promise<void>
+  canPreviousPage: boolean
+  canNextPage: boolean
+  onPreviousPage: () => void
+  onNextPage: () => void
+  onRowsPerPageChange: (size: number) => void
+  handleSearch: (query: string) => void
   handleUnlink: (
     bankTransaction: FrontendTransaction[],
     ledgerTransaction: FrontendTransaction[]
-  ) => Promise<void>;
+  ) => Promise<void>
 
   // Modals
-  showUnlinkModal: boolean;
-  setShowUnlinkModal: React.Dispatch<React.SetStateAction<boolean>>;
-  showUnlinkModalMobile: boolean;
-  setShowUnlinkModalMobile: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  isMatching: boolean;
-  setIsMatching: React.Dispatch<React.SetStateAction<boolean>>;
+  showUnlinkModal: boolean
+  setShowUnlinkModal: React.Dispatch<React.SetStateAction<boolean>>
+  showUnlinkModalMobile: boolean
+  setShowUnlinkModalMobile: React.Dispatch<React.SetStateAction<boolean>>
+  isLoading: boolean
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  isMatching: boolean
+  setIsMatching: React.Dispatch<React.SetStateAction<boolean>>
 
   //Unlink Data
-  selectedRow: ReconciliationItem | null;
+  selectedRow: ReconciliationItem | null
   setSelectedRow: React.Dispatch<
     React.SetStateAction<ReconciliationItem | null>
-  >;
+  >
 
-  authenticated: boolean;
-  loading: boolean;
+  authenticated: boolean
+  loading: boolean
 }
 
 const ReconciliationContext = createContext<
   ReconciliationContextProps | undefined
->(undefined);
+>(undefined)
 
 export function ReconciliationProvider({ children }: { children: ReactNode }) {
-  const [isMatching, setIsMatching] = useState(false);
-  const [showUnlinkModal, setShowUnlinkModal] = useState(false);
-  const [showUnlinkModalMobile, setShowUnlinkModalMobile] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [isMatching, setIsMatching] = useState(false)
+  const [showUnlinkModal, setShowUnlinkModal] = useState(false)
+  const [showUnlinkModalMobile, setShowUnlinkModalMobile] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
   const [data, setData] = useState<ReconciliationResponse>(
     {} as ReconciliationResponse
-  );
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  )
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [searchQuery, setSearchQuery] = useState('')
   const [selectedRow, setSelectedRow] = useState<ReconciliationItem | null>(
     null
-  );
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const path = usePathname();
-  const { data: session } = useSession();
+  )
+  const [authenticated, setAuthenticated] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const path = usePathname()
+  const { data: session } = useSession()
 
   useEffect(() => {
     // const dummyReconciliationData = transformReconciliationData(
@@ -107,61 +105,61 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     // );
     // setData(dummyReconciliationData);
 
-    const reconciliationId = path.split("/")[2];
+    const reconciliationId = path.split('/')[2]
 
     if (session) {
-      setAuthenticated(true);
+      setAuthenticated(true)
     }
 
     const fetch = async () => {
       try {
-        const response = await fetchReconciliation(reconciliationId as string);
+        const response = await fetchReconciliation(reconciliationId as string)
 
         if (response.success) {
-          const reconciliationData = transformReconciliationData(response.data);
-          console.log({ reconciliationData });
+          const reconciliationData = transformReconciliationData(response.data)
+          console.log({ reconciliationData })
 
-          setData(reconciliationData);
-          setAuthenticated(true);
-          setLoading(false);
+          setData(reconciliationData)
+          setAuthenticated(true)
+          setLoading(false)
         } else {
-          setLoading(false);
-          setAuthenticated(false);
+          setLoading(false)
+          setAuthenticated(false)
         }
       } catch (e) {
-        console.error("Error: ", e);
-        setLoading(false);
+        console.error('Error: ', e)
+        setLoading(false)
       }
-    };
-    fetch();
-  }, [path, session]); // Removed `data` from dependency array to prevent infinite re-rendering
+    }
+    fetch()
+  }, [path, session]) // Removed `data` from dependency array to prevent infinite re-rendering
   // }, []); // Removed `data` from dependency array to prevent infinite re-rendering
 
   const reconciliationData = useMemo(
     () => data.reconciliation_data ?? [],
     [data]
-  );
+  )
 
   const paginatedData = useMemo(() => {
     return reconciliationData.slice(
       pagination.pageIndex * pagination.pageSize,
       (pagination.pageIndex + 1) * pagination.pageSize
-    );
-  }, [reconciliationData, pagination.pageIndex, pagination.pageSize]);
+    )
+  }, [reconciliationData, pagination.pageIndex, pagination.pageSize])
 
-  const totalItems = reconciliationData.length;
-  const totalPages = Math.ceil(totalItems / pagination.pageSize);
-  const canPreviousPage = pagination.pageIndex > 0;
-  const canNextPage = pagination.pageIndex < totalPages - 1;
+  const totalItems = reconciliationData.length
+  const totalPages = Math.ceil(totalItems / pagination.pageSize)
+  const canPreviousPage = pagination.pageIndex > 0
+  const canNextPage = pagination.pageIndex < totalPages - 1
 
   const onPreviousPage = () =>
-    setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex - 1 }));
+    setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex - 1 }))
   const onNextPage = () =>
-    setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
+    setPagination((prev) => ({ ...prev, pageIndex: prev.pageIndex + 1 }))
   const onRowsPerPageChange = (size: number) =>
-    setPagination({ pageSize: size, pageIndex: 0 });
+    setPagination({ pageSize: size, pageIndex: 0 })
 
-  const handleSearch = (query: string) => setSearchQuery(query);
+  const handleSearch = (query: string) => setSearchQuery(query)
 
   const handleMatch = async (
     bankTransactions: FrontendTransaction[],
@@ -172,37 +170,34 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         (ledgerTransaction) => ledgerTransaction.id
       ),
       statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
-      action: "match",
-    };
+      action: 'match',
+    }
 
-    setIsMatching(true);
+    setIsMatching(true)
     try {
-      const reconciliationId = data.reconciliation_id;
+      const reconciliationId = data.reconciliation_id
       const response = await updateReconciliation(
         reconciliationId,
         body as ManualRequestBody
-      );
+      )
 
-      if (response?.status !== "success") {
-        toast.error("Failed to match transactions");
-        return;
+      if (response?.status !== 'success') {
+        toast.error('Failed to match transactions')
+        return
       }
 
       // Transform and update data
-      const reconciliationData = transformReconciliationData(response?.data);
-      localStorage.setItem(
-        "reconciliation",
-        JSON.stringify(reconciliationData)
-      );
-      setData(reconciliationData);
+      const reconciliationData = transformReconciliationData(response?.data)
+      localStorage.setItem('reconciliation', JSON.stringify(reconciliationData))
+      setData(reconciliationData)
 
-      toast.success("Transactions matched successfully!");
+      toast.success('Transactions matched successfully!')
     } catch {
-      toast.error("Failed to match transactions");
+      toast.error('Failed to match transactions')
     } finally {
-      setIsMatching(false);
+      setIsMatching(false)
     }
-  };
+  }
 
   const handleUnlink = async (
     bankTransactions: FrontendTransaction[],
@@ -213,40 +208,37 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
         (ledgerTransaction) => ledgerTransaction.id
       ),
       statements: bankTransactions.map((bankTransaction) => bankTransaction.id),
-      action: "unmatch",
-    };
+      action: 'unmatch',
+    }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const reconciliationId = data.reconciliation_id;
+      const reconciliationId = data.reconciliation_id
       const response = await updateReconciliation(
         reconciliationId,
         body as ManualRequestBody
-      );
-      console.log(response);
+      )
+      console.log(response)
 
-      if (response?.status != "success") {
-        toast.error("Failed to unlink transactions");
-        return;
+      if (response?.status != 'success') {
+        toast.error('Failed to unlink transactions')
+        return
       }
 
       // Transform and update data
-      const reconciliationData = transformReconciliationData(response.data);
-      localStorage.setItem(
-        "reconciliation",
-        JSON.stringify(reconciliationData)
-      );
-      setData(reconciliationData);
+      const reconciliationData = transformReconciliationData(response.data)
+      localStorage.setItem('reconciliation', JSON.stringify(reconciliationData))
+      setData(reconciliationData)
 
-      toast.success("Transactions unlinked successfully!");
+      toast.success('Transactions unlinked successfully!')
     } catch {
-      toast.error("Failed to unlink transactions");
+      toast.error('Failed to unlink transactions')
     } finally {
-      setShowUnlinkModal(false);
-      setShowUnlinkModalMobile(false);
-      setIsLoading(false);
+      setShowUnlinkModal(false)
+      setShowUnlinkModalMobile(false)
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <ReconciliationContext.Provider
@@ -298,35 +290,36 @@ export function ReconciliationProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </ReconciliationContext.Provider>
-  );
+  )
 }
 
 // Add plan to the context
 export const useReconciliation = () => {
-  const context = useContext(ReconciliationContext);
-  const { user } = useAuth();
+  const context = useContext(ReconciliationContext)
+  const { data } = useSession()
+  const user = data?.user
 
   if (!context) {
     throw new Error(
-      "useReconciliation must be used within a ReconciliationProvider"
-    );
+      'useReconciliation must be used within a ReconciliationProvider'
+    )
   }
 
   const getUserPlan = (plan: string | undefined) => {
     switch (plan) {
-      case "Starter":
-        return "starter";
-      case "Business":
-        return "business";
+      case 'Starter':
+        return 'starter'
+      case 'Business':
+        return 'business'
       default:
-        return "basic";
+        return 'basic'
     }
-  };
+  }
 
-  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
+  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan)
 
   return {
     ...context,
     userPlan,
-  };
-};
+  }
+}

@@ -1,20 +1,17 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
-import { cn } from "@/src/lib/utils";
-import Container from "@/src/components/Container";
-import Footer from "@/src/components/Footer";
-import { useState, useEffect } from "react";
-import { CircleCheck } from "lucide-react";
-import { motion } from "framer-motion";
-import { useAuth } from "@/src/components/context/AuthContext";
-import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
-// import Link from "next/link";
+import { useRouter } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import Container from '@/components/Container'
+import Footer from '@/components/Footer'
+import { useState } from 'react'
+import { CircleCheck } from 'lucide-react'
+import { motion } from 'framer-motion'
 
-import CancelSubscriptionModal from "@/src/components/modal/CancelSubscriptionModal";
-import { EditIcon, NoteIcon } from "@/src/components/Icon/Icons";
-import { Button } from "@/src/components/ui/button";
+import CancelSubscriptionModal from '@/components/modal/CancelSubscriptionModal'
+import { EditIcon, NoteIcon } from '@/components/Icon/Icons'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -24,117 +21,92 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/src/components/ui/dialog";
-import Link from "next/link";
-import { ErrorIcon } from "@/src/components/Icon/Icons";
+} from '@/components/ui/dialog'
+import Link from 'next/link'
+import { ErrorIcon } from '@/components/Icon/Icons'
+import { useSession } from 'next-auth/react'
 
 interface PlanMap {
-  [key: string]: number;
-  Basic: number;
-  Starter: number;
-  Business: number;
+  [key: string]: number
+  Basic: number
+  Starter: number
+  Business: number
 }
 
 export default function ManagePlanPage() {
-  const { user, getUserDetails } = useAuth();
-  const router = useRouter();
-  const [activeCard, setActiveCard] = useState<number | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [openPlanDialog, setOpenPlanDialog] = useState(false);
-  const [openCancelDialog, setOpenCancelDialog] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-
-  // useEffect(() => {
-  //   // Fetch user details on mount
-  //   const fetchUserDetails = async () => {
-  //     await getUserDetails();
-  //   };
-  //   fetchUserDetails();
-  // }, [getUserDetails]);
-
-  useEffect(() => {
-    const initializeUserData = async () => {
-      // Only fetch if we don't have user data and it's the initial load
-      if (!user && isInitialLoad) {
-        await getUserDetails();
-        setIsInitialLoad(false);
-      } else if (user) {
-        // If we have user data, update active card
-        const planMap: PlanMap = {
-          Basic: 1,
-          Starter: 2,
-          Business: 3,
-        };
-        const currentPlan = user.payment_plan?.plan?.plan;
-        if (typeof currentPlan === "string" && currentPlan in planMap) {
-          setActiveCard(planMap[currentPlan]);
-        }
-        setIsInitialLoad(false);
-      }
-    };
-  
-    initializeUserData();
-  }, [user, getUserDetails, isInitialLoad]);
+  const { data } = useSession()
+  const router = useRouter()
+  const user = data?.user
+  const planMap: PlanMap = {
+    Basic: 1,
+    Starter: 2,
+    Business: 3,
+  }
+  const currentPlan = user?.payment_plan?.plan?.plan
+  const activeCard = planMap[currentPlan as keyof PlanMap] || 1
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [openPlanDialog, setOpenPlanDialog] = useState(false)
+  const [openCancelDialog, setOpenCancelDialog] = useState(false)
 
   const pricingPlans = [
     {
       id: 1,
-      name: "Basic",
-      price: "Free",
-      link: "/file-upload",
+      name: 'Basic',
+      price: 'Free',
+      link: '/file-upload',
       features: [
-        "Reconcile up to 5 reconciliations/month",
-        "Upload CSV files",
-        "Basic AI reconciliation",
-        "Manually match transactions detected as unmatched",
+        'Reconcile up to 5 reconciliations/month',
+        'Upload CSV files',
+        'Basic AI reconciliation',
+        'Manually match transactions detected as unmatched',
       ],
     },
     {
       id: 2,
-      name: "Starter Plan",
-      price: "10",
-      link: "https://buy.stripe.com/00g9Ez9c42XW9mo14q ",
+      name: 'Starter Plan',
+      price: '10',
+      link: 'https://buy.stripe.com/00g9Ez9c42XW9mo14q ',
       features: [
-        "Reconcile up to 20 reconciliations/month",
-        "Basic AI matching and reconciliation",
-        "Export results to CSV",
-        "Manually match records detected as unmatched",
-        "Unlink records matched by AI, and match them correctly",
+        'Reconcile up to 20 reconciliations/month',
+        'Basic AI matching and reconciliation',
+        'Export results to CSV',
+        'Manually match records detected as unmatched',
+        'Unlink records matched by AI, and match them correctly',
       ],
     },
     {
       id: 3,
-      name: "Business Plan",
-      price: "25",
-      link: "https://buy.stripe.com/6oEdUPag8dCAbuw14r",
+      name: 'Business Plan',
+      price: '25',
+      link: 'https://buy.stripe.com/6oEdUPag8dCAbuw14r',
       features: [
-        "Everything in Starter Plan",
-        "Unlimited reconciliation/month",
-        "Advanced matching of unmatched records",
-        "Advanced AI matching and reconciliation (Large data set: up to 2000 rows)",
-        "Merging multiple records/files",
-        "Email notification for reconciled results",
+        'Everything in Starter Plan',
+        'Unlimited reconciliation/month',
+        'Advanced matching of unmatched records',
+        'Advanced AI matching and reconciliation (Large data set: up to 2000 rows)',
+        'Merging multiple records/files',
+        'Email notification for reconciled results',
       ],
     },
-  ];
+  ]
 
   const renderFeaturesList = (features: string[], isActive: boolean) => (
     <ul className="space-y-4">
       {features.map((feature, index) => (
         <li key={index} className="flex items-start gap-2" role="listitem">
-          <span className="flex-shrink-0 my-auto">
+          <span className="my-auto flex-shrink-0">
             <CircleCheck
               className={cn(
-                "w-5 h-5",
-                isActive ? "text-white" : "text-[#39B057]"
+                'h-5 w-5',
+                isActive ? 'text-white' : 'text-[#39B057]'
               )}
             />
           </span>
           <span
             className={cn(
-              "font-[400] text-[13px] leading-[150%] font-inter",
-              isActive ? "text-white" : "text-[#333333]"
+              'font-inter text-[13px] leading-[150%] font-[400]',
+              isActive ? 'text-white' : 'text-[#333333]'
             )}
           >
             {feature}
@@ -142,79 +114,79 @@ export default function ManagePlanPage() {
         </li>
       ))}
     </ul>
-  );
+  )
 
   const handlePlanClick = (planLink: string) => {
-    window.location.href = planLink;
-  };
+    window.location.href = planLink
+  }
 
   // Add helper function to handle reconciliation display
   const getReconciliationInfo = () => {
-    const used = user?.payment_plan?.reconciliations_used || 0;
-    const limit = user?.payment_plan?.plan?.reconciliations_per_month;
+    const used = user?.payment_plan?.reconciliations_used || 0
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month
 
     if (limit === -1) {
       return {
         display: `${used}/∞`,
         progress: 0,
-        remaining: "Unlimited",
-      };
+        remaining: 'Unlimited',
+      }
     }
 
-    const defaultLimit = 5;
-    const actualLimit = limit || defaultLimit;
-    const progress = Math.min((used / actualLimit) * 100, 100);
+    const defaultLimit = 5
+    const actualLimit = limit || defaultLimit
+    const progress = Math.min((used / actualLimit) * 100, 100)
 
     return {
       display: `${used}/${actualLimit}`,
       progress,
       remaining: `${actualLimit - used}`,
-    };
-  };
+    }
+  }
 
   // Update the Dialog content section
-  const reconciliationInfo = getReconciliationInfo();
+  const reconciliationInfo = getReconciliationInfo()
 
   return (
-    <ProtectedRoute>
+    <>
       <Container className="py-8 pb-[100px]">
         {/* Back button and Header */}
-        <div className="pb-8 px-4 border-b border-[#EAECF0]">
+        <div className="border-b border-[#EAECF0] px-4 pb-8">
           <button
             type="button"
             onClick={() => router.back()}
-            className="flex items-center gap-2 mb-6 group cursor-pointer"
+            className="group mb-6 flex cursor-pointer items-center gap-2"
           >
-            <ArrowLeft className="w-5 h-5 text-[#101828] group-hover:translate-x-[-4px] transition-transform" />
-            <span className="font-inter font-medium text-[16px] leading-[38px] text-[#101828]">
+            <ArrowLeft className="h-5 w-5 text-[#101828] transition-transform group-hover:translate-x-[-4px]" />
+            <span className="font-inter text-[16px] leading-[38px] font-medium text-[#101828]">
               Go Back
             </span>
           </button>
 
-          <h1 className="font-inter font-semibold text-[30px] leading-[38px] text-[#101828] mb-2">
+          <h1 className="font-inter mb-2 text-[30px] leading-[38px] font-semibold text-[#101828]">
             Billing
           </h1>
-          <p className="font-inter font-normal text-[16px] leading-[24px] text-[#333333]">
+          <p className="font-inter text-[16px] leading-[24px] font-normal text-[#333333]">
             Manage your billing and payment details.
           </p>
         </div>
 
-        <div className="flex items-center md:justify-end w-full my-[32px] px-4 md:px-2 gap-[32px]">
+        <div className="my-[32px] flex w-full items-center gap-[32px] px-4 md:justify-end md:px-2">
           {/* My Plan */}
           <Dialog open={openPlanDialog} onOpenChange={setOpenPlanDialog}>
             <DialogTrigger asChild>
               <Button
                 variant="outline"
-                className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm cursor-pointer font-medium bg-white shadow-none"
+                className="flex cursor-pointer gap-2 rounded-md border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
                 onClick={() => setOpenPlanDialog(true)}
               >
-                <EditIcon className="w-4 h-4" />
+                <EditIcon className="h-4 w-4" />
                 My Plan
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle className="text-[20px] text-[#000000] font-semibold">
+                <DialogTitle className="text-[20px] font-semibold text-[#000000]">
                   My Plan
                 </DialogTitle>
                 <DialogDescription>
@@ -223,16 +195,16 @@ export default function ManagePlanPage() {
                       <h3 className="font-semibold text-[#475467]">
                         Current Plan
                       </h3>
-                      <p className="text-[14px] text-[#475467] font-semibold">
-                        {user?.payment_plan?.plan?.plan || "Basic"}
+                      <p className="text-[14px] font-semibold text-[#475467]">
+                        {user?.payment_plan?.plan?.plan || 'Basic'}
                       </p>
                     </div>
 
                     <div className="space-y-[12px]">
                       <div className="flex justify-between">
                         <h3 className="font-semibold text-[#475467]">Price</h3>
-                        <p className="text-[14px] text-[#475467] font-semibold">
-                          ${user?.payment_plan?.price || "Free"}
+                        <p className="text-[14px] font-semibold text-[#475467]">
+                          ${user?.payment_plan?.price || 'Free'}
                         </p>
                       </div>
 
@@ -240,7 +212,7 @@ export default function ManagePlanPage() {
                         <h3 className="font-semibold text-[#475467]">
                           Billing interval
                         </h3>
-                        <p className="text-[14px] text-[#475467] font-semibold">
+                        <p className="text-[14px] font-semibold text-[#475467]">
                           Monthly
                         </p>
                       </div>
@@ -250,11 +222,11 @@ export default function ManagePlanPage() {
                           <h3 className="font-semibold text-[#475467]">
                             Reconcilation
                           </h3>
-                          <p className="text-[14px] text-[#475467] font-semibold">
+                          <p className="text-[14px] font-semibold text-[#475467]">
                             {reconciliationInfo.display}
                           </p>
                         </div>
-                        <div className="w-full h-1 bg-[#F5F5F5] rounded-[100px] overflow-hidden">
+                        <div className="h-1 w-full overflow-hidden rounded-[100px] bg-[#F5F5F5]">
                           <div
                             className="h-full bg-[#2E604A]"
                             style={{
@@ -263,8 +235,8 @@ export default function ManagePlanPage() {
                           ></div>
                         </div>
                         <p className="text-sm text-gray-500">
-                          {reconciliationInfo.remaining === "Unlimited"
-                            ? "Unlimited reconciliations"
+                          {reconciliationInfo.remaining === 'Unlimited'
+                            ? 'Unlimited reconciliations'
                             : `${reconciliationInfo.remaining} reconciliations remaining`}
                         </p>
                       </div>
@@ -275,10 +247,10 @@ export default function ManagePlanPage() {
               <DialogFooter className="sm:justify-start">
                 <Button
                   variant="outline"
-                  className="h-[48px] w-[80%] mx-auto cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946] hover:bg-[#e6394742] hover:text-[#E63946]"
+                  className="mx-auto h-[48px] w-[80%] cursor-pointer rounded-[8px] border border-[#E63946] px-[28px] py-[12px] text-[#E63946] hover:bg-[#e6394742] hover:text-[#E63946]"
                   onClick={() => {
-                    setOpenPlanDialog(false);
-                    setTimeout(() => setOpenCancelDialog(true), 200);
+                    setOpenPlanDialog(false)
+                    setTimeout(() => setOpenCancelDialog(true), 200)
                   }}
                 >
                   Cancel Subscription
@@ -292,10 +264,10 @@ export default function ManagePlanPage() {
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogDescription className="space-y-4">
-                  <div className="border rounded-[12px] p-[16px] border-[#FDA29B] bg-[#FFFBFA] flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 rounded-[12px] border border-[#FDA29B] bg-[#FFFBFA] p-[16px]">
                     <ErrorIcon className="text-[#D92D20]" />
                     <div className="space-y-2">
-                      <h3 className="text-[#B42318] font-semibold">
+                      <h3 className="font-semibold text-[#B42318]">
                         Important
                       </h3>
                       <p className="text-[#B42318]">
@@ -306,8 +278,8 @@ export default function ManagePlanPage() {
                     </div>
                   </div>
 
-                  <div className="py-[24px] px-[16px]">
-                    <h2 className="text-[#101828] text-[18px] py-4">
+                  <div className="px-[16px] py-[24px]">
+                    <h2 className="py-4 text-[18px] text-[#101828]">
                       What you will loose
                     </h2>
 
@@ -336,8 +308,8 @@ export default function ManagePlanPage() {
                 <DialogClose asChild>
                   <Button
                     variant="outline"
-                    className="cursor-pointer border border-[#E63946] py-[12px] px-[28px] rounded-[8px] text-[#E63946]"
-                    onClick={() => alert("Subscription Canceled!")}
+                    className="cursor-pointer rounded-[8px] border border-[#E63946] px-[28px] py-[12px] text-[#E63946]"
+                    onClick={() => alert('Subscription Canceled!')}
                   >
                     Cancel Subscription
                   </Button>
@@ -345,7 +317,7 @@ export default function ManagePlanPage() {
                 <DialogClose asChild>
                   <Button
                     type="button"
-                    className="bg-[#275B4E] text-white py-[12px] px-[28px] rounded-[8px] hover:bg-[#1E4A3E] transition cursor-pointer"
+                    className="cursor-pointer rounded-[8px] bg-[#275B4E] px-[28px] py-[12px] text-white transition hover:bg-[#1E4A3E]"
                     onClick={() => setOpenCancelDialog(false)}
                   >
                     Keep Subscription
@@ -355,12 +327,12 @@ export default function ManagePlanPage() {
             </DialogContent>
           </Dialog>
 
-          <Link href={"/billing-history"}>
+          <Link href={'/billing-history'}>
             <Button
-              variant={"secondary"}
-              className="flex gap-2 border border-[#2E604A] text-[#2E604A] px-4 py-2 rounded-md text-sm font-medium cursor-pointer shadow-none bg-white"
+              variant={'secondary'}
+              className="flex cursor-pointer gap-2 rounded-md border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
             >
-              <NoteIcon className="w-4 h-4" />
+              <NoteIcon className="h-4 w-4" />
               Billing history
             </Button>
           </Link>
@@ -371,35 +343,35 @@ export default function ManagePlanPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-8 flex flex-col lg:flex-row justify-between gap-8 px-4 xl:gap-12"
+          className="mt-8 flex flex-col justify-between gap-8 px-4 lg:flex-row xl:gap-12"
         >
           {pricingPlans.map((plan) => {
-            const isCurrentPlan = activeCard === plan.id;
-            const isHovered = hoveredCard === plan.id;
+            const isCurrentPlan = activeCard === plan.id
+            const isHovered = hoveredCard === plan.id
 
             return (
               <div
                 key={plan.id}
                 className={cn(
-                  "relative w-full lg:w-1/3 rounded-[13px] transition-all duration-300 p-[60px_24px] md:p-[40px_24px] xl:p-[94.7px_32px_40px_32px]",
+                  'relative w-full rounded-[13px] p-[60px_24px] transition-all duration-300 md:p-[40px_24px] lg:w-1/3 xl:p-[94.7px_32px_40px_32px]',
                   isCurrentPlan
-                    ? "bg-[#2E604A] scale-105"
-                    : "border-2 border-[#38B43C] hover:scale-105",
-                  !isCurrentPlan && activeCard !== null && "opacity-50",
-                  isHovered && !isCurrentPlan && "opacity-100"
+                    ? 'scale-105 bg-[#2E604A]'
+                    : 'border-2 border-[#38B43C] hover:scale-105',
+                  !isCurrentPlan && activeCard !== null && 'opacity-50',
+                  isHovered && !isCurrentPlan && 'opacity-100'
                 )}
                 onMouseEnter={() => setHoveredCard(plan.id)}
                 onMouseLeave={() => setHoveredCard(null)}
                 tabIndex={0}
                 aria-label={`${plan.name} pricing plan`}
               >
-                <div className="flex flex-col justify-between gap-10 h-full">
+                <div className="flex h-full flex-col justify-between gap-10">
                   <div>
                     <div className="border-b border-[#BFB8B8] pb-5">
                       <h3
                         className={cn(
-                          "font-[500] text-[16px] leading-[100%] font-inter",
-                          activeCard === plan.id ? "text-white" : "text-black"
+                          'font-inter text-[16px] leading-[100%] font-[500]',
+                          activeCard === plan.id ? 'text-white' : 'text-black'
                         )}
                       >
                         {plan.name}
@@ -409,13 +381,13 @@ export default function ManagePlanPage() {
                     <div className="mt-11 space-y-6">
                       <p
                         className={cn(
-                          "font-[600] text-[32px] leading-[100%]",
-                          activeCard === plan.id ? "text-white" : "text-black"
+                          'text-[32px] leading-[100%] font-[600]',
+                          activeCard === plan.id ? 'text-white' : 'text-black'
                         )}
                       >
                         <span className="text-2xl">$</span>
                         {plan.price}
-                        {plan.price !== "Free" && (
+                        {plan.price !== 'Free' && (
                           <span className="text-sm font-normal">/month</span>
                         )}
                       </p>
@@ -433,7 +405,7 @@ export default function ManagePlanPage() {
                     <button
                       type="button"
                       disabled
-                      className="w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] bg-gray-200 text-primary cursor-not-allowed"
+                      className="text-primary h-[47px] w-full cursor-not-allowed rounded-[8px] border-[1.5px] bg-gray-200 text-[16px] leading-[100%] font-[600]"
                     >
                       Current Plan
                     </button>
@@ -442,10 +414,10 @@ export default function ManagePlanPage() {
                       type="button"
                       onClick={() => handlePlanClick(plan.link)}
                       className={cn(
-                        "w-full h-[47px] rounded-[8px] border-[1.5px] font-[600] text-[16px] leading-[100%] transition-all duration-300 cursor-pointer",
+                        'h-[47px] w-full cursor-pointer rounded-[8px] border-[1.5px] text-[16px] leading-[100%] font-[600] transition-all duration-300',
                         isHovered
-                          ? "bg-[#eaf5f1] text-[#2A5743] border-[#2E604A]"
-                          : "bg-[#2E604A] text-[#EAEFED] border-[#6E756E] hover:bg-[#eaf5f1] hover:text-[#2A5743] hover:border-[#2E604A]"
+                          ? 'border-[#2E604A] bg-[#eaf5f1] text-[#2A5743]'
+                          : 'border-[#6E756E] bg-[#2E604A] text-[#EAEFED] hover:border-[#2E604A] hover:bg-[#eaf5f1] hover:text-[#2A5743]'
                       )}
                     >
                       Choose Plan
@@ -453,7 +425,7 @@ export default function ManagePlanPage() {
                   )}
                 </div>
               </div>
-            );
+            )
           })}
         </motion.div>
         {/* Cancel Subscription Modal */}
@@ -464,6 +436,6 @@ export default function ManagePlanPage() {
       </Container>
 
       <Footer />
-    </ProtectedRoute>
-  );
+    </>
+  )
 }

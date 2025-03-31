@@ -1,25 +1,17 @@
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
 // Dynamic imports
-const HeroSection = dynamic(
-  () => import("@/src/components/freelancer/hero-sect"),
-);
+const HeroSection = dynamic(() => import('@/components/freelancer/hero-sect'))
 
-const Feature = dynamic(
-    () => import("@/src/components/freelancer/Features"),
-  );
+const Feature = dynamic(() => import('@/components/freelancer/Features'))
 const VideoFeature = dynamic(
-  () => import("@/src/components/freelancer/VideoFeature"),
-);
-const WhyReconXi = dynamic(
-  () => import("@/src/components/freelancer/WhyReconXi"),
-);
-const StartReconcile = dynamic(
-  () => import("@/src/components/freelancer/Ready"),
-);
-const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
-const Footer = dynamic(() => import("@/src/components/Footer"));
+  () => import('@/components/freelancer/VideoFeature')
+)
+const WhyReconXi = dynamic(() => import('@/components/freelancer/WhyReconXi'))
+const StartReconcile = dynamic(() => import('@/components/freelancer/Ready'))
+const FAQSection = dynamic(() => import('@/components/FAQs/FAQSection'))
+const Footer = dynamic(() => import('@/components/Footer'))
 
 export default function HomePage() {
   return (
@@ -44,5 +36,5 @@ export default function HomePage() {
       </Suspense>
       <Footer />
     </main>
-  );
+  )
 }

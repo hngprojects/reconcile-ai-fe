@@ -1,7 +1,6 @@
-"use client";
+'use client'
 
-import FileUploadLayout from "@/src/components/reconciliation/upload/FileUploadLayout";
-import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
+import FileUploadLayout from '@/components/reconciliation/upload/FileUploadLayout'
 
 export default function FileUploadPage() {
   const handleReconcile = async (
@@ -10,20 +9,16 @@ export default function FileUploadPage() {
   ): Promise<void> => {
     try {
       localStorage.setItem(
-        "bankFiles",
+        'bankFiles',
         JSON.stringify(bankFiles.map((f) => f.name))
-      );
+      )
       localStorage.setItem(
-        "ledgerFiles",
+        'ledgerFiles',
         JSON.stringify(ledgerFiles.map((f) => f.name))
-      );
+      )
     } catch (error) {
-      console.error("Error handling reconciliation:", error);
+      console.error('Error handling reconciliation:', error)
     }
-  };
-  return (
-    <ProtectedRoute>
-      <FileUploadLayout onReconcile={handleReconcile} />
-    </ProtectedRoute>
-  );
+  }
+  return <FileUploadLayout onReconcile={handleReconcile} />
 }

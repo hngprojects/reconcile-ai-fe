@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import DemoForm from "./demo-form";
-import Footer from "@/src/components/Footer";
+import { motion } from 'framer-motion'
+import DemoForm from './demo-form'
+import Footer from '@/components/Footer'
 
 export default function Home() {
   // Text animation variants for smoother transitions
@@ -14,30 +14,30 @@ export default function Home() {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: 'easeOut',
         delay: i * 0.1,
       },
     }),
-  };
+  }
 
   return (
-    <main className="min-h-screen flex flex-col ">
-      <div className=" flex flex-col items-center">
+    <main className="flex min-h-screen flex-col">
+      <div className="flex flex-col items-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
             duration: 0.8,
-            ease: "easeOut",
+            ease: 'easeOut',
           }}
-          className="flex-1 w-full max-w-3xl px-4 py-[59px] flex flex-col items-center text-center"
+          className="flex w-full max-w-3xl flex-1 flex-col items-center px-4 py-[59px] text-center"
         >
           <motion.h1
             initial="hidden"
             animate="visible"
             custom={1}
             variants={textVariants}
-            className="text-4xl md:text-5xl font-bold text-[#333333] mb-4"
+            className="mb-4 text-4xl font-bold text-[#333333] md:text-5xl"
           >
             Get a free <span className="text-[#2E604A]">Demo</span> and
           </motion.h1>
@@ -46,7 +46,7 @@ export default function Home() {
             animate="visible"
             custom={2}
             variants={textVariants}
-            className="text-4xl md:text-5xl font-bold text-gray-800 mb-8"
+            className="mb-8 text-4xl font-bold text-gray-800 md:text-5xl"
           >
             Automate Your Financial Reconciliation
           </motion.h2>
@@ -56,18 +56,18 @@ export default function Home() {
             animate="visible"
             custom={3}
             variants={textVariants}
-            className="text-lg text-[#333333] mb-12 max-w-2xl"
+            className="mb-12 max-w-2xl text-lg text-[#333333]"
           >
             Experience the power of AI-driven financial reconciliation. Fill out
             the form below to get a free personalized Demo of ReconXi.
           </motion.p>
 
           <motion.div
-             initial={{ opacity: 0 }}
-             animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{
               duration: 1,
-              ease: "easeOut",
+              ease: 'easeOut',
               delay: 0.5,
             }}
             className="w-full"
@@ -90,5 +90,5 @@ export default function Home() {
       </div>
       <Footer />
     </main>
-  );
+  )
 }

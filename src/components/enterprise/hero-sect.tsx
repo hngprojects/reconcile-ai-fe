@@ -1,29 +1,27 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import Container from "@/src/components/Container";
+'use client'
+import React from 'react'
+import Image from 'next/image'
+import Container from '@/components/Container'
 
 export default function EnterpriseHero() {
   return (
     <section
-      className="w-full py-2 md:py-4 bg-white overflow-hidden"
+      className="w-full overflow-hidden bg-white py-2 md:py-4"
       aria-labelledby="hero-heading"
     >
       <Container>
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-16">
           {/* Left Content */}
-          <div
-            className="flex-1 max-w-[640px]"
-          >
-            <div className="space-y-6 md:space-y-8 w-full flex items-center lg:items-start flex-col">
+          <div className="max-w-[640px] flex-1">
+            <div className="flex w-full flex-col items-center space-y-6 md:space-y-8 lg:items-start">
               <h1
                 id="hero-heading"
-                className="font-inter text-[32px] text-center lg:text-left sm:text-[45px] md:text-[48px] leading-[1.2] tracking-[-0.02em] font-semibold text-[#101828]"
+                className="font-inter text-center text-[32px] leading-[1.2] font-semibold tracking-[-0.02em] text-[#101828] sm:text-[45px] md:text-[48px] lg:text-left"
               >
                 Reconciliation Software for Large Organizations
               </h1>
 
-              <p className="font-inter text-base  text-center lg:text-left sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
+              <p className="font-inter text-center text-base leading-[1.5] text-[#475467] sm:text-lg md:text-[20px] md:leading-[30px] lg:text-left">
                 Managing financial transactions across multiple accounts,
                 departments, or business units can be a challenge for large
                 organizations. Lets show you the ReconXi way.
@@ -32,16 +30,14 @@ export default function EnterpriseHero() {
           </div>
 
           {/* Right Image */}
-          <div
-            className="flex-1 flex justify-end"
-          >
-            <div className="w-full max-w-[460px] -my-4">
+          <div className="flex flex-1 justify-end">
+            <div className="-my-4 w-full max-w-[460px]">
               <Image
                 src="/assets/images/enterprise-hero.svg"
                 alt="Enterprise reconciliation visualization"
                 width={460}
                 height={640}
-                className="w-full h-auto rounded-tl-[160px]"
+                className="h-auto w-full rounded-tl-[160px]"
                 priority
               />
             </div>
@@ -49,5 +45,5 @@ export default function EnterpriseHero() {
         </div>
       </Container>
     </section>
-  );
+  )
 }

@@ -1,31 +1,31 @@
-"use client";
+'use client'
 
-import Unauthenticated from "@/src/components/reconciliation/UnAuthorized";
-import { Button } from "@/src/components/ui/button";
-import { Loader } from "@/src/components/ui/loader";
-import { useReconciliation } from "@/src/context/ReconciliationProvider";
-import { exportReconciliation } from "@/src/lib/api";
-import { cn } from "@/src/lib/utils";
-import { DownloadCloudIcon, Loader2, MoreVertical } from "lucide-react";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import Unauthenticated from '@/components/reconciliation/UnAuthorized'
+import { Button } from '@/components/ui/button'
+import { Loader } from '@/components/ui/loader'
+import { useReconciliation } from '@/context/ReconciliationProvider'
+import { exportReconciliation } from '@/lib/api'
+import { cn } from '@/lib/utils'
+import { DownloadCloudIcon, Loader2, MoreVertical } from 'lucide-react'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import {
   addValueAndLabel,
   TransactionOption,
-} from "../../../helpers/searchComboxOptionExpander";
-import { FrontendTransaction } from "../../../types/frontendResponseTypes";
-import { CheckIcon } from "../../Icon/Icons";
-import UnlinkModal from "../../modal/UnlinkModal";
+} from '../../../helpers/searchComboxOptionExpander'
+import { FrontendTransaction } from '../../../types/frontendResponseTypes'
+import { CheckIcon } from '../../Icon/Icons'
+import UnlinkModal from '../../modal/UnlinkModal'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../../ui/dropdown-menu";
-import { StatusBadge } from "../StatusBadge";
-import { SuccessToast } from "../SuccessToast";
-import { FindPossibleMatchModal } from "../modals/FindPossibleMatchModal";
-import QuickFindAndMatchComboBox from "../quickFind/QuickFindAndMatchComboBox";
+} from '../../ui/dropdown-menu'
+import { StatusBadge } from '../StatusBadge'
+import { SuccessToast } from '../SuccessToast'
+import { FindPossibleMatchModal } from '../modals/FindPossibleMatchModal'
+import QuickFindAndMatchComboBox from '../quickFind/QuickFindAndMatchComboBox'
 
 export function MobileView() {
   const {
@@ -49,15 +49,15 @@ export function MobileView() {
     selectedRow,
     authenticated,
     loading,
-  } = useReconciliation();
-  const [showErrorModal, setShowErrorModal] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [showErrorToast, setShowErrorToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
-  const path = usePathname();
+  } = useReconciliation()
+  const [showErrorModal, setShowErrorModal] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
+  const [showSuccessToast, setShowSuccessToast] = useState(false)
+  const [showErrorToast, setShowErrorToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+  const path = usePathname()
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
   // const [selectedTransactionRow, setSelectedRow] = useState<ReconciliationItem>(
   //   {} as ReconciliationItem
   // );
@@ -65,71 +65,71 @@ export function MobileView() {
   const possibleMatches =
     selectedRow?.statements === null
       ? unmatchedBankTransactions
-      : unmatchedLedgerTransactions;
+      : unmatchedLedgerTransactions
 
-  const { pageIndex, pageSize } = pagination;
+  const { pageIndex, pageSize } = pagination
 
-  const startItem = pageIndex * pageSize + 1;
-  const endItem = Math.min((pageIndex + 1) * pageSize, totalItems);
+  const startItem = pageIndex * pageSize + 1
+  const endItem = Math.min((pageIndex + 1) * pageSize, totalItems)
 
   // Export function
   const handleExport = async () => {
     try {
-      setIsExporting(true);
+      setIsExporting(true)
 
-      const reconciliationId = path.split("/")[2];
+      const reconciliationId = path.split('/')[2]
 
       if (!reconciliationId) {
-        throw new Error("No reconciliation id found");
+        throw new Error('No reconciliation id found')
       }
 
-      await exportReconciliation(reconciliationId);
+      await exportReconciliation(reconciliationId)
 
-      setToastMessage("Your data has been exported successfully!");
-      setShowSuccessToast(true);
+      setToastMessage('Your data has been exported successfully!')
+      setShowSuccessToast(true)
     } catch (error: unknown) {
-      console.error("Export error:", error);
+      console.error('Export error:', error)
       setToastMessage(
-        error instanceof Error ? error.message : "Failed to export data"
-      );
+        error instanceof Error ? error.message : 'Failed to export data'
+      )
     } finally {
-      setIsExporting(false);
+      setIsExporting(false)
     }
-  };
+  }
 
   useEffect(() => {
     if (showSuccessToast) {
       const timer = setTimeout(() => {
-        setShowSuccessToast(false);
-      }, 5000);
-      return () => clearTimeout(timer);
+        setShowSuccessToast(false)
+      }, 5000)
+      return () => clearTimeout(timer)
     }
-  }, [showSuccessToast]);
+  }, [showSuccessToast])
 
   // Show CSV structure error toast
   useEffect(() => {
     if (showErrorModal) {
-      setToastMessage("CSV Table Structure not currently supported!");
-      setShowErrorToast(true);
-      setShowErrorModal(false);
+      setToastMessage('CSV Table Structure not currently supported!')
+      setShowErrorToast(true)
+      setShowErrorModal(false)
     }
-  }, [showErrorModal, setShowErrorModal]);
+  }, [showErrorModal, setShowErrorModal])
 
   // Auto-hide toast after 5 seconds
   useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined
 
     if (showSuccessToast || showErrorToast) {
       timer = setTimeout(() => {
-        setShowSuccessToast(false);
-        setShowErrorToast(false);
-      }, 5000);
+        setShowSuccessToast(false)
+        setShowErrorToast(false)
+      }, 5000)
     }
 
     return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [showSuccessToast, showErrorToast]);
+      if (timer) clearTimeout(timer)
+    }
+  }, [showSuccessToast, showErrorToast])
 
   return (
     <>
@@ -138,7 +138,7 @@ export function MobileView() {
       ) : authenticated ? (
         <div className="space-y-3 py-6">
           {showSuccessToast && (
-            <div className="fixed top-4 right-4 z-50 animate-in fade-in duration-500">
+            <div className="animate-in fade-in fixed top-4 right-4 z-50 duration-500">
               <SuccessToast
                 message={toastMessage}
                 onClose={() => setShowSuccessToast(false)}
@@ -147,32 +147,32 @@ export function MobileView() {
           )}
 
           {/* Conditional export button */}
-          <div className="flex flex-col gap-4 md:flex-row justify-between mb-4">
+          <div className="mb-4 flex flex-col justify-between gap-4 md:flex-row">
             <h1 className="text-2xl font-semibold">Matched Results</h1>
             <div className="flex gap-4">
               <a href="/file-upload">
                 <button
                   type="button"
-                  className="px-6 py-4 border border-[#2E604A] !bg-[#2E604A] !text-white font-medium hover:bg-[#2E604A]/90 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+                  className="flex h-12 w-[150px] cursor-pointer items-center justify-center rounded-md border border-[#2E604A] !bg-[#2E604A] px-6 py-4 font-medium !text-white hover:bg-[#2E604A]/90"
                 >
                   Re-upload
                 </button>
               </a>
-              {userPlan === "business" && (
+              {userPlan === 'business' && (
                 <button
                   type="button"
-                  className="px-6 py-4 border border-[#2E604A] text-[#2E604A] font-medium hover:bg-gray-100 rounded-md w-[150px] h-12 flex items-center justify-center cursor-pointer"
+                  className="flex h-12 w-[150px] cursor-pointer items-center justify-center rounded-md border border-[#2E604A] px-6 py-4 font-medium text-[#2E604A] hover:bg-gray-100"
                   onClick={handleExport}
                   disabled={isExporting}
                 >
                   {isExporting ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />{" "}
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />{' '}
                       Exporting...
                     </>
                   ) : (
                     <>
-                      <DownloadCloudIcon className="mr-2 w-5 h-5" />
+                      <DownloadCloudIcon className="mr-2 h-5 w-5" />
                       Export
                     </>
                   )}
@@ -186,14 +186,14 @@ export function MobileView() {
             const possibleMatches =
               item.statements !== null
                 ? unmatchedLedgerTransactions
-                : unmatchedBankTransactions;
+                : unmatchedBankTransactions
 
             const transactionOptions: TransactionOption[] =
-              addValueAndLabel(possibleMatches);
+              addValueAndLabel(possibleMatches)
 
             const handleSearch = (query: string) => {
               // Always return full list for empty queries
-              if (!query.trim()) return transactionOptions;
+              if (!query.trim()) return transactionOptions
 
               return transactionOptions.filter(
                 (transaction) =>
@@ -201,23 +201,23 @@ export function MobileView() {
                     .toLowerCase()
                     .includes(query.toLowerCase()) ||
                   transaction.date.toLowerCase().includes(query.toLowerCase())
-              );
-            };
+              )
+            }
 
             return (
               <div
                 key={`transaction-${item.reconciliation_pair_id || index}`}
                 className={cn(
-                  "rounded-lg border shadow-sm",
-                  item.matched ? "bg-[#F3FEFA]" : "bg-[#FFF4F0]",
+                  'rounded-lg border shadow-sm',
+                  item.matched ? 'bg-[#F3FEFA]' : 'bg-[#FFF4F0]',
                   {
-                    "rounded-t-lg": index === 0,
+                    'rounded-t-lg': index === 0,
                   }
                 )}
               >
                 {/* Column Headers */}
                 {index === 0 && (
-                  <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-t-md border-b">
+                  <div className="flex items-center justify-between rounded-t-md border-b bg-gray-50 px-4 py-3">
                     <div className="text-sm font-medium text-gray-500">
                       Date/Description
                     </div>
@@ -227,7 +227,7 @@ export function MobileView() {
                   </div>
                 )}
 
-                <div className="p-4 space-y-4">
+                <div className="space-y-4 p-4">
                   {/* Bank Statement */}
                   {item.statements?.map(
                     (stmt, index) =>
@@ -254,15 +254,15 @@ export function MobileView() {
                           </div>
 
                           {item.matched && (
-                            <div className="flex gap-3 items-center">
-                              {userPlan === "business" && (
+                            <div className="flex items-center gap-3">
+                              {userPlan === 'business' && (
                                 <button
                                   type="button"
                                   title="Unlink matching transactions"
-                                  className="cursor-pointer inline-block border-[0.5px] border-[#007A55] p-2 rounded-3xl group hover:bg-[#CEFFED]"
+                                  className="group inline-block cursor-pointer rounded-3xl border-[0.5px] border-[#007A55] p-2 hover:bg-[#CEFFED]"
                                   onClick={() => {
-                                    setShowUnlinkModalMobile(true);
-                                    setSelectedRow(item);
+                                    setShowUnlinkModalMobile(true)
+                                    setSelectedRow(item)
                                   }}
                                 >
                                   <StatusBadge
@@ -272,7 +272,7 @@ export function MobileView() {
                                 </button>
                               )}
 
-                              <hr className="border border-gray-200/70 flex-1" />
+                              <hr className="flex-1 border border-gray-200/70" />
                             </div>
                           )}
                         </div>
@@ -298,13 +298,13 @@ export function MobileView() {
                             </div>
                           </div>
 
-                          <div className="flex flex-col justify-between items-end">
+                          <div className="flex flex-col items-end justify-between">
                             <div className="font-medium text-gray-600">
                               {ldgr.ledger_txn?.amount}
                             </div>
 
                             {item.statements !== null &&
-                              userPlan === "business" && (
+                              userPlan === 'business' && (
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>
                                     <Button
@@ -318,14 +318,14 @@ export function MobileView() {
                                   <DropdownMenuContent align="end">
                                     <DropdownMenuItem
                                       onClick={(e) => {
-                                        e.stopPropagation();
-                                        setSelectedRow(item);
-                                        setShowUnlinkModal(true);
+                                        e.stopPropagation()
+                                        setSelectedRow(item)
+                                        setShowUnlinkModal(true)
                                       }}
                                       className="gap-0.5"
                                     >
-                                      <CheckIcon className="text-[#333333] h-7 w-7" />
-                                      <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                      <CheckIcon className="h-7 w-7 text-[#333333]" />
+                                      <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
                                         Unlink Matched
                                       </span>
                                     </DropdownMenuItem>
@@ -339,16 +339,16 @@ export function MobileView() {
 
                   {/* Show Unmatched status if not matched */}
                   {!item.matched && (
-                    <div className="pt-1 flex flex-col justify-between items-start gap-5">
-                      <div className="inline-block border-[0.5px] border-[#C50700] p-2 rounded-3xl">
+                    <div className="flex flex-col items-start justify-between gap-5 pt-1">
+                      <div className="inline-block rounded-3xl border-[0.5px] border-[#C50700] p-2">
                         <StatusBadge matched={false} />
                       </div>
 
-                      <div className="flex justify-between items-center gap-3 w-full">
-                        {userPlan === "business" && (
+                      <div className="flex w-full items-center justify-between gap-3">
+                        {userPlan === 'business' && (
                           <QuickFindAndMatchComboBox
                             commandProps={{
-                              label: "Select possible match",
+                              label: 'Select possible match',
                             }}
                             defaultOptions={transactionOptions}
                             onSearchSync={handleSearch}
@@ -360,11 +360,11 @@ export function MobileView() {
                                 description: option.description,
                                 date: option.date,
                                 amount: option.amount,
-                              };
-                              console.log("Confirmed:", {
+                              }
+                              console.log('Confirmed:', {
                                 selectedOption,
                                 option,
-                              });
+                              })
 
                               if (item.ledgers) {
                                 onMatch(
@@ -372,7 +372,7 @@ export function MobileView() {
                                   item.ledgers.map(
                                     (ledger) => ledger.ledger_txn
                                   )
-                                );
+                                )
                               }
 
                               if (item.statements) {
@@ -381,7 +381,7 @@ export function MobileView() {
                                     (statement) => statement.bank_txn
                                   ),
                                   [selectedOption]
-                                );
+                                )
                               }
                             }}
                             emptyIndicator={
@@ -392,7 +392,7 @@ export function MobileView() {
                           />
                         )}
 
-                        {userPlan === "business" && (
+                        {userPlan === 'business' && (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" className="size-8 p-0">
@@ -404,12 +404,12 @@ export function MobileView() {
                               <DropdownMenuItem
                                 className="gap-0.5"
                                 onClick={() => {
-                                  setSelectedRow(item);
-                                  setModalOpen(true);
+                                  setSelectedRow(item)
+                                  setModalOpen(true)
                                 }}
                               >
-                                <CheckIcon className="text-[#333333] h-7 w-7" />
-                                <span className="text-sm text-nowrap text-[#333333] cursor-pointer">
+                                <CheckIcon className="h-7 w-7 text-[#333333]" />
+                                <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
                                   Find Possible Match
                                 </span>
                               </DropdownMenuItem>
@@ -421,7 +421,7 @@ export function MobileView() {
                   )}
                 </div>
               </div>
-            );
+            )
           })}
 
           {/* Pagination */}
@@ -457,16 +457,16 @@ export function MobileView() {
             onMatch={onMatch}
           />
 
-          {userPlan === "business" && (
+          {userPlan === 'business' && (
             <UnlinkModal
               isOpen={showUnlinkModalMobile}
               isLoading={isLoading}
               onClose={() => {
-                setShowUnlinkModalMobile(false);
-                setSelectedRow(null);
+                setShowUnlinkModalMobile(false)
+                setSelectedRow(null)
               }}
               onConfirm={async () => {
-                if (!selectedRow) return;
+                if (!selectedRow) return
 
                 if (selectedRow.statements && selectedRow.ledgers) {
                   await onUnlink(
@@ -474,8 +474,8 @@ export function MobileView() {
                       (statement) => statement.bank_txn
                     ),
                     selectedRow.ledgers.map((ledger) => ledger.ledger_txn)
-                  );
-                  setSelectedRow(null);
+                  )
+                  setSelectedRow(null)
                 }
               }}
             />
@@ -485,5 +485,5 @@ export function MobileView() {
         <Unauthenticated />
       )}
     </>
-  );
+  )
 }

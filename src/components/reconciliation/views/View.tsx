@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import { ReconciliationProvider } from "@/src/context/ReconciliationProvider";
-import DesktopView from "./DesktopView";
-import { MobileView } from "./MobileView";
+import { ReconciliationProvider } from '@/context/ReconciliationProvider'
+import DesktopView from './DesktopView'
+import { MobileView } from './MobileView'
 
 export function View() {
   return (
@@ -14,5 +14,5 @@ export function View() {
         <DesktopView />
       </div>
     </ReconciliationProvider>
-  );
+  )
 }

@@ -1,16 +1,16 @@
-"use client";
-import Container from "@/src/components/Container";
-import Footer from "@/src/components/Footer";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
-import { FileCheck } from "lucide-react";
-import Image from "next/image";
-import { useRef, useState } from "react";
-import { handleCustomerFeedback } from "@/src/lib/api";
-import { motion } from "framer-motion";
-import { Textarea } from "@/src/components/ui/textarea";
-import { toast } from "sonner";
+'use client'
+import Container from '@/components/Container'
+import Footer from '@/components/Footer'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { FileCheck } from 'lucide-react'
+import Image from 'next/image'
+import { useRef, useState } from 'react'
+import { handleCustomerFeedback } from '@/lib/api'
+import { motion } from 'framer-motion'
+import { Textarea } from '@/components/ui/textarea'
+import { toast } from 'sonner'
 
 export default function ContactUs() {
   const textVariants = {
@@ -21,127 +21,127 @@ export default function ContactUs() {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: 'easeOut',
         delay: i * 0.1,
       },
     }),
-  };
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  }
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    subject: "",
-    message: "",
+    fullName: '',
+    email: '',
+    subject: '',
+    message: '',
     file: null as File | null,
-  });
+  })
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+    e.preventDefault()
+    setIsDragging(true)
+  }
 
   const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
+    e.preventDefault()
+    setIsDragging(false)
+  }
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
+    e.preventDefault()
+    setIsDragging(false)
 
-    const files = e.dataTransfer.files;
+    const files = e.dataTransfer.files
     if (files.length > 0) {
-      setSelectedFile(files[0]);
-      setFormData((prev) => ({ ...prev, file: files[0] }));
+      setSelectedFile(files[0])
+      setFormData((prev) => ({ ...prev, file: files[0] }))
     }
-  };
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+    const files = e.target.files
     if (files && files.length > 0) {
-      setSelectedFile(files[0]);
-      setFormData((prev) => ({ ...prev, file: files[0] }));
+      setSelectedFile(files[0])
+      setFormData((prev) => ({ ...prev, file: files[0] }))
     }
-  };
+  }
 
   const handleClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click();
+      fileInputRef.current.click()
     }
-  };
+  }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const resetForm = () => {
     setFormData({
-      fullName: "",
-      email: "",
-      subject: "",
-      message: "",
+      fullName: '',
+      email: '',
+      subject: '',
+      message: '',
       file: null,
-    });
-    setSelectedFile(null);
-  };
+    })
+    setSelectedFile(null)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault()
+    setIsSubmitting(true)
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.fullName);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("subject", formData.subject);
-      formDataToSend.append("message", formData.message);
-      formDataToSend.append("request_type", formData.subject || "Feedback");
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.fullName)
+      formDataToSend.append('email', formData.email)
+      formDataToSend.append('subject', formData.subject)
+      formDataToSend.append('message', formData.message)
+      formDataToSend.append('request_type', formData.subject || 'Feedback')
 
       if (formData.file) {
-        formDataToSend.append("file", formData.file);
+        formDataToSend.append('file', formData.file)
       }
 
-      const result = await handleCustomerFeedback(formDataToSend);
+      const result = await handleCustomerFeedback(formDataToSend)
 
       if (result.success) {
-        toast.success("Feedback submitted successfully!");
-        resetForm();
+        toast.success('Feedback submitted successfully!')
+        resetForm()
       } else if (result.error) {
-        toast.error("Error submitting feedback: " + result.error);
+        toast.error('Error submitting feedback: ' + result.error)
       }
     } catch (error) {
-      console.error("Exception when submitting feedback:", error);
-      toast.error("An error occurred while submitting feedback");
+      console.error('Exception when submitting feedback:', error)
+      toast.error('An error occurred while submitting feedback')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
-    <main className="min-h-screen flex flex-col">
-      <div className="flex-1 flex items-center justify-center py-[59px] px-4">
+    <main className="flex min-h-screen flex-col">
+      <div className="flex flex-1 items-center justify-center px-4 py-[59px]">
         <Container>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
               duration: 0.8,
-              ease: "easeOut",
+              ease: 'easeOut',
             }}
-            className="w-full max-w-3xl mx-auto flex flex-col items-center text-center"
+            className="mx-auto flex w-full max-w-3xl flex-col items-center text-center"
           >
             <motion.h2
               initial="hidden"
               animate="visible"
               custom={1}
               variants={textVariants}
-              className="text-4xl md:text-5xl font-bold text-[#333] mb-4"
+              className="mb-4 text-4xl font-bold text-[#333] md:text-5xl"
             >
               Give us your feedback
             </motion.h2>
@@ -150,7 +150,7 @@ export default function ContactUs() {
               animate="visible"
               custom={2}
               variants={textVariants}
-              className="text-lg text-[#475467] mb-12 max-w-2xl"
+              className="mb-12 max-w-2xl text-lg text-[#475467]"
             >
               Thank you for reaching out! Please fill out the form below, and
               our team will reach out to you.
@@ -161,11 +161,11 @@ export default function ContactUs() {
               animate={{ opacity: 1 }}
               transition={{
                 duration: 1,
-                ease: "easeOut",
+                ease: 'easeOut',
                 delay: 0.5,
               }}
               onSubmit={handleSubmit}
-              className="w-full md:w-[650px] bg-white border border-gray-200 rounded-md p-6"
+              className="w-full rounded-md border border-gray-200 bg-white p-6 md:w-[650px]"
               aria-labelledby="form-heading"
             >
               <div className="space-y-6">
@@ -232,7 +232,7 @@ export default function ContactUs() {
                     placeholder="Type your message here..."
                     required
                     aria-required="true"
-                    className="w-full min-h-[120px] p-3 rounded-md border border-input bg-white text-base resize-none focus:outline-none focus:ring-2"
+                    className="border-input min-h-[120px] w-full resize-none rounded-md border bg-white p-3 text-base focus:ring-2 focus:outline-none"
                   />
                 </div>
 
@@ -246,12 +246,11 @@ export default function ContactUs() {
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
-                    className={`w-full h-[154px] bg-[#F8F8F8] rounded flex flex-col items-center justify-center cursor-pointer transition-all
-                      ${
-                        isDragging
-                          ? "border-2 border-dashed border-[#2E604A]"
-                          : "border border-[#DEDEDE]"
-                      }`}
+                    className={`flex h-[154px] w-full cursor-pointer flex-col items-center justify-center rounded bg-[#F8F8F8] transition-all ${
+                      isDragging
+                        ? 'border-2 border-dashed border-[#2E604A]'
+                        : 'border border-[#DEDEDE]'
+                    }`}
                   >
                     <input
                       id="resume"
@@ -267,10 +266,10 @@ export default function ContactUs() {
                     {selectedFile ? (
                       <div className="flex flex-col items-center">
                         <FileCheck
-                          className="w-[50px] h-[50px] text-[#2E604A]"
+                          className="h-[50px] w-[50px] text-[#2E604A]"
                           strokeWidth={1.5}
                         />
-                        <p className="text-sm text-[#214435] mt-2 font-semibold">
+                        <p className="mt-2 text-sm font-semibold text-[#214435]">
                           {selectedFile.name}
                         </p>
                       </div>
@@ -282,7 +281,7 @@ export default function ContactUs() {
                           height={50}
                           alt="upload icon"
                         />
-                        <p className="text-sm text-[#214435] mt-2 font-semibold">
+                        <p className="mt-2 text-sm font-semibold text-[#214435]">
                           Drop your file here or browse
                         </p>
                       </>
@@ -292,10 +291,10 @@ export default function ContactUs() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-[#2E604A] text-white font-semibold py-6 text-[18px] cursor-pointer mt-6"
+                  className="mt-6 w-full cursor-pointer bg-[#2E604A] py-6 text-[18px] font-semibold text-white"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit"}
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
                 </Button>
               </div>
             </motion.form>
@@ -304,5 +303,5 @@ export default function ContactUs() {
       </div>
       <Footer />
     </main>
-  );
+  )
 }

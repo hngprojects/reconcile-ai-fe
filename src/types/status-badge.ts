@@ -1,5 +1,5 @@
 export interface StatusBadgeProps {
-  matched: boolean;
-  className?: string;
-  matchScore?: string;
+  matched: boolean
+  className?: string
+  matchScore?: string
 }

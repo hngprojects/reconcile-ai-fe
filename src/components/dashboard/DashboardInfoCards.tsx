@@ -1,113 +1,66 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { Button } from "@/src/components/ui/button";
-import { Card, CardContent } from "@/src/components/ui/card";
-import { Progress } from "@/src/components/ui/progress";
-import { useAuth } from "../context/AuthContext";
-import { useRouter } from "next/navigation";
-import { Skeleton } from "@/src/components/ui/skeleton";
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export const DashboardInfoCards = () => {
-  const { user, getUserDetails } = useAuth();
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const { data } = useSession()
+  const user = data?.user
+  const router = useRouter()
 
   const getUserPlan = (plan: string | undefined) => {
     switch (plan) {
-      case "Starter":
-        return "starter";
-      case "Business":
-        return "business";
+      case 'Starter':
+        return 'starter'
+      case 'Business':
+        return 'business'
       default:
-        return "basic";
+        return 'basic'
     }
-  };
+  }
 
-  useEffect(() => {
-    const fetch = async () => {
-      await getUserDetails();
-      setIsLoading(false);
-    };
-
-    fetch();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan);
+  const userPlan = getUserPlan(user?.payment_plan?.plan?.plan)
 
   const getReconciliationProgress = () => {
-    const used = user?.payment_plan?.reconciliations_used || 0;
-    // Get count from localStorage, default to 0 if not set
-    //const used = parseInt(localStorage.getItem("reconcileCount") || "0");
-    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 5;
+    const used = user?.payment_plan?.reconciliations_used || 0
+    const limit = user?.payment_plan?.plan?.reconciliations_per_month || 5
 
-    if (limit === -1) return { used, limit: "∞", progress: 0 };
+    if (limit === -1) return { used, limit: '∞', progress: 0 }
 
-    const progress = Math.min((used / limit) * 100, 100);
-    return { used, limit, progress };
-  };
+    const progress = Math.min((used / limit) * 100, 100)
+    return { used, limit, progress }
+  }
 
-  const { used, limit, progress } = getReconciliationProgress();
+  const { used, limit, progress } = getReconciliationProgress()
 
   const formatDate = (date: string | null | undefined) => {
-    if (!date) return "Not available";
-    return new Date(date).toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    });
-  };
+    if (!date) return 'Not available'
+    return new Date(date).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    })
+  }
 
   const handleUpgrade = () => {
-    router.push("/manage-plan");
-  };
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:gap-6">
-        {/* Plan Card Skeleton */}
-        <Card className="shadow-sm">
-          <CardContent className="p-5 h-40 flex flex-col items-start justify-between md:p-6">
-            <Skeleton className="h-6 w-3/4" />
-            <Skeleton className="h-10 w-32" />
-          </CardContent>
-        </Card>
-
-        {/* Reconciliation Progress Skeleton */}
-        <Card className="shadow-sm">
-          <CardContent className="p-5 h-40 flex flex-col justify-between md:p-6">
-            <Skeleton className="h-6 w-2/3" />
-            <div className="space-y-2">
-              <Skeleton className="h-8 w-24" />
-              <Skeleton className="h-2 w-full" />
-              <Skeleton className="h-4 w-36" />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Date Card Skeleton */}
-        <Card className="shadow-sm">
-          <CardContent className="p-5 md:p-6 flex flex-col justify-center gap-4 h-40">
-            <Skeleton className="h-6 w-1/2" />
-            <Skeleton className="h-8 w-40" />
-          </CardContent>
-        </Card>
-      </div>
-    );
+    router.push('/manage-plan')
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 md:gap-6">
+    <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
       <Card className="shadow-sm">
-        <CardContent className="p-5 h-40 flex flex-col items-start justify-between md:p-6">
-          <h2 className="text-xl font-medium mb-2">
-            Current Plan -{" "}
+        <CardContent className="flex h-40 flex-col items-start justify-between p-5 md:p-6">
+          <h2 className="mb-2 text-xl font-medium">
+            Current Plan -{' '}
             <span className="text-primary capitalize">{userPlan}</span>
           </h2>
           <Button
-            className="bg-primary transition-all duration-300 hover:bg-primary/90 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-primary hover:bg-primary/90 cursor-pointer transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50"
             size="lg"
-            disabled={userPlan === "business"}
+            disabled={userPlan === 'business'}
             onClick={handleUpgrade}
           >
             Upgrade plan
@@ -116,20 +69,20 @@ export const DashboardInfoCards = () => {
       </Card>
 
       <Card className="shadow-sm">
-        <CardContent className="p-5 h-40 flex flex-col justify-between md:p-6">
-          <h2 className="font-medium mb-2">Reconciliations this month</h2>
+        <CardContent className="flex h-40 flex-col justify-between p-5 md:p-6">
+          <h2 className="mb-2 font-medium">Reconciliations this month</h2>
           <div>
-            <p className="text-xl font-bold mb-1">
-              {used} {typeof limit === "string" ? "/ ∞" : `/ ${limit}`}
+            <p className="mb-1 text-xl font-bold">
+              {used} {typeof limit === 'string' ? '/ ∞' : `/ ${limit}`}
             </p>
             <Progress
               value={progress}
               className="h-2 bg-gray-200"
-              color={progress > 80 ? "destructive" : "primary"}
+              color={progress > 80 ? 'destructive' : 'primary'}
             />
           </div>
-          {typeof limit !== "string" && (
-            <p className="text-sm text-gray-500 mt-1">
+          {typeof limit !== 'string' && (
+            <p className="mt-1 text-sm text-gray-500">
               {limit - used} reconciliations remaining
             </p>
           )}
@@ -137,9 +90,9 @@ export const DashboardInfoCards = () => {
       </Card>
 
       <Card className="shadow-sm">
-        <CardContent className="p-5 md:p-6 flex flex-col justify-center gap-4 h-auto">
-          <h2 className="font-medium mb-2">
-            {userPlan === "basic" ? "Usage reset" : "Next billing date"}
+        <CardContent className="flex h-auto flex-col justify-center gap-4 p-5 md:p-6">
+          <h2 className="mb-2 font-medium">
+            {userPlan === 'basic' ? 'Usage reset' : 'Next billing date'}
           </h2>
           <p className="text-xl font-bold">
             {formatDate(user?.payment_plan?.expire_date)}
@@ -147,5 +100,5 @@ export const DashboardInfoCards = () => {
         </CardContent>
       </Card>
     </div>
-  );
-};
+  )
+}

@@ -1,14 +1,14 @@
-import { ReconciliationHistoryType } from "@/src/types/reconciliation";
-import { ReconciliationHistoryCard } from "./ReconcilaitionHistoryCard";
-import { ReconciliationHistoryTable } from "./ReconciliationHistoryTable";
+import { ReconciliationHistoryType } from '@/types/reconciliation'
+import { ReconciliationHistoryCard } from './ReconcilaitionHistoryCard'
+import { ReconciliationHistoryTable } from './ReconciliationHistoryTable'
 // import Image from "next/image";
 // import Link from "next/link";
 
 interface ReconciliationHistoryProps {
-  fromDate?: Date;
-  toDate?: Date;
-  isFilterApplied: boolean;
-  reconciliations: ReconciliationHistoryType[];
+  fromDate?: Date
+  toDate?: Date
+  isFilterApplied: boolean
+  reconciliations: ReconciliationHistoryType[]
 }
 
 export default function ReconciliationHistory({
@@ -73,5 +73,5 @@ export default function ReconciliationHistory({
         />
       </div>
     </div>
-  );
+  )
 }

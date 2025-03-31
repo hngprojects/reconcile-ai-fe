@@ -1,33 +1,33 @@
-"use client";
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { blogData } from "@/src/data/blogSampleData";
-import Footer from "@/src/components/Footer";
-import CTASection from "@/src/components/CTASection";
-import { motion } from "framer-motion";
+'use client'
+import { useParams } from 'next/navigation'
+import Image from 'next/image'
+import Link from 'next/link'
+import { blogData } from '@/data/blogSampleData'
+import Footer from '@/components/Footer'
+import CTASection from '@/components/CTASection'
+import { motion } from 'framer-motion'
 
 export default function BlogDetail() {
-  const params = useParams();
-  const id = params.id;
-  const blog = blogData.find((b) => b.id === Number(id));
+  const params = useParams()
+  const id = params.id
+  const blog = blogData.find((b) => b.id === Number(id))
 
   if (!blog) {
-    return <p className="text-center mt-10 text-xl">Blog not found</p>;
+    return <p className="mt-10 text-center text-xl">Blog not found</p>
   }
 
   const hasContent = (
     sectionHeading?: string,
     sectionContent?: string
   ): boolean => {
-    return !!sectionHeading && !!sectionContent;
-  };
+    return !!sectionHeading && !!sectionContent
+  }
 
   return (
     <>
       <div>
         <div className="pb-8 md:pb-12">
-          <div className="bg-[#F9FAFB] md:bg-white pb-[40px] md:pb-0 pt-8 md:pt-12 px-4 w-full">
+          <div className="w-full bg-[#F9FAFB] px-4 pt-8 pb-[40px] md:bg-white md:pt-12 md:pb-0">
             {/* Back to Blog Link */}
             <motion.div
               className="lg:px-10"
@@ -37,7 +37,7 @@ export default function BlogDetail() {
             >
               <Link
                 href="/blog"
-                className="inline-flex items-center text-[#5C5C5C] hover:text-[#2E604A] transition-colors"
+                className="inline-flex items-center text-[#5C5C5C] transition-colors hover:text-[#2E604A]"
               >
                 <svg
                   width="20"
@@ -68,19 +68,19 @@ export default function BlogDetail() {
 
             {/* Author Info and Metadata */}
             <motion.div
-              className="flex items-center gap-4 pt-6 mb-6 justify-center"
+              className="mb-6 flex items-center justify-center gap-4 pt-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="relative w-[56px] h-[56px] bg-[#2E604A] rounded-full flex items-center justify-center text-2xl text-white">
+              <div className="relative flex h-[56px] w-[56px] items-center justify-center rounded-full bg-[#2E604A] text-2xl text-white">
                 {blog.authorName.charAt(0).toUpperCase()}
               </div>
               <div>
-                <p className="text-base md:text-lg font-medium">
+                <p className="text-base font-medium md:text-lg">
                   {blog.authorName}
                 </p>
-                <div className="flex items-center text-[#5C5C5C] text-sm">
+                <div className="flex items-center text-sm text-[#5C5C5C]">
                   <span>{blog.publishedDate}</span>
                   <span className="mx-2">•</span>
                   <span>{blog.readTime}</span>
@@ -90,7 +90,7 @@ export default function BlogDetail() {
 
             {/* Blog Title */}
             <motion.h1
-              className="leading-[140%] text-center lg:font-semibold text-[28px] lg:text-4xl font-semibold lg:leading-[140%] text-[#333333] mb-6 lg:mb-24"
+              className="mb-6 text-center text-[28px] leading-[140%] font-semibold text-[#333333] lg:mb-24 lg:text-4xl lg:leading-[140%] lg:font-semibold"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -99,11 +99,11 @@ export default function BlogDetail() {
             </motion.h1>
           </div>
 
-          <hr className="h-[1px] hidden md:block mb-[64px]" />
+          <hr className="mb-[64px] hidden h-[1px] md:block" />
 
           {/* Featured Image */}
           <motion.div
-            className="px-6 w-full"
+            className="w-full px-6"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.6 }}
@@ -113,7 +113,7 @@ export default function BlogDetail() {
               alt={blog.title}
               width={0}
               height={0}
-              className="w-full h-[184.85px] lg:h-[560px] object-cover rounded-xl"
+              className="h-[184.85px] w-full rounded-xl object-cover lg:h-[560px]"
               sizes="100vw"
               priority
             />
@@ -129,14 +129,14 @@ export default function BlogDetail() {
         >
           {/* Intro Text - Always show if available */}
           <motion.div
-            className="flex flex-col lg:gap-y-5 gap-y-4 my-6 lg:my-5 lg:mt-16"
+            className="my-6 flex flex-col gap-y-4 lg:my-5 lg:mt-16 lg:gap-y-5"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1 }}
           >
             {blog.introText1 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 1.2 }}
@@ -146,7 +146,7 @@ export default function BlogDetail() {
             )}
             {blog.introText2 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 1.4 }}
@@ -156,7 +156,7 @@ export default function BlogDetail() {
             )}
             {blog.introText3 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 1.6 }}
@@ -166,7 +166,7 @@ export default function BlogDetail() {
             )}
             {blog.introText4 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 1.8 }}
@@ -176,7 +176,7 @@ export default function BlogDetail() {
             )}
             {blog.introText5 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 2 }}
@@ -186,7 +186,7 @@ export default function BlogDetail() {
             )}
             {blog.introText6 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 2.2 }}
@@ -196,7 +196,7 @@ export default function BlogDetail() {
             )}
             {blog.introText7 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 2.4 }}
@@ -206,7 +206,7 @@ export default function BlogDetail() {
             )}
             {blog.introText8 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 2.6 }}
@@ -216,7 +216,7 @@ export default function BlogDetail() {
             )}
             {blog.introText9 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 2.8 }}
@@ -226,7 +226,7 @@ export default function BlogDetail() {
             )}
             {blog.introText10 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 3 }}
@@ -236,7 +236,7 @@ export default function BlogDetail() {
             )}
             {blog.introText11 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 3.2 }}
@@ -246,7 +246,7 @@ export default function BlogDetail() {
             )}
             {blog.introText12 && (
               <motion.p
-                className="font-normal lg:text-lg text-[#333333] lg:leading-[140%]"
+                className="font-normal text-[#333333] lg:text-lg lg:leading-[140%]"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 3.4 }}
@@ -269,10 +269,10 @@ export default function BlogDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 3.8 }}
               >
-                <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
+                <h2 className="mb-4 text-xl font-semibold text-[#333333] md:text-2xl">
                   {blog.sectionOneHeading}
                 </h2>
-                <p className="text-[#5C5C5C] leading-relaxed">
+                <p className="leading-relaxed text-[#5C5C5C]">
                   {blog.sectionOneText}
                 </p>
               </motion.section>
@@ -284,10 +284,10 @@ export default function BlogDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 4 }}
               >
-                <h2 className="text-xl md:text-2xl font-semibold mb-4 text-[#333333]">
+                <h2 className="mb-4 text-xl font-semibold text-[#333333] md:text-2xl">
                   {blog.sectionTwoHeading}
                 </h2>
-                <p className="text-[#5C5C5C] leading-relaxed">
+                <p className="leading-relaxed text-[#5C5C5C]">
                   {blog.sectionTwoText}
                 </p>
               </motion.section>
@@ -299,10 +299,10 @@ export default function BlogDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 4.2 }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
+                <h3 className="mb-3 text-lg font-semibold text-[#333333] md:text-xl">
                   {blog.categoryOneHeading}
                 </h3>
-                <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
+                <div className="leading-relaxed whitespace-pre-line text-[#5C5C5C]">
                   {blog.categoryOneContent}
                 </div>
               </motion.section>
@@ -314,10 +314,10 @@ export default function BlogDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 4.4 }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
+                <h3 className="mb-3 text-lg font-semibold text-[#333333] md:text-xl">
                   {blog.categoryTwoHeading}
                 </h3>
-                <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
+                <div className="leading-relaxed whitespace-pre-line text-[#5C5C5C]">
                   {blog.categoryTwoContent}
                 </div>
               </motion.section>
@@ -332,10 +332,10 @@ export default function BlogDetail() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 4.6 }}
               >
-                <h3 className="text-lg md:text-xl font-semibold mb-3 text-[#333333]">
+                <h3 className="mb-3 text-lg font-semibold text-[#333333] md:text-xl">
                   {blog.categoryThreeHeading}
                 </h3>
-                <div className="text-[#5C5C5C] leading-relaxed whitespace-pre-line">
+                <div className="leading-relaxed whitespace-pre-line text-[#5C5C5C]">
                   {blog.categoryThreeContent}
                 </div>
               </motion.section>
@@ -346,5 +346,5 @@ export default function BlogDetail() {
       <CTASection />
       <Footer />
     </>
-  );
+  )
 }

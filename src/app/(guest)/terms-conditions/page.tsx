@@ -1,9 +1,9 @@
-"use client";
-import CTASection from "@/src/components/CTASection";
-import Footer from "@/src/components/Footer";
-import { getFormattedCurrentDate } from "@/src/helpers/getCurrentDate";
-import { motion } from "framer-motion";
-import Link from "next/link";
+'use client'
+import CTASection from '@/components/CTASection'
+import Footer from '@/components/Footer'
+import { getFormattedCurrentDate } from '@/helpers/getCurrentDate'
+import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function TermsConditionPage() {
   const textVariants = {
@@ -16,11 +16,11 @@ export default function TermsConditionPage() {
       y: 0,
       transition: {
         duration: 0.4,
-        ease: "easeOut",
+        ease: 'easeOut',
         delay: i * 0.1,
       },
     }),
-  };
+  }
 
   // Content section animation variants
   const sectionVariants = {
@@ -29,11 +29,11 @@ export default function TermsConditionPage() {
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: 'easeOut',
         delay: i * 0.1,
       },
     }),
-  };
+  }
 
   const currentDate = getFormattedCurrentDate()
 
@@ -43,15 +43,15 @@ export default function TermsConditionPage() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-[#F5FAF8] flex flex-col items-center justify-center p-10 lg:py-16 lg:px-64"
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="flex flex-col items-center justify-center bg-[#F5FAF8] p-10 lg:px-64 lg:py-16"
         >
           <motion.p
             initial="hidden"
             animate="visible"
             custom={0}
             variants={textVariants}
-            className="bg-[#E6FFF2] rounded-lg py-2 px-3 text-[1rem]"
+            className="rounded-lg bg-[#E6FFF2] px-3 py-2 text-[1rem]"
           >
             Current as of {currentDate}
           </motion.p>
@@ -60,7 +60,7 @@ export default function TermsConditionPage() {
             animate="visible"
             custom={0.5}
             variants={textVariants}
-            className="my-2 font-bold text-[1.5rem] lg:text-[2rem]"
+            className="my-2 text-[1.5rem] font-bold lg:text-[2rem]"
           >
             Terms and Conditions
           </motion.h1>
@@ -78,7 +78,7 @@ export default function TermsConditionPage() {
           </motion.p>
         </motion.div>
 
-        <div className="p-3 lg:py-5 lg:px-64 ">
+        <div className="p-3 lg:px-64 lg:py-5">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -86,14 +86,17 @@ export default function TermsConditionPage() {
             variants={sectionVariants}
             className="my-5"
           >
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold mb- text-center lg:text-start">
+            <h2 className="mb- text-center text-[1.5rem] font-semibold text-[#101828] lg:text-start">
               Introduction
             </h2>
-            <p className="text-sm text-center lg:text-start text-[#475467]">
+            <p className="text-center text-sm text-[#475467] lg:text-start">
               ReconXi is a financial reconciliation tool that uses AI to
-              reconcile bank statement with company ledger. Users can sign up or log in using Google for a seamless experience.
-              Additionally, users can upgrade to a paid plan via Stripe for enhanced features.
-              We also send important notifications and updates via email, including transaction confirmations, feature updates, and account security alerts.
+              reconcile bank statement with company ledger. Users can sign up or
+              log in using Google for a seamless experience. Additionally, users
+              can upgrade to a paid plan via Stripe for enhanced features. We
+              also send important notifications and updates via email, including
+              transaction confirmations, feature updates, and account security
+              alerts.
             </p>
           </motion.div>
 
@@ -104,25 +107,29 @@ export default function TermsConditionPage() {
             custom={2}
             variants={sectionVariants}
           >
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
+            <h2 className="text-center text-[1.5rem] font-semibold text-[#101828] lg:text-start">
               What Information do we Collect?
             </h2>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
               We collect information to deliver and improve our reconciliation
               tool, including:
             </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Transactional Data: Details of financial records,including bank statements.
-              statement.
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
+              Transactional Data: Details of financial records,including bank
+              statements. statement.
             </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Company Data: Details of your Company&apos;s records, such as bank statements and ledger information.
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
+              Company Data: Details of your Company&apos;s records, such as bank
+              statements and ledger information.
             </p>
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-              Personal Information: When upgrading to a paid plan via Stripe, we process your payment securely but do not store sensitive payment details.
-            </p> 
-            <p className="text-sm  text-center lg:text-start text-[#475467] py-2">
-            Communication Preferences: We collect your preferences for receiving emails and notifications.
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
+              Personal Information: When upgrading to a paid plan via Stripe, we
+              process your payment securely but do not store sensitive payment
+              details.
+            </p>
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
+              Communication Preferences: We collect your preferences for
+              receiving emails and notifications.
             </p>
           </motion.div>
 
@@ -205,12 +212,16 @@ export default function TermsConditionPage() {
             variants={sectionVariants}
             className="mt-5"
           >
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start py-2">
+            <h2 className="py-2 text-center text-[1.5rem] font-semibold text-[#101828] lg:text-start">
               Your Privacy Rights.
             </h2>
-            <p className="text-sm text-center lg:text-start text-[#475467]">
+            <p className="text-center text-sm text-[#475467] lg:text-start">
               You may have rights regarding your financial information, For more
-              detailed information, please review our <Link className="underline font-medium" href="/privacy">Privacy Policy</Link>.
+              detailed information, please review our{' '}
+              <Link className="font-medium underline" href="/privacy">
+                Privacy Policy
+              </Link>
+              .
             </p>
           </motion.div>
 
@@ -221,23 +232,23 @@ export default function TermsConditionPage() {
             variants={sectionVariants}
             className="mt-5"
           >
-            <h2 className="text-[#101828] text-[1.5rem] font-semibold text-center lg:text-start">
+            <h2 className="text-center text-[1.5rem] font-semibold text-[#101828] lg:text-start">
               Contact Us
             </h2>
-            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
               If you have any questions about these Terms and Conditions or our
               privacy policy, please contact us at:
             </p>
-            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
               Email: support@reconxi.com
             </p>
-            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
               Phone Number: +1-599-654-7936
             </p>
-            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
               Address: Chicago, United States
             </p>
-            <p className="text-sm text-center lg:text-start text-[#475467] py-2">
+            <p className="py-2 text-center text-sm text-[#475467] lg:text-start">
               We are committed to addressing privacy concerns promptly and
               transparently.
             </p>
@@ -247,5 +258,5 @@ export default function TermsConditionPage() {
       </div>
       <Footer />
     </main>
-  );
+  )
 }
