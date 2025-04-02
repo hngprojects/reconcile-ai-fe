@@ -18,34 +18,31 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '23'
 
       - name: Remove GitHub Actions Cache
         run: |
           rm -rf /home/runner/.npm
           rm -rf /home/runner/.cache
           rm -rf /home/runner/_work/_tool/node
-          npm cache clean --force
 
       - name: Setup Node.js (Again)
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '23'
 
       - name: Clear npm Cache and Dependencies
         run: |
-          rm -rf node_modules package-lock.json
-          npm cache clean --force
+          pnpm store prune
 
       - name: Install Dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Copy .env.example to .env
         run: cp .env.example .env
 
       - name: Build Next.js App
-        run: npm run build
+        run: pnpm run build
 
       - name: Archive the build folder
         run: tar -cvf build-artifact.tar .next
@@ -91,12 +88,12 @@ jobs:
             npm ci
 
             echo "Restarting PM2 service..."
-            if npx pm2 list | grep -q "$PM2_NAME"; then
-              npx pm2 restart "$PM2_NAME" --update-env
+            if pm2 list | grep -q "$PM2_NAME"; then
+              pm2 restart "$PM2_NAME" --update-env
             else
-              PORT=$PORT npx pm2 start npm --name "$PM2_NAME" -- run start
+              PORT=$PORT pm2 start pnpm --name "$PM2_NAME" -- run start
             fi
 
             echo "Saving PM2 state..."
-            npx pm2 save
+            pm2 save
           EOF

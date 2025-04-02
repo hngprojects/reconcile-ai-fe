@@ -1,58 +1,58 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    companyName: "",
-    phoneNumber: "",
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    fullName: '',
+    email: '',
+    companyName: '',
+    phoneNumber: '',
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
+    e.preventDefault()
+    setIsSubmitting(true)
+
     try {
       // Replace with your actual form submission logic
-      console.log("Form submitted:", formData);
+      console.log('Form submitted:', formData)
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+
       // Clear form after successful submission
       setFormData({
-        fullName: "",
-        email: "",
-        companyName: "",
-        phoneNumber: "",
-      });
-      
-      alert("Form submitted successfully!");
+        fullName: '',
+        email: '',
+        companyName: '',
+        phoneNumber: '',
+      })
+
+      alert('Form submitted successfully!')
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Failed to submit form. Please try again.");
+      console.error('Error submitting form:', error)
+      alert('Failed to submit form. Please try again.')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
-    <form 
+    <form
       onSubmit={handleSubmit}
-      className="w-full max-w-[620px] mx-auto bg-white border rounded-md p-6"
+      className="mx-auto w-full max-w-[620px] rounded-md border bg-white p-6"
     >
       <div className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="fullName" className="block text-gray-800 font-medium">
+          <label htmlFor="fullName" className="block font-medium text-gray-800">
             Full Name
           </label>
           <Input
@@ -63,12 +63,12 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter full name"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300"
+            className="h-12 w-full rounded border border-gray-300 p-3"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="email" className="block text-gray-800 font-medium">
+          <label htmlFor="email" className="block font-medium text-gray-800">
             Email
           </label>
           <Input
@@ -79,12 +79,15 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="email@address.com"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300"
+            className="h-12 w-full rounded border border-gray-300 p-3"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="companyName" className="block text-gray-800 font-medium">
+          <label
+            htmlFor="companyName"
+            className="block font-medium text-gray-800"
+          >
             Company Name
           </label>
           <Input
@@ -95,12 +98,15 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter company name"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300"
+            className="h-12 w-full rounded border border-gray-300 p-3"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="phoneNumber" className="block text-gray-800 font-medium">
+          <label
+            htmlFor="phoneNumber"
+            className="block font-medium text-gray-800"
+          >
             Phone Number
           </label>
           <Input
@@ -111,18 +117,18 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter phone number"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300"
+            className="h-12 w-full rounded border border-gray-300 p-3"
           />
         </div>
 
         <Button
           type="submit"
-          className="w-full text-white font-semibold py-6 rounded-[12px] px-4"
+          className="w-full rounded-[12px] px-4 py-6 font-semibold text-white"
           disabled={isSubmitting}
         >
           Start your free trial Now
         </Button>
       </div>
     </form>
-  );
+  )
 }

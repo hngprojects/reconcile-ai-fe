@@ -5,11 +5,12 @@ import Container from "./Container";
 import { FileIcon, SpeedIcon } from "./Icon/Icons";
 
 const Features = () => {
-  const firstFeature = ["Leverage AI to move fast", "Easy upload feature"];
+  const firstFeature = ["Leverage automation to move fast", "Easy upload feature"];
   const secondFeature = [
-    "Instant records matching",
+    "Instant transaction matching",
     "Clear status indicators: Matched, Unmatched",
-    "Export data quickly",
+    "Instant data export in CSV format.",
+    "Unlink matched records.",
   ];
 
   return (

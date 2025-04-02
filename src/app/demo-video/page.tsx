@@ -1,11 +1,11 @@
-"use client";
+'use client'
 
-import Footer from "@/src/components/Footer";
+import Footer from '@/components/Footer'
 
 export default function VideoPage() {
   return (
     <>
-      <main className="min-h-screen flex items-center justify-center bg-black">
+      <main className="flex min-h-screen items-center justify-center bg-black">
         <video
           className="w-full max-w-4xl"
           controls
@@ -20,5 +20,5 @@ export default function VideoPage() {
       </main>
       <Footer />
     </>
-  );
+  )
 }

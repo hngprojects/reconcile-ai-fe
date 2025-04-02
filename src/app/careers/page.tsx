@@ -1,19 +1,19 @@
-"use client";
+'use client'
 
-import Container from "@/src/components/Container";
-import { useState } from "react";
-import Image from "next/image";
-import Footer from "@/src/components/Footer";
+import Container from '@/components/Container'
+import { useState } from 'react'
+import Image from 'next/image'
+import Footer from '@/components/Footer'
 // import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
 const hiringSteps = [
-  "Explore available roles that match your skills and experience.",
-  "Submit your application via our online form.",
-  "Receive an instant confirmation email after applying.",
-  "Interview Process – Shortlisted candidates will be contacted for an interview with our hiring team.",
-  "Join the Team – Successful candidates receive an offer and onboarding support.",
-];
+  'Explore available roles that match your skills and experience.',
+  'Submit your application via our online form.',
+  'Receive an instant confirmation email after applying.',
+  'Interview Process – Shortlisted candidates will be contacted for an interview with our hiring team.',
+  'Join the Team – Successful candidates receive an offer and onboarding support.',
+]
 
 // const jobListings = [
 //   {
@@ -67,7 +67,7 @@ const hiringSteps = [
 // ];
 
 export default function Careers() {
-  const [steps] = useState(hiringSteps);
+  const [steps] = useState(hiringSteps)
   // const [jobs] = useState(jobListings);
 
   // const [currentPage, setCurrentPage] = useState(1);
@@ -86,17 +86,17 @@ export default function Careers() {
 
   return (
     <>
-      <Container className="h-full w-full flex items-center justify-center py-8 mb-10">
+      <Container className="mb-10 flex h-full w-full items-center justify-center py-8">
         <div className="inline-flex flex-col items-center">
           {/* Header Section */}
           <motion.div
-            className="py-[10px] md:py-[14px] w-full flex flex-col items-center mb-[40px] md:mb-[64px]"
+            className="mb-[40px] flex w-full flex-col items-center py-[10px] md:mb-[64px] md:py-[14px]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
             <motion.p
-              className="bg-[#E6FFF2] rounded-[16px] py-1 px-3 text-[20px] text-[#2E604A] mb-6"
+              className="mb-6 rounded-[16px] bg-[#E6FFF2] px-3 py-1 text-[20px] text-[#2E604A]"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
@@ -105,7 +105,7 @@ export default function Careers() {
             </motion.p>
 
             <motion.h1
-              className="text-[28px] md:text-[42px] lg:text-[60px] font-semibold max-w-[1084px] text-center mb-6"
+              className="mb-6 max-w-[1084px] text-center text-[28px] font-semibold md:text-[42px] lg:text-[60px]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -114,7 +114,7 @@ export default function Careers() {
             </motion.h1>
 
             <motion.p
-              className="text-[18px] text-center text-[#525252]"
+              className="text-center text-[18px] text-[#525252]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -131,13 +131,13 @@ export default function Careers() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col items-center gap-[64px] self-stretch bg-white py-[64px]"
           >
-            <div className="flex flex-col lg:flex-row w-full max-w-[1200px] justify-center items-center gap-[64px]">
-              <div className="flex flex-col justify-center items-start gap-[64px] flex-[1_0_0]">
+            <div className="flex w-full max-w-[1200px] flex-col items-center justify-center gap-[64px] lg:flex-row">
+              <div className="flex flex-[1_0_0] flex-col items-start justify-center gap-[64px]">
                 <div className="flex flex-col items-start gap-[32px] self-stretch">
-                  <h1 className="self-stretch text-[#101828] font-inter text-[28px] md:text-[36px] font-semibold leading-[36px] md:leading-[44px] tracking-[-0.72px]">
+                  <h1 className="font-inter self-stretch text-[28px] leading-[36px] font-semibold tracking-[-0.72px] text-[#101828] md:text-[36px] md:leading-[44px]">
                     Our Hiring Process
                   </h1>
-                  <p className="self-stretch text-[#475467] font-inter text-[16px] md:text-[20px] font-normal leading-[24px] md:leading-[30px]">
+                  <p className="font-inter self-stretch text-[16px] leading-[24px] font-normal text-[#475467] md:text-[20px] md:leading-[30px]">
                     We believe in a transparent, structured, and engaging hiring
                     process to ensure the best fit for both you and our team.
                   </p>
@@ -155,9 +155,9 @@ export default function Careers() {
                           alt="Star Icon"
                           width={32}
                           height={32}
-                          className="w-5 h-5 md:w-8 md:h-8"
+                          className="h-5 w-5 md:h-8 md:w-8"
                         />
-                        <p className="text-[#475467] font-inter text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px]">
+                        <p className="font-inter text-[14px] leading-[20px] font-normal text-[#475467] md:text-[16px] md:leading-[24px]">
                           {step}
                         </p>
                       </motion.li>
@@ -170,7 +170,7 @@ export default function Careers() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
-                className="w-full max-w-lg sm:max-w-[534px] flex flex-col items-center sm:items-start"
+                className="flex w-full max-w-lg flex-col items-center sm:max-w-[534px] sm:items-start"
               >
                 <Image
                   src="/assets/images/Image10.png"
@@ -191,17 +191,17 @@ export default function Careers() {
             className="flex flex-col items-center gap-[24px] self-stretch"
           >
             <div className="flex flex-col items-center gap-[20px]">
-              <h1 className="self-stretch text-center text-[#101828] font-inter text-[28px] md:text-[36px] font-semibold leading-[36px] md:leading-[44px] tracking-[-0.72px]">
+              <h1 className="font-inter self-stretch text-center text-[28px] leading-[36px] font-semibold tracking-[-0.72px] text-[#101828] md:text-[36px] md:leading-[44px]">
                 Open positions
               </h1>
-              <p className="w-full max-w-[1200px] text-center text-[#333] font-inter text-[16px] md:text-[20px] font-normal leading-[24px] md:leading-[30px]">
+              <p className="font-inter w-full max-w-[1200px] text-center text-[16px] leading-[24px] font-normal text-[#333] md:text-[20px] md:leading-[30px]">
                 Want to work with some of the best global talent and build
                 software used by all the companies you know and love? Join the
                 team — we’re hiring!
               </p>
             </div>
 
-            <div className="flex flex-col justify-center items-center gap-[29px] self-stretch">
+            <div className="flex flex-col items-center justify-center gap-[29px] self-stretch">
               {/* {jobs.length > 0 ? (
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-[29px] w-full max-w-[1200px]">
@@ -286,21 +286,21 @@ export default function Careers() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
-                className="flex flex-col items-center gap-[2px] w-full max-w-[557px]"
+                className="flex w-full max-w-[557px] flex-col items-center gap-[2px]"
               >
                 <Image
                   src="/assets/images/Content.png"
                   alt="No Jobs Icon"
                   width={355}
                   height={271}
-                  style={{ width: "auto", height: "auto" }}
-                  className="justify-center items-center"
+                  style={{ width: 'auto', height: 'auto' }}
+                  className="items-center justify-center"
                 />
                 <div className="flex flex-col items-center gap-6 self-stretch">
-                  <h2 className="text-[#0A0A0A] text-center font-inter text-[28px] md:text-[28px] font-medium leading-normal">
+                  <h2 className="font-inter text-center text-[28px] leading-normal font-medium text-[#0A0A0A] md:text-[28px]">
                     No available Jobs at the moment
                   </h2>
-                  <p className="text-[#525252] text-center font-inter text-[16px] md:text-[20px] font-normal leading-normal">
+                  <p className="font-inter text-center text-[16px] leading-normal font-normal text-[#525252] md:text-[20px]">
                     Come back later!
                   </p>
                 </div>
@@ -311,5 +311,5 @@ export default function Careers() {
       </Container>
       <Footer />
     </>
-  );
+  )
 }

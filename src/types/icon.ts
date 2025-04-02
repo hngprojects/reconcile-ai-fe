@@ -1,3 +1,3 @@
 export interface IconClassProps {
-  className?: string;
+  className?: string
 }

@@ -1,49 +1,50 @@
-"use client";
+'use client'
 
-import { useAuth } from "@/src/components/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Typewriter } from "react-simple-typewriter";
-import LoginModal from "../modal/LoginModal";
-import GoogleAuthModal from "../modal/GoogleAuthModal";
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Typewriter } from 'react-simple-typewriter'
+import LoginModal from '../modal/LoginModal'
+import GoogleAuthModal from '../modal/GoogleAuthModal'
+import { useSession } from 'next-auth/react'
 
 interface TypeWriterButtonProps {
-  className?: string;
-  "aria-label"?: string;
-  text: string;
-  path: string;
+  className?: string
+  'aria-label'?: string
+  text: string
+  path: string
 }
 
 export default function TypeWriterButton({
   className,
-  "aria-label": ariaLabel,
+  'aria-label': ariaLabel,
   text,
   path,
 }: TypeWriterButtonProps) {
-  const { isAuthenticated } = useAuth();
-  const router = useRouter();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const router = useRouter()
+  const { status } = useSession()
+  const isAuthenticated = status === 'authenticated'
+  const [showLoginModal, setShowLoginModal] = useState(false)
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   const handleClick = () => {
     if (isAuthenticated) {
-      router.push(path);
+      router.push(path)
     } else {
-      setShowLoginModal(true);
+      setShowLoginModal(true)
     }
-  };
+  }
 
   const handleSwitchToSignup = () => {
-    setShowLoginModal(false);
-    setShowAuthModal(true);
-  };
+    setShowLoginModal(false)
+    setShowAuthModal(true)
+  }
 
   const handleSwitchToLogin = () => {
-    setShowAuthModal(false);
-    setShowLoginModal(true);
-  };
+    setShowAuthModal(false)
+    setShowLoginModal(true)
+  }
 
   return (
     <>
@@ -53,12 +54,12 @@ export default function TypeWriterButton({
         onMouseLeave={() => setIsHovered(false)}
         whileHover={{
           scale: 1.05,
-          backgroundColor: "#1E6741", // Subtle color change on hover
+          backgroundColor: '#1E6741', // Subtle color change on hover
         }}
         whileTap={{ scale: 0.95 }}
         className={
           className ||
-          "bg-[#297B65] py-3 px-6 rounded-md font-semibold inline-flex justify-center items-center min-h-[48px] w-full sm:w-auto text-base text-white hover:bg-[#297B65]/90 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-[#297B65] focus:outline-none transition-all duration-300"
+          'inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center rounded-md bg-[#297B65] px-6 py-3 text-base font-semibold text-white transition-all duration-300 hover:bg-[#297B65]/90 focus:ring-2 focus:ring-[#297B65] focus:ring-offset-2 focus:outline-none sm:w-auto'
         }
         aria-label={ariaLabel || text}
       >
@@ -89,5 +90,5 @@ export default function TypeWriterButton({
         onSwitchToLogin={handleSwitchToLogin}
       />
     </>
-  );
+  )
 }

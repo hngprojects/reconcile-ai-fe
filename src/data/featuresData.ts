@@ -1,13 +1,13 @@
 export const featuresData = [
   {
     id: 1,
-    title: "Secure & Convenient Access with Google Authentication",
+    title: 'Secure & Convenient Access with Google Authentication',
     content:
-      "Gaining access to ReconXi is simple and secure with Google Authentication. Connect with your Google account to quickly access the platform and start reconciling.",
+      'Gaining access to ReconXi is simple and secure with Google Authentication. Connect with your Google account to quickly access the platform and start reconciling.',
   },
   {
     id: 2,
-    title: "Data Upload and Smart Reconciliation",
+    title: 'Data Upload and Smart Reconciliation',
     content:
       "Instantly upload your bank statements and company ledgers in CSV format and let ReconXi's intelligent AI system reconcile automatically. Simplify complex processes and achieve reconciled results with just a few clicks.",
   },
@@ -19,9 +19,9 @@ export const featuresData = [
   // },
   {
     id: 3,
-    title: "Export Reconciliation Results with Ease",
+    title: 'Export Reconciliation Results with Ease',
     content:
-      "Gain the flexibility to export your reconciliation results in CSV format. ReconXi makes it easy to generate and share detailed results, allowing for efficient record-keeping and clear communication between stakeholders.",
+      'Gain the flexibility to export your reconciliation results in CSV format. ReconXi makes it easy to generate and share detailed results, allowing for efficient record-keeping and clear communication between stakeholders.',
   },
   // {
   //   id: 4,
@@ -31,9 +31,9 @@ export const featuresData = [
   // },
   {
     id: 4,
-    title: "Find and Match Unmatched Records",
+    title: 'Find and Match Unmatched Records',
     content:
-      "Identify and match unmatched records using ReconXi’s powerful yet simple search functionality. The platform helps you spot discrepancies and ensures that all records are reconciled quickly, saving you valuable time.",
+      'Identify and match unmatched records using ReconXi’s powerful yet simple search functionality. The platform helps you spot discrepancies and ensures that all records are reconciled quickly, saving you valuable time.',
   },
   // {
   //   id: 5,
@@ -44,26 +44,26 @@ export const featuresData = [
   // },
   {
     id: 5,
-    title: "Unlink  and Rematch Records for Full Control",
+    title: 'Unlink  and Rematch Records for Full Control',
     content:
-      "Take full control of your reconciliation process by unlinking and rematching records as needed. Whether correcting records or refining data, this feature ensures that your reconciliations are always up to date and aligned with the most accurate information.",
+      'Take full control of your reconciliation process by unlinking and rematching records as needed. Whether correcting records or refining data, this feature ensures that your reconciliations are always up to date and aligned with the most accurate information.',
   },
   {
     id: 6,
-    title: "Achieve Greater Precision in Your Financial Reconciliation",
+    title: 'Achieve Greater Precision in Your Financial Reconciliation',
     content:
-      "With ReconXi, you can reconcile large data and be rest assured that your reconciliation process is top notch. Our advanced algorithms and intelligent matching features help to eliminate discrepancies, providing you with consistent, reliable financial records.",
+      'With ReconXi, you can reconcile large data and be rest assured that your reconciliation process is top notch. Our advanced algorithms and intelligent matching features help to eliminate discrepancies, providing you with consistent, reliable financial records.',
   },
   {
     id: 7,
-    title: "Stay Informed with Instant Notifications",
+    title: 'Stay Informed with Instant Notifications',
     content:
-      "Get notified as soon as your reconciliation tasks are complete. ReconXi sends you real-time email alerts with the reconciled results, so you’re always in the loop and never miss an important update.",
+      'Get notified as soon as your reconciliation tasks are complete. ReconXi sends you real-time email alerts with the reconciled results, so you’re always in the loop and never miss an important update.',
   },
   {
     id: 8,
-    title: "Merge Multiple Records into One",
+    title: 'Merge Multiple Records into One',
     content:
-      "Reconciliation can often involve managing multiple records from different sources. ReconXi lets you merge multiple entries into a single matched transaction, simplifying your workflow and eliminating unnecessary data duplication.",
+      'Reconciliation can often involve managing multiple records from different sources. ReconXi lets you merge multiple entries into a single matched transaction, simplifying your workflow and eliminating unnecessary data duplication.',
   },
-];
+]

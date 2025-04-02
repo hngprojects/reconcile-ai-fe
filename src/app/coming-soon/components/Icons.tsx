@@ -1,4 +1,4 @@
-import { IconClassProps } from "@/src/types/icon";
+import { IconClassProps } from '@/types/icon'
 
 export const Logo: React.FC<IconClassProps> = ({ className }) => {
   return (
@@ -12,7 +12,7 @@ export const Logo: React.FC<IconClassProps> = ({ className }) => {
     >
       <mask
         id="mask0_1256_14522"
-        style={{ maskType: "luminance" }}
+        style={{ maskType: 'luminance' }}
         maskUnits="userSpaceOnUse"
         x="0"
         y="1"
@@ -32,8 +32,8 @@ export const Logo: React.FC<IconClassProps> = ({ className }) => {
         fill="#2E604A"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const Send = () => {
   return (
@@ -60,8 +60,8 @@ export const Send = () => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const Gradient1 = () => {
   return (
     <svg
@@ -113,8 +113,8 @@ export const Gradient1 = () => {
         </linearGradient>
       </defs>
     </svg>
-  );
-};
+  )
+}
 export const Gradient2 = () => {
   return (
     <svg
@@ -123,7 +123,7 @@ export const Gradient2 = () => {
       height="804"
       viewBox="0 0 1440 804"
       fill="none"
-      className="absolute -bottom-56 right-0 -z-20"
+      className="absolute right-0 -bottom-56 -z-20"
     >
       <g filter="url(#filter0_f_1288_6051)">
         <path
@@ -166,8 +166,8 @@ export const Gradient2 = () => {
         </linearGradient>
       </defs>
     </svg>
-  );
-};
+  )
+}
 export const Play = () => {
   return (
     <svg
@@ -192,14 +192,14 @@ export const Play = () => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 const Icons = {
   Logo,
   Send,
   Gradient1,
   Gradient2,
-};
+}
 
-export default Icons;
+export default Icons

@@ -1,23 +1,23 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { DateRange } from "react-day-picker";
+import * as React from 'react'
+import { format } from 'date-fns'
+import { Calendar as CalendarIcon } from 'lucide-react'
+import { DateRange } from 'react-day-picker'
 
-import { cn } from "@/src/lib/utils";
-import { Button } from "@/src/components/ui/button";
-import { Calendar } from "@/src/components/ui/calendar";
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/src/components/ui/popover";
+} from '@/components/ui/popover'
 
 interface DatePickerWithRangeProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  date?: DateRange | undefined;
-  onDateChange?: (date: DateRange | undefined) => void;
+  date?: DateRange | undefined
+  onDateChange?: (date: DateRange | undefined) => void
 }
 
 export function DatePickerWithRange({
@@ -25,38 +25,38 @@ export function DatePickerWithRange({
   date,
   onDateChange,
 }: DatePickerWithRangeProps) {
-  const [localDate, setLocalDate] = React.useState<DateRange | undefined>(date);
+  const [localDate, setLocalDate] = React.useState<DateRange | undefined>(date)
 
   const handleSelect = (newDate: DateRange | undefined) => {
-    setLocalDate(newDate);
-    onDateChange?.(newDate);
-  };
+    setLocalDate(newDate)
+    onDateChange?.(newDate)
+  }
 
   React.useEffect(() => {
-    setLocalDate(date);
-  }, [date]);
+    setLocalDate(date)
+  }, [date])
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn('grid gap-2', className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
-            variant={"outline"}
+            variant={'outline'}
             className={cn(
-              "md:w-[300px] justify-start text-left font-normal h-12 rounded-xl",
-              !localDate && "text-muted-foreground",
+              'h-12 justify-start rounded-xl text-left font-normal md:w-[300px]',
+              !localDate && 'text-muted-foreground'
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {localDate?.from ? (
               localDate.to ? (
                 <>
-                  {format(localDate.from, "LLL dd, y")} -{" "}
-                  {format(localDate.to, "LLL dd, y")}
+                  {format(localDate.from, 'LLL dd, y')} -{' '}
+                  {format(localDate.to, 'LLL dd, y')}
                 </>
               ) : (
-                format(localDate.from, "LLL dd, y")
+                format(localDate.from, 'LLL dd, y')
               )
             ) : (
               <span>Pick a date</span>
@@ -75,5 +75,5 @@ export function DatePickerWithRange({
         </PopoverContent>
       </Popover>
     </div>
-  );
+  )
 }
