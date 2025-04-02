@@ -1,13 +1,13 @@
-import { cn } from "@/src/lib/utils";
-import { IconClassProps } from "@/src/types/icon";
+import { cn } from '@/lib/utils'
+import { IconClassProps } from '@/types/icon'
 
-const defaultSize = "w-6 h-6";
+const defaultSize = 'w-6 h-6'
 
 export const FileIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#2A5743]", className)}
+      className={cn('text-[#2A5743]', className)}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -28,14 +28,14 @@ export const FileIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const SpeedIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#297B65]", className)}
+      className={cn('text-[#297B65]', className)}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -47,14 +47,14 @@ export const SpeedIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const ReportIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#297B65]", className)}
+      className={cn('text-[#297B65]', className)}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -66,14 +66,14 @@ export const ReportIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const LogoIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#2E604A]", className)}
+      className={cn('text-[#2E604A]', className)}
       viewBox="0 0 48 48"
       fill="none"
     >
@@ -82,14 +82,14 @@ export const LogoIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const InstagramIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -98,14 +98,14 @@ export const InstagramIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const FacebookIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -114,14 +114,14 @@ export const FacebookIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const LinkedinIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -130,14 +130,14 @@ export const LinkedinIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const TwitterIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 20 20"
       fill="none"
     >
@@ -146,14 +146,14 @@ export const TwitterIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const FileUploadIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#678E82]", className)}
+      className={cn('text-[#678E82]', className)}
       viewBox="0 0 40 35"
       fill="none"
     >
@@ -165,12 +165,12 @@ export const FileUploadIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const CheckIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#008000]", className)}
+      className={cn('text-[#008000]', className)}
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -182,12 +182,12 @@ export const CheckIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 export const AlertIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#FF0000]", className)}
+      className={cn('text-[#FF0000]', className)}
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -200,15 +200,15 @@ export const AlertIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const DownloadCloudIcon = ({
   className = defaultSize,
 }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#2E604A]", className)}
+      className={cn('text-[#2E604A]', className)}
       viewBox="0 0 21 20"
       fill="none"
     >
@@ -220,12 +220,12 @@ export const DownloadCloudIcon = ({
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const DeleteIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#C50700]", className)}
+      className={cn('text-[#C50700]', className)}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -238,12 +238,12 @@ export const DeleteIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
-export const CSVIcon = ({ className = "w-[30px] h-10" }: IconClassProps) => {
+  )
+}
+export const CSVIcon = ({ className = 'w-[30px] h-10' }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#2E604A] aspect-auto", className)}
+      className={cn('aspect-auto text-[#2E604A]', className)}
       viewBox="0 0 30 40"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -260,13 +260,13 @@ export const CSVIcon = ({ className = "w-[30px] h-10" }: IconClassProps) => {
         </clipPath>
       </defs>
     </svg>
-  );
-};
+  )
+}
 export const StarsIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#0F172A]", className)}
+      className={cn('text-[#0F172A]', className)}
       viewBox="0 0 20 19"
       fill="none"
     >
@@ -283,8 +283,8 @@ export const StarsIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 export const GoogleIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
@@ -310,13 +310,13 @@ export const GoogleIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="#1976D2"
       />
     </svg>
-  );
-};
+  )
+}
 export const ArrowLeftIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#5C5C5C]", className)}
+      className={cn('text-[#5C5C5C]', className)}
       viewBox="0 0 20 21"
       fill="none"
     >
@@ -328,13 +328,13 @@ export const ArrowLeftIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const ArrowRightIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#5C5C5C]", className)}
+      className={cn('text-[#5C5C5C]', className)}
       viewBox="0 0 20 21"
       fill="none"
     >
@@ -346,15 +346,15 @@ export const ArrowRightIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const ArrowUpRightIcon = ({
   className = defaultSize,
 }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#333333]", className)}
+      className={cn('text-[#333333]', className)}
       viewBox="0 0 24 24"
       fill="none"
     >
@@ -366,13 +366,13 @@ export const ArrowUpRightIcon = ({
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const DuplicateIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 13 13"
       fill="none"
     >
@@ -381,14 +381,14 @@ export const DuplicateIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const MissingIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 12 13"
       fill="none"
     >
@@ -397,13 +397,13 @@ export const MissingIcon = ({ className = defaultSize }: IconClassProps) => {
         fill="currentColor"
       />
     </svg>
-  );
-};
+  )
+}
 export const XIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-white", className)}
+      className={cn('text-white', className)}
       viewBox="0 0 8 9"
       fill="none"
     >
@@ -414,13 +414,13 @@ export const XIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const DangerIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#EC261F] aspect-auto", className)}
+      className={cn('aspect-auto text-[#EC261F]', className)}
       viewBox="0 0 20 17"
       fill="none"
     >
@@ -432,15 +432,15 @@ export const DangerIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const VerticalDotsIcon = ({
   className = defaultSize,
 }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#98A2B3] aspect-auto", className)}
+      className={cn('aspect-auto text-[#98A2B3]', className)}
       viewBox="0 0 20 21"
       fill="none"
     >
@@ -466,13 +466,13 @@ export const VerticalDotsIcon = ({
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const SearchIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("text-[#444] aspect-auto", className)}
+      className={cn('aspect-auto text-[#444]', className)}
       viewBox="0 0 24 25"
       fill="none"
     >
@@ -484,12 +484,12 @@ export const SearchIcon = ({ className = defaultSize }: IconClassProps) => {
       />
       <path d="M20 20.5L17 17.5" stroke="currentColor" strokeLinecap="round" />
     </svg>
-  );
-};
+  )
+}
 export const PlusIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#98A2B3] aspect-auto", className)}
+      className={cn('aspect-auto text-[#98A2B3]', className)}
       width="22"
       height="22"
       viewBox="0 0 22 22"
@@ -504,12 +504,12 @@ export const PlusIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 export const MinusIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#98A2B3] aspect-auto", className)}
+      className={cn('aspect-auto text-[#98A2B3]', className)}
       width="22"
       height="22"
       viewBox="0 0 22 22"
@@ -524,13 +524,13 @@ export const MinusIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const ErrorIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#98A2B3] aspect-auto", className)}
+      className={cn('aspect-auto text-[#98A2B3]', className)}
       width="19"
       height="20"
       viewBox="0 0 19 20"
@@ -545,13 +545,13 @@ export const ErrorIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const EditIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#98A2B3] aspect-auto", className)}
+      className={cn('aspect-auto text-[#98A2B3]', className)}
       width="23"
       height="23"
       viewBox="0 0 23 23"
@@ -566,13 +566,13 @@ export const EditIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const NoteIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
-      className={cn("text-[#98A2B3] aspect-auto", className)}
+      className={cn('aspect-auto text-[#98A2B3]', className)}
       width="18"
       height="22"
       viewBox="0 0 18 22"
@@ -587,8 +587,8 @@ export const NoteIcon = ({ className = defaultSize }: IconClassProps) => {
         strokeLinejoin="round"
       />
     </svg>
-  );
-};
+  )
+}
 
 export const SmallBusinessIcon = ({ className = "w-6 h-6" }: IconClassProps) => (
   <svg
@@ -710,4 +710,4 @@ const Icons = {
   Corporation: CorporationIcon,
 };
 
-export default Icons;
+export default Icons

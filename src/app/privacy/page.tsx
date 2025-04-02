@@ -1,5 +1,5 @@
-import PrivacyPage from './PrivacyPage';
+import PrivacyPage from './PrivacyPage'
 
 export default function privacy() {
-    return <PrivacyPage />;
+  return <PrivacyPage />
 }

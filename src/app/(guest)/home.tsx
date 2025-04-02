@@ -1,5 +1,5 @@
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
 
 // Dynamic imports
 const HeroSection = dynamic(() => import("@/src/components/hero-section"));
@@ -9,6 +9,7 @@ const VideoFeature = dynamic(() => import("@/src/components/VideoFeature"));
 const FAQSection = dynamic(() => import("@/src/components/FAQs/FAQSection"));
 const CTASection = dynamic(() => import("@/src/components/CTASection"));
 const Footer = dynamic(() => import("@/src/components/Footer"));
+
 
 export default function HomePage() {
   return (

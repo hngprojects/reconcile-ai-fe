@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-  });
+    fullName: '',
+    email: '',
+    phoneNumber: '',
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
-  
   return (
-    <form 
-      className="w-full max-w-[620px] mx-auto bg-white border rounded-md p-6"
-    >
+    <form className="mx-auto w-full max-w-[620px] rounded-md border bg-white p-6">
       <div className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="fullName" className="block text-[#333333] font-semibold text-sm">
+          <label
+            htmlFor="fullName"
+            className="block text-sm font-semibold text-[#333333]"
+          >
             Full Name
           </label>
           <Input
@@ -34,12 +34,15 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter full name"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-sm lg:text-[20px]"
+            className="h-12 w-full rounded border border-gray-300 p-3 text-sm placeholder-[#B8B8B8] lg:text-[20px]"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="email" className="block text-[#333333] font-semibold text-sm">
+          <label
+            htmlFor="email"
+            className="block text-sm font-semibold text-[#333333]"
+          >
             Email
           </label>
           <Input
@@ -50,12 +53,15 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="email@address.com"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-sm lg:text-[20px]"
+            className="h-12 w-full rounded border border-gray-300 p-3 text-sm placeholder-[#B8B8B8] lg:text-[20px]"
           />
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="phoneNumber" className="block text-[#333333] font-semibold text-sm">
+          <label
+            htmlFor="phoneNumber"
+            className="block text-sm font-semibold text-[#333333]"
+          >
             Phone Number
           </label>
           <Input
@@ -66,17 +72,17 @@ export default function ContactForm() {
             onChange={handleChange}
             placeholder="Enter phone number"
             required
-            className="w-full p-3 h-12 rounded border border-gray-300 placeholder-[#B8B8B8] text-sm lg:text-[20px]"
+            className="h-12 w-full rounded border border-gray-300 p-3 text-sm placeholder-[#B8B8B8] lg:text-[20px]"
           />
         </div>
 
         <Button
           type="submit"
-          className="w-full text-white font-semibold py-6 rounded-[12px] px-4"
+          className="w-full rounded-[12px] px-4 py-6 font-semibold text-white"
         >
           Start your free trial Now
         </Button>
       </div>
     </form>
-  );
+  )
 }

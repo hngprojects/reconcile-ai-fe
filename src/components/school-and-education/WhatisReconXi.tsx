@@ -1,35 +1,35 @@
-"use client";
+'use client'
 
-import React from "react";
-import Image from "next/image";
-import Container from "../Container";
+import React from 'react'
+import Image from 'next/image'
+import Container from '../Container'
 
 const features = [
-  "Matches general ledger transactions automatically",
-  "Tracks and reconciles tuition fees and expenses",
-  "Keeps financial records audit-ready",
-];
+  'Matches general ledger transactions automatically',
+  'Tracks and reconciles tuition fees and expenses',
+  'Keeps financial records audit-ready',
+]
 
 export default function WhatisReconXi() {
   return (
     <section
-      className="w-full py-16 px-4 sm:px-6 md:px-12 lg:px-20"
+      className="w-full px-4 py-16 sm:px-6 md:px-12 lg:px-20"
       aria-labelledby="why-reconxi-title"
     >
       <Container>
-        <div className="flex flex-col md:flex-row items-start max-w-[1232px] w-full mx-auto gap-10 md:gap-16 md:justify-between">
+        <div className="mx-auto flex w-full max-w-[1232px] flex-col items-start gap-10 md:flex-row md:justify-between md:gap-16">
           {/* Text Section */}
-          <div className="flex-1 pt-[2rem] inline-flex flex-col justify-center items-start gap-6 text-left max-w-[500px]">
-            <h2 className="text-[#475467] text-sm sm:text-base md:text-lg font-medium uppercase mb-0">
+          <div className="inline-flex max-w-[500px] flex-1 flex-col items-start justify-center gap-6 pt-[2rem] text-left">
+            <h2 className="mb-0 text-sm font-medium text-[#475467] uppercase sm:text-base md:text-lg">
               ABOUT US
             </h2>
             <h2
               id="why-reconxi-title"
-              className="text-xl sm:text-2xl md:text-[40px] font-semibold text-[#292D32] font-inter tracking-[-0.02em] leading-normal mt-0"
+              className="font-inter mt-0 text-xl leading-normal font-semibold tracking-[-0.02em] text-[#292D32] sm:text-2xl md:text-[40px]"
             >
               What is ReconXi?
             </h2>
-            <p className="text-sm sm:text-base md:text-lg sm:max-w[500rem] text-[#475467] leading-relaxed">
+            <p className="sm:max-w[500rem] text-sm leading-relaxed text-[#475467] sm:text-base md:text-lg">
               ReconXi helps schools and educational institutions automate
               financial reconciliation, ensuring accurate tracking of student
               payments, tuition, and school expenses.
@@ -42,7 +42,7 @@ export default function WhatisReconXi() {
                   role="listitem"
                 >
                   {/* Custom SVG Checkmark */}
-                  <div className="w-8 h-8 flex items-center justify-center shrink-0">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center">
                     <svg
                       width="24"
                       height="25"
@@ -72,7 +72,7 @@ export default function WhatisReconXi() {
                       </defs>
                     </svg>
                   </div>
-                  <p className="text-base sm:text-lg md:text-[20px] text-[#292D32] font-inter font-medium leading-[144%]">
+                  <p className="font-inter text-base leading-[144%] font-medium text-[#292D32] sm:text-lg md:text-[20px]">
                     {description}
                   </p>
                 </div>
@@ -81,17 +81,17 @@ export default function WhatisReconXi() {
           </div>
 
           {/* Image Section */}
-          <div className="flex justify-end w-full md:w-[55%]">
+          <div className="flex w-full justify-end md:w-[55%]">
             <Image
               src="/assets/images/whatisreconxi.svg"
               alt="ReconXi interface preview"
               width={600}
               height={400}
-              className="w-full max-w-[600px] h-auto rounded-lg shadow-lg"
+              className="h-auto w-full max-w-[600px] rounded-lg shadow-lg"
             />
           </div>
         </div>
       </Container>
     </section>
-  );
+  )
 }

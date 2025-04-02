@@ -1,13 +1,25 @@
-import ProtectedRoute from "@/src/components/auth/ProtectedRoute";
-import Container from "@/src/components/Container";
-import { Dashboard } from "@/src/components/dashboard/Dashboard";
+import { Suspense } from 'react'
+import Container from '@/components/Container'
+import SiteLoader from '@/components/site-loader'
+import { getQueryClient } from '@/actions/get-query-client'
+import { Dashboard } from '@/components/dashboard/Dashboard'
+import { get_reconcilations } from '@/actions/reconcilation-server'
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query'
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const queryClient = getQueryClient()
+  await queryClient.prefetchQuery({
+    queryKey: ['reconcilations'],
+    queryFn: get_reconcilations,
+  })
+
   return (
-    <ProtectedRoute>
-      <Container className="my-8">
-        <Dashboard />
-      </Container>
-    </ProtectedRoute>
-  );
+    <Suspense fallback={<SiteLoader />}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Container className="my-8">
+          <Dashboard />
+        </Container>
+      </HydrationBoundary>
+    </Suspense>
+  )
 }

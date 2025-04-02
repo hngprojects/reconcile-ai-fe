@@ -1,54 +1,58 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import Container from "@/src/components/Container";
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Label } from "@/src/components/ui/label";
+'use client'
+import React from 'react'
+import Image from 'next/image'
+import Container from '@/components/Container'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 export default function StartReconcile() {
   return (
     <section
-      className="py-10 md:py-20 px-0 lg:px-20 bg-white"
+      className="bg-white px-0 py-10 md:py-20 lg:px-20"
       aria-labelledby="ready-section-title"
       id="demo-form"
     >
       <Container>
-        <div className="flex flex-col w-full lg:flex-row gap-8 lg:gap-16 items-center">
+        <div className="flex w-full flex-col items-center gap-8 lg:flex-row lg:gap-16">
           {/* Image section - now on the left */}
-          <div className="flex-1 w-full min-w-[300px]">
+          <div className="w-full min-w-[300px] flex-1">
             <Image
               src="/assets/images/Smiling.png"
               alt="Visual representation of ReconXi's reconciliation process"
               width={520}
               height={780}
-              className="w-full h-auto max-w-[520px] mx-auto rounded-lg object-cover"
+              className="mx-auto h-auto w-full max-w-[520px] rounded-lg object-cover"
               priority
             />
           </div>
 
           {/* Form section - now on the right */}
-          <div className="flex-1 w-full space-y-6 md:space-y-8 justify-center">
+          <div className="w-full flex-1 justify-center space-y-6 md:space-y-8">
             <div className="space-y-3 md:space-y-4">
               <h2
                 id="ready-section-title"
-                className="font-inter text-[27px] sm:text-[32px] md:text-[36px] leading-[1.2] font-semibold text-[#101828]"
+                className="font-inter text-[27px] leading-[1.2] font-semibold text-[#101828] sm:text-[32px] md:text-[36px]"
               >
                 Ready to Reconcile Smarter?
               </h2>
-              <p className="font-inter text-base sm:text-lg md:text-[20px] leading-[1.5] md:leading-[30px] text-[#475467]">
-                Join thousands of small businesses using ReconXi&apos;s free bank reconciliation software to simplify accounting.
+              <p className="font-inter text-base leading-[1.5] text-[#475467] sm:text-lg md:text-[20px] md:leading-[30px]">
+                Join thousands of small businesses using ReconXi&apos;s free
+                bank reconciliation software to simplify accounting.
               </p>
             </div>
 
             <div
-              className="rounded-lg mx-auto"
+              className="mx-auto rounded-lg"
               aria-label="Start free trial form"
             >
               <div className="w-full">
-                <div className="space-y-6 border rounded-[8px] p-[32px]">
+                <div className="space-y-6 rounded-[8px] border p-[32px]">
                   <div className="space-y-2">
-                    <Label htmlFor="fullName" className="text-sm text-[#717171]">
+                    <Label
+                      htmlFor="fullName"
+                      className="text-sm text-[#717171]"
+                    >
                       Full Name
                     </Label>
                     <Input
@@ -77,9 +81,11 @@ export default function StartReconcile() {
                     />
                   </div>
 
-
                   <div className="space-y-2">
-                    <Label htmlFor="businessName" className="text-sm text-[#717171]">
+                    <Label
+                      htmlFor="businessName"
+                      className="text-sm text-[#717171]"
+                    >
                       Companys Name
                     </Label>
                     <Input
@@ -92,9 +98,12 @@ export default function StartReconcile() {
                       className="h-12 bg-white !text-base"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
-                    <Label htmlFor="phoneNumber" className="text-sm text-[#717171]">
+                    <Label
+                      htmlFor="phoneNumber"
+                      className="text-sm text-[#717171]"
+                    >
                       Phone Number
                     </Label>
                     <div className="flex gap-2">
@@ -105,16 +114,16 @@ export default function StartReconcile() {
                         placeholder="Enter phone number"
                         required
                         aria-required="true"
-                        className="h-12 min-h-[48px] bg-white !text-base flex-1"
+                        className="h-12 min-h-[48px] flex-1 bg-white !text-base"
                       />
                     </div>
                   </div>
 
                   <Button
                     type="submit"
-                    className="w-full bg-[#2E604A] text-white font-semibold py-6 text-[18px] cursor-pointer"
+                    className="w-full cursor-pointer bg-[#2E604A] py-6 text-[18px] font-semibold text-white"
                   >
-                  Start your free trial Now
+                    Start your free trial Now
                   </Button>
                 </div>
               </div>
@@ -123,5 +132,5 @@ export default function StartReconcile() {
         </div>
       </Container>
     </section>
-  );
+  )
 }

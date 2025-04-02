@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import { PlayCircle } from "lucide-react";
 import Container from "./Container";
-import Image from "next/image"; // Import Image from next/image
+import Image from "next/image"; 
 
 const VideoFeature = ({ videoTitle }: { videoTitle: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);

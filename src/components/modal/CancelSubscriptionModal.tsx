@@ -1,9 +1,9 @@
-import { Dialog, DialogContent } from "@/src/components/ui/dialog";
-import { CircleAlertIcon, X } from "lucide-react";
+import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { CircleAlertIcon, X } from 'lucide-react'
 
 interface CancelSubscriptionModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
 const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
@@ -12,17 +12,17 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
 }) => {
   const handleCancel = () => {
     // Add cancel subscription logic here
-    onOpenChange(false);
-  };
+    onOpenChange(false)
+  }
 
   const handleKeep = () => {
-    onOpenChange(false);
-  };
+    onOpenChange(false)
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="w-[90%] md:!max-w-[535px] h-auto rounded-[12px] bg-white p-0 border-none mx-auto"
+        className="mx-auto h-auto w-[90%] rounded-[12px] border-none bg-white p-0 md:!max-w-[535px]"
         closeButton={false}
         aria-labelledby="auth-title"
         aria-describedby="auth-description"
@@ -30,17 +30,17 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
         <button
           type="button"
           onClick={() => onOpenChange(false)}
-          className="absolute right-4 md:right-6 top-4 md:top-6 hover:bg-gray-100 p-2 rounded-full transition-colors cursor-pointer"
+          className="absolute top-4 right-4 cursor-pointer rounded-full p-2 transition-colors hover:bg-gray-100 md:top-6 md:right-6"
           aria-label="Close authentication modal"
         >
           <X className="h-4 w-4 text-gray-500" />
         </button>
 
         <div className="p-4 sm:p-6">
-          <div className="mt-6 flex flex-col bg-[#FFFBFA] border border-[#FDA29B] rounded-xl p-4 gap-3">
-            <CircleAlertIcon className="w-5 h-5 flex-shrink-0 text-[#D92D20]" />
+          <div className="mt-6 flex flex-col gap-3 rounded-xl border border-[#FDA29B] bg-[#FFFBFA] p-4">
+            <CircleAlertIcon className="h-5 w-5 flex-shrink-0 text-[#D92D20]" />
             <div>
-              <h4 className="font-inter font-semibold text-sm text-[#B42318]">
+              <h4 className="font-inter text-sm font-semibold text-[#B42318]">
                 Important
               </h4>
               <p className="text-sm text-[#B42318]">
@@ -50,38 +50,38 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
             </div>
           </div>
 
-          <div className="mt-4 py-5 px-4">
-            <h3 className="font-inter font-medium text-lg text-[#101828] mb-3">
+          <div className="mt-4 px-4 py-5">
+            <h3 className="font-inter mb-3 text-lg font-medium text-[#101828]">
               What you will lose
             </h3>
             <ul className="space-y-3">
               {[
-                "Reconcile up to 20 transaction/month",
-                "Basic AI matching (date, amount, description)",
-                "Export results to CSV",
-                "Manual adjustments (unlink and match errors)",
+                'Reconcile up to 20 transaction/month',
+                'Basic AI matching (date, amount, description)',
+                'Export results to CSV',
+                'Manual adjustments (unlink and match errors)',
               ].map((item, index) => (
                 <li
                   key={index}
                   className="flex items-center gap-3 text-[#333333]"
                 >
-                  <CircleAlertIcon className="w-4 h-4 border-[#333333] flex-shrink-0" />
-                  <span className="font-inter font-normal text-sm">{item}</span>
+                  <CircleAlertIcon className="h-4 w-4 flex-shrink-0 border-[#333333]" />
+                  <span className="font-inter text-sm font-normal">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-end gap-3 mt-4">
+          <div className="mt-4 flex flex-col justify-end gap-3 sm:flex-row">
             <button
               onClick={handleCancel}
-              className="w-full sm:w-auto px-6 py-3 border-2 border-[#E63946] text-[#E63946] rounded-lg font-medium hover:bg-[#E63946]/10 transition-colors cursor-pointer"
+              className="w-full cursor-pointer rounded-lg border-2 border-[#E63946] px-6 py-3 font-medium text-[#E63946] transition-colors hover:bg-[#E63946]/10 sm:w-auto"
             >
               Cancel subscription
             </button>
             <button
               onClick={handleKeep}
-              className="w-full sm:w-auto px-4 py-3.5 bg-[#2E604A] text-white rounded-lg font-medium hover:bg-[#2E604A]/90 transition-colors cursor-pointer"
+              className="w-full cursor-pointer rounded-lg bg-[#2E604A] px-4 py-3.5 font-medium text-white transition-colors hover:bg-[#2E604A]/90 sm:w-auto"
             >
               Keep subscription
             </button>
@@ -89,7 +89,7 @@ const CancelSubscriptionModal: React.FC<CancelSubscriptionModalProps> = ({
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default CancelSubscriptionModal;
+export default CancelSubscriptionModal

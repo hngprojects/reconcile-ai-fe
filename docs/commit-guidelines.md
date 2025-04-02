@@ -1,9 +1,11 @@
 # 🚀 Commit Message Guidelines
 
 ## ✅ Format
+
 # The conventional commit format follows this pattern:
 
 ## 🔹 Types
+
 - **feat** → New feature
 - **fix** → Bug fix
 - **docs** → Documentation

@@ -1,10 +1,10 @@
-import Image from "next/image";
-import { Dialog, DialogContent, DialogClose } from "@/src/components/ui/dialog";
-import { X } from "lucide-react"; // Import X icon from lucide-react
-import { ErrorModalProps } from "@/src/types/error-modal";
-import { getErrorConfig } from "@/src/utils/errorConfig";
-import { useAuth } from "@/src/components/context/AuthContext";
-import { useRouter } from "next/navigation";
+import Image from 'next/image'
+import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog'
+import { X } from 'lucide-react'
+import { ErrorModalProps } from '@/types/error-modal'
+import { getErrorConfig } from '@/utils/errorConfig'
+import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 const ErrorModal: React.FC<ErrorModalProps> = ({
   open,
@@ -12,28 +12,25 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
   errorCode,
   defaultMessage,
 }) => {
-  const { signInWithGoogle } = useAuth();
-  const router = useRouter();
-  const config = getErrorConfig(errorCode, defaultMessage);
+  const router = useRouter()
+  const config = getErrorConfig(errorCode, defaultMessage)
 
   const clearUploadData = () => {
-    localStorage.removeItem("bankStatement");
-    localStorage.removeItem("companyLedger");
-    localStorage.removeItem("reconciliation");
-  };
+    localStorage.removeItem('bankStatement')
+    localStorage.removeItem('companyLedger')
+    localStorage.removeItem('reconciliation')
+  }
 
   const handleButtonClick = () => {
-    if (config.buttonAction === "googleSignIn") {
-      signInWithGoogle();
+    if (config.buttonAction === 'googleSignIn') {
+      signIn('google', { redirectTo: '/dashboard' })
     } else {
-      onOpenChange(false);
-      clearUploadData();
-
-      // Navigate and force reload
-      router.push(config.buttonHref);
-      window.location.reload();
+      onOpenChange(false)
+      clearUploadData()
+      router.push(config.buttonHref)
+      window.location.reload()
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange} modal={true}>
@@ -44,9 +41,9 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
         onPointerDownOutside={(e) => e.preventDefault()}
       >
         <div className="sr-only" id="error-modal-description">
-          {config.message || "Error occurred during operation"}
+          {config.message || 'Error occurred during operation'}
         </div>
-        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground cursor-pointer">
+        <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 cursor-pointer rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none">
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </DialogClose>
@@ -58,26 +55,26 @@ const ErrorModal: React.FC<ErrorModalProps> = ({
             alt="Error icon"
             className="object-cover"
           />
-          <h2 className="font-bold text-3xl md:text-4xl text-center">
+          <h2 className="text-center text-3xl font-bold md:text-4xl">
             {config.title}
           </h2>
           <p
             id="error-description"
-            className="text-[#475569] text-center"
+            className="text-center text-[#475569]"
             aria-hidden={!config.message}
           >
             {config.message}
           </p>
           <button
             onClick={handleButtonClick}
-            className="bg-primary py-2 px-4 rounded-md font-semibold justify-center items-center h-12 w-full sm:w-64 text-sm text-white hover:bg-primary/90 flex cursor-pointer"
+            className="bg-primary hover:bg-primary/90 flex h-12 w-full cursor-pointer items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white sm:w-64"
           >
             {config.buttonTitle}
           </button>
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ErrorModal;
+export default ErrorModal

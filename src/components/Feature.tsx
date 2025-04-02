@@ -1,24 +1,24 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import Container from "./Container";
+'use client'
+import React from 'react'
+import Image from 'next/image'
+import Container from './Container'
 
 export default function Features1() {
   return (
     <section className="w-full overflow-hidden">
-      <Container className="py-16 px-4 md:px-16 lg:px-24">
-        <div className="flex flex-col justify-center lg:flex-row items-center gap-10 lg:gap-24 h-full">
+      <Container className="px-4 py-16 md:px-16 lg:px-24">
+        <div className="flex h-full flex-col items-center justify-center gap-10 lg:flex-row lg:gap-24">
           {/* Left Text Section */}
-          <div className="flex flex-col text-center sm:text-left items-start gap-[32px] flex-1">
-            <div className="flex flex-col items-start gap-[24px] w-full">
-              <p className="w-full text-primary font-inter font-semibold leading-[24px]">
+          <div className="flex flex-1 flex-col items-start gap-[32px] text-center sm:text-left">
+            <div className="flex w-full flex-col items-start gap-[24px]">
+              <p className="text-primary font-inter w-full leading-[24px] font-semibold">
                 Problem Statement
               </p>
               <div className="flex flex-col items-start gap-[16px] self-stretch">
-                <h1 className="text-[#101828] font-inter text-3xl sm:text-4xl font-semibold">
+                <h1 className="font-inter text-3xl font-semibold text-[#101828] sm:text-4xl">
                   Financial Reconciliation Doesn&apos;t Have to Be Hard
                 </h1>
-                <p className="text-[#475467] font-inter sm:text-lg">
+                <p className="font-inter text-[#475467] sm:text-lg">
                   Tired of spending hours matching transactions manually? Errors
                   slipping through the cracks? ReconXi’s AI-powered platform
                   makes reconciliation quick, accurate, and easy, so you can
@@ -29,19 +29,19 @@ export default function Features1() {
           </div>
 
           {/* Right Image Section */}
-          <div className="flex justify-center items-center flex-1">
+          <div className="flex flex-1 items-center justify-center">
             <div className="relative w-full max-w-[536px]">
               <Image
                 src="/assets/images/screen-mockup.png"
                 alt="screen mockup"
                 width={536}
                 height={410}
-                className="flex-shrink-0 rounded-[10px] bg-gray-300 bg-[50%] bg-cover bg-no-repeat border-[4px] border-[#101828] object-contain max-w-full h-auto"
+                className="h-auto max-w-full flex-shrink-0 rounded-[10px] border-[4px] border-[#101828] bg-gray-300 bg-cover bg-[50%] bg-no-repeat object-contain"
               />
             </div>
           </div>
         </div>
       </Container>
     </section>
-  );
+  )
 }

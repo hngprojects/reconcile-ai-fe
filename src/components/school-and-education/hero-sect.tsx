@@ -3,10 +3,11 @@ import React from "react";
 import Image from "next/image";
 import Container from "@/src/components/Container";
 import TypeWriterButton from "../buttons/TypeWriterButton";
-import { useAuth } from "../context/AuthContext";
+import { useSession } from 'next-auth/react'
 
 export default function HeroSection() {
-  const { isAuthenticated } = useAuth();
+  const { status } = useSession()
+  const isAuthenticated = status === 'authenticated'
 
   const handleDemoClick = (e: React.MouseEvent) => {
     e.preventDefault();

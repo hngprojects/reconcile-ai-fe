@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import TypeWriterButton from "./buttons/TypeWriterButton";
-import { useAuth } from "./context/AuthContext";
+import TypeWriterButton from "@/src/components/buttons/TypeWriterButton"
+import { useSession } from 'next-auth/react'
+
 
 export default function HeroSection() {
-  const { isAuthenticated } = useAuth();
+    const { status } = useSession()
+  const isAuthenticated = status === 'authenticated'
 
   return (
     <section className="overflow-x-hidden pt-8 md:pt-0">

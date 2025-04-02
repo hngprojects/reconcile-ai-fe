@@ -1,32 +1,32 @@
-"use client";
+'use client'
 
 export function Loader() {
   return (
-    <div className="fixed inset-0 bg-[#2E604A] flex flex-col items-center justify-center z-50">
-      <div className="relative w-[75px] h-[100px]">
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#2E604A]">
+      <div className="relative h-[100px] w-[75px]">
         <div
-          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp1_4s_infinite]"
-          style={{ left: "0px" }}
+          className="absolute bottom-0 h-[50%] w-[10px] [animation:barUp1_4s_infinite] bg-white shadow-sm"
+          style={{ left: '0px' }}
         />
         <div
-          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp2_4s_infinite]"
-          style={{ left: "15px" }}
+          className="absolute bottom-0 h-[50%] w-[10px] [animation:barUp2_4s_infinite] bg-white shadow-sm"
+          style={{ left: '15px' }}
         />
         <div
-          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp3_4s_infinite]"
-          style={{ left: "30px" }}
+          className="absolute bottom-0 h-[50%] w-[10px] [animation:barUp3_4s_infinite] bg-white shadow-sm"
+          style={{ left: '30px' }}
         />
         <div
-          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp4_4s_infinite]"
-          style={{ left: "45px" }}
+          className="absolute bottom-0 h-[50%] w-[10px] [animation:barUp4_4s_infinite] bg-white shadow-sm"
+          style={{ left: '45px' }}
         />
         <div
-          className="absolute bottom-0 w-[10px] h-[50%] bg-white shadow-sm [animation:barUp5_4s_infinite]"
-          style={{ left: "60px" }}
+          className="absolute bottom-0 h-[50%] w-[10px] [animation:barUp5_4s_infinite] bg-white shadow-sm"
+          style={{ left: '60px' }}
         />
-        <div className="absolute bottom-[10px] left-0 w-[10px] h-[10px] bg-white rounded-full [animation:ball624_4s_infinite]" />
+        <div className="absolute bottom-[10px] left-0 h-[10px] w-[10px] [animation:ball624_4s_infinite] rounded-full bg-white" />
       </div>
-      <p className="mt-4 text-white text-lg font-medium">Loading...</p>
+      <p className="mt-4 text-lg font-medium text-white">Loading...</p>
     </div>
-  );
+  )
 }
