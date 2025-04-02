@@ -4,7 +4,7 @@ import { APIResponse } from '../types/global'
 import { createFetchUtil, HttpError, withAuth } from '../lib/fetch-utils'
 
 const apiHandler = createFetchUtil({
-  baseUrl: process.env.BASE_API_URL as string,
+  baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL as string,
 })
 
 export const google_login = async (
