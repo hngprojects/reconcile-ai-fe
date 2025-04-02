@@ -20,13 +20,13 @@ interface LedgerStepProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void
   handleNext: () => void
-  handleSkip: () => void
+  handleBack: () => void
 }
 export default function LedgerStep({
   formData,
   handleInputChange,
   handleNext,
-  handleSkip,
+  handleBack,
 }: LedgerStepProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
@@ -105,9 +105,9 @@ export default function LedgerStep({
         <Button
           type="button"
           className="w-[137px] border border-[#C0C0C0] bg-white p-3 text-[#333333]"
-          onClick={handleSkip}
+          onClick={handleBack}
         >
-          Skip
+          Back
         </Button>
 
         <Button type="submit" className="w-[137px] p-3">

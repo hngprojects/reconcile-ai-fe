@@ -49,7 +49,7 @@ export default function Onboarding() {
     setCurrentStep(currentStep + 1)
   }
 
-  const handleSkip = () => {
+  const handleBack = () => {
     setCurrentStep(currentStep - 1)
   }
 
@@ -81,7 +81,7 @@ export default function Onboarding() {
             formData={formData}
             handleInputChange={handleInputChange}
             handleNext={handleNext}
-            handleSkip={handleSkip}
+            handleBack={handleBack}
           />
         )
       case 3:
@@ -90,7 +90,7 @@ export default function Onboarding() {
             formData={formData}
             handleInputChange={handleInputChange}
             handleNext={handleNext}
-            handleSkip={handleSkip}
+            handleBack={handleBack}
           />
         )
       case 4:

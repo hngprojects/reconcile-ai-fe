@@ -24,7 +24,7 @@ interface BankStepProps {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void
   handleNext: () => void
-  handleSkip: () => void
+  handleBack: () => void
 }
 
 export const bankFormSchema = z.object({
@@ -61,7 +61,7 @@ export default function BankStep({
   formData,
   handleInputChange,
   handleNext,
-  handleSkip,
+  handleBack,
 }: BankStepProps) {
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -205,9 +205,9 @@ export default function BankStep({
           <Button
             type="button"
             className="w-[137px] border border-[#C0C0C0] bg-white p-3 text-[#333333]"
-            onClick={handleSkip}
+            onClick={handleBack}
           >
-            Skip
+            Back
           </Button>
 
           <Button type="submit" className="w-[137px] p-3">

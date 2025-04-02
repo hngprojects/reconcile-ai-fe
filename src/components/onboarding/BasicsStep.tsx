@@ -80,6 +80,13 @@ export default function BasicsStep({
               className="mt-3 h-12 w-full appearance-none rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
             >
               <option value="">Select business type</option>
+              <option value="fashion">Fashion</option>
+              <option value="beauty">Beauty</option>
+              <option value="service">Service</option>
+              <option value="retail">Retail</option>
+              <option value="food_beverage">Food & Beverage</option>
+              <option value="technology">Technology</option>
+              <option value="other">Other</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -116,6 +123,9 @@ export default function BasicsStep({
               className="mt-3 h-12 w-full appearance-none rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
             >
               <option value="jan-dec">January - December</option>
+              <option value="apr_mar">April - March</option>
+              <option value="jul_jun">July - June</option>
+              <option value="oct_sep">October - September</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
@@ -152,6 +162,9 @@ export default function BasicsStep({
               className="mt-3 h-12 w-full appearance-none rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
             >
               <option value="naira">Nigeria Naira (₦)</option>
+              <option value="usd">US Dollar ($)</option>
+              <option value="eur">Euro (€)</option>
+              <option value="gbp">British Pound (£)</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg
