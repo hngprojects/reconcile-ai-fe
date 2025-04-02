@@ -19,7 +19,7 @@ export function Dashboard() {
             Welcome, {user?.name} 👋
           </h1>
           <p className="text-muted-foreground dark:text-muted-foreground/90">
-            Here's how your business is doing.
+            Here&apos;s how your business is doing.
           </p>
         </div>
         <Button>
