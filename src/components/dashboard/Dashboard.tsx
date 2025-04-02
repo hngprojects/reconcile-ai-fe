@@ -1,38 +1,36 @@
 'use client'
 
-import Link from 'next/link'
 import { Plus } from 'lucide-react'
-import SiteLoader from '../site-loader'
-import { useReconcilations } from '@/app/queries'
-import { FilterDropdown } from './FilterDropdown'
-import { DashboardInfoCards } from './DashboardInfoCards'
-import ReconciliationHistory, { EmptyState } from './ReconciliationHistory'
+import { Button } from '../ui/button'
+import { useSession } from 'next-auth/react'
+import { StatsCards } from './stats/stats-cards'
+import { QuickActions } from './actions/quick-actions'
+import { UpcomingTasks } from './tasks/upcoming-tasks'
 
-export const Dashboard = () => {
-  const { isPending, isError } = useReconcilations()
+export function Dashboard() {
+  const { data: session } = useSession()
+  const user = session?.user
 
-  return isPending ? (
-    <SiteLoader />
-  ) : isError ? (
-    <EmptyState />
-  ) : (
-    <div className="flex flex-col gap-3">
-      <DashboardInfoCards />
-      <div className="mb-3 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-        <FilterDropdown />
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold flex items-center gap-2 dark:text-foreground">
+            Welcome, {user?.name} 👋
+          </h1>
+          <p className="text-muted-foreground dark:text-muted-foreground/90">
+            Here&apos;s how your business is doing.
+          </p>
+        </div>
+        <Button>
+          <Plus className="mr-2 size-4" />
+          Start Reconciliation
+        </Button>
       </div>
 
-      <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-xl font-bold">Reconciliation History</h2>
-        <Link
-          href="/file-upload"
-          className="bg-primary hover:bg-primary/90 flex h-12 cursor-pointer items-center justify-center rounded-md border px-10 text-sm font-medium text-white"
-        >
-          <Plus className="mr-2 !size-5" /> Upload Files
-        </Link>
-      </div>
-
-      <ReconciliationHistory />
+      <StatsCards />
+      <QuickActions />
+      <UpcomingTasks />
     </div>
   )
 }
