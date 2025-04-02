@@ -16,7 +16,7 @@ export function Providers({
       <ReactQueryDevtools
         initialIsOpen={false}
         position="left"
-        buttonPosition="top-left"
+        buttonPosition="bottom-right"
       />
       <Toaster richColors position="top-right" />
     </QueryClientProvider>
