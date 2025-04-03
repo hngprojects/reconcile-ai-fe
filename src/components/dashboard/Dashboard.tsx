@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react'
 import SiteLoader from '../site-loader'
 import { useReconcilations } from '@/app/queries'
 import { FilterDropdown } from './FilterDropdown'
+import Pop from './actions/quick-actions'
 import { DashboardInfoCards } from './DashboardInfoCards'
 import ReconciliationHistory, { EmptyState } from './ReconciliationHistory'
 
@@ -31,6 +32,7 @@ export const Dashboard = () => {
           <Plus className="mr-2 !size-5" /> Upload Files
         </Link>
       </div>
+      <Pop />
 
       <ReconciliationHistory />
     </div>
