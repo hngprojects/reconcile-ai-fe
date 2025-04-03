@@ -1,5 +1,4 @@
 import SummaryCards from './SummaryCards'
-import Filters from './Filters'
 import ReconciliationTable from './ReconciliationTable'
 import { Plus } from 'lucide-react'
 
@@ -26,7 +25,6 @@ export default function ReconDashboard() {
         </Link>
       </div>
       <SummaryCards />
-      <Filters />
       <ReconciliationTable />
     </div>
   )
