@@ -4,7 +4,7 @@ import SiteLoader from '@/components/site-loader'
 import { getQueryClient } from '@/actions/get-query-client'
 import { get_reconcilations } from '@/actions/reconcilation-server'
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query'
-import ReconDashboard from '@/components/reconciliation-dashboard/ReconDashboard'
+import ReconDashboard from '@/components/dashboard/reconciliation-dashboard/ReconDashboard'
 
 export default async function ReconciliationPage() {
   const queryClient = getQueryClient()
