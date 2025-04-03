@@ -18,7 +18,7 @@ export default async function DashboardPage() {
     <DashboardLayout>
       <Suspense fallback={<SiteLoader />}>
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <Container className="my-8">
+          <Container className="px-0 md:my-8">
             <ReconDashboard />
           </Container>
         </HydrationBoundary>

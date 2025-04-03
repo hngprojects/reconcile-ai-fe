@@ -20,7 +20,7 @@ export default function SummaryCards() {
   ]
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex flex-col items-center gap-4 lg:flex-row">
       {cards.map((card, index) => (
         <SummaryCard key={index} {...card} />
       ))}
