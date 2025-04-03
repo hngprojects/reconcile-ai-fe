@@ -50,7 +50,7 @@ export function QuickActions() {
         <QuickActionButton
           icon={<BarChart3 />}
           label="P&L Report"
-          onClick={() => (window.location.href = '/reports'}
+          onClick={() => (window.location.href = '/reports')}
         />
       </div>
 
