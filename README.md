@@ -100,4 +100,4 @@ reconcile-ai-fe/
 
 Please see [CONTRIBUTING](CONTRIBUTING.md)
 
-incrisz 
+incris
