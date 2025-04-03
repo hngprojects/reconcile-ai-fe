@@ -5,6 +5,7 @@ import { getQueryClient } from '@/actions/get-query-client'
 import { get_reconcilations } from '@/actions/reconcilation-server'
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query'
 import ReconDashboard from '@/components/reconciliation-dashboard/ReconDashboard'
+import DashboardLayout from '@/components/dashboard/layout/app-sidebar'
 
 export default async function DashboardPage() {
   const queryClient = getQueryClient()
@@ -14,12 +15,14 @@ export default async function DashboardPage() {
   })
 
   return (
-    <Suspense fallback={<SiteLoader />}>
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <Container className="my-8">
-          <ReconDashboard />
-        </Container>
-      </HydrationBoundary>
-    </Suspense>
+    <DashboardLayout>
+      <Suspense fallback={<SiteLoader />}>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <Container className="my-8">
+            <ReconDashboard />
+          </Container>
+        </HydrationBoundary>
+      </Suspense>
+    </DashboardLayout>
   )
 }
