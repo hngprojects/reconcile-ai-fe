@@ -1,10 +1,10 @@
 'use client'
 
-import { cn } from "@/lib/utils"
-import { LogoIcon } from "@/components/Icon/Icons"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { cn } from '@/lib/utils'
+import { LogoIcon } from '@/components/Icon/Icons'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard,
   BookOpen,
@@ -12,7 +12,7 @@ import {
   BarChart3,
   Settings,
   HelpCircle,
-} from "lucide-react"
+} from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -20,51 +20,51 @@ import {
   SidebarRail,
   SidebarProvider,
   SidebarInset,
-} from "@/components/ui/sidebar"
-import { Header } from "./header"
+} from '@/components/ui/sidebar'
+import { Header } from './header'
 
 const sidebarLinks = [
   {
     icon: LayoutDashboard,
     label: 'Dashboard',
-    href: '/dashboard'
+    href: '/dashboard',
   },
   {
     icon: BookOpen,
     label: 'Ledger',
-    href: '/ledger'
+    href: '/ledger',
   },
   {
     icon: FileStack,
-    label: 'Reconciliation', 
-    href: '/reconciliation'
+    label: 'Reconciliation',
+    href: '/dashboard/reconciliation-dashboard',
   },
   {
     icon: BarChart3,
     label: 'Reports',
-    href: '/reports'
+    href: '/reports',
   },
   {
     icon: Settings,
     label: 'Settings',
-    href: '/settings'
+    href: '/settings',
   },
   {
     icon: HelpCircle,
     label: 'Support',
-    href: '/support'
-  }
+    href: '/support',
+  },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar collapsible="icon" className="dark:border-r dark:border-border/40">
+    <Sidebar collapsible="icon" className="dark:border-border/40 dark:border-r">
       <SidebarHeader>
         <Link href="/dashboard" className="flex items-center gap-2 px-6 py-4">
           <LogoIcon className="size-9" />
-          <span className="font-baloo text-primary text-xl font-extrabold dark:text-primary/90">
+          <span className="font-baloo text-primary dark:text-primary/90 text-xl font-extrabold">
             ReconXi
           </span>
         </Link>
@@ -78,8 +78,9 @@ export function AppSidebar() {
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start gap-2",
-                    pathname === link.href && "bg-primary/10 text-primary dark:bg-primary/20"
+                    'w-full justify-start gap-2',
+                    pathname === link.href &&
+                      'bg-primary/10 text-primary dark:bg-primary/20'
                   )}
                 >
                   <Icon className="size-4" />
@@ -96,21 +97,19 @@ export function AppSidebar() {
 }
 
 export default function DashboardLayout({
-  children
+  children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-background">
-    <SidebarProvider>
+    <div className="bg-background min-h-screen">
+      <SidebarProvider>
         <AppSidebar />
         <SidebarInset className="flex-1">
           <Header />
-          <main className="flex-1 p-6">
-            {children}
-          </main>
+          <main className="flex-1 p-6">{children}</main>
         </SidebarInset>
-    </SidebarProvider>
-  </div>
+      </SidebarProvider>
+    </div>
   )
 }
