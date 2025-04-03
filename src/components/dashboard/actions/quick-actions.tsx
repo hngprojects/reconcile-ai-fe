@@ -31,12 +31,7 @@ export function QuickActions() {
       <h2 className="dark:text-foreground mb-4 text-xl font-semibold">
         Quick Actions
       </h2>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {/* <QuickActionButton
-          icon={<Plus className="h-5 w-5" />}
-          label="Add Transaction"
-          onClick={() => handleOpenDialog('add-transaction')}
-        /> */}
+      <div className="xs:grid-cols-2 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <QuickActionButton
           icon={<FileSpreadsheet className="h-5 w-5" />}
           label="Add Ledger"
