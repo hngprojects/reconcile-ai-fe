@@ -51,7 +51,7 @@ const GoogleAuthModal = ({
 
           <button
             type="button"
-            onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+            onClick={() => signIn('google', { callbackUrl: '/onboarding' })}
             className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#CBD5E1] px-4 py-2 transition-colors hover:bg-gray-50 disabled:opacity-50 md:h-[64px] md:w-[487px]"
             aria-label="Continue with Google"
           >
