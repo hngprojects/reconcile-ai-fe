@@ -64,10 +64,14 @@ jobs:
               FE_PATH="/home/reconxi/frontend/main"
               PORT=3005
               PM2_NAME="reconcile-fe"
-            else
+            elif [[ "$BRANCH" == "dev" ]]; then
               FE_PATH="/home/reconxi/frontend/staging"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
+            else
+              FE_PATH="/home/reconxi/frontend/stagingnew"
+              PORT=3007
+              PM2_NAME="fe-staging"
             fi
 
             cd "$FE_PATH" || { echo "Failed to change directory!"; exit 1; }

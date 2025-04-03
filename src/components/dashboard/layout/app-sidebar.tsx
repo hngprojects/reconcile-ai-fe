@@ -9,9 +9,9 @@ import {
   LayoutDashboard,
   BookOpen,
   FileStack,
-  BarChart3,
+  // BarChart3,
   Settings,
-  HelpCircle,
+  // HelpCircle,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -139,13 +139,17 @@ export default function DashboardLayout({
   return (
     <div className="bg-background min-h-screen">
       <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset className="relative z-10 flex-1">
-          <Header />
-          <ScrollArea className="h-[calc(100vh-4rem)]">
-            <main className="flex-1 p-6">{children}</main>
-          </ScrollArea>
-        </SidebarInset>
+        <div className="bg-background min-h-screen">
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset className="relative z-10 flex-1">
+              <Header />
+              <ScrollArea className="h-[calc(100vh-4rem)]">
+                <main className="flex-1 p-6">{children}</main>
+              </ScrollArea>
+            </SidebarInset>
+          </SidebarProvider>
+        </div>
       </SidebarProvider>
     </div>
   )
