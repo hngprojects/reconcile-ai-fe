@@ -1,4 +1,6 @@
-import React from 'react'
+'use client'
+
+import React, { useState, useCallback } from 'react'
 import {
   Table,
   TableBody,
@@ -8,6 +10,7 @@ import {
   TableRow,
 } from '../ui/table'
 import Image from 'next/image'
+import Filters from './Filters'
 
 const data = [
   {
@@ -100,78 +103,128 @@ const getStatusStyle = (status: string) => {
 }
 
 const ReconciliationTable = () => {
+  const [filteredData, setFilteredData] = useState(data)
+
+  // Memoize the handleFilterChange function
+  const handleFilterChange = useCallback(
+    ({
+      searchTerm = '',
+      selectedBank = 'All Banks',
+      selectedStatus = 'All Status',
+    }: {
+      searchTerm: string
+      selectedBank: string
+      selectedStatus: string
+    }) => {
+      const lowerSearch = searchTerm.toLowerCase()
+
+      const newData = data.filter((item) => {
+        const matchesSearch =
+          item.bank.toLowerCase().includes(lowerSearch) ||
+          item.status.toLowerCase().includes(lowerSearch) ||
+          item.date.toLowerCase().includes(lowerSearch)
+
+        const matchesBank =
+          selectedBank === 'All Banks' || item.bank === selectedBank
+
+        const matchesStatus =
+          selectedStatus === 'All Status' ||
+          item.status.toLowerCase() === selectedStatus.toLowerCase()
+
+        return matchesSearch && matchesBank && matchesStatus
+      })
+
+      setFilteredData(newData)
+    },
+    [] // No dependencies, as `data` is static
+  )
+
   return (
-    <div className="overflow-x-auto">
-      <div className="overflow-hidden rounded-lg border border-gray-200">
-        <Table className="separate min-w-full border-collapse rounded-lg bg-white">
-          <TableHeader>
-            <TableRow className="h-[52px] gap-[12px] border-b border-gray-200 bg-gray-50 text-sm text-gray-600">
-              <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
-                Date
-              </TableHead>
-              <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
-                Bank Account
-              </TableHead>
-              <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
-                Status
-              </TableHead>
-              <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
-                Matched
-              </TableHead>
-              <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
-                Unmatched
-              </TableHead>
-              <TableHead className="font-lato px-6 py-3 text-center text-[16px] font-bold text-[#333]">
-                Action
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((item, index) => (
-              <TableRow key={index} className="border-t border-gray-200">
-                <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
-                  {item.date}
-                </TableCell>
-                <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
-                  {item.bank}
-                </TableCell>
-                <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
-                  {(() => {
-                    const { className, icon } = getStatusStyle(item.status)
-                    return (
-                      <span
-                        className={`${className} inline-flex items-center gap-1 rounded-[16px] px-3 py-1 font-medium`}
-                      >
-                        {icon && (
-                          <Image
-                            src={icon}
-                            alt="status icon"
-                            width={12}
-                            height={12}
-                          />
-                        )}
-                        {item.status}
-                      </span>
-                    )
-                  })()}
-                </TableCell>
-                <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
-                  {item.matched}
-                </TableCell>
-                <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
-                  {item.unmatched}
-                </TableCell>
-                <TableCell className="font-inter p-4 text-center text-sm font-normal text-[#333]">
-                  <button className="truncate rounded-lg border px-4 py-2 text-sm text-black hover:bg-gray-100">
-                    {item.action}
-                  </button>
-                </TableCell>
+    <>
+      <Filters onFilterChange={handleFilterChange} />
+      <div className="overflow-x-auto">
+        <div className="overflow-hidden rounded-lg border border-gray-200">
+          <Table className="separate min-w-full border-collapse rounded-lg bg-white">
+            <TableHeader>
+              <TableRow className="h-[52px] gap-[12px] border-b border-gray-200 bg-gray-50 text-sm text-gray-600">
+                <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
+                  Date
+                </TableHead>
+                <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
+                  Bank Account
+                </TableHead>
+                <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
+                  Status
+                </TableHead>
+                <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
+                  Matched
+                </TableHead>
+                <TableHead className="font-lato border-r border-gray-200 px-6 py-3 text-center text-[16px] font-bold text-[#333]">
+                  Unmatched
+                </TableHead>
+                <TableHead className="font-lato px-6 py-3 text-center text-[16px] font-bold text-[#333]">
+                  Action
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {filteredData.length > 0 ? (
+                filteredData.map((item, index) => (
+                  <TableRow key={index} className="border-t border-gray-200">
+                    <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
+                      {item.date}
+                    </TableCell>
+                    <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
+                      {item.bank}
+                    </TableCell>
+                    <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
+                      {(() => {
+                        const { className, icon } = getStatusStyle(item.status)
+                        return (
+                          <span
+                            className={`${className} inline-flex items-center gap-1 rounded-[16px] px-3 py-1 font-medium`}
+                          >
+                            {icon && (
+                              <Image
+                                src={icon}
+                                alt="status icon"
+                                width={12}
+                                height={12}
+                              />
+                            )}
+                            {item.status}
+                          </span>
+                        )
+                      })()}
+                    </TableCell>
+                    <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
+                      {item.matched}
+                    </TableCell>
+                    <TableCell className="font-inter border-r border-gray-200 p-4 text-center text-sm font-normal text-[#333]">
+                      {item.unmatched}
+                    </TableCell>
+                    <TableCell className="font-inter p-4 text-center text-sm font-normal text-[#333]">
+                      <button className="truncate rounded-lg border px-4 py-2 text-sm text-black hover:bg-gray-100">
+                        {item.action}
+                      </button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="py-4 text-center text-gray-500"
+                  >
+                    No matching records found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
