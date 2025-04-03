@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
+// import { Calendar } from '@/components/ui/calendar'
 import {
   Select,
   SelectContent,
@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select'
 
 const FilterComponent = () => {
-  const [date, setDate] = React.useState(null)
+  // const [date, setDate] = React.useState(null)
 
   return (
     <div className="flex items-center justify-between gap-[24px]">
@@ -26,7 +26,7 @@ const FilterComponent = () => {
         <Input
           placeholder="Search"
           style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-          className="!min-h-[44px] max-w-[295px] gap-3 rounded-lg border border-[0.5px] pt-4 pr-6 pb-4 pl-6 pl-8 text-base leading-6 font-light tracking-normal text-[#00000033]"
+          className="!min-h-[44px] max-w-[295px] gap-3 rounded-lg border-[0.5px] pt-4 pr-6 pb-4 pl-8 text-base leading-6 font-light tracking-normal text-[#00000033]"
         />
       </div>
       <div className="flex gap-2">
@@ -34,28 +34,29 @@ const FilterComponent = () => {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="flex h-10 min-h-[44px] flex-1 items-center justify-start gap-2 text-left text-[14px] leading-[24px] font-medium font-normal tracking-[0%] md:flex-none"
+              className="flex h-10 min-h-[44px] min-w-[150px] flex-1 items-center justify-start gap-2 text-left text-[14px] leading-[24px] font-medium tracking-[0%] md:flex-none"
             >
               <Calendar1 size={16} className="text-gray-500" />
-              {date
+              Select Dates
+              {/* {date
                 ? new Intl.DateTimeFormat('en-US', {
                     weekday: 'short',
                     year: 'numeric',
                     month: 'short',
                     day: 'numeric',
                   }).format(date)
-                : 'Select Dates'}
+                : 'Select Dates'} */}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
+            {/* <Calendar
               mode="single"
               selected={date}
               onSelect={(newDate) => {
                 setDate(newDate)
               }}
               initialFocus
-            />
+            /> */}
           </PopoverContent>
         </Popover>
 

@@ -1,7 +1,28 @@
+import { useState, useEffect } from 'react'
 import { SearchIcon } from '../Icon/Icons'
 import DropdownFilter from './DropdownFilter'
 
-export default function Filters() {
+export default function Filters({
+  onFilterChange,
+}: {
+  onFilterChange: (filters: {
+    searchTerm: string
+    selectedBank: string
+    selectedStatus: string
+  }) => void
+}) {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedBank, setSelectedBank] = useState('All Banks')
+  const [selectedStatus, setSelectedStatus] = useState('All Status')
+
+  useEffect(() => {
+    onFilterChange({
+      searchTerm,
+      selectedBank,
+      selectedStatus,
+    })
+  }, [searchTerm, selectedBank, selectedStatus, onFilterChange])
+
   return (
     <div className="flex items-center justify-between self-stretch">
       <h1 className="font-inter text-[20px] font-medium text-black">
@@ -13,12 +34,32 @@ export default function Filters() {
           <input
             type="text"
             placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
             className="font-[Plus Jakarta Sans] overflow-hidden border-none text-base font-light text-ellipsis text-black outline-none"
           />
         </div>
         <div className="flex items-center gap-2">
-          <DropdownFilter label="All Banks" />
-          <DropdownFilter label="All Status" />
+          <DropdownFilter
+            options={[
+              'All Banks',
+              'GTB Business',
+              'Access Vendor Account',
+              'Zenith POS Account',
+              'UBA Business',
+              'Wema Vendor Account',
+              'Union Business',
+              'Fidelity Business',
+              'Ecobank Vendor Account',
+            ]}
+            selected={selectedBank}
+            onSelect={(value) => setSelectedBank(value)}
+          />
+          <DropdownFilter
+            options={['All Status', 'Completed', 'Pending']}
+            selected={selectedStatus}
+            onSelect={(value) => setSelectedStatus(value)}
+          />
         </div>
       </div>
     </div>
