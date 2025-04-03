@@ -81,12 +81,12 @@ const getStatusStyle = (status: string) => {
     case 'completed':
       return {
         className: 'bg-[#ECFDF3] text-[#027A48]',
-        icon: '/assets/images/check.svg', // Replace with actual path
+        icon: '/assets/images/check.svg',
       }
     case 'pending':
       return {
         className: 'bg-[#FFFAEB] text-[#B54708]',
-        icon: '/assets/images/clock.svg', // Replace with actual path
+        icon: '/assets/images/clock.svg',
       }
     case 'failed':
       return {
@@ -146,7 +146,7 @@ const ReconciliationTable = () => {
                           <Image
                             src={icon}
                             alt="status icon"
-                            width={12} // Adjust size as needed
+                            width={12}
                             height={12}
                           />
                         )}
