@@ -48,7 +48,7 @@ const sidebarLinks = [
   {
     icon: BookOpen,
     label: 'Ledger',
-    href: '/ledger',
+    href: '/dashboard/ledger',
   },
   {
     icon: FileStack,
@@ -139,17 +139,13 @@ export default function DashboardLayout({
   return (
     <div className="bg-background min-h-screen">
       <SidebarProvider>
-        <div className="bg-background min-h-screen">
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset className="relative z-10 flex-1">
-              <Header />
-              <ScrollArea className="h-[calc(100vh-4rem)]">
-                <main className="flex-1 p-6">{children}</main>
-              </ScrollArea>
-            </SidebarInset>
-          </SidebarProvider>
-        </div>
+        <AppSidebar />
+        <SidebarInset className="relative z-10 flex-1">
+          <Header />
+          <ScrollArea className="h-[calc(100vh-4rem)]">
+            <main className="flex-1 p-6">{children}</main>
+          </ScrollArea>
+        </SidebarInset>
       </SidebarProvider>
     </div>
   )
