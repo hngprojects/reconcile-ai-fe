@@ -247,14 +247,14 @@ export default function ProfileManagement() {
               <button
                 onClick={handleDeleteAccount}
                 disabled={isDeleting}
-                className="flex flex-1 items-center justify-center gap-2 rounded-[8px] border border-[#E63946] px-[10px] text-[14px] text-[#E63946] disabled:cursor-not-allowed disabled:opacity-50 md:max-w-[160px]"
+                className="flex flex-1 items-center cursor-pointer justify-center gap-2 rounded-[8px] border border-[#E63946] px-[10px] text-[14px] text-[#E63946] disabled:cursor-not-allowed disabled:opacity-50 md:max-w-[160px]"
               >
                 Delete account
               </button>
               <button
                 onClick={() => setIsDeleteModalOpen(false)}
                 disabled={isDeleting}
-                className="flex-1 rounded-[8px] bg-[#2E604A] px-[10px] text-[14px] text-white disabled:cursor-not-allowed disabled:opacity-50 md:max-w-[160px]"
+                className="flex-1 rounded-[8px] bg-[#2E604A] px-[10px] cursor-pointer text-[14px] text-white disabled:cursor-not-allowed disabled:opacity-50 md:max-w-[160px]"
               >
                 Cancel
               </button>
