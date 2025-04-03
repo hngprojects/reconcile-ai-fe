@@ -17,7 +17,7 @@ export default function DropdownFilter({
 }) {
   return (
     <Select value={selected} onValueChange={(value) => onSelect(value)}>
-      <SelectTrigger className="flex [height:48px_!important] w-[122px] items-center gap-1 rounded-lg border border-black/20 p-3">
+      <SelectTrigger className="flex [height:48px_!important] w-full items-center gap-1 rounded-lg border border-black/20 p-3 lg:w-[122px]">
         <SelectValue />
       </SelectTrigger>
       <SelectContent className="absolute top-full z-10 mt-1 w-[200px]">
