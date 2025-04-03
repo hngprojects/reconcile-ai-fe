@@ -15,16 +15,19 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="dark:text-foreground flex items-center gap-2 text-2xl font-semibold">
+          <h1 className="dark:text-foreground flex items-center gap-2 text-xl font-semibold sm:text-2xl">
             Welcome, {user?.name} 👋
           </h1>
-          <p className="text-muted-foreground dark:text-muted-foreground/90">
+          <p className="text-muted-foreground dark:text-muted-foreground/90 text-sm sm:text-base">
             Here&apos;s how your business is doing.
           </p>
         </div>
-        <Button onClick={() => router.push('/reconciliation')}>
+        <Button
+          onClick={() => router.push('/reconciliation')}
+          className="w-full sm:w-auto"
+        >
           <Plus className="mr-2 size-4" />
           Start Reconciliation
         </Button>
