@@ -4,10 +4,9 @@ import SiteLoader from '@/components/site-loader'
 import { getQueryClient } from '@/actions/get-query-client'
 import { get_reconcilations } from '@/actions/reconcilation-server'
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query'
-import ReconDashboard from '@/components/reconciliation-dashboard/ReconDashboard'
-import DashboardLayout from '@/components/dashboard/layout/app-sidebar'
+import { Ledger } from '@/components/ledgers/Ledger'
 
-export default async function DashboardPage() {
+export default async function ReconciliationPage() {
   const queryClient = getQueryClient()
   await queryClient.prefetchQuery({
     queryKey: ['reconcilations'],
@@ -15,14 +14,12 @@ export default async function DashboardPage() {
   })
 
   return (
-    <DashboardLayout>
-      <Suspense fallback={<SiteLoader />}>
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <Container className="my-8">
-            <ReconDashboard />
-          </Container>
-        </HydrationBoundary>
-      </Suspense>
-    </DashboardLayout>
+    <Suspense fallback={<SiteLoader />}>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Container className="my-8">
+          <Ledger />
+        </Container>
+      </HydrationBoundary>
+    </Suspense>
   )
 }
