@@ -25,6 +25,11 @@ export const DEFAULT_LOGIN_REDIRECT = '/'
 
 export const protectedRoutes = [
   '/dashboard',
+  '/ledger',
+  '/reconciliation-dashboard',
+  '/reports',
+  '/settings',
+  '/support',
   '/file-upload',
   '/reconciliation',
   '/manage-plan',

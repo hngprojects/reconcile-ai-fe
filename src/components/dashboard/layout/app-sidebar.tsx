@@ -1,27 +1,24 @@
 'use client'
 
-import { cn } from '@/lib/utils'
 import { LogoIcon } from '@/components/Icon/Icons'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard,
-  BookOpen,
-  FileStack,
-  BarChart3,
-  Settings,
-  HelpCircle,
-} from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-  SidebarProvider,
-  SidebarInset,
 } from '@/components/ui/sidebar'
-import { Header } from './header'
+import { cn } from '@/lib/utils'
+import {
+  BarChart3,
+  BookOpen,
+  FileStack,
+  HelpCircle,
+  LayoutDashboard,
+  Settings,
+} from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const sidebarLinks = [
   {
@@ -37,7 +34,7 @@ const sidebarLinks = [
   {
     icon: FileStack,
     label: 'Reconciliation',
-    href: '/dashboard/reconciliation-dashboard',
+    href: '/reconciliation-dashboard',
   },
   {
     icon: BarChart3,
@@ -70,7 +67,7 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <nav className="space-y-2 px-4">
+        <nav className="flex flex-col gap-2 px-4">
           {sidebarLinks.map((link) => {
             const Icon = link.icon
             return (
@@ -93,23 +90,5 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
-}
-
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <div className="bg-background min-h-screen">
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset className="flex-1">
-          <Header />
-          <main className="flex-1 p-6">{children}</main>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
   )
 }
