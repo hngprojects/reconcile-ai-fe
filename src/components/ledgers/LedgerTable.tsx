@@ -777,7 +777,7 @@ export function EnhancedLedgerTable() {
       <Tabs
         defaultValue="general"
         onValueChange={setActiveTab}
-        className="w-full"
+        className="max-w-full"
       >
         <TabsList className="min-h-[44px] !rounded-[8px] bg-[#F5F5F5] p-[4px]">
           <TabsTrigger
@@ -801,7 +801,7 @@ export function EnhancedLedgerTable() {
         </TabsList>
 
         <TabsContent value="general" className="mt-2">
-          <div className="overflow-hidden rounded-md border">
+          <div className="grid overflow-hidden rounded-md border">
             <Table>
               <TableHeader className="bg-[#F9FAFB]">
                 {generalTable.getHeaderGroups().map((headerGroup) => (
@@ -865,7 +865,7 @@ export function EnhancedLedgerTable() {
         </TabsContent>
 
         <TabsContent value="vendors" className="mt-2">
-          <div className="overflow-hidden rounded-md border">
+          <div className="grid overflow-hidden rounded-md border">
             <Table>
               <TableHeader className="bg-[#F9FAFB]">
                 {vendorsTable.getHeaderGroups().map((headerGroup) => (
@@ -929,7 +929,7 @@ export function EnhancedLedgerTable() {
         </TabsContent>
 
         <TabsContent value="customers" className="mt-2">
-          <div className="overflow-hidden rounded-md border">
+          <div className="grid overflow-hidden rounded-md border">
             <Table>
               <TableHeader className="bg-[#F9FAFB]">
                 {customersTable.getHeaderGroups().map((headerGroup) => (
