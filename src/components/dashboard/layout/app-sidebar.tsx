@@ -2,31 +2,26 @@
 
 import type React from 'react'
 
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard,
-  BookOpen,
-  FileStack,
-  // BarChart3,
-  Settings,
-  // HelpCircle,
-} from 'lucide-react'
+import { LogoIcon } from '@/components/Icon/Icons'
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
-  SidebarRail,
-  SidebarProvider,
-  SidebarInset,
   SidebarMenu,
-  SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
 } from '@/components/ui/sidebar'
-import { Header } from './header'
-import { LogoIcon } from '@/components/Icon/Icons'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
+import {
+  BookOpen,
+  FileStack,
+  LayoutDashboard,
+  // BarChart3,
+  Settings,
+} from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const LogoIconn = ({ className }: { className?: string }) => (
   <div
@@ -58,17 +53,17 @@ const sidebarLinks = [
   // {
   //   icon: BarChart3,
   //   label: 'Reports',
-  //   href: '/reports',
+  //   href: '/dashboard/reports',
   // },
   {
     icon: Settings,
     label: 'Settings',
-    href: '/settings',
+    href: '/dashboard/settings',
   },
   // {
   //   icon: HelpCircle,
   //   label: 'Support',
-  //   href: '/support',
+  //   href: '/dashboard/support',
   // },
 ]
 
@@ -128,25 +123,5 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
-}
-
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <div className="bg-background min-h-screen">
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset className="relative z-10 flex-1">
-          <Header />
-          <ScrollArea className="h-[calc(100vh-4rem)]">
-            <main className="flex-1 p-6">{children}</main>
-          </ScrollArea>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
   )
 }

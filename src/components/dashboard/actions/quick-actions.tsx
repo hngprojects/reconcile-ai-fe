@@ -23,7 +23,7 @@ export function QuickActions() {
   const handleOpenDialog = (dialog: DialogType) => setActiveDialog(dialog)
   const handleCloseDialog = () => setActiveDialog(null)
   const handleReconcile = () => {
-    router.push('/reconciliation')
+    router.push('/dashboard/reconciliation')
   }
 
   return (
@@ -45,7 +45,7 @@ export function QuickActions() {
         <QuickActionButton
           icon={<BarChart3 />}
           label="P&L Report"
-          onClick={() => (window.location.href = '/reports')}
+          onClick={() => router.push('/dashboard/reports')}
         />
       </div>
 
