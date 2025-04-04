@@ -1,11 +1,25 @@
 'use client'
 
 import { Download, PlusIcon, Upload } from 'lucide-react'
-import { Button } from '../ui/button'
+import { Button } from '../../ui/button'
 import FilterComponent from './LedgerFilter'
 import LedgerTable from './LedgerTable'
+import AddLedgerEntryModal from './modals/AddLedgerEntryModal'
+import UploadLedgerCSVDialog from './modals/UploadLedgerCSVDialog'
+import { useState } from 'react'
 
 export const Ledger = () => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
+
+  const handleUpload = (file: File) => {
+    console.log('CSV file uploaded:', file)
+    // Process your file here - maybe send to an API endpoint
+  }
+  const handleSave = (data: unknown) => {
+    console.log('Ledger entry saved:', data)
+    // Process your data here
+  }
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
@@ -23,6 +37,7 @@ export const Ledger = () => {
             <Button
               variant={'secondary'}
               className="flex cursor-pointer gap-2 rounded-lg border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
+              onClick={() => setIsAddModalOpen(true)}
             >
               <PlusIcon className="h-4 w-4" />
               Add Entry
@@ -30,12 +45,13 @@ export const Ledger = () => {
             <Button
               variant={'secondary'}
               className="flex cursor-pointer gap-2 rounded-lg border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
+              onClick={() => setIsUploadModalOpen(true)}
             >
               <Upload className="h-4 w-4" />
               Upload CSV
             </Button>
             <Button className="bg-primary hover:bg-primary/90 cursor-pointer transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50">
-              <Download className="h-4 w-4" />
+              <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
           </div>
@@ -43,7 +59,21 @@ export const Ledger = () => {
         <FilterComponent />
       </div>
       {/* table */}
-      <LedgerTable />
+      <div>
+        <LedgerTable />
+      </div>
+      {/* Dialogs/Modals */}
+      <AddLedgerEntryModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSave={handleSave}
+      />
+
+      <UploadLedgerCSVDialog
+        isOpen={isUploadModalOpen}
+        onClose={() => setIsUploadModalOpen(false)}
+        onUpload={handleUpload}
+      />
     </div>
   )
 }
