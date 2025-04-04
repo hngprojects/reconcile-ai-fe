@@ -17,7 +17,7 @@ export default function ReconDashboard() {
           </p>
         </div>
         <Link
-          href="/file-upload"
+          href="/dashboard/reconciliation-flow"
           className="bg-primary hover:bg-primary/90 flex h-12 cursor-pointer items-center justify-center rounded-md border px-10 text-sm font-medium text-white"
         >
           <Plus className="mr-2 !size-5" /> Start New Reconciliation

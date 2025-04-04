@@ -590,6 +590,101 @@ export const NoteIcon = ({ className = defaultSize }: IconClassProps) => {
   )
 }
 
+export const FileChartIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      className={cn('aspect-auto text-[#333]', className)}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 28 28"
+      fill="none"
+    >
+      <path
+        d="M16.3332 2.64771V7.46667C16.3332 8.12006 16.3332 8.44676 16.4603 8.69632C16.5722 8.91585 16.7507 9.09432 16.9702 9.20618C17.2197 9.33333 17.5464 9.33333 18.1998 9.33333H23.0188M9.33317 17.4999V20.9999M18.6665 15.1666V20.9999M13.9998 12.2499V20.9999M23.3332 11.6528V20.0666C23.3332 22.0268 23.3332 23.0069 22.9517 23.7556C22.6161 24.4141 22.0807 24.9496 21.4221 25.2851C20.6734 25.6666 19.6934 25.6666 17.7332 25.6666H10.2665C8.30632 25.6666 7.32623 25.6666 6.57754 25.2851C5.91897 24.9496 5.38354 24.4141 5.04798 23.7556C4.6665 23.0069 4.6665 22.0268 4.6665 20.0666V7.93325C4.6665 5.97307 4.6665 4.99298 5.04798 4.24429C5.38354 3.58572 5.91897 3.05029 6.57754 2.71473C7.32623 2.33325 8.30632 2.33325 10.2665 2.33325H14.0136C14.8696 2.33325 15.2977 2.33325 15.7005 2.42996C16.0576 2.5157 16.399 2.65711 16.7122 2.84901C17.0654 3.06546 17.368 3.36812 17.9734 3.97345L21.693 7.69305C22.2983 8.29838 22.601 8.60105 22.8174 8.95425C23.0093 9.26741 23.1507 9.60881 23.2365 9.96594C23.3332 10.3687 23.3332 10.7968 23.3332 11.6528Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const FileDownloadIcon = ({
+  className = defaultSize,
+}: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#007AFF]', className)}
+      viewBox="0 0 29 28"
+      fill="none"
+    >
+      <path
+        d="M16.6667 2.64771V7.46667C16.6667 8.12006 16.6667 8.44676 16.7938 8.69632C16.9057 8.91585 17.0842 9.09432 17.3037 9.20618C17.5532 9.33333 17.8799 9.33333 18.5333 9.33333H23.3523M10.8333 17.4999L14.3333 20.9999M14.3333 20.9999L17.8333 17.4999M14.3333 20.9999L14.3333 13.9999M16.6667 2.33325H10.6C8.63982 2.33325 7.65972 2.33325 6.91103 2.71473C6.25247 3.05029 5.71703 3.58572 5.38148 4.24429C5 4.99298 5 5.97307 5 7.93325V20.0666C5 22.0268 5 23.0069 5.38148 23.7556C5.71703 24.4141 6.25247 24.9496 6.91103 25.2851C7.65972 25.6666 8.63982 25.6666 10.6 25.6666H18.0667C20.0269 25.6666 21.0069 25.6666 21.7556 25.2851C22.4142 24.9496 22.9496 24.4141 23.2852 23.7556C23.6667 23.0069 23.6667 22.0268 23.6667 20.0666V9.33325L16.6667 2.33325Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const CheckCircleIcon = ({
+  className = defaultSize,
+}: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#4CAF50]', className)}
+      viewBox="0 0 28 29"
+      fill="none"
+    >
+      <path
+        d="M8.75016 14.4999L12.2502 17.9999L19.2502 10.9999M25.6668 14.4999C25.6668 20.9432 20.4435 26.1666 14.0002 26.1666C7.55684 26.1666 2.3335 20.9432 2.3335 14.4999C2.3335 8.0566 7.55684 2.83325 14.0002 2.83325C20.4435 2.83325 25.6668 8.0566 25.6668 14.4999Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const AlertCircleIcon = ({
+  className = defaultSize,
+}: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#FFB400]', className)}
+      viewBox="0 0 28 29"
+      fill="none"
+    >
+      <path
+        d="M14.0002 9.83325V14.4999M14.0002 19.1666H14.0118M25.6668 14.4999C25.6668 20.9432 20.4435 26.1666 14.0002 26.1666C7.55684 26.1666 2.3335 20.9432 2.3335 14.4999C2.3335 8.0566 7.55684 2.83325 14.0002 2.83325C20.4435 2.83325 25.6668 8.0566 25.6668 14.4999Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const DotIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#475467]', className)}
+      viewBox="0 0 7 6"
+      fill="none"
+    >
+      <circle cx="3.5" cy="3" r="2" fill="currentColor" />
+    </svg>
+  )
+}
+
 const Icons = {
   File: FileIcon,
   Speed: SpeedIcon,
