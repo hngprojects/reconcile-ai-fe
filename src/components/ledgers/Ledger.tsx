@@ -20,22 +20,22 @@ export const Ledger = () => {
             </p>
           </div>
 
-          <div className="flex gap-[16px]">
+          <div className="flex gap-2 sm:gap-4">
             <Button
               variant={'secondary'}
-              className="flex cursor-pointer gap-2 rounded-lg border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
+              className="flex flex-1 cursor-pointer gap-2 rounded-lg border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
             >
               <PlusIcon className="h-4 w-4" />
               Add Entry
             </Button>
             <Button
               variant={'secondary'}
-              className="flex cursor-pointer gap-2 rounded-lg border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
+              className="flex flex-1 cursor-pointer gap-2 rounded-lg border border-[#2E604A] bg-white px-4 py-2 text-sm font-medium text-[#2E604A] shadow-none"
             >
               <Upload className="h-4 w-4" />
               Upload CSV
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 cursor-pointer transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50">
+            <Button className="bg-primary hover:bg-primary/90 flex-1 cursor-pointer transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50">
               <Download className="h-4 w-4" />
               Export
             </Button>

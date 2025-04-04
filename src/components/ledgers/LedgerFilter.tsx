@@ -26,7 +26,7 @@ const FilterComponent = () => {
         <Input
           placeholder="Search"
           style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-          className="!min-h-[44px] gap-3 rounded-lg border-[0.5px] pt-4 pr-6 pb-4 pl-8 text-base leading-6 font-light tracking-normal text-[#00000033] md:max-w-[295px]"
+          className="!min-h-[44px] gap-3 rounded-lg border-[0.5px] pt-4 pr-6 pb-4 pl-8 text-base leading-6 font-light tracking-normal text-[#00000033] lg:max-w-[295px]"
         />
       </div>
 
@@ -35,10 +35,10 @@ const FilterComponent = () => {
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="flex h-10 min-h-[44px] min-w-[150px] flex-1 items-center justify-start gap-2 text-left text-sm leading-[24px] font-medium tracking-[0%]"
+              className="flex h-10 min-h-[44px] flex-1 items-center justify-start gap-2 text-left text-sm leading-[24px] font-medium tracking-[0%] max-sm:flex-none sm:min-h-[44px] sm:min-w-[150px]"
             >
               <Calendar1 size={16} className="text-gray-500" />
-              Select Dates
+              <span className="max-sm:hidden">Select Dates</span>
               {/* {date
                 ? new Intl.DateTimeFormat('en-US', {
                     weekday: 'short',
@@ -78,7 +78,7 @@ const FilterComponent = () => {
           className="font-inter h-10 min-h-[44px] px-4 text-sm leading-[24px] font-medium tracking-[0%]"
         >
           <ListFilter />
-          <span className="max-md:hidden">More Filter</span>
+          <span className="max-sm:hidden">More Filter</span>
         </Button>
       </div>
     </div>
