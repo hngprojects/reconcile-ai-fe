@@ -1,27 +1,38 @@
 'use client'
 
-import { cn } from '@/lib/utils'
+import type React from 'react'
+
 import { LogoIcon } from '@/components/Icon/Icons'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import {
-  LayoutDashboard,
-  BookOpen,
-  FileStack,
-  BarChart3,
-  Settings,
-  HelpCircle,
-} from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
-  SidebarProvider,
-  SidebarInset,
 } from '@/components/ui/sidebar'
-import { Header } from './header'
+import { cn } from '@/lib/utils'
+import {
+  BookOpen,
+  FileStack,
+  LayoutDashboard,
+  // BarChart3,
+  Settings,
+} from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const LogoIconn = ({ className }: { className?: string }) => (
+  <div
+    className={cn(
+      'bg-primary text-primary-foreground flex items-center justify-center rounded-md',
+      className
+    )}
+  >
+    <LogoIcon className="size-5" />
+  </div>
+)
 
 const sidebarLinks = [
   {
@@ -32,84 +43,85 @@ const sidebarLinks = [
   {
     icon: BookOpen,
     label: 'Ledger',
-    href: '/ledger',
+    href: '/dashboard/ledger',
   },
   {
     icon: FileStack,
     label: 'Reconciliation',
-    href: '/dashboard/reconciliation-dashboard',
+    href: '/dashboard/reconciliation',
   },
-  {
-    icon: BarChart3,
-    label: 'Reports',
-    href: '/reports',
-  },
+  // {
+  //   icon: BarChart3,
+  //   label: 'Reports',
+  //   href: '/dashboard/reports',
+  // },
   {
     icon: Settings,
     label: 'Settings',
-    href: '/settings',
+    href: '/dashboard/settings',
   },
-  {
-    icon: HelpCircle,
-    label: 'Support',
-    href: '/support',
-  },
+  // {
+  //   icon: HelpCircle,
+  //   label: 'Support',
+  //   href: '/dashboard/support',
+  // },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
 
   return (
-    <Sidebar collapsible="icon" className="dark:border-border/40 dark:border-r">
-      <SidebarHeader>
-        <Link href="/dashboard" className="flex items-center gap-2 px-6 py-4">
-          <LogoIcon className="size-9" />
-          <span className="font-baloo text-primary dark:text-primary/90 text-xl font-extrabold">
+    <Sidebar
+      collapsible="icon"
+      className="dark:border-border/40 relative z-20 border-r"
+      style={
+        {
+          '--sidebar-width': '240px',
+          '--sidebar-width-icon': '64px',
+        } as React.CSSProperties
+      }
+    >
+      <SidebarHeader className="flex items-center px-2 py-4 pb-5">
+        <Link href="/dashboard" className="flex w-full items-center gap-2 px-2">
+          <LogoIconn className="size-9 shrink-0 group-data-[collapsible=icon]/sidebar-wrapper:mx-auto" />
+          <span className="font-baloo text-primary dark:text-primary/90 truncate text-xl font-extrabold group-data-[collapsible=icon]/sidebar-wrapper:hidden">
             ReconXi
           </span>
         </Link>
       </SidebarHeader>
       <SidebarContent>
-        <nav className="space-y-2 px-4">
+        <SidebarMenu className="space-y-1 px-2">
           {sidebarLinks.map((link) => {
             const Icon = link.icon
+            const isActive = pathname === link.href
+
             return (
-              <Link key={link.href} href={link.href}>
-                <Button
-                  variant="ghost"
+              <SidebarMenuItem key={link.href} className="flex justify-center">
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  tooltip={link.label}
                   className={cn(
-                    'w-full justify-start gap-2',
-                    pathname === link.href &&
-                      'bg-primary/10 text-primary dark:bg-primary/20'
+                    isActive && 'bg-primary/10 text-primary dark:bg-primary/20',
+                    'w-full data-[collapsible=icon]:w-10 data-[collapsible=icon]:justify-center data-[collapsible=icon]:p-0'
                   )}
                 >
-                  <Icon className="size-4" />
-                  <span>{link.label}</span>
-                </Button>
-              </Link>
+                  <Link
+                    href={link.href}
+                    className="flex items-center gap-2 data-[collapsible=icon]:justify-center"
+                  >
+                    <Icon className="size-4 shrink-0" />
+                    <span className="data-[collapsible=icon]:hidden">
+                      {link.label}
+                    </span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             )
           })}
-        </nav>
+        </SidebarMenu>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
-}
-
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  return (
-    <div className="bg-background min-h-screen">
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset className="flex-1">
-          <Header />
-          <main className="flex-1 p-6">{children}</main>
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
   )
 }

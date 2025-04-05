@@ -27,8 +27,8 @@ import { cn } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import { Badge } from '@/components/ui/badge'
 import { Dot } from 'lucide-react'
-import { CheckIcon, VerticalDotsIcon } from '../Icon/Icons'
-import { PaginationControls } from '../PaginationControl'
+import { CheckIcon, VerticalDotsIcon } from '../../Icon/Icons'
+import { PaginationControls } from '../../PaginationControl'
 
 // Define types for our data
 interface GeneralLedgerItem {
@@ -364,7 +364,7 @@ export function EnhancedLedgerTable() {
       accessorKey: 'amount',
       header: 'Amount',
       cell: ({ getValue }) => (
-        <div className="px-6 py-5 text-red-500">
+        <div className="px-6 py-5 text-[#D92D20]">
           {formatCurrency(getValue() as number)}
         </div>
       ),
@@ -373,7 +373,7 @@ export function EnhancedLedgerTable() {
       accessorKey: 'paid',
       header: 'Paid',
       cell: ({ getValue }) => (
-        <div className="px-6 py-5 text-red-500">
+        <div className="px-6 py-5 text-[#D92D20]">
           {formatCurrency(getValue() as number)}
         </div>
       ),
@@ -440,7 +440,7 @@ export function EnhancedLedgerTable() {
       accessorKey: 'amount',
       header: 'Amount',
       cell: ({ getValue }) => (
-        <div className="px-6 py-5 text-red-500">
+        <div className="px-6 py-5 text-[#D92D20]">
           {formatCurrency(getValue() as number)}
         </div>
       ),
@@ -449,7 +449,7 @@ export function EnhancedLedgerTable() {
       accessorKey: 'paid',
       header: 'Paid',
       cell: ({ getValue }) => (
-        <div className="px-6 py-5 text-red-500">
+        <div className="px-6 py-5 text-[#D92D20]">
           {formatCurrency(getValue() as number)}
         </div>
       ),
@@ -462,11 +462,11 @@ export function EnhancedLedgerTable() {
         return (
           <div className="px-6 py-5">
             {outstanding > 0 ? (
-              <span className="text-orange-500">
+              <span className="text-[#C27D00]">
                 {formatCurrency(outstanding)}
               </span>
             ) : (
-              <span className="text-green-500">₦0</span>
+              <span className="text-[#039855]">₦0</span>
             )}
           </div>
         )
@@ -534,7 +534,7 @@ export function EnhancedLedgerTable() {
       accessorKey: 'amount',
       header: 'Amount',
       cell: ({ getValue }) => (
-        <div className="px-6 py-5 text-green-500">
+        <div className="px-6 py-5 text-[#039855]">
           {formatCurrency(getValue() as number)}
         </div>
       ),
@@ -543,7 +543,7 @@ export function EnhancedLedgerTable() {
       accessorKey: 'received',
       header: 'Received',
       cell: ({ getValue }) => (
-        <div className="px-6 py-5 text-green-500">
+        <div className="px-6 py-5 text-[#039855]">
           {formatCurrency(getValue() as number)}
         </div>
       ),
@@ -556,11 +556,11 @@ export function EnhancedLedgerTable() {
         return (
           <div className="px-6 py-5">
             {outstanding > 0 ? (
-              <span className="text-orange-500">
+              <span className="text-[#C27D00]">
                 {formatCurrency(outstanding)}
               </span>
             ) : (
-              <span className="text-green-500">₦0</span>
+              <span className="text-[#039855]">₦0</span>
             )}
           </div>
         )
@@ -827,15 +827,7 @@ export function EnhancedLedgerTable() {
               </TableHeader>
               <TableBody>
                 {generalTable.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    className={cn(
-                      'transition-colors',
-                      row.original.reconciled
-                        ? 'bg-green-50 hover:bg-green-50'
-                        : 'hover:bg-white'
-                    )}
-                  >
+                  <TableRow key={row.id} className={cn('transition-colors')}>
                     {row.getVisibleCells().map((cell, index, array) => (
                       <TableCell
                         key={cell.id}
@@ -891,15 +883,7 @@ export function EnhancedLedgerTable() {
               </TableHeader>
               <TableBody>
                 {vendorsTable.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    className={cn(
-                      'transition-colors',
-                      row.original.reconciled
-                        ? 'bg-green-50 hover:bg-green-50'
-                        : 'hover:bg-white'
-                    )}
-                  >
+                  <TableRow key={row.id} className={cn('transition-colors')}>
                     {row.getVisibleCells().map((cell, index, array) => (
                       <TableCell
                         key={cell.id}
@@ -955,15 +939,7 @@ export function EnhancedLedgerTable() {
               </TableHeader>
               <TableBody>
                 {customersTable.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    className={cn(
-                      'transition-colors',
-                      row.original.reconciled
-                        ? 'bg-green-50 hover:bg-green-50'
-                        : 'hover:bg-white'
-                    )}
-                  >
+                  <TableRow key={row.id} className={cn('transition-colors')}>
                     {row.getVisibleCells().map((cell, index, array) => (
                       <TableCell
                         key={cell.id}

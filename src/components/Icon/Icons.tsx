@@ -73,7 +73,7 @@ export const LogoIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn('text-[#2E604A]', className)}
+      className={cn('text-white dark:text-[#2E604A]', className)}
       viewBox="0 0 48 48"
       fill="none"
     >

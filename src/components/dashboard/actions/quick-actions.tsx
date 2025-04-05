@@ -1,28 +1,82 @@
 'use client'
 
-import { Card, CardContent } from "@/components/ui/card"
+import { useState } from 'react'
+import { FileSpreadsheet, Calculator, BarChart3 } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { QuickActionButton } from './quick-action-button'
+// import { AddTransactionForm } from './add-transaction-form'
+import { AddLedgerForm } from './add-ledger-form'
+import { useRouter } from 'next/navigation'
+
+type DialogType = 'add-transaction' | 'add-ledger' | null
 
 export function QuickActions() {
+  const [activeDialog, setActiveDialog] = useState<DialogType>(null)
+  const router = useRouter()
+
+  const handleOpenDialog = (dialog: DialogType) => setActiveDialog(dialog)
+  const handleCloseDialog = () => setActiveDialog(null)
+  const handleReconcile = () => {
+    router.push('/dashboard/reconciliation')
+  }
+
   return (
-    <section>
-      <h2 className="text-xl font-semibold mb-4 dark:text-foreground">Quick Actions</h2>
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="cursor-pointer hover:bg-accent dark:hover:bg-accent/80">
-          <CardContent className="p-6">
-            <h3 className="font-medium dark:text-foreground">Add Transaction</h3>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:bg-accent dark:hover:bg-accent/80">
-          <CardContent className="p-6">
-            <h3 className="font-medium dark:text-foreground">Add Ledger</h3>
-          </CardContent>
-        </Card>
-        <Card className="cursor-pointer hover:bg-accent dark:hover:bg-accent/80">
-          <CardContent className="p-6">
-            <h3 className="font-medium dark:text-foreground">Reconcile</h3>
-          </CardContent>
-        </Card>
+    <section className="mb-8">
+      <h2 className="dark:text-foreground mb-4 text-xl font-semibold">
+        Quick Actions
+      </h2>
+      <div className="xs:grid-cols-2 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <QuickActionButton
+          icon={<FileSpreadsheet className="h-5 w-5" />}
+          label="Add Ledger"
+          onClick={() => handleOpenDialog('add-ledger')}
+        />
+        <QuickActionButton
+          icon={<Calculator className="h-5 w-5" />}
+          label="Reconcile"
+          onClick={handleReconcile}
+        />
+        <QuickActionButton
+          icon={<BarChart3 />}
+          label="P&L Report"
+          onClick={() => router.push('/dashboard/reports')}
+        />
       </div>
+
+      {/* Dialogs */}
+      {/* <Dialog
+        open={activeDialog === 'add-transaction'}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
+        <DialogContent className="max-h-[90vh] sm:max-w-[500px]">
+          <ScrollArea className="max-h-[80vh] pr-4">
+            <DialogHeader>
+              <DialogTitle>Add Transaction</DialogTitle>
+            </DialogHeader>
+            <AddTransactionForm onClose={handleCloseDialog} />
+          </ScrollArea>
+        </DialogContent>
+      </Dialog> */}
+
+      <Dialog
+        open={activeDialog === 'add-ledger'}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
+        <DialogContent className="max-h-[90vh] sm:max-w-[500px]">
+          <ScrollArea className="max-h-[80vh] pr-4">
+            <DialogHeader>
+              <DialogTitle>Add Ledger Entry</DialogTitle>
+            </DialogHeader>
+            <AddLedgerForm onClose={handleCloseDialog} />
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }

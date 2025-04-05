@@ -94,7 +94,7 @@ const Nav = () => {
       <Container className="flex w-full items-center justify-between gap-6 py-4">
         <Link href="/">
           <div className="flex items-center justify-center gap-2">
-            <LogoIcon className="size-9 md:size-12" />
+            <LogoIcon className="size-9 text-[#2E604A] md:size-12" />
             <span className="font-baloo text-primary mt-1 text-xl leading-0 font-extrabold md:text-3xl">
               ReconXi
             </span>
