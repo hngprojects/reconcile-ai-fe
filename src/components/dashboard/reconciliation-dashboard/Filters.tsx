@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { SearchIcon } from '../Icon/Icons'
+import { SearchIcon } from '../../Icon/Icons'
 import DropdownFilter from './DropdownFilter'
 
 export default function Filters({
