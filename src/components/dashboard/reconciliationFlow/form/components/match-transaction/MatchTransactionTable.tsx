@@ -1283,7 +1283,7 @@ const MatchTransactionTable = () => {
       {
         id: 'select',
         header: ({ table }) => (
-          <div className="shrink-0">
+          <div className="flex shrink-0 items-center justify-center">
             <Checkbox
               checked={
                 table.getIsAllPageRowsSelected() ||
@@ -1297,7 +1297,7 @@ const MatchTransactionTable = () => {
           </div>
         ),
         cell: ({ row }) => (
-          <div className="shrink-0">
+          <div className="flex shrink-0 items-center justify-center">
             <Checkbox
               checked={row.getIsSelected()}
               onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -1473,7 +1473,8 @@ const MatchTransactionTable = () => {
                       key={header.id}
                       className={cn(
                         `border-r border-[#EAECF0] px-4 text-base font-bold text-[#333]`,
-                        header.id === 'select' && 'p-4'
+                        header.id === 'select' &&
+                          'p-4 [&:has([role=checkbox])]:p-4'
                       )}
                     >
                       {flexRender(
