@@ -1,18 +1,15 @@
 'use client'
 
 import { Plus } from 'lucide-react'
-import { Button } from '../ui/button'
 import { useSession } from 'next-auth/react'
 import { StatsCards } from './stats/stats-cards'
 import { QuickActions } from './actions/quick-actions'
 import { UpcomingTasks } from './tasks/upcoming-tasks'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export function Dashboard() {
   const { data: session } = useSession()
   const user = session?.user
-  const router = useRouter()
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -24,13 +21,13 @@ export function Dashboard() {
             Here&apos;s how your business is doing.
           </p>
         </div>
-        <Button
-          onClick={() => router.push('/reconciliation')}
-          className="w-full sm:w-auto"
+        <Link
+          className="bg-primary hover:bg-primary/90 flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white"
+          href="/dashboard/reconciliation-flow"
         >
           <Plus className="mr-2 size-4" />
           Start Reconciliation
-        </Button>
+        </Link>
       </div>
 
       <StatsCards />
