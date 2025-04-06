@@ -1,6 +1,6 @@
 import { getQueryClient } from '@/actions/get-query-client'
 import { get_reconcilations } from '@/actions/reconcilation-server'
-// import { Ledger } from '@/components/ledgers/Ledger'
+import { Ledger } from '@/components/dashboard/ledgers/Ledger'
 import SiteLoader from '@/components/site-loader'
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query'
 import { Suspense } from 'react'
@@ -15,7 +15,7 @@ export default async function ReconciliationPage() {
   return (
     <Suspense fallback={<SiteLoader />}>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        {/* <Ledger /> */}
+        <Ledger />
       </HydrationBoundary>
     </Suspense>
   )
