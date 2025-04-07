@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { FileSpreadsheet, Calculator, BarChart3 } from 'lucide-react'
+import { FileSpreadsheet, Calculator, BarChart3, Mail } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import { QuickActionButton } from './quick-action-button'
 import { AddLedgerForm } from './add-ledger-form'
 import { useRouter } from 'next/navigation'
 
-type DialogType = 'add-transaction' | 'add-ledger' | null
+type DialogType = 'add-transaction' | 'add-ledger' | 'pl-report' | null
 
 export function QuickActions() {
   const [activeDialog, setActiveDialog] = useState<DialogType>(null)
@@ -24,6 +24,13 @@ export function QuickActions() {
   const handleCloseDialog = () => setActiveDialog(null)
   const handleReconcile = () => {
     router.push('/dashboard/reconciliation')
+  }
+
+  const handlePLReport = () => {
+    handleOpenDialog('pl-report')
+    setTimeout(() => {
+      handleCloseDialog()
+    }, 5000)
   }
 
   return (
@@ -43,9 +50,9 @@ export function QuickActions() {
           onClick={handleReconcile}
         />
         <QuickActionButton
-          icon={<BarChart3 />}
+          icon={<BarChart3 className="h-5 w-5" />}
           label="P&L Report"
-          onClick={() => router.push('/dashboard/reports')}
+          onClick={handlePLReport}
         />
       </div>
 
@@ -75,6 +82,26 @@ export function QuickActions() {
             </DialogHeader>
             <AddLedgerForm onClose={handleCloseDialog} />
           </ScrollArea>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={activeDialog === 'pl-report'}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Mail className="text-primary h-5 w-5" />
+              Report Generation Initiated
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-muted-foreground text-sm">
+              Your Profit & Loss report is being generated. You will receive a
+              detailed PDF report in your registered email address shortly.
+            </p>
+          </div>
         </DialogContent>
       </Dialog>
     </section>
