@@ -21,6 +21,7 @@ export default function ReconciliationProcessingPage() {
   const [estimatedTimeRemaining, setEstimatedTimeRemaining] = useState(120)
   const [transactionsProcessed, setTransactionsProcessed] = useState(0)
   const [totalTransactions, setTotalTransactions] = useState(0)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null)
 
   // Mock data for demonstration
