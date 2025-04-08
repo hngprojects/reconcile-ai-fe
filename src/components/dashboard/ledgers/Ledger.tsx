@@ -8,7 +8,7 @@ import AddLedgerEntryModal from './modals/AddLedgerEntryModal'
 import UploadLedgerCSVDialog from './modals/UploadLedgerCSVDialog'
 import { useState } from 'react'
 
-export const Ledger = () => {
+export function Ledger() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
 
