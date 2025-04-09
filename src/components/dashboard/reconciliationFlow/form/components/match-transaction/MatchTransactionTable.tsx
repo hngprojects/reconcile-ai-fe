@@ -1455,7 +1455,11 @@ const MatchTransactionTable = () => {
             <Download className="size-5 text-black/60" />
             <span>Export</span>
           </Button>
-          <Button type="button" className="h-12 cursor-pointer">
+          <Button
+            disabled={Object.keys(rowSelection).length === 0}
+            type="button"
+            className="h-12 cursor-pointer"
+          >
             <Check className="size-5 text-white" />
             <span>Accept Selected</span>
           </Button>
