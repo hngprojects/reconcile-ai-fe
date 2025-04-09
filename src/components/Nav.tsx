@@ -67,6 +67,7 @@ const protectedRoutes = [
   '/reports',
   '/settings',
   '/support',
+  '/onboarding',
 ]
 
 const Nav = () => {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SearchIcon } from '../../Icon/Icons'
 import DropdownFilter from './DropdownFilter'
+import DateRangeDropdown from '@/components/DateRangeDropdown'
 
 export default function Filters({
   onFilterChange,
@@ -40,6 +41,7 @@ export default function Filters({
           />
         </div>
         <div className="flex items-center gap-2">
+          <DateRangeDropdown>Period</DateRangeDropdown>
           <DropdownFilter
             options={[
               'All Banks',

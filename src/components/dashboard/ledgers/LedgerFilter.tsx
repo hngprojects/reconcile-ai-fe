@@ -1,5 +1,5 @@
-import React from 'react'
-import { Calendar1, ListFilter, Search } from 'lucide-react'
+import React, { useState } from 'react'
+import { Calendar as CalendarIcon, ListFilter, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-// import { Calendar } from '@/components/ui/calendar'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Select,
   SelectContent,
@@ -15,53 +15,73 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { DateRange } from 'react-day-picker'
 
-const FilterComponent = () => {
-  // const [date, setDate] = React.useState(null)
+interface FilterComponentProps {
+  onSearch: (query: string) => void
+  onDateRangeChange: (range: DateRange | undefined) => void
+  onStatusChange: (status: string) => void
+}
+
+const FilterComponent: React.FC<FilterComponentProps> = ({
+  onSearch,
+  onDateRangeChange,
+  onStatusChange,
+}) => {
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: undefined,
+    to: undefined,
+  })
+
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range)
+    onDateRangeChange(range)
+  }
 
   return (
-    <div className="flex items-center justify-between gap-[24px]">
-      <div className="relative flex min-h-[44px] w-full items-center">
-        <Search className="absolute left-3 h-4 w-4 text-[#00000099]" />
+    <div className="flex flex-row items-center justify-between gap-6">
+      <div className="relative flex min-h-11 w-full flex-1 items-center">
+        <Search className="absolute left-3 h-4 w-4 text-gray-500" />
         <Input
           placeholder="Search"
-          style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-          className="!min-h-[44px] max-w-[295px] gap-3 rounded-lg border-[0.5px] pt-4 pr-6 pb-4 pl-8 text-base leading-6 font-light tracking-normal text-[#00000033]"
+          onChange={(e) => onSearch(e.target.value)}
+          className="min-h-11 max-w-xs gap-3 rounded-lg border-[0.5px] pl-8 text-base font-light"
         />
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-1 flex-row justify-end gap-2">
         <Popover>
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="flex h-10 min-h-[44px] min-w-[150px] flex-1 items-center justify-start gap-2 text-left text-[14px] leading-[24px] font-medium tracking-[0%] md:flex-none"
+              className="flex h-10 min-h-11 min-w-[150px] items-center justify-start gap-2 text-left text-sm font-medium"
             >
-              <Calendar1 size={16} className="text-gray-500" />
-              Select Dates
-              {/* {date
-                ? new Intl.DateTimeFormat('en-US', {
-                    weekday: 'short',
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  }).format(date)
-                : 'Select Dates'} */}
+              <CalendarIcon size={16} />
+              {dateRange?.from ? (
+                dateRange.to ? (
+                  <>
+                    {dateRange.from.toLocaleDateString()} -{' '}
+                    {dateRange.to.toLocaleDateString()}
+                  </>
+                ) : (
+                  dateRange.from.toLocaleDateString()
+                )
+              ) : (
+                'Select Dates'
+              )}
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0" align="start">
-            {/* <Calendar
-              mode="single"
-              selected={date}
-              onSelect={(newDate) => {
-                setDate(newDate)
-              }}
+            <Calendar
+              mode="range"
+              selected={dateRange}
+              onSelect={handleDateRangeChange}
               initialFocus
-            /> */}
+            />
           </PopoverContent>
         </Popover>
 
-        <Select>
-          <SelectTrigger className="!font-inter m-0 min-h-[44px] max-w-[201px] gap-[8px] rounded-[8px] !border-[0.5px] !text-[14px] !leading-[24px] !font-medium !tracking-[0%] !text-[#000000]">
+        <Select onValueChange={(value) => onStatusChange(value)}>
+          <SelectTrigger className="font-inter min-h-11 min-w-[201px] gap-2 rounded-lg border-[0.5px] text-sm font-medium">
             <SelectValue placeholder="Reconciliation Status" />
           </SelectTrigger>
           <SelectContent>
@@ -74,9 +94,9 @@ const FilterComponent = () => {
 
         <Button
           variant="outline"
-          className="font-inter h-10 min-h-[44px] px-4 text-[16px] leading-[24px] font-medium tracking-[0%]"
+          className="font-inter h-10 min-h-11 min-w-[143px] px-4 text-base font-medium"
         >
-          <ListFilter />
+          <ListFilter className="mr-2 h-4 w-4" />
           More Filter
         </Button>
       </div>
