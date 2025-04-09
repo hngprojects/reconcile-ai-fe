@@ -142,7 +142,7 @@ const ReconciliationTable = () => {
   return (
     <>
       <Filters onFilterChange={handleFilterChange} />
-      <div className="overflow-x-auto">
+      <div className="grid">
         <div className="overflow-hidden rounded-lg border border-gray-200">
           <Table className="separate min-w-full border-collapse rounded-lg bg-white">
             <TableHeader>

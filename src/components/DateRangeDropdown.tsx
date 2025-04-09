@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Button } from './ui/button'
 import { format } from 'date-fns'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
 export default function DateRangeDropdown({
   children,
@@ -35,92 +36,88 @@ export default function DateRangeDropdown({
   }
 
   return (
-    <div className="relative inline-block text-left">
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex h-[48px] w-[122px] items-center justify-center gap-2 truncate rounded-lg border border-black/20 p-3 text-sm"
-      >
-        {fromDate && toDate ? (
-          <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
-        ) : (
-          children
-        )}
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          className="flex h-[48px] flex-1 items-center justify-center gap-2 truncate rounded-lg border border-black/20 p-3 text-sm md:min-w-[120px]"
+        >
+          {fromDate && toDate ? (
+            <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
+          ) : (
+            children
+          )}
 
-        <ChevronDownIcon className="size-4 text-gray-400" />
-      </button>
+          <ChevronDownIcon className="size-4 text-gray-400" />
+        </Button>
+      </PopoverTrigger>
 
-      {/* Dropdown Panel */}
-      {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]">
-          {/* Header */}
-          <div className="mb-3 flex items-center justify-between">
-            <span className="font-inter text-base font-normal text-[#00160A99]">
-              Select period
-            </span>
-            <button
-              onClick={clear}
-              className="font-inter cursor-pointer text-sm font-medium text-[#2E604A]"
-            >
-              Clear
-            </button>
-          </div>
+      <PopoverContent align="start">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="font-inter text-base font-normal text-[#00160A99]">
+            Select period
+          </span>
+          <button
+            type="button"
+            onClick={clear}
+            className="font-inter cursor-pointer text-sm font-medium text-[#2E604A]"
+          >
+            Clear
+          </button>
+        </div>
 
-          {/* Date Pickers */}
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <div className="flex-1">
-              <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
-                From
-              </label>
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
-                <Calendar className="h-7 w-7" />
-                <DatePicker
-                  selected={fromDate}
-                  onChange={(date) => setFromDate(date)}
-                  selectsStart
-                  startDate={fromDate}
-                  endDate={toDate}
-                  maxDate={toDate || undefined}
-                  placeholderText="Select date"
-                  className="w-full text-sm outline-none"
-                  dateFormat="MMM dd, yyyy"
-                />
-              </div>
-            </div>
-
-            <div className="flex-1">
-              <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
-                To
-              </label>
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
-                <Calendar className="h-7 w-7" />
-                <DatePicker
-                  selected={toDate}
-                  onChange={(date) => setToDate(date)}
-                  selectsEnd
-                  startDate={fromDate}
-                  endDate={toDate}
-                  minDate={fromDate || undefined}
-                  placeholderText="Select date"
-                  className="w-full text-sm outline-none"
-                  dateFormat="MMM dd, yyyy"
-                />
-              </div>
+        {/* Date Pickers */}
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <div className="flex-1">
+            <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
+              From
+            </label>
+            <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
+              <Calendar className="h-7 w-7" />
+              <DatePicker
+                selected={fromDate}
+                onChange={(date) => setFromDate(date)}
+                selectsStart
+                startDate={fromDate}
+                endDate={toDate}
+                maxDate={toDate || undefined}
+                placeholderText="Select date"
+                className="w-full text-sm outline-none"
+                dateFormat="MMM dd, yyyy"
+              />
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-between">
-            <button
-              onClick={reset}
-              className="flex items-center justify-center gap-[10px] rounded-lg border border-[rgba(0,0,0,0.20)] px-4 py-3 text-sm hover:bg-gray-50"
-            >
-              Reset
-            </button>
-            <Button onClick={applyFilter}>Apply Now</Button>
+          <div className="flex-1">
+            <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
+              To
+            </label>
+            <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
+              <Calendar className="h-7 w-7" />
+              <DatePicker
+                selected={toDate}
+                onChange={(date) => setToDate(date)}
+                selectsEnd
+                startDate={fromDate}
+                endDate={toDate}
+                minDate={fromDate || undefined}
+                placeholderText="Select date"
+                className="w-full text-sm outline-none"
+                dateFormat="MMM dd, yyyy"
+              />
+            </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-between">
+          <Button type="button" variant="outline" onClick={reset}>
+            Reset
+          </Button>
+          <Button onClick={applyFilter}>Apply Now</Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
