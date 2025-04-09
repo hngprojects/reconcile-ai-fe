@@ -37,18 +37,21 @@ export default function DateRangeDropdown({
   return (
     <div className="relative inline-block text-left">
       {/* Toggle Button */}
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex h-[48px] w-[122px] items-center justify-center gap-2 truncate rounded-lg border border-black/20 p-3 text-sm"
+        variant="outline"
+        type="button"
+        size="lg"
+        className="h-12 min-w-[104px] rounded-lg border-black/20"
       >
         {fromDate && toDate ? (
           <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
         ) : (
-          children
+          <span className="font-normal">{children}</span>
         )}
 
-        <ChevronDownIcon className="size-4 text-gray-400" />
-      </button>
+        <ChevronDownIcon className="text-muted-foreground/50 size-4" />
+      </Button>
 
       {/* Dropdown Panel */}
       {isOpen && (
@@ -58,12 +61,14 @@ export default function DateRangeDropdown({
             <span className="font-inter text-base font-normal text-[#00160A99]">
               Select period
             </span>
-            <button
+            <Button
               onClick={clear}
-              className="font-inter cursor-pointer text-sm font-medium text-[#2E604A]"
+              type="button"
+              variant="link"
+              className="text-primary cursor-pointer hover:no-underline"
             >
               Clear
-            </button>
+            </Button>
           </div>
 
           {/* Date Pickers */}
@@ -111,13 +116,21 @@ export default function DateRangeDropdown({
 
           {/* Action Buttons */}
           <div className="flex justify-between">
-            <button
+            <Button
               onClick={reset}
-              className="flex items-center justify-center gap-[10px] rounded-lg border border-[rgba(0,0,0,0.20)] px-4 py-3 text-sm hover:bg-gray-50"
+              type="button"
+              variant="outline"
+              className="cursor-pointer border-black/20 hover:bg-gray-50"
             >
               Reset
-            </button>
-            <Button onClick={applyFilter}>Apply Now</Button>
+            </Button>
+            <Button
+              onClick={applyFilter}
+              type="button"
+              className="cursor-pointer"
+            >
+              Apply Now
+            </Button>
           </div>
         </div>
       )}
