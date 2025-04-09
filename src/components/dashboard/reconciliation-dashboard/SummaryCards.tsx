@@ -20,7 +20,8 @@ export default function SummaryCards() {
   ]
 
   return (
-    <div className="flex items-center gap-4">
+    // <div className="flex h-full flex-col flex-wrap gap-4 sm:flex-row sm:items-center">
+    <div className="grid gap-4 sm:grid-cols-2 sm:items-center lg:grid-cols-3">
       {cards.map((card, index) => (
         <SummaryCard key={index} {...card} />
       ))}
