@@ -1,110 +1,110 @@
-import { FormEvent } from 'react'
+import { useOnBoardingStore } from '@/store/onboarding-store'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { Button } from '../ui/button'
-interface FormData {
-  businessName: string
-  businessType: string
-  reportingYear: string
-  currency: string
-  bankName: string
-  accountName: string
-  accountNumber: string
-  openingCashBalance: string
-  generalLedger: boolean
-  vendorLedger: boolean
-  customerLedger: boolean
-}
+import { Separator } from '../ui/separator'
+import { Label } from '../ui/label'
+import { Switch } from '../ui/switch'
 
-interface LedgerStepProps {
-  formData: FormData
-  handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void
-  handleNext: () => void
-  handleBack: () => void
-}
-export default function LedgerStep({
-  formData,
-  handleInputChange,
-  handleNext,
-  handleBack,
-}: LedgerStepProps) {
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
+export const LedgerFormSchema = z.object({
+  generalLedger: z.boolean(),
+  vendorLedger: z.boolean(),
+  customerLedger: z.boolean(),
+})
+
+export default function LedgerStep() {
+  const { ledgerSettings, updateLedgerSettings, handleNext, handleBack } =
+    useOnBoardingStore()
+
+  const form = useForm<z.infer<typeof LedgerFormSchema>>({
+    resolver: zodResolver(LedgerFormSchema),
+    defaultValues: {
+      generalLedger: ledgerSettings.generalLedger,
+      vendorLedger: ledgerSettings.vendorLedger,
+      customerLedger: ledgerSettings.customerLedger,
+    },
+  })
+
+  const onSubmit = (data: z.infer<typeof LedgerFormSchema>) => {
+    const result = LedgerFormSchema.safeParse(data)
+
+    if (!result.success) return null
+
+    updateLedgerSettings({
+      generalLedger: data.generalLedger,
+      vendorLedger: data.vendorLedger,
+      customerLedger: data.customerLedger,
+    })
+
     handleNext()
   }
+
   return (
-    <form className="mt-5 w-full" onSubmit={handleSubmit}>
-      <div className="flex w-full items-center justify-between border-b border-[#D3D3D3] pb-5">
-        <div>
-          <div className="mb-5">
-            <h3 className="font-semibold text-[#333333]">Active Ledger</h3>
-            <p className="text-sm text-[#646464]">
-              Select which ledger you want to use in your accounting system
-            </p>
-          </div>
-          <div>
-            <h3 className="font-semibold text-[#333333]">General Ledger</h3>
-            <p className="text-sm text-[#646464]">
-              Main accounting ledger for all transaction
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center">
-          <label className="relative inline-flex cursor-pointer items-center">
-            <input
-              type="checkbox"
-              className="peer sr-only"
-              name="generalLedger"
-              checked={formData.generalLedger}
-            />
-            <div className="peer h-6 w-11 rounded-full bg-[#ABABAB] peer-checked:bg-[#ABABAB] after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-          </label>
-        </div>
-      </div>
-      <div className="flex w-full items-center justify-between border-b border-[#D3D3D3] py-5">
-        <div>
-          <h3 className="font-semibold text-[#333333]">Vendor Ledger</h3>
-          <p className="text-sm text-[#646464]">
-            Track account payable and vendor transaction
+    <form className="mt-5 w-full" onSubmit={form.handleSubmit(onSubmit)}>
+      <div className="space-y-4">
+        <div className="mb-7 space-y-4">
+          <h3 className="mb-2 font-medium">Active Ledgers</h3>
+          <p className="text-muted-foreground text-sm">
+            Select which ledgers you want to use in your accounting system
           </p>
         </div>
-        <div className="flex items-center">
-          <label className="relative inline-flex cursor-pointer items-center">
-            <input
-              type="checkbox"
-              className="peer sr-only"
-              name="vendorLedger"
-              checked={formData.vendorLedger}
-              onChange={handleInputChange}
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label htmlFor="generalLedger">General Ledger</Label>
+              <p className="text-muted-foreground text-sm">
+                Main accounting ledger for all transactions
+              </p>
+            </div>
+            <Switch
+              id="generalLedger"
+              // checked={}
+              // onCheckedChange={}
+              disabled={true} // General ledger is required
             />
-            <div className="peer h-6 w-11 rounded-full bg-[#ABABAB] peer-checked:bg-[#2E604A] after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-          </label>
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label htmlFor="vendorLedger">Vendor Ledger</Label>
+              <p className="text-muted-foreground text-sm">
+                Track accounts payable and vendor transactions
+              </p>
+            </div>
+            <Switch
+              id="vendorLedger"
+              // checked={}
+              // onCheckedChange={}
+            />
+          </div>
+
+          <Separator />
+
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <Label htmlFor="customerLedger">Customer Ledger</Label>
+              <p className="text-muted-foreground text-sm">
+                Track accounts receivable and customer transactions
+              </p>
+            </div>
+            <Switch
+              id="customerLedger"
+              // checked={}
+              // onCheckedChange={}
+            />
+          </div>
         </div>
       </div>
-      <div className="flex w-full items-center justify-between border-b border-[#D3D3D3] py-5">
-        <div>
-          <h3 className="font-semibold text-[#333333]">Customer Ledger</h3>
-          <p className="text-sm text-[#646464]">
-            Track account receivable and customer transaction
-          </p>
-        </div>
-        <div className="flex items-center">
-          <label className="relative inline-flex cursor-pointer items-center">
-            <input
-              type="checkbox"
-              className="peer sr-only"
-              name="customerLedger"
-              checked={formData.customerLedger}
-              onChange={handleInputChange}
-            />
-            <div className="peer h-6 w-11 rounded-full bg-[#ABABAB] peer-checked:bg-[#2E604A] after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-          </label>
-        </div>
-      </div>
+
       <div className="mt-8 flex justify-between">
         <Button
           type="button"
-          className="w-[137px] border border-[#C0C0C0] bg-white p-3 text-[#333333]"
+          variant="outline"
+          className="w-[137px]"
           onClick={handleBack}
         >
           Back
