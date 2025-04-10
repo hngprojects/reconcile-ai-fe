@@ -83,9 +83,9 @@ export function Ledger() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
           <div className="flex flex-col gap-2">
-            <h1 className="font-inter text-xl leading-none font-semibold tracking-tight">
+            <h1 className="font-inter text-xl leading-5 font-semibold tracking-tight">
               Ledgers
             </h1>
             <p className="font-inter text-base leading-none font-normal">
@@ -95,7 +95,7 @@ export function Ledger() {
           <div className="flex justify-end gap-4">
             <Button
               variant="outline"
-              className="border-primary dark:border-primary/40 text-primary dark:text-primary flex cursor-pointer gap-2 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium shadow-none"
+              className="border-primary dark:border-primary/40 text-primary dark:text-primary flex flex-1 cursor-pointer gap-2 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium shadow-none"
               onClick={() => setIsAddModalOpen(true)}
             >
               <Plus className="h-4 w-4" />
@@ -103,13 +103,13 @@ export function Ledger() {
             </Button>
             <Button
               variant="outline"
-              className="border-primary dark:border-primary/40 text-primary dark:text-primary flex cursor-pointer gap-2 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium shadow-none"
+              className="border-primary dark:border-primary/40 text-primary dark:text-primary flex flex-1 cursor-pointer gap-2 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium shadow-none"
               onClick={() => setIsUploadModalOpen(true)}
             >
               <Upload className="h-4 w-4" />
               Upload CSV
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 cursor-pointer text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-green-800 dark:hover:bg-green-700">
+            <Button className="bg-primary hover:bg-primary/90 flex-1 cursor-pointer text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-green-800 dark:hover:bg-green-700">
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>

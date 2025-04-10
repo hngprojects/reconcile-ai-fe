@@ -6,11 +6,7 @@ import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { Button } from './ui/button'
 import { format } from 'date-fns'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
 export default function DateRangeDropdown({
   children,
@@ -40,48 +36,44 @@ export default function DateRangeDropdown({
   }
 
   return (
-    <DropdownMenu open={isOpen}>
-      <DropdownMenuTrigger asChild>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
         <Button
-          onClick={() => setIsOpen(!isOpen)}
-          variant="outline"
           type="button"
-          size="lg"
-          className="h-12 min-w-[104px] rounded-lg border-black/20"
+          variant="outline"
+          className="flex h-[48px] flex-1 items-center justify-center gap-2 truncate rounded-lg border border-black/20 p-3 text-sm md:min-w-[120px]"
         >
           {fromDate && toDate ? (
             <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
           ) : (
-            <span className="font-normal">{children}</span>
+            children
           )}
 
-          <ChevronDownIcon className="text-muted-foreground/50 size-4" />
+          <ChevronDownIcon className="size-4 text-gray-400" />
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        onInteractOutside={() => setIsOpen(false)}
-        sideOffset={8}
-        align="end"
-        className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
-      >
-        {/* Header */}
+      </PopoverTrigger>
+
+      <PopoverContent align="start">
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-[#00160A99]">Select period</span>
-          <Button
-            onClick={clear}
+          <span className="font-inter text-base font-normal text-[#00160A99]">
+            Select period
+          </span>
+          <button
             type="button"
-            variant="link"
-            className="text-primary cursor-pointer hover:no-underline"
+            onClick={clear}
+            className="font-inter cursor-pointer text-sm font-medium text-[#2E604A]"
           >
             Clear
-          </Button>
+          </button>
         </div>
 
         {/* Date Pickers */}
         <div className="mb-4 flex items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="mb-1 text-sm text-[#333]">From</label>
-            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+            <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
+              From
+            </label>
+            <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
               <Calendar className="h-7 w-7" />
               <DatePicker
                 selected={fromDate}
@@ -98,8 +90,10 @@ export default function DateRangeDropdown({
           </div>
 
           <div className="flex-1">
-            <label className="mb-1 text-sm text-[#333]">To</label>
-            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+            <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
+              To
+            </label>
+            <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
               <Calendar className="h-7 w-7" />
               <DatePicker
                 selected={toDate}
@@ -118,23 +112,12 @@ export default function DateRangeDropdown({
 
         {/* Action Buttons */}
         <div className="flex justify-between">
-          <Button
-            onClick={reset}
-            type="button"
-            variant="outline"
-            className="cursor-pointer border-black/20 hover:bg-gray-50"
-          >
+          <Button type="button" variant="outline" onClick={reset}>
             Reset
           </Button>
-          <Button
-            onClick={applyFilter}
-            type="button"
-            className="cursor-pointer"
-          >
-            Apply Now
-          </Button>
+          <Button onClick={applyFilter}>Apply Now</Button>
         </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </PopoverContent>
+    </Popover>
   )
 }

@@ -41,8 +41,8 @@ export function PaginationControls({
 
   return (
     <div className="flex items-center justify-between py-4">
-      <div className="hidden items-center space-x-2 sm:flex">
-        <span className="text-sm text-gray-700">Rows per page</span>
+      <div className="flex items-center space-x-2">
+        <span className="text-xs text-gray-700 sm:text-sm">Rows per page</span>
         <Select
           value={pageSize.toString()}
           onValueChange={(value) => onRowsPerPageChange(Number(value))}
@@ -62,17 +62,18 @@ export function PaginationControls({
             ))}
           </SelectContent>
         </Select>
-        <span className="text-sm text-gray-700">
+        <span className="text-xs text-gray-700 sm:text-sm">
           {startItem} - {endItem} of {totalItems} rows
         </span>
       </div>
-      <p className="block text-sm font-medium text-[#344054] sm:hidden">
+      <p className="hidden text-xs font-medium text-[#344054] sm:text-sm">
         Showing {endItem} out of {totalItems}
       </p>
       <div className="flex items-center space-x-2">
         <Button
           variant="outline"
           size="sm"
+          className="text-xs sm:text-sm"
           onClick={onPreviousPage}
           disabled={!canPreviousPage}
         >
@@ -81,6 +82,7 @@ export function PaginationControls({
         <Button
           variant="outline"
           size="sm"
+          className="text-xs sm:text-sm"
           onClick={onNextPage}
           disabled={!canNextPage}
         >
