@@ -93,7 +93,7 @@ const UploadCard = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="relative h-fit w-full">
-        <div className={cn('flex h-full flex-col gap-[12px]')}>
+        <div className={cn('mt-2 flex h-full flex-col gap-5')}>
           <div className="flex items-center justify-between">
             <h5 className="text-[#475467]">{title}</h5>
             <DateRange />
