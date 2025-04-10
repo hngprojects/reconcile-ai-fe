@@ -1,3 +1,4 @@
+'use client'
 import { useOnBoardingStore } from '@/store/onboarding-store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -5,10 +6,12 @@ import { z } from 'zod'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 
 export const bankFormSchema = z.object({
   bankName: z
     .string()
+    .min(1, 'Bank name is required')
     .max(100, 'Bank name cannot exceed 100 characters')
     .refine((val) => val === '' || /^[a-zA-Z\s]+$/.test(val), {
       message: 'Bank name should only contain letters',
@@ -16,6 +19,7 @@ export const bankFormSchema = z.object({
 
   accountName: z
     .string()
+    .min(1, 'Account name is required')
     .max(100, 'Account name cannot exceed 100 characters')
     .refine((val) => val === '' || /^[a-zA-Z\s]+$/.test(val), {
       message: 'Account name should only contain letters',
@@ -31,16 +35,19 @@ export const bankFormSchema = z.object({
 
   openingCashBalance: z
     .string()
+    .min(1, 'Opening cash balance is required')
     .refine((val) => val === '' || /^\d+(\.\d{1,2})?$/.test(val), {
       message: 'Please enter a valid amount',
     }),
 })
 
+export type BankFormValues = z.infer<typeof bankFormSchema>
+
 export default function BankStep() {
-  const { bankInfo, updateBankInfo, handleNext, handleBack } =
+  const { basicInfo, bankInfo, updateBankInfo, handleNext, handleBack } =
     useOnBoardingStore()
 
-  const form = useForm<z.infer<typeof bankFormSchema>>({
+  const form = useForm<BankFormValues>({
     resolver: zodResolver(bankFormSchema),
     defaultValues: {
       bankName: bankInfo.bankName,
@@ -50,18 +57,8 @@ export default function BankStep() {
     },
   })
 
-  const onSubmit = (data: z.infer<typeof bankFormSchema>) => {
-    const result = bankFormSchema.safeParse(data)
-
-    if (!result.success) return null
-
-    updateBankInfo({
-      bankName: data.bankName,
-      accountName: data.accountName,
-      accountNumber: data.accountNumber,
-      openingCashBalance: data.openingCashBalance,
-    })
-
+  const onSubmit = (data: BankFormValues) => {
+    updateBankInfo(data)
     handleNext()
   }
 
@@ -73,80 +70,118 @@ export default function BankStep() {
           Add your primary bank account details
         </p>
       </div>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="bankName">Bank Name</Label>
-            <Input
-              className="!h-12 w-full placeholder:text-sm"
-              id="bankName"
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="space-y-6">
+            <FormField
+              control={form.control}
               name="bankName"
-              // value={}
-              // onChange={}
-              placeholder="e.g., Guaranty Trust Bank"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="bankName">Bank Name</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="!h-12 w-full placeholder:text-sm"
+                      id="bankName"
+                      placeholder="e.g., Guaranty Trust Bank"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="accountName">Account Name</Label>
-            <Input
-              className="!h-12 w-full placeholder:text-sm"
-              id="accountName"
+            <FormField
+              control={form.control}
               name="accountName"
-              // value={}
-              // onChange={}
-              placeholder="e.g., Business Account"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="accountName">Account Name</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="!h-12 w-full placeholder:text-sm"
+                      id="accountName"
+                      placeholder="e.g., Business Account"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="accountNumber">Account Number</Label>
-            <Input
-              className="!h-12 w-full placeholder:text-sm"
-              id="accountNumber"
+            <FormField
+              control={form.control}
               name="accountNumber"
-              // value={}
-              // onChange={}
-              placeholder="e.g., 1234567890"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="accountNumber">Account Number</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="!h-12 w-full placeholder:text-sm"
+                      id="accountNumber"
+                      placeholder="e.g., 1234567890"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="openingCashBalance"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="openingBalance">Opening Cash Balance</Label>
+                  <div className="relative">
+                    <span className="absolute top-1/2 left-3 -translate-y-1/2">
+                      {basicInfo.currency === 'NGN'
+                        ? '₦'
+                        : basicInfo.currency === 'USD'
+                          ? '$'
+                          : basicInfo.currency === 'EUR'
+                            ? '€'
+                            : '£'}
+                    </span>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        id="openingBalance"
+                        className="!h-12 w-full pl-8 placeholder:text-sm"
+                        placeholder="0.00"
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="openingBalance">Opening Cash Balance</Label>
-            <div className="relative">
-              <span className="absolute top-1/2 left-3 -translate-y-1/2">
-                ₦
-              </span>
-              <Input
-                id="openingBalance"
-                name="openingBalance"
-                className="!h-12 w-full pl-8 placeholder:text-sm"
-                placeholder="0.00"
-                // value={}
-                // onChange={}
-              />
-            </div>
-            <p className="text-muted-foreground mt-1 text-xs">
-              Enter your current cash and bank balances
-            </p>
+          <div className="mt-8 flex justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-[137px]"
+              onClick={handleBack}
+            >
+              Back
+            </Button>
+
+            <Button
+              type="submit"
+              className="w-[137px] p-3"
+              disabled={form.formState.isSubmitting}
+            >
+              Continue
+            </Button>
           </div>
-        </div>
-
-        <div className="mt-8 flex justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-[137px]"
-            onClick={handleBack}
-          >
-            Back
-          </Button>
-
-          <Button type="submit" className="w-[137px] p-3">
-            Continue
-          </Button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   )
 }

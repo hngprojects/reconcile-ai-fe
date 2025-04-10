@@ -1,7 +1,7 @@
 'use client'
 import { useOnBoardingStore } from '@/store/onboarding-store'
 import BankStep from './BankStep'
-import BasicsStep from './BasicsStep'
+import BasicStep from './BasicStep'
 import FinishStep from './FinishStep'
 import LedgerStep from './LedgerStep'
 import OnboardingProgress from './OnboardingProgress'
@@ -12,7 +12,7 @@ export default function Onboarding() {
   const renderStep = () => {
     switch (currentStep) {
       case 1:
-        return <BasicsStep />
+        return <BasicStep />
       case 2:
         return <BankStep />
       case 3:
