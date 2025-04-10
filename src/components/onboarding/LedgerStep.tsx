@@ -1,6 +1,9 @@
 'use client'
+import { handle_account_setup } from '@/actions/accountSetup'
 import { useOnBoardingStore } from '@/store/onboarding-store'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Button } from '../ui/button'
@@ -18,8 +21,15 @@ export const LedgerFormSchema = z.object({
 export type LedgerFormValues = z.infer<typeof LedgerFormSchema>
 
 export default function LedgerStep() {
-  const { ledgerSettings, updateLedgerSettings, handleNext, handleBack } =
-    useOnBoardingStore()
+  const [isPending, startTransition] = useTransition()
+  const {
+    basicInfo,
+    bankInfo,
+    ledgerSettings,
+    updateLedgerSettings,
+    handleNext,
+    handleBack,
+  } = useOnBoardingStore()
 
   const form = useForm<LedgerFormValues>({
     resolver: zodResolver(LedgerFormSchema),
@@ -32,7 +42,35 @@ export default function LedgerStep() {
 
   const onSubmit = (data: LedgerFormValues) => {
     updateLedgerSettings(data)
-    handleNext()
+
+    const ledgerTypes = ['general']
+
+    if (data.vendorLedger) {
+      ledgerTypes.push('vendor')
+    }
+
+    if (data.customerLedger) {
+      ledgerTypes.push('customer')
+    }
+
+    startTransition(() => {
+      handle_account_setup({
+        business_name: basicInfo.businessName,
+        business_type: basicInfo.businessType,
+        reporting_year: basicInfo.reportingYear,
+        currency: basicInfo.currency,
+
+        bank_name: bankInfo.bankName,
+        account_name: bankInfo.accountName,
+        account_number: bankInfo.accountNumber,
+        opening_balance: Number(bankInfo.openingCashBalance),
+
+        ledger_types: ledgerTypes,
+      }).then(({ data, message }) => {
+        console.log({ data, message })
+        handleNext()
+      })
+    })
   }
 
   return (
@@ -88,6 +126,7 @@ export default function LedgerStep() {
                       id="vendorLedger"
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      disabled={isPending}
                     />
                   </FormControl>
                 </FormItem>
@@ -112,6 +151,7 @@ export default function LedgerStep() {
                       id="customerLedger"
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      disabled={isPending}
                     />
                   </FormControl>
                 </FormItem>
@@ -126,16 +166,17 @@ export default function LedgerStep() {
             variant="outline"
             className="w-[137px]"
             onClick={handleBack}
+            disabled={isPending}
           >
             Back
           </Button>
 
           <Button
             type="submit"
-            className="w-[137px] p-3"
-            disabled={form.formState.isSubmitting}
+            className={'w-[137px] p-3'}
+            disabled={form.formState.isSubmitting || isPending}
           >
-            Continue
+            {isPending ? <Loader2 /> : 'Continue'}
           </Button>
         </div>
       </form>

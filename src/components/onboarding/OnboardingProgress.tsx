@@ -29,7 +29,7 @@ export default function OnboardingProgress({
         Enter your business details to get started
       </p>
 
-      <div className="flex w-full items-center justify-between px-4 pt-3 md:px-5">
+      <div className="flex w-full items-center justify-between pt-3 sm:px-4 md:px-5">
         <div className="flex flex-col items-center">
           <div
             className={`flex h-10 w-10 items-center justify-center rounded-full border ${
@@ -45,7 +45,7 @@ export default function OnboardingProgress({
           <span className="mt-1 text-xs">Basics</span>
         </div>
 
-        <div className="mx-2 h-[1px] min-w-[30px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+        <div className="mx-2 h-[1px] min-w-[20px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
 
         <div className="flex flex-col items-center">
           <div
@@ -62,7 +62,7 @@ export default function OnboardingProgress({
           <span className="mt-1 text-xs">Bank</span>
         </div>
 
-        <div className="mx-2 h-[1px] min-w-[30px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+        <div className="mx-2 h-[1px] min-w-[20px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
 
         <div className="flex flex-col items-center">
           <div
@@ -79,7 +79,7 @@ export default function OnboardingProgress({
           <span className="mt-1 text-xs">Ledger</span>
         </div>
 
-        <div className="mx-2 h-[1px] min-w-[30px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+        <div className="mx-2 h-[1px] min-w-[20px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
 
         <div className="flex flex-col items-center">
           <div
