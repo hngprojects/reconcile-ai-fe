@@ -7,6 +7,11 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 export default function DateRange() {
   const [fromDate, setFromDate] = useState<Date | null>(null)
@@ -32,110 +37,106 @@ export default function DateRange() {
   }
 
   return (
-    <div className="relative inline-block text-left">
-      {/* Toggle Button */}
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        variant="outline"
-        type="button"
-        size="lg"
-        className="min-w-[104px] cursor-pointer border-black/20"
-      >
-        {fromDate && toDate ? (
-          <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
-        ) : (
-          <span className="text-sm font-medium">Period</span>
-        )}
-
-        <ChevronDownIcon
-          className={cn(
-            'size-4 text-black/60 transition-transform duration-300 ease-in-out',
-            isOpen && 'rotate-180'
+    <DropdownMenu open={isOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button
+          onClick={() => setIsOpen(!isOpen)}
+          variant="outline"
+          type="button"
+          size="lg"
+          className="min-w-[104px] cursor-pointer border-black/20"
+        >
+          {fromDate && toDate ? (
+            <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
+          ) : (
+            <span className="text-sm font-medium">Period</span>
           )}
-        />
-      </Button>
 
-      {/* Dropdown Panel */}
-      {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]">
-          {/* Header */}
-          <div className="mb-3 flex items-center justify-between">
-            <span className="font-inter text-base font-normal text-[#00160A99]">
-              Select period
-            </span>
-            <Button
-              onClick={clear}
-              type="button"
-              variant="link"
-              className="text-primary cursor-pointer hover:no-underline"
-            >
-              Clear
-            </Button>
-          </div>
+          <ChevronDownIcon
+            className={cn(
+              'size-4 text-black/60 transition-transform duration-300 ease-in-out',
+              isOpen && 'rotate-180'
+            )}
+          />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        onInteractOutside={() => setIsOpen(false)}
+        sideOffset={8}
+        align="end"
+        className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
+      >
+        {/* Header */}
+        <div className="mb-3 flex items-center justify-between">
+          <span className="text-[#00160A99]">Select period</span>
+          <Button
+            onClick={clear}
+            type="button"
+            variant="link"
+            className="text-primary cursor-pointer hover:no-underline"
+          >
+            Clear
+          </Button>
+        </div>
 
-          {/* Date Pickers */}
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <div className="flex-1">
-              <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
-                From
-              </label>
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
-                <Calendar className="h-7 w-7" />
-                <DatePicker
-                  selected={fromDate}
-                  onChange={(date) => setFromDate(date)}
-                  selectsStart
-                  startDate={fromDate}
-                  endDate={toDate}
-                  maxDate={toDate || undefined}
-                  placeholderText="Select date"
-                  className="w-full text-sm outline-none"
-                  dateFormat="MMM dd, yyyy"
-                />
-              </div>
-            </div>
-
-            <div className="flex-1">
-              <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
-                To
-              </label>
-              <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
-                <Calendar className="h-7 w-7" />
-                <DatePicker
-                  selected={toDate}
-                  onChange={(date) => setToDate(date)}
-                  selectsEnd
-                  startDate={fromDate}
-                  endDate={toDate}
-                  minDate={fromDate || undefined}
-                  placeholderText="Select date"
-                  className="w-full text-sm outline-none"
-                  dateFormat="MMM dd, yyyy"
-                />
-              </div>
+        {/* Date Pickers */}
+        <div className="mb-4 flex items-center justify-between gap-4">
+          <div className="flex-1">
+            <label className="mb-1 text-sm text-[#333]">From</label>
+            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <Calendar className="h-7 w-7" />
+              <DatePicker
+                selected={fromDate}
+                onChange={(date) => setFromDate(date)}
+                selectsStart
+                startDate={fromDate}
+                endDate={toDate}
+                maxDate={toDate || undefined}
+                placeholderText="Select date"
+                className="w-full text-sm outline-none"
+                dateFormat="MMM dd, yyyy"
+              />
             </div>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-between">
-            <Button
-              onClick={reset}
-              type="button"
-              variant="outline"
-              className="cursor-pointer border-black/20 hover:bg-gray-50"
-            >
-              Reset
-            </Button>
-            <Button
-              onClick={applyFilter}
-              type="button"
-              className="cursor-pointer"
-            >
-              Apply Now
-            </Button>
+          <div className="flex-1">
+            <label className="mb-1 text-sm text-[#333]">To</label>
+            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <Calendar className="h-7 w-7" />
+              <DatePicker
+                selected={toDate}
+                onChange={(date) => setToDate(date)}
+                selectsEnd
+                startDate={fromDate}
+                endDate={toDate}
+                minDate={fromDate || undefined}
+                placeholderText="Select date"
+                className="w-full text-sm outline-none"
+                dateFormat="MMM dd, yyyy"
+              />
+            </div>
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-between">
+          <Button
+            onClick={reset}
+            type="button"
+            variant="outline"
+            className="cursor-pointer border-black/20 hover:bg-gray-50"
+          >
+            Reset
+          </Button>
+          <Button
+            onClick={applyFilter}
+            type="button"
+            className="cursor-pointer"
+          >
+            Apply Now
+          </Button>
+        </div>
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }
