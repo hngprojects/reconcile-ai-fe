@@ -8,10 +8,10 @@ import { format } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 export default function DateRange() {
   const [fromDate, setFromDate] = useState<Date | null>(null)
@@ -37,8 +37,8 @@ export default function DateRange() {
   }
 
   return (
-    <DropdownMenu open={isOpen}>
-      <DropdownMenuTrigger asChild>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
         <Button
           onClick={() => setIsOpen(!isOpen)}
           variant="outline"
@@ -59,9 +59,9 @@ export default function DateRange() {
             )}
           />
         </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        onInteractOutside={() => setIsOpen(false)}
+      </PopoverTrigger>
+
+      <PopoverContent
         sideOffset={8}
         align="end"
         className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
@@ -84,7 +84,7 @@ export default function DateRange() {
           <div className="flex-1">
             <label className="mb-1 text-sm text-[#333]">From</label>
             <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
-              <Calendar className="h-7 w-7" />
+              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
               <DatePicker
                 selected={fromDate}
                 onChange={(date) => setFromDate(date)}
@@ -102,7 +102,7 @@ export default function DateRange() {
           <div className="flex-1">
             <label className="mb-1 text-sm text-[#333]">To</label>
             <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
-              <Calendar className="h-7 w-7" />
+              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
               <DatePicker
                 selected={toDate}
                 onChange={(date) => setToDate(date)}
@@ -124,7 +124,7 @@ export default function DateRange() {
             onClick={reset}
             type="button"
             variant="outline"
-            className="cursor-pointer border-black/20 hover:bg-gray-50"
+            className="cursor-pointer border-black/20"
           >
             Reset
           </Button>
@@ -136,7 +136,7 @@ export default function DateRange() {
             Apply Now
           </Button>
         </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </PopoverContent>
+    </Popover>
   )
 }

@@ -41,7 +41,7 @@ export default function DateRangeDropdown({
         <Button
           type="button"
           variant="outline"
-          className="flex h-[48px] flex-1 items-center justify-center gap-2 truncate rounded-lg border border-black/20 p-3 text-sm md:min-w-[120px]"
+          className="h-[48px] rounded-lg border-black/20 md:min-w-[120px]"
         >
           {fromDate && toDate ? (
             <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
@@ -49,32 +49,33 @@ export default function DateRangeDropdown({
             children
           )}
 
-          <ChevronDownIcon className="size-4 text-gray-400" />
+          <ChevronDownIcon className="text-muted-foreground/50 size-4" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent align="start">
+      <PopoverContent
+        sideOffset={8}
+        align="start"
+        className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
+      >
         <div className="mb-3 flex items-center justify-between">
-          <span className="font-inter text-base font-normal text-[#00160A99]">
-            Select period
-          </span>
-          <button
+          <span className="text-[#00160A99]">Select period</span>
+          <Button
             type="button"
             onClick={clear}
-            className="font-inter cursor-pointer text-sm font-medium text-[#2E604A]"
+            variant="link"
+            className="text-primary cursor-pointer hover:no-underline"
           >
             Clear
-          </button>
+          </Button>
         </div>
 
         {/* Date Pickers */}
         <div className="mb-4 flex items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
-              From
-            </label>
-            <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
-              <Calendar className="h-7 w-7" />
+            <label className="mb-1 block text-sm text-[#333]">From</label>
+            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
               <DatePicker
                 selected={fromDate}
                 onChange={(date) => setFromDate(date)}
@@ -90,11 +91,9 @@ export default function DateRangeDropdown({
           </div>
 
           <div className="flex-1">
-            <label className="font-inter mb-1 block text-sm font-normal text-[#333]">
-              To
-            </label>
-            <div className="flex items-center gap-2 rounded-lg border border-[rgba(0,0,0,0.20)] bg-white p-[10px_8px]">
-              <Calendar className="h-7 w-7" />
+            <label className="mb-1 text-sm text-[#333]">To</label>
+            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
               <DatePicker
                 selected={toDate}
                 onChange={(date) => setToDate(date)}
@@ -112,10 +111,21 @@ export default function DateRangeDropdown({
 
         {/* Action Buttons */}
         <div className="flex justify-between">
-          <Button type="button" variant="outline" onClick={reset}>
+          <Button
+            type="button"
+            variant="outline"
+            className="cursor-pointer border-black/20"
+            onClick={reset}
+          >
             Reset
           </Button>
-          <Button onClick={applyFilter}>Apply Now</Button>
+          <Button
+            type="button"
+            className="cursor-pointer"
+            onClick={applyFilter}
+          >
+            Apply Now
+          </Button>
         </div>
       </PopoverContent>
     </Popover>
