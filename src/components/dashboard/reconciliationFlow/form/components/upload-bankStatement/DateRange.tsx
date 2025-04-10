@@ -4,15 +4,16 @@ import { Calendar, ChevronDownIcon } from 'lucide-react'
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { Button } from './ui/button'
 import { format } from 'date-fns'
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
-export default function DateRangeDropdown({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function DateRange() {
   const [fromDate, setFromDate] = useState<Date | null>(null)
   const [toDate, setToDate] = useState<Date | null>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -32,37 +33,45 @@ export default function DateRangeDropdown({
   }
 
   const formatDate = (date: Date | null) => {
-    return date ? format(date, 'MMM d') : ''
+    return date ? format(date, 'MMM d, yyyy') : ''
   }
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
-          type="button"
+          onClick={() => setIsOpen(!isOpen)}
           variant="outline"
-          className="h-[48px] rounded-lg border-black/20 md:min-w-[120px]"
+          type="button"
+          size="lg"
+          className="min-w-[104px] cursor-pointer border-black/20"
         >
           {fromDate && toDate ? (
             <span>{`${formatDate(fromDate)} - ${formatDate(toDate)}`}</span>
           ) : (
-            children
+            <span className="text-sm font-medium">Period</span>
           )}
 
-          <ChevronDownIcon className="text-muted-foreground/50 size-4" />
+          <ChevronDownIcon
+            className={cn(
+              'size-4 text-black/60 transition-transform duration-300 ease-in-out',
+              isOpen && 'rotate-180'
+            )}
+          />
         </Button>
       </PopoverTrigger>
 
       <PopoverContent
         sideOffset={8}
-        align="start"
+        align="end"
         className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
       >
+        {/* Header */}
         <div className="mb-3 flex items-center justify-between">
           <span className="text-[#00160A99]">Select period</span>
           <Button
-            type="button"
             onClick={clear}
+            type="button"
             variant="link"
             className="text-primary cursor-pointer hover:no-underline"
           >
@@ -73,7 +82,7 @@ export default function DateRangeDropdown({
         {/* Date Pickers */}
         <div className="mb-4 flex items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="mb-1 block text-sm text-[#333]">From</label>
+            <label className="mb-1 text-sm text-[#333]">From</label>
             <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
               <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
               <DatePicker
@@ -112,17 +121,17 @@ export default function DateRangeDropdown({
         {/* Action Buttons */}
         <div className="flex justify-between">
           <Button
+            onClick={reset}
             type="button"
             variant="outline"
             className="cursor-pointer border-black/20"
-            onClick={reset}
           >
             Reset
           </Button>
           <Button
+            onClick={applyFilter}
             type="button"
             className="cursor-pointer"
-            onClick={applyFilter}
           >
             Apply Now
           </Button>

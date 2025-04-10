@@ -1455,7 +1455,11 @@ const MatchTransactionTable = () => {
             <Download className="size-5 text-black/60" />
             <span>Export</span>
           </Button>
-          <Button type="button" className="h-12 cursor-pointer">
+          <Button
+            disabled={Object.keys(rowSelection).length === 0}
+            type="button"
+            className="h-12 cursor-pointer"
+          >
             <Check className="size-5 text-white" />
             <span>Accept Selected</span>
           </Button>
@@ -1532,23 +1536,25 @@ const MatchTransactionTable = () => {
               <span className="text-sm font-medium text-[#344054]">
                 Rows per page
               </span>
-              <Select
-                value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => table.setPageSize(Number(value))}
-              >
-                <SelectTrigger className="h-8 w-[58px] p-2">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {[10, 25, 50].map((size) => (
-                    <SelectItem key={size} value={`${size}`}>
-                      {size}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="relative overflow-hidden">
+                <Select
+                  value={`${table.getState().pagination.pageSize}`}
+                  onValueChange={(value) => table.setPageSize(Number(value))}
+                >
+                  <SelectTrigger className="h-8 w-[58px] p-2">
+                    <SelectValue
+                      placeholder={table.getState().pagination.pageSize}
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {[10, 25, 50].map((size) => (
+                      <SelectItem key={size} value={`${size}`}>
+                        {size}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
 
             {/* Pagination details */}

@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { FileUploadIcon } from '@/components/Icon/Icons'
 import { FileItem } from './FileItem'
+import DateRange from './DateRange'
 
 const MAX_FILE_SIZE = 2
 
@@ -92,8 +93,11 @@ const UploadCard = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="relative h-fit w-full">
-        <div className={cn('flex h-full flex-col gap-[12px]')}>
-          <h5 className="text-[#475467]">{title}</h5>
+        <div className={cn('mt-2 flex h-full flex-col gap-5')}>
+          <div className="flex items-center justify-between">
+            <h5 className="text-[#475467]">{title}</h5>
+            <DateRange />
+          </div>
 
           <div
             {...getRootProps()}

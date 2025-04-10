@@ -31,16 +31,25 @@ export default function Filters({
         />
       </div>
 
-      <DropdownFilter
-        options={['All Accounts', 'First Bank', 'Access Bank', 'Sterling Bank']}
-        selected={selectedAccount}
-        onSelect={onAccountChange}
-      />
-      <DropdownFilter
-        options={['All Ledgers', 'Office Rent Payment', 'Inventory Purchase']}
-        selected={selectedLedger}
-        onSelect={onLedgerChange}
-      />
+      <div className="relative overflow-hidden">
+        <DropdownFilter
+          options={[
+            'All Accounts',
+            'First Bank',
+            'Access Bank',
+            'Sterling Bank',
+          ]}
+          selected={selectedAccount}
+          onSelect={onAccountChange}
+        />
+      </div>
+      <div className="relative overflow-hidden">
+        <DropdownFilter
+          options={['All Ledgers', 'Office Rent Payment', 'Inventory Purchase']}
+          selected={selectedLedger}
+          onSelect={onLedgerChange}
+        />
+      </div>
     </div>
   )
 }

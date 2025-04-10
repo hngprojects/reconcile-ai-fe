@@ -15,7 +15,7 @@ import SelectBankAccountForm, {
 } from '../SelectBankAccountForm'
 import UploadBankStatementForm, {
   UploadBankStatementSchema,
-} from '../UploadBankStatementForm'
+} from '../components/upload-bankStatement/UploadBankStatement'
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import Complete from '../Complete'
 import MatchTransaction from '../MatchTransaction'
