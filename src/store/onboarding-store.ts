@@ -37,7 +37,7 @@ export interface OnBoardingStore {
 }
 
 export const useOnBoardingStore = create<OnBoardingStore>((set) => ({
-  currentStep: 3,
+  currentStep: 4,
 
   basicInfo: {
     businessName: '',
