@@ -242,7 +242,9 @@ const MatchTable = () => {
           return (
             <div className="flex items-center justify-start gap-2">
               <div className="flex flex-col gap-1">
-                <div className="text-sm text-[#333]">{match.type}</div>
+                <div className="text-start text-sm text-[#333]">
+                  {match.type}
+                </div>
                 <div className="flex items-center justify-center gap-1 text-xs text-[#475467]">
                   <span>{match.name}</span>
                   <DotIcon className="size-1.5" />

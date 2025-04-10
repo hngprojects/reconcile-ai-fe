@@ -32,7 +32,7 @@ const ReconciliationSummary = () => {
             <DotIcon className="size-2 text-black" />
             <span>Mar 2025</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 font-light">
             <div className="flex items-center gap-2">
               Status:
               <span
