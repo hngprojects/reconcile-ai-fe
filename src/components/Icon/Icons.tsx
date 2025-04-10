@@ -685,6 +685,141 @@ export const DotIcon = ({ className = defaultSize }: IconClassProps) => {
   )
 }
 
+export const ExportIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#fff]', className)}
+      viewBox="0 0 21 20"
+      fill="none"
+    >
+      <path
+        d="M18 7.5V6.5C18 5.09987 18 4.3998 17.7275 3.86502C17.4878 3.39462 17.1054 3.01217 16.635 2.77248C16.1002 2.5 15.4001 2.5 14 2.5H7C5.59987 2.5 4.8998 2.5 4.36502 2.77248C3.89462 3.01217 3.51217 3.39462 3.27248 3.86502C3 4.3998 3 5.09987 3 6.5V7.5M14.6667 13.3333L10.5 17.5M10.5 17.5L6.33333 13.3333M10.5 17.5V7.5"
+        stroke="currentColor"
+        strokeWidth="1.66667"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const TransactionIcon = ({
+  className = defaultSize,
+}: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#5856D6]', className)}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M14.1818 10.9091V7.63636H0V3.27273H14.1818V0L21.8182 5.45455L14.1818 10.9091ZM2.18182 18.5455L9.81818 24V20.7273H24V16.3636H9.81818V13.0909L2.18182 18.5455Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+export const ClockIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#FFF4F0]', className)}
+      viewBox="0 0 25 24"
+      fill="none"
+    >
+      <rect x="0.666504" width="24" height="24" rx="12" fill="#333333" />
+      <path
+        d="M12.6665 6V12L16.6665 14M22.6665 12C22.6665 17.5228 18.1894 22 12.6665 22C7.14366 22 2.6665 17.5228 2.6665 12C2.6665 6.47715 7.14366 2 12.6665 2C18.1894 2 22.6665 6.47715 22.6665 12Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const FileTextIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#807F7F]', className)}
+      viewBox="0 0 24 30"
+      fill="none"
+    >
+      <path
+        d="M14.6667 1.6665H3.99999C3.29275 1.6665 2.61447 1.94746 2.11438 2.44755C1.61428 2.94765 1.33333 3.62593 1.33333 4.33317V25.6665C1.33333 26.3737 1.61428 27.052 2.11438 27.5521C2.61447 28.0522 3.29275 28.3332 3.99999 28.3332H20C20.7072 28.3332 21.3855 28.0522 21.8856 27.5521C22.3857 27.052 22.6667 26.3737 22.6667 25.6665V9.6665M14.6667 1.6665L22.6667 9.6665M14.6667 1.6665V9.6665H22.6667M17.3333 16.3332H6.66666M17.3333 21.6665H6.66666M9.33333 10.9998H6.66666"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const ShineIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#2E604A]', className)}
+      viewBox="0 0 25 24"
+      fill="none"
+    >
+      <rect
+        width="24"
+        height="24"
+        transform="translate(0.333252)"
+        fill="transparent"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M7.81288 11.4796L9.35882 6.8418H10.3075L11.8534 11.4796L16.4913 13.0256V13.9743L11.8534 15.5202L10.3075 20.158H9.35882L7.81288 15.5202L3.17505 13.9743V13.0256L7.81288 11.4796Z"
+        fill="currentColor"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M16.5629 5.22963L17.3588 2.8418H18.3075L19.1034 5.22963L21.4913 6.02557V6.97425L19.1034 7.7702L18.3075 10.158H17.3588L16.5629 7.7702L14.175 6.97425V6.02557L16.5629 5.22963Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+export const MatchedIcon = ({ className = defaultSize }: IconClassProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn('aspect-auto text-[#800080]', className)}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M11.1429 0C9.72274 0 8.57143 1.15126 8.57143 2.57143V5.14286H2.57143C1.15126 5.14286 0 6.29412 0 7.71429V21.4286C0 22.8487 1.15126 24 2.57143 24H12.8571C14.2773 24 15.4286 22.8487 15.4286 21.4286V18.8571H21.4286C22.8487 18.8571 24 17.7058 24 16.2857V2.57143C24 1.15126 22.8487 0 21.4286 0H11.1429ZM13.7143 18.8571H11.1429C9.72274 18.8571 8.57143 17.7058 8.57143 16.2857V6.85714H2.57143C2.09805 6.85714 1.71429 7.2409 1.71429 7.71429V21.4286C1.71429 21.9019 2.09805 22.2857 2.57143 22.2857H12.8571C13.3305 22.2857 13.7143 21.9019 13.7143 21.4286V18.8571ZM10.2857 2.57143C10.2857 2.09805 10.6695 1.71429 11.1429 1.71429H21.4286C21.9019 1.71429 22.2857 2.09805 22.2857 2.57143V16.2857C22.2857 16.759 21.9019 17.1429 21.4286 17.1429H11.1429C10.6695 17.1429 10.2857 16.759 10.2857 16.2857V2.57143Z"
+        fill="currentColor"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.0005 5.99923C12.0005 5.52585 12.3843 5.14209 12.8576 5.14209H19.7148C20.1881 5.14209 20.5719 5.52585 20.5719 5.99923C20.5719 6.47262 20.1881 6.85638 19.7148 6.85638H12.8576C12.3843 6.85638 12.0005 6.47262 12.0005 5.99923Z"
+        fill="currentColor"
+      />
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M12.0005 9.42941C12.0005 8.95609 12.3843 8.57227 12.8576 8.57227H16.2862C16.7595 8.57227 17.1433 8.95609 17.1433 9.42941C17.1433 9.90272 16.7595 10.2866 16.2862 10.2866H12.8576C12.3843 10.2866 12.0005 9.90272 12.0005 9.42941Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
 const Icons = {
   File: FileIcon,
   Speed: SpeedIcon,
