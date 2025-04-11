@@ -162,11 +162,11 @@ export default function BankStep() {
             />
           </div>
 
-          <div className="mt-8 flex justify-between">
+          <div className="mt-8 flex justify-between gap-3">
             <Button
               type="button"
               variant="outline"
-              className="w-[137px]"
+              className="flex-1 sm:w-[137px] sm:flex-none"
               onClick={handleBack}
             >
               Back
@@ -174,7 +174,7 @@ export default function BankStep() {
 
             <Button
               type="submit"
-              className="w-[137px] p-3"
+              className="flex-1 p-3 sm:w-[137px] sm:flex-none"
               disabled={form.formState.isSubmitting}
             >
               Continue
