@@ -11,6 +11,8 @@ import { Form, FormControl, FormField, FormItem } from '../ui/form'
 import { Label } from '../ui/label'
 import { Separator } from '../ui/separator'
 import { Switch } from '../ui/switch'
+import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
 
 export const LedgerFormSchema = z.object({
   generalLedger: z.boolean().default(true),
@@ -21,6 +23,7 @@ export const LedgerFormSchema = z.object({
 export type LedgerFormValues = z.infer<typeof LedgerFormSchema>
 
 export default function LedgerStep() {
+  const { update, data: session } = useSession()
   const [isPending, startTransition] = useTransition()
   const {
     basicInfo,
@@ -29,6 +32,8 @@ export default function LedgerStep() {
     updateLedgerSettings,
     handleNext,
     handleBack,
+    setCurrentStep,
+    reset,
   } = useOnBoardingStore()
 
   const form = useForm<LedgerFormValues>({
@@ -66,9 +71,29 @@ export default function LedgerStep() {
         opening_balance: Number(bankInfo.openingCashBalance),
 
         ledger_types: ledgerTypes,
-      }).then(({ data, message }) => {
-        console.log({ data, message })
-        handleNext()
+      }).then(async ({ success, message }) => {
+        if (success === true) {
+          await update({
+            user: {
+              ...session?.user,
+              is_new_user: false,
+            },
+          })
+
+          toast.success('Onboarding Successful', {
+            description: message,
+          })
+
+          handleNext()
+          reset()
+        } else {
+          toast.error('Onboarding Failed', {
+            description: 'Account setup failed',
+          })
+
+          reset()
+          setCurrentStep(1)
+        }
       })
     })
   }
@@ -176,7 +201,7 @@ export default function LedgerStep() {
             className={'w-[137px] p-3'}
             disabled={form.formState.isSubmitting || isPending}
           >
-            {isPending ? <Loader2 /> : 'Continue'}
+            {isPending ? <Loader2 className="animate-spin" /> : 'Continue'}
           </Button>
         </div>
       </form>

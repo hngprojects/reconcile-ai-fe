@@ -32,7 +32,7 @@ export default function OnboardingProgress({
       <div className="flex w-full items-center justify-between pt-3 sm:px-4 md:px-5">
         <div className="flex flex-col items-center">
           <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full border ${
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
               1 < currentStep
                 ? 'border-[#2E604A] bg-[#2E604A] text-white'
                 : 1 === currentStep
@@ -45,11 +45,11 @@ export default function OnboardingProgress({
           <span className="mt-1 text-xs">Basics</span>
         </div>
 
-        <div className="mx-2 h-[1px] min-w-[20px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+        <div className="mx-2 h-[1px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
 
         <div className="flex flex-col items-center">
           <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full border ${
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
               2 < currentStep
                 ? 'border-[#2E604A] bg-[#2E604A] text-white'
                 : 2 === currentStep
@@ -62,11 +62,11 @@ export default function OnboardingProgress({
           <span className="mt-1 text-xs">Bank</span>
         </div>
 
-        <div className="mx-2 h-[1px] min-w-[20px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+        <div className="mx-2 h-[1px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
 
         <div className="flex flex-col items-center">
           <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full border ${
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
               3 < currentStep
                 ? 'border-[#2E604A] bg-[#2E604A] text-white'
                 : 3 === currentStep
@@ -79,11 +79,11 @@ export default function OnboardingProgress({
           <span className="mt-1 text-xs">Ledger</span>
         </div>
 
-        <div className="mx-2 h-[1px] min-w-[20px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+        <div className="mx-2 h-[1px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
 
         <div className="flex flex-col items-center">
           <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full border ${
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
               4 < currentStep
                 ? 'border-[#2E604A] bg-[#2E604A] text-white'
                 : 4 === currentStep

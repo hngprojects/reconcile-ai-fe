@@ -1,18 +1,10 @@
 'use client'
+import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '../ui/button'
-import { ChevronRight } from 'lucide-react'
-import { useOnBoardingStore } from '@/store/onboarding-store'
 
 export default function FinishStep() {
   const router = useRouter()
-  const { basicInfo, bankInfo, ledgerSettings } = useOnBoardingStore()
-
-  console.log({
-    basicInfo,
-    bankInfo,
-    ledgerSettings,
-  })
 
   return (
     <div className="mt-7 flex w-full flex-col items-center">

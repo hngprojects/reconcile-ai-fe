@@ -34,6 +34,8 @@ export interface OnBoardingStore {
   updateBasicInfo: (updates: Partial<BasicInfoType>) => void
   updateBankInfo: (updates: Partial<BankInfoType>) => void
   updateLedgerSettings: (updates: Partial<LedgerSettingsType>) => void
+
+  reset: () => void
 }
 
 export const useOnBoardingStore = create<OnBoardingStore>((set) => ({
@@ -85,4 +87,26 @@ export const useOnBoardingStore = create<OnBoardingStore>((set) => ({
     set((state) => ({
       ledgerSettings: { ...state.ledgerSettings, ...updates },
     })),
+
+  reset: () =>
+    set({
+      basicInfo: {
+        businessName: '',
+        businessType: '',
+        reportingYear: '',
+        currency: '',
+      },
+      bankInfo: {
+        bankName: '',
+        accountName: '',
+        accountNumber: '',
+        openingCashBalance: '',
+      },
+
+      ledgerSettings: {
+        generalLedger: true,
+        vendorLedger: false,
+        customerLedger: false,
+      },
+    }),
 }))

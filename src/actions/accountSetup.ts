@@ -32,7 +32,7 @@ export const handle_account_setup = async (
       },
       body: data,
     })
-    console.log({ res })
+    console.dir({ res }, { depth: null })
     return { ...res, success: true }
   } catch (error) {
     if (error instanceof HttpError) {

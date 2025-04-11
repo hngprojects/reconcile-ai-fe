@@ -37,6 +37,7 @@ export interface User {
   updated_at: string
   payment_plan: PaymentPlan
   access_token: string
+  is_new_user: boolean
 }
 
 export interface AuthData {
