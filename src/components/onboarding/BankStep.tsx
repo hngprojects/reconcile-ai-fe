@@ -1,35 +1,17 @@
-import { FormEvent, useState } from 'react'
-import { Label } from '../ui/label'
-import { Input } from '../ui/input'
-import { Button } from '../ui/button'
+'use client'
+import { useOnBoardingStore } from '@/store/onboarding-store'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-interface FormData {
-  businessName: string
-  businessType: string
-  reportingYear: string
-  currency: string
-  bankName: string
-  accountName: string
-  accountNumber: string
-  openingCashBalance: string
-  generalLedger: boolean
-  vendorLedger: boolean
-  customerLedger: boolean
-}
-
-interface BankStepProps {
-  formData: FormData
-  handleInputChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => void
-  handleNext: () => void
-  handleBack: () => void
-}
+import { Button } from '../ui/button'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
 
 export const bankFormSchema = z.object({
   bankName: z
     .string()
+    .min(1, 'Bank name is required')
     .max(100, 'Bank name cannot exceed 100 characters')
     .refine((val) => val === '' || /^[a-zA-Z\s]+$/.test(val), {
       message: 'Bank name should only contain letters',
@@ -37,6 +19,7 @@ export const bankFormSchema = z.object({
 
   accountName: z
     .string()
+    .min(1, 'Account name is required')
     .max(100, 'Account name cannot exceed 100 characters')
     .refine((val) => val === '' || /^[a-zA-Z\s]+$/.test(val), {
       message: 'Account name should only contain letters',
@@ -52,44 +35,30 @@ export const bankFormSchema = z.object({
 
   openingCashBalance: z
     .string()
+    .min(1, 'Opening cash balance is required')
     .refine((val) => val === '' || /^\d+(\.\d{1,2})?$/.test(val), {
       message: 'Please enter a valid amount',
     }),
 })
 
-export default function BankStep({
-  formData,
-  handleInputChange,
-  handleNext,
-  handleBack,
-}: BankStepProps) {
-  const [errors, setErrors] = useState<Record<string, string>>({})
+export type BankFormValues = z.infer<typeof bankFormSchema>
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault()
+export default function BankStep() {
+  const { basicInfo, bankInfo, updateBankInfo, handleNext, handleBack } =
+    useOnBoardingStore()
 
-    // Validate form with Zod
-    const result = bankFormSchema.safeParse({
-      bankName: formData.bankName,
-      accountName: formData.accountName,
-      accountNumber: formData.accountNumber,
-      openingCashBalance: formData.openingCashBalance,
-    })
+  const form = useForm<BankFormValues>({
+    resolver: zodResolver(bankFormSchema),
+    defaultValues: {
+      bankName: bankInfo.bankName,
+      accountName: bankInfo.accountName,
+      accountNumber: bankInfo.accountNumber,
+      openingCashBalance: bankInfo.openingCashBalance,
+    },
+  })
 
-    if (!result.success) {
-      // Extract error messages
-      const formattedErrors: Record<string, string> = {}
-      result.error.errors.forEach((error) => {
-        if (error.path) {
-          formattedErrors[error.path[0].toString()] = error.message
-        }
-      })
-      setErrors(formattedErrors)
-      return
-    }
-
-    // Clear errors and proceed
-    setErrors({})
+  const onSubmit = (data: BankFormValues) => {
+    updateBankInfo(data)
     handleNext()
   }
 
@@ -101,120 +70,118 @@ export default function BankStep({
           Add your primary bank account details
         </p>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="space-y-6">
-          <div>
-            <Label
-              className="flex items-center gap-1 text-base text-[#333333] md:text-[20px]"
-              htmlFor="bankName"
-            >
-              <span>Bank Name</span>
-              <span className="text-[#F30707]">*</span>
-            </Label>
-            <Input
-              type="text"
-              id="bankName"
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="space-y-6">
+            <FormField
+              control={form.control}
               name="bankName"
-              required
-              value={formData.bankName}
-              onChange={handleInputChange}
-              placeholder="e.g Guaranty Trust Bank"
-              className="mt-3 h-12 w-full rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="bankName">Bank Name</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="!h-12 w-full placeholder:text-sm"
+                      id="bankName"
+                      placeholder="e.g., Guaranty Trust Bank"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.bankName && (
-              <p className="mt-1 text-sm text-red-500">{errors.bankName}</p>
-            )}
-          </div>
 
-          <div>
-            <Label
-              className="flex items-center gap-1 text-base text-[#333333] md:text-[20px]"
-              htmlFor="accountName"
-            >
-              <span>Account Name</span>
-              <span className="text-[#F30707]">*</span>
-            </Label>
-            <Input
-              type="text"
-              id="accountName"
-              required
+            <FormField
+              control={form.control}
               name="accountName"
-              value={formData.accountName}
-              onChange={handleInputChange}
-              placeholder="e.g Business Account"
-              className="mt-3 h-12 w-full rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="accountName">Account Name</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="!h-12 w-full placeholder:text-sm"
+                      id="accountName"
+                      placeholder="e.g., Business Account"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.accountName && (
-              <p className="mt-1 text-sm text-red-500">{errors.accountName}</p>
-            )}
-          </div>
 
-          <div>
-            <Label
-              className="flex items-center gap-1 text-base text-[#333333] md:text-[20px]"
-              htmlFor="accountNumber"
-            >
-              <span>Account Number</span>
-              <span className="text-[#F30707]">*</span>
-            </Label>
-            <Input
-              type="text"
-              id="accountNumber"
+            <FormField
+              control={form.control}
               name="accountNumber"
-              required
-              value={formData.accountNumber}
-              onChange={handleInputChange}
-              placeholder="e.g 1234567890"
-              className="mt-3 h-12 w-full rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="accountNumber">Account Number</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="!h-12 w-full placeholder:text-sm"
+                      id="accountNumber"
+                      placeholder="e.g., 1234567890"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.accountNumber && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.accountNumber}
-              </p>
-            )}
-          </div>
 
-          <div>
-            <Label
-              className="flex items-center gap-1 text-base text-[#333333] md:text-[20px]"
-              htmlFor="openingCashBalance"
-            >
-              <span>Opening Cash Balance</span>
-              <span className="text-[#F30707]">*</span>
-            </Label>
-
-            <Input
-              type="text"
-              id="openingCashBalance"
+            <FormField
+              control={form.control}
               name="openingCashBalance"
-              required
-              value={formData.openingCashBalance}
-              onChange={handleInputChange}
-              placeholder="# 0.00"
-              className="mt-3 h-12 w-full rounded-[6px] border border-[#D1D5DB] p-3 text-[#667085] shadow-sm"
+              render={({ field }) => (
+                <FormItem>
+                  <Label htmlFor="openingBalance">Opening Cash Balance</Label>
+                  <div className="relative">
+                    <span className="absolute top-1/2 left-3 -translate-y-1/2">
+                      {basicInfo.currency === 'NGN'
+                        ? '₦'
+                        : basicInfo.currency === 'USD'
+                          ? '$'
+                          : basicInfo.currency === 'EUR'
+                            ? '€'
+                            : '£'}
+                    </span>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        id="openingBalance"
+                        className="!h-12 w-full pl-8 placeholder:text-sm"
+                        placeholder="0.00"
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {errors.openingCashBalance && (
-              <p className="mt-1 text-sm text-red-500">
-                {errors.openingCashBalance}
-              </p>
-            )}
           </div>
-        </div>
 
-        <div className="mt-8 flex justify-between">
-          <Button
-            type="button"
-            className="w-[137px] border border-[#C0C0C0] bg-white p-3 text-[#333333]"
-            onClick={handleBack}
-          >
-            Back
-          </Button>
+          <div className="mt-8 flex justify-between gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              className="flex-1 sm:w-[137px] sm:flex-none"
+              onClick={handleBack}
+            >
+              Back
+            </Button>
 
-          <Button type="submit" className="w-[137px] p-3">
-            Continue
-          </Button>
-        </div>
-      </form>
+            <Button
+              type="submit"
+              className="flex-1 p-3 sm:w-[137px] sm:flex-none"
+              disabled={form.formState.isSubmitting}
+            >
+              Continue
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   )
 }

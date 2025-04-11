@@ -1,4 +1,5 @@
 'use client'
+import { ChevronRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '../ui/button'
 
@@ -34,69 +35,25 @@ export default function FinishStep() {
           What&apos;s next?
         </p>
         <div className="flex items-center gap-3">
-          <svg
-            width="13"
-            height="20"
-            viewBox="0 0 13 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.025 20L0.25 18.225L8.475 10L0.25 1.775L2.025 0L12.025 10L2.025 20Z"
-              fill="#5F6368"
-            />
-          </svg>
+          <ChevronRight className="text-gray-500" />
           <p className="text-base">
             Add your first sale, expense or vendor bill
           </p>
         </div>
         <div className="mt-3 flex items-center gap-3">
-          <svg
-            width="13"
-            height="20"
-            viewBox="0 0 13 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.025 20L0.25 18.225L8.475 10L0.25 1.775L2.025 0L12.025 10L2.025 20Z"
-              fill="#5F6368"
-            />
-          </svg>
+          <ChevronRight className="text-gray-500" />
           <p className="text-base">
             Upload a bank statement to start reconciling
           </p>
         </div>
         <div className="mt-3 flex items-center gap-3">
-          <svg
-            width="13"
-            height="20"
-            viewBox="0 0 13 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.025 20L0.25 18.225L8.475 10L0.25 1.775L2.025 0L12.025 10L2.025 20Z"
-              fill="#5F6368"
-            />
-          </svg>
+          <ChevronRight className="text-gray-500" />
           <p className="text-base">
             Set up your chart of accounts (categories)
           </p>
         </div>
         <div className="mt-3 flex items-center gap-3">
-          <svg
-            width="13"
-            height="20"
-            viewBox="0 0 13 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.025 20L0.25 18.225L8.475 10L0.25 1.775L2.025 0L12.025 10L2.025 20Z"
-              fill="#5F6368"
-            />
-          </svg>
+          <ChevronRight className="text-gray-500" />
           <p className="text-base">Review your ledgers</p>
         </div>
       </div>
