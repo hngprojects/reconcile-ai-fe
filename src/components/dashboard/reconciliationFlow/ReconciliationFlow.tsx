@@ -4,21 +4,19 @@ import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import ReconciliationStepperForm from './form/stepper/ReconciliationStepperForm'
 
-// import { toast } from "sonner";
-
 export default function ReconciliationFlow() {
   const router = useRouter()
 
   return (
     <div className="mb-20 flex flex-col gap-6 self-stretch">
       <div className="space-y-8">
-        <div
+        <button
           onClick={() => router.back()}
           className="flex w-fit cursor-pointer items-center gap-2"
         >
           <ArrowLeft className="h-6 w-6" />
           <p>Back to reconciliation</p>
-        </div>
+        </button>
 
         <div>
           <h1 className="text-2xl font-semibold">Bank Reconciliation</h1>
