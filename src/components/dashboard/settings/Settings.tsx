@@ -1,5 +1,6 @@
 'use client'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -17,8 +18,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  availableCurrencies,
+  businessTypes,
+  fiscalYear,
+} from '@/data/dashboardConfig'
 import { Building2, CreditCard, User, UserRound } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link'
 
 export function Settings() {
@@ -145,14 +150,11 @@ export function Settings() {
                     <SelectValue placeholder="Select business type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="fashion">Fashion</SelectItem>
-                    <SelectItem value="beauty">Beauty</SelectItem>
-                    <SelectItem value="service">Service</SelectItem>
-                    <SelectItem value="retail">Retail</SelectItem>
-                    <SelectItem value="food">Food & Beverage</SelectItem>
-                    <SelectItem value="hotel">Hotel & Hospitality</SelectItem>
-                    <SelectItem value="tech">Technology</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    {businessTypes.map((business, index) => (
+                      <SelectItem key={index} value={business.value}>
+                        {business.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -178,9 +180,11 @@ export function Settings() {
                     <SelectValue placeholder="Select fiscal year" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="jan-dec">January - December</SelectItem>
-                    <SelectItem value="apr-mar">April - March</SelectItem>
-                    <SelectItem value="jul-jun">July - June</SelectItem>
+                    {fiscalYear.map((range, index) => (
+                      <SelectItem key={index} value={range.value}>
+                        {range.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -194,10 +198,11 @@ export function Settings() {
                     <SelectValue placeholder="Select currency" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ngn">Nigerian Naira (₦)</SelectItem>
-                    <SelectItem value="usd">US Dollar ($)</SelectItem>
-                    <SelectItem value="eur">Euro (€)</SelectItem>
-                    <SelectItem value="gbp">British Pound (£)</SelectItem>
+                    {availableCurrencies.map((currency, index) => (
+                      <SelectItem key={index} value={currency.value}>
+                        {currency.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
