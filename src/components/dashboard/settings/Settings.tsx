@@ -1,6 +1,5 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -23,10 +22,16 @@ import {
   businessTypes,
   fiscalYear,
 } from '@/data/dashboardConfig'
-import { Building2, CreditCard, User, UserRound } from 'lucide-react'
+import { Building2, CreditCard, User } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
+import { ProfileImage } from './ProfileImage'
 
 export function Settings() {
+  const [photoFile, setPhotoFile] = useState<File | null>(null)
+
+  console.log({ photoFile })
+
   return (
     <div>
       <div className="mb-6 flex flex-col items-start justify-between md:flex-row md:items-center">
@@ -49,25 +54,7 @@ export function Settings() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex flex-col items-start gap-6">
-              <div className="flex items-center gap-4">
-                <Avatar className="h-24 w-24">
-                  <AvatarImage src="/placeholder.svg?height=96&width=96" />
-                  <AvatarFallback>
-                    <div
-                      aria-hidden="true"
-                      className="flex items-center justify-center rounded-full"
-                    >
-                      <UserRound
-                        className="size-12 opacity-60"
-                        strokeWidth={1.5}
-                      />
-                    </div>
-                  </AvatarFallback>
-                </Avatar>
-                <Button variant="outline" size="sm" className="font-normal">
-                  Change Photo
-                </Button>
-              </div>
+              <ProfileImage onUpload={(file) => setPhotoFile(file)} />
 
               <div className="w-full flex-1 space-y-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
