@@ -57,7 +57,7 @@ export const ProfileImage = ({
               onClick={handleRemove}
               size="icon"
               variant="destructive"
-              className="border-background absolute top-0 -right-2 size-6 cursor-pointer rounded-full border-2"
+              className="border-background absolute top-0 -right-1 size-6 cursor-pointer rounded-full border-2"
               aria-label="Remove image"
             >
               <X size={16} />
@@ -68,7 +68,7 @@ export const ProfileImage = ({
             <Button
               variant="ghost"
               onClick={handleThumbnailClick}
-              className="bg-primary dark:bg-primary-foreground dark:border-muted-foreground hover:bg-primary/80 absolute -right-1 bottom-0 z-20 h-auto cursor-pointer rounded-full !px-2 shadow-md dark:border"
+              className="bg-primary dark:bg-primary-foreground dark:border-muted-foreground hover:bg-primary/90 absolute -right-1 bottom-0 z-20 h-auto cursor-pointer rounded-full !px-2 shadow-md transition-all duration-200 dark:border"
               aria-label={previewUrl ? 'Change photo' : 'Upload photo'}
             >
               <Camera className="ml-auto rounded-full text-white" />
@@ -79,15 +79,6 @@ export const ProfileImage = ({
         {fileName && (
           <p className="text-muted-foreground text-xs">{fileName}</p>
         )}
-
-        {/* <Button
-          variant="outline"
-          size="sm"
-          onClick={handleThumbnailClick}
-          className="font-normal"
-        >
-          {!!userImage ? 'Change Photo' : 'Upload Photo'}
-        </Button> */}
       </div>
 
       <div className="sr-only" aria-live="polite" role="status">
