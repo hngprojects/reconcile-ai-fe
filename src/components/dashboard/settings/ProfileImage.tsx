@@ -54,6 +54,7 @@ export const ProfileImage = ({
 
           {previewUrl && (
             <Button
+              type="button"
               onClick={handleRemove}
               size="icon"
               variant="destructive"
@@ -66,6 +67,7 @@ export const ProfileImage = ({
 
           {!previewUrl && (
             <Button
+              type="button"
               variant="ghost"
               onClick={handleThumbnailClick}
               className="bg-primary dark:bg-primary-foreground dark:border-muted-foreground hover:bg-primary/90 absolute -right-1 bottom-0 z-20 h-auto cursor-pointer rounded-full !px-2 shadow-md transition-all duration-200 dark:border"

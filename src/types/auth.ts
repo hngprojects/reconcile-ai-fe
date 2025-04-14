@@ -38,6 +38,7 @@ export interface User {
   payment_plan: PaymentPlan
   access_token: string
   is_new_user: boolean
+  phone: string
 }
 
 export interface AuthData {

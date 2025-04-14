@@ -1,17 +1,32 @@
 'use client'
 
 import type React from 'react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import { create } from 'zustand'
+
+interface ImageUploadState {
+  previewUrl: string | null
+  fileName: string | null
+  setPreviewUrl: (url: string | null) => void
+  setFileName: (name: string | null) => void
+}
+
+const useImageUploadStore = create<ImageUploadState>((set) => ({
+  previewUrl: null,
+  fileName: null,
+  setPreviewUrl: (url) => set({ previewUrl: url }),
+  setFileName: (name) => set({ fileName: name }),
+}))
 
 interface UseImageUploadProps {
   onUpload?: (file: File) => void
 }
 
 export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
+  const { previewUrl, fileName, setPreviewUrl, setFileName } =
+    useImageUploadStore()
   const previewRef = useRef<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const [fileName, setFileName] = useState<string | null>(null)
 
   const handleThumbnailClick = useCallback(() => {
     fileInputRef.current?.click()
@@ -28,7 +43,7 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
         onUpload?.(file)
       }
     },
-    [onUpload]
+    [onUpload, setFileName, setPreviewUrl]
   )
 
   const handleRemove = useCallback(() => {
@@ -41,7 +56,7 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
     if (fileInputRef.current) {
       fileInputRef.current.value = ''
     }
-  }, [previewUrl])
+  }, [previewUrl, setPreviewUrl, setFileName])
 
   useEffect(() => {
     return () => {

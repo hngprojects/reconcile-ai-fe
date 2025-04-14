@@ -1,34 +1,13 @@
 'use client'
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  availableCurrencies,
-  businessTypes,
-  fiscalYear,
-} from '@/data/dashboardConfig'
-import { BarChart3Icon, Building2, User } from 'lucide-react'
+import { Building2, BarChart3Icon, User } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
-import { ProfileImage } from './ProfileImage'
-import { Button } from '@/components/ui/button'
+import { ProfileTab } from './ProfileTab'
+import { BusinessTab } from './BusinessTab'
+import { AccountTab } from './AccountTab'
 
 export function Settings() {
-  const [photoFile, setPhotoFile] = useState<File | null>(null)
   const [activeTab, setActiveTab] = useState<string>('profile')
   const profileTabRef = useRef<HTMLButtonElement>(null)
   const businessTabRef = useRef<HTMLButtonElement>(null)
@@ -57,8 +36,6 @@ export function Settings() {
       })
     }
   }, [activeTab])
-
-  console.log({ photoFile })
 
   return (
     <Tabs
@@ -115,199 +92,17 @@ export function Settings() {
         </div>
       </TabsList>
 
-      {activeTab === 'profile' && (
-        <TabsContent value="profile" className="mt-1">
-          <Card className="shadow-none">
-            <CardHeader>
-              <CardTitle>Profile Information</CardTitle>
-              <CardDescription>
-                Manage your personal information
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex flex-col items-start gap-6">
-                <ProfileImage onUpload={(file) => setPhotoFile(file)} />
+      <TabsContent value="profile" className="mt-1">
+        <ProfileTab />
+      </TabsContent>
 
-                <div className="w-full flex-1 space-y-4">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="first-name" className="font-normal">
-                        First Name
-                      </Label>
-                      <Input
-                        id="first-name"
-                        placeholder="Enter First Name"
-                        className="h-11 placeholder:text-sm md:h-12"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="last-name" className="font-normal">
-                        Last Name
-                      </Label>
-                      <Input
-                        id="last-name"
-                        placeholder="Enter Last Name"
-                        className="h-11 placeholder:text-sm md:h-12"
-                      />
-                    </div>
-                  </div>
+      <TabsContent value="business" className="mt-1">
+        <BusinessTab />
+      </TabsContent>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="font-normal">
-                      Email
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="Enter Email Address"
-                      className="h-11 placeholder:text-sm md:h-12"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="font-normal">
-                      Phone Number
-                    </Label>
-                    <Input
-                      id="phone"
-                      placeholder="Enter Phone Number"
-                      className="h-11 placeholder:text-sm md:h-12"
-                    />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="mt-6 flex items-center justify-end gap-2">
-            <Button
-              variant="outline"
-              className="text-primary hover:text-primary"
-            >
-              Reset
-            </Button>
-
-            <Button className="font-normal">Save Changes</Button>
-          </div>
-        </TabsContent>
-      )}
-
-      {activeTab === 'business' && (
-        <TabsContent value="business" className="mt-1">
-          <Card className="shadow-none">
-            <CardHeader>
-              <CardTitle>Business Information</CardTitle>
-              <CardDescription>Manage your business details</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="business-name" className="font-normal">
-                    Business Name
-                  </Label>
-                  <Input
-                    id="business-name"
-                    placeholder="Enter Business Name"
-                    className="h-11 placeholder:text-sm md:h-12"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="business-type" className="font-normal">
-                    Business Type
-                  </Label>
-                  <Select>
-                    <SelectTrigger className="!h-11 w-full md:!h-12">
-                      <SelectValue placeholder="Select business type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {businessTypes.map((business, index) => (
-                        <SelectItem key={index} value={business.value}>
-                          {business.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="mt-6 flex items-center justify-end gap-2">
-            <Button
-              variant="outline"
-              className="text-primary hover:text-primary"
-            >
-              Reset
-            </Button>
-
-            <Button className="font-normal">Save Changes</Button>
-          </div>
-        </TabsContent>
-      )}
-
-      {activeTab === 'account' && (
-        <TabsContent value="account" className="mt-1">
-          <Card className="shadow-none">
-            <CardHeader>
-              <CardTitle>Accounting Settings</CardTitle>
-              <CardDescription>
-                Configure your accounting preferences
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="fiscal-year" className="font-normal">
-                    Fiscal Year
-                  </Label>
-                  <Select>
-                    <SelectTrigger className="!h-11 w-full md:!h-12">
-                      <SelectValue placeholder="Select fiscal year" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {fiscalYear.map((range, index) => (
-                        <SelectItem key={index} value={range.value}>
-                          {range.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="currency" className="font-normal">
-                    Default Currency
-                  </Label>
-                  <Select>
-                    <SelectTrigger className="!h-11 w-full md:!h-12">
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {availableCurrencies.map((currency, index) => (
-                        <SelectItem key={index} value={currency.value}>
-                          {currency.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="mt-6 flex items-center justify-end gap-2">
-            <Button
-              variant="outline"
-              className="text-primary hover:text-primary"
-            >
-              Reset
-            </Button>
-
-            <Button className="font-normal">Save Changes</Button>
-          </div>
-        </TabsContent>
-      )}
+      <TabsContent value="account" className="mt-1">
+        <AccountTab />
+      </TabsContent>
     </Tabs>
   )
 }
