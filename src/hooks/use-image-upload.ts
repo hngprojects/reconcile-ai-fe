@@ -9,6 +9,7 @@ interface ImageUploadState {
   fileName: string | null
   setPreviewUrl: (url: string | null) => void
   setFileName: (name: string | null) => void
+  resetState: () => void
 }
 
 const useImageUploadStore = create<ImageUploadState>((set) => ({
@@ -16,6 +17,7 @@ const useImageUploadStore = create<ImageUploadState>((set) => ({
   fileName: null,
   setPreviewUrl: (url) => set({ previewUrl: url }),
   setFileName: (name) => set({ fileName: name }),
+  resetState: () => set({ previewUrl: null, fileName: null }),
 }))
 
 interface UseImageUploadProps {
@@ -23,7 +25,7 @@ interface UseImageUploadProps {
 }
 
 export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
-  const { previewUrl, fileName, setPreviewUrl, setFileName } =
+  const { previewUrl, fileName, setPreviewUrl, setFileName, resetState } =
     useImageUploadStore()
   const previewRef = useRef<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -46,17 +48,20 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
     [onUpload, setFileName, setPreviewUrl]
   )
 
+  const resetFileInput = useCallback(() => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }, [])
+
   const handleRemove = useCallback(() => {
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl)
     }
-    setPreviewUrl(null)
-    setFileName(null)
+    resetState()
     previewRef.current = null
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
-    }
-  }, [previewUrl, setPreviewUrl, setFileName])
+    resetFileInput()
+  }, [previewUrl, resetState, resetFileInput])
 
   useEffect(() => {
     return () => {

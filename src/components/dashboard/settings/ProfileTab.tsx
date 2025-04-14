@@ -31,12 +31,13 @@ export function ProfileTab() {
   const { handleRemove } = useImageUpload()
   const [photoFile, setPhotoFile] = useState<File | null>(null)
   const user = session?.user
+  const [resetKey, setResetKey] = useState(0)
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      firstName: user?.name.split(' ')[0],
-      lastName: user?.name.split(' ')[1],
+      firstName: user?.name.split(' ')[0] || '',
+      lastName: user?.name.split(' ')[1] || '',
       email: user?.email,
       phoneNumber: user?.phone,
     },
@@ -50,6 +51,8 @@ export function ProfileTab() {
     form.reset()
     setPhotoFile(null)
     handleRemove()
+
+    setResetKey((prevKey) => prevKey + 1)
   }
 
   return (
@@ -63,6 +66,7 @@ export function ProfileTab() {
           <CardContent className="space-y-6">
             <div className="flex flex-col items-start gap-6">
               <ProfileImage
+                key={resetKey}
                 onUpload={(file) => {
                   setPhotoFile(file)
                   form.setValue('profileImage', file)
@@ -120,7 +124,7 @@ export function ProfileTab() {
                         <Input
                           type="email"
                           placeholder="Enter Email Address"
-                          className="h-11 placeholder:text-sm md:h-12"
+                          className="disabled:bg-muted h-11 placeholder:text-sm md:h-12"
                           {...field}
                           disabled
                         />
