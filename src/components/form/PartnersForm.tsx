@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { handlePartnerSubmission } from '@/lib/api'
-import type { PartnerResponse } from '@/lib/api'
+import { handlePartnerSubmission } from '@/actions/api'
+import type { PartnerResponse } from '@/actions/api'
 import { fetchCountryCodes } from '@/lib/constants'
 import {
   Select,

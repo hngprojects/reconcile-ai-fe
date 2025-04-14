@@ -1,3 +1,5 @@
+'use server'
+
 import {
   CONTACT_US_API_URL,
   NEWSLETTER_API_URL,
@@ -11,7 +13,7 @@ import {
   TOKEN_VALIDATOR_URL,
   USER_PROFILE_UPDATE_API_URL,
   BILLING_HISTORY_API_URL,
-} from './apiEndpoints'
+} from '../lib/apiEndpoints'
 import { ManualRequestBody } from '@/types/reconciliation'
 import { getSession } from 'next-auth/react'
 
