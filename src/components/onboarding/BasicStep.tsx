@@ -1,12 +1,18 @@
 'use client'
-import { Label } from '../ui/label'
-import { Input } from '../ui/input'
+import {
+  availableCurrencies,
+  businessTypes,
+  fiscalYear,
+} from '@/data/dashboardConfig'
+import { useOnBoardingStore } from '@/store/onboarding-store'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { ArrowRightIcon } from '../Icon/Icons'
 import { Button } from '../ui/button'
-import { z } from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useOnBoardingStore } from '@/store/onboarding-store'
+import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 import {
   Select,
   SelectContent,
@@ -14,8 +20,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select'
-import { FormControl, FormField, FormItem, FormMessage } from '../ui/form'
-import { Form } from '../ui/form'
 
 export const basicInfoSchema = z.object({
   businessName: z.string().min(1, 'Business name is required').max(100),
@@ -95,13 +99,11 @@ export default function BasicsStep() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="fashion">Fashion</SelectItem>
-                    <SelectItem value="beauty">Beauty</SelectItem>
-                    <SelectItem value="service">Service</SelectItem>
-                    <SelectItem value="retail">Retail</SelectItem>
-                    <SelectItem value="food">Food & Beverage</SelectItem>
-                    <SelectItem value="tech">Technology</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    {businessTypes.map((business, index) => (
+                      <SelectItem key={index} value={business.value}>
+                        {business.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -131,11 +133,11 @@ export default function BasicsStep() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="January - December">
-                      January - December
-                    </SelectItem>
-                    <SelectItem value="April - March">April - March</SelectItem>
-                    <SelectItem value="July - June">July - June</SelectItem>
+                    {fiscalYear.map((range, index) => (
+                      <SelectItem key={index} value={range.value}>
+                        {range.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -165,10 +167,11 @@ export default function BasicsStep() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="NGN">Nigerian Naira (₦)</SelectItem>
-                    <SelectItem value="USD">US Dollar ($)</SelectItem>
-                    <SelectItem value="EUR">Euro (€)</SelectItem>
-                    <SelectItem value="GBP">British Pound (£)</SelectItem>
+                    {availableCurrencies.map((currency, index) => (
+                      <SelectItem key={index} value={currency.value}>
+                        {currency.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
