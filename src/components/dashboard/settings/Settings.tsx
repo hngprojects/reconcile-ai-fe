@@ -43,12 +43,12 @@ export function Settings() {
       onValueChange={setActiveTab}
       className="max-w-full"
     >
-      <TabsList className="hide-scrollbar grid min-h-fit w-full justify-normal overflow-x-scroll !rounded-[8px] border-4 border-[#F5F5F5] bg-[#F5F5F5] !p-0 dark:border-[#1A1A1A] dark:bg-[#1A1A1A]">
-        <div className="flex min-w-md gap-1 p-0.5">
+      <TabsList className="hide-scrollbar grid min-h-fit w-full snap-x snap-mandatory justify-normal overflow-x-scroll !rounded-[8px] border-4 border-[#F5F5F5] bg-[#F5F5F5] !p-0 dark:border-[#1A1A1A] dark:bg-[#1A1A1A]">
+        <div className="flex min-w-full gap-1 p-0.5">
           <TabsTrigger
             ref={profileTabRef}
             value="profile"
-            className={`min-h-[36px] gap-[10px] rounded-[4px] px-3 pt-[4px] pb-[4px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${
+            className={`min-h-[36px] snap-center gap-[10px] rounded-[4px] px-3 pt-[4px] pb-[4px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${
               activeTab === 'profile'
                 ? 'bg-white shadow-md dark:!bg-[#000000]'
                 : ''
@@ -63,7 +63,7 @@ export function Settings() {
           <TabsTrigger
             ref={businessTabRef}
             value="business"
-            className={`min-h-[36px] gap-[10px] rounded-[4px] px-3 pt-[4px] pb-[4px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${
+            className={`min-h-[36px] snap-center gap-[10px] rounded-[4px] px-3 pt-[4px] pb-[4px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${
               activeTab === 'business'
                 ? 'bg-white shadow-md dark:!bg-[#000000]'
                 : ''
@@ -78,7 +78,7 @@ export function Settings() {
           <TabsTrigger
             ref={accountTabRef}
             value="account"
-            className={`min-h-[36px] gap-[10px] rounded-[4px] px-3 pt-[4px] pb-[4px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${
+            className={`min-h-[36px] snap-center gap-[10px] rounded-[4px] px-3 pt-[4px] pb-[4px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${
               activeTab === 'account'
                 ? 'bg-white shadow-md dark:!bg-[#000000]'
                 : ''
