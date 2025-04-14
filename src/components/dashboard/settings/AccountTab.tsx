@@ -58,7 +58,7 @@ export function AccountTab() {
                 control={form.control}
                 name="fiscalYear"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="h-fit">
                     <FormLabel className="font-normal">Fiscal Year</FormLabel>
                     <Select
                       onValueChange={field.onChange}
@@ -86,7 +86,7 @@ export function AccountTab() {
                 control={form.control}
                 name="currency"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="h-fit">
                     <FormLabel className="font-normal">
                       Default Currency
                     </FormLabel>
