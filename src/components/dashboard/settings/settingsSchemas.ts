@@ -14,7 +14,7 @@ export const profileFormSchema = z.object({
     .string({ required_error: 'Phone number is required' })
     .min(1, 'Phone number is required')
     .regex(
-      /^\+[1-9]{10,15}$/,
+      /^\+[1-9][0-9]{10,15}$/,
       'Please enter a valid international phone number with country code and 10 to 15 digits (e.g., +1234567890)'
     )
     .transform((phone) => {
