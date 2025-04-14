@@ -39,7 +39,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Generate .env file from template
+      - name: Generate .env file from example
         run: |
           echo "Generating .env based on branch"
       
@@ -65,8 +65,8 @@ jobs:
           export AUTH_GOOGLE_SECRET="${{ secrets.AUTH_GOOGLE_SECRET }}"
           export AUTH_SECRET="${{ secrets.AUTH_SECRET }}"
       
-          # Generate .env from .env.template using envsubst
-          envsubst < .env.template > .env
+          # Generate .env from .env.example using envsubst
+          envsubst < .env.example > .env
         shell: bash
       
 
