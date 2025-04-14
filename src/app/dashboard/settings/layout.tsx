@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between gap-4 rounded-md border p-4">
+            <div className="flex flex-col justify-between gap-4 rounded-md border p-4 min-[375px]:flex-row min-[375px]:items-center">
               <div className="xl:w-1/2">
                 <h3 className="font-medium">Charts of Accounts</h3>
                 <p className="text-muted-foreground mt-2 text-sm">
@@ -58,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="flex items-center justify-between gap-4 rounded-md border p-4">
+              <div className="flex flex-col justify-between gap-4 rounded-md border p-4 min-[375px]:flex-row min-[375px]:items-center">
                 <div>
                   <h3 className="font-medium">Current Plan: Starter</h3>
                   <p className="mt-1 text-sm">Renews on April 30, 2025</p>
