@@ -15,6 +15,7 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
  * @property {Record<string, string>} [headers] - Headers to include in the request.
  * @property {TRequestBody} [body] - The body content to send with the request, if applicable.
  * @property {Record<string, string>} [params] - URL parameters to be appended to the endpoint.
+ * @property {boolean} [isFormData] - Flag to indicate if the body is FormData (to prevent JSON stringification).
  */
 interface FetchOptions<TRequestBody>
   extends Omit<RequestInit, 'body' | 'method'> {
@@ -22,6 +23,7 @@ interface FetchOptions<TRequestBody>
   headers?: Record<string, string>
   body?: TRequestBody
   params?: Record<string, string>
+  isFormData?: boolean
 }
 
 /**
@@ -97,6 +99,7 @@ export const createFetchUtil = (config: FetchConfig) => {
       headers = {},
       body,
       params,
+      isFormData = false,
       ...restOptions
     } = options
 
@@ -115,11 +118,16 @@ export const createFetchUtil = (config: FetchConfig) => {
       })
     }
 
-    const mergedHeaders = {
-      'Content-Type': 'application/json',
-      ...defaultHeaders,
-      ...headers,
-    }
+    const mergedHeaders = isFormData
+      ? {
+          ...defaultHeaders,
+          ...headers,
+        }
+      : {
+          'Content-Type': 'application/json',
+          ...defaultHeaders,
+          ...headers,
+        }
 
     const fetchOptions: RequestInit = {
       method,
@@ -128,7 +136,12 @@ export const createFetchUtil = (config: FetchConfig) => {
     }
 
     if (body) {
-      fetchOptions.body = JSON.stringify(body)
+      if (body instanceof FormData) {
+        // Don't stringify FormData objects
+        fetchOptions.body = body
+      } else {
+        fetchOptions.body = JSON.stringify(body)
+      }
     }
 
     console.log(body)
