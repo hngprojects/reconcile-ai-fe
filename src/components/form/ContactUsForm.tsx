@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { handleContactUs } from '@/actions/api'
+import { handleContactUs } from '@/lib/api'
 import {
   Select,
   SelectContent,
