@@ -1,32 +1,39 @@
 'use client'
 
 import type React from 'react'
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { create } from 'zustand'
 
 interface ImageUploadState {
   previewUrl: string | null
   fileName: string | null
+  photoFile: File | null
   setPreviewUrl: (url: string | null) => void
   setFileName: (name: string | null) => void
+  setPhotoFile: (file: File | null) => void
   resetState: () => void
 }
 
 const useImageUploadStore = create<ImageUploadState>((set) => ({
   previewUrl: null,
   fileName: null,
+  photoFile: null,
   setPreviewUrl: (url) => set({ previewUrl: url }),
   setFileName: (name) => set({ fileName: name }),
+  setPhotoFile: (file) => set({ photoFile: file }),
   resetState: () => set({ previewUrl: null, fileName: null }),
 }))
 
-interface UseImageUploadProps {
-  onUpload?: (file: File) => void
-}
-
-export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
-  const { previewUrl, fileName, setPreviewUrl, setFileName, resetState } =
-    useImageUploadStore()
+export function useImageUpload() {
+  const {
+    previewUrl,
+    fileName,
+    setPreviewUrl,
+    setFileName,
+    resetState,
+    photoFile,
+    setPhotoFile,
+  } = useImageUploadStore()
   const previewRef = useRef<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -42,10 +49,10 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
         const url = URL.createObjectURL(file)
         setPreviewUrl(url)
         previewRef.current = url
-        onUpload?.(file)
+        setPhotoFile(file)
       }
     },
-    [onUpload, setFileName, setPreviewUrl]
+    [setPhotoFile, setFileName, setPreviewUrl]
   )
 
   const resetFileInput = useCallback(() => {
@@ -63,14 +70,6 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
     resetFileInput()
   }, [previewUrl, resetState, resetFileInput])
 
-  useEffect(() => {
-    return () => {
-      if (previewRef.current) {
-        URL.revokeObjectURL(previewRef.current)
-      }
-    }
-  }, [])
-
   return {
     previewUrl,
     fileName,
@@ -79,5 +78,7 @@ export function useImageUpload({ onUpload }: UseImageUploadProps = {}) {
     handleFileChange,
     handleRemove,
     setPreviewUrl,
+    photoFile,
+    setPhotoFile,
   }
 }
