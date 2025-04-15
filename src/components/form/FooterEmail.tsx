@@ -139,7 +139,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect } from 'react'
-import { handleAddToNewsLetter } from '@/actions/api'
+import { handleAddToNewsLetter } from '@/lib/api'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 

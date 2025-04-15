@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Footer from '@/components/Footer'
 import Container from '@/components/Container'
-import { getBillingHistory } from '@/actions/api'
+import { getBillingHistory } from '@/lib/api'
 import { Loader } from '@/components/ui/loader'
 // import { toast } from "sonner";
 

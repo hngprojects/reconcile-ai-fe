@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { handleAddToWaitlist } from '@/actions/api'
+import { handleAddToWaitlist } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Send } from 'lucide-react'
 import { useState } from 'react'

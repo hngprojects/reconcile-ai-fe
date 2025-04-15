@@ -16,7 +16,7 @@ import {
   ReconciliationResponse,
   FrontendTransaction,
 } from '../types/frontendResponseTypes'
-import { updateReconciliation, fetchReconciliation } from '@/actions/api'
+import { updateReconciliation, fetchReconciliation } from '@/lib/api'
 import { ManualRequestBody } from '@/types/reconciliation'
 import { toast } from 'sonner'
 import { transformReconciliationData } from '../helpers/transformReconciliationData'
