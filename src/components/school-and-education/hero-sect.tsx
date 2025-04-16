@@ -2,8 +2,13 @@
 import React from 'react'
 import Image from 'next/image'
 import Container from '@/components/Container'
+import TypeWriterButton from '../buttons/TypeWriterButton'
+import { useSession } from 'next-auth/react'
 
 export default function HeroSection() {
+  const { status } = useSession()
+  const isAuthenticated = status === 'authenticated'
+
   const handleDemoClick = (e: React.MouseEvent) => {
     e.preventDefault()
     document.getElementById('demo-form')?.scrollIntoView({ behavior: 'smooth' })
@@ -37,9 +42,20 @@ export default function HeroSection() {
 
             {/* Buttons: Smaller on Mobile & Side-by-Side */}
             <div className="flex gap-3">
-              <button className="cursor-pointer rounded-md bg-[#2E604A] px-4 py-2 text-xs font-medium text-white shadow transition hover:bg-[#254B3A] sm:px-6 sm:py-3 sm:text-sm md:text-base">
-                Start Reconciliation
-              </button>
+              <TypeWriterButton
+                path={isAuthenticated ? '/dashboard' : '/file-upload'}
+                aria-label={
+                  isAuthenticated
+                    ? 'Access Your Dashboard'
+                    : 'Start Reconciliation'
+                }
+                text={
+                  isAuthenticated
+                    ? 'Access Your Dashboard'
+                    : 'Start Reconciliation'
+                }
+                className="flex h-12 w-full cursor-pointer items-center justify-center rounded-[8px] bg-[#297B65] px-4 py-2 text-sm font-semibold text-white hover:bg-[#297B65]/90 sm:w-52"
+              />
               <button
                 onClick={handleDemoClick}
                 className="cursor-pointer rounded-md border border-[#2E604A] px-4 py-2 text-xs font-medium text-[#2E604A] transition hover:bg-[#2E604A] hover:text-white sm:px-6 sm:py-3 sm:text-sm md:text-base"

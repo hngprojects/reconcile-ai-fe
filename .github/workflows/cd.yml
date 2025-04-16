@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - dev
+      - staging
 
 jobs:
   deploy:
@@ -38,8 +39,36 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Copy .env.example to .env
-        run: cp .env.example .env
+      - name: Generate .env file from example
+        run: |
+          echo "Generating .env based on branch"
+      
+          BRANCH_NAME="${GITHUB_REF##*/}"
+      
+          if [[ "$BRANCH_NAME" == "main" ]]; then
+            export BASE_API_URL="https://api.reconxi.com/api/v1"
+            export AUTH_URL="https://reconxi.com"
+          elif [[ "$BRANCH_NAME" == "dev" ]]; then
+            export BASE_API_URL="https://api-dev.reconxi.com/api/v1"
+            export AUTH_URL="https://dev.reconxi.com"
+          elif [[ "$BRANCH_NAME" == "staging" ]]; then
+            export BASE_API_URL="https://staging.reconxi.com/api/v1"
+            export AUTH_URL="https://stage.reconxi.com"
+          else
+            echo "Unknown branch: $BRANCH_NAME"
+            exit 1
+          fi
+      
+          export NEXT_PUBLIC_BASE_API_URL="$BASE_API_URL"
+          export GA_ID="${{ secrets.GA_ID }}"
+          export AUTH_GOOGLE_ID="${{ secrets.AUTH_GOOGLE_ID }}"
+          export AUTH_GOOGLE_SECRET="${{ secrets.AUTH_GOOGLE_SECRET }}"
+          export AUTH_SECRET="${{ secrets.AUTH_SECRET }}"
+      
+          # Generate .env from .env.example using envsubst
+          envsubst < .env.example > .env
+        shell: bash
+      
 
       - name: Build Next.js App
         run: pnpm run build
@@ -64,10 +93,14 @@ jobs:
               FE_PATH="/home/reconxi/frontend/main"
               PORT=3005
               PM2_NAME="reconcile-fe"
-            else
+            elif [[ "$BRANCH" == "dev" ]]; then
               FE_PATH="/home/reconxi/frontend/staging"
               PORT=3006
               PM2_NAME="reconcile-fe-dev"
+            else
+              FE_PATH="/home/reconxi/frontend/stagingnew"
+              PORT=3007
+              PM2_NAME="fe-staging"
             fi
 
             cd "$FE_PATH" || { echo "Failed to change directory!"; exit 1; }

@@ -5,7 +5,7 @@ import { auth } from '@/auth'
 import { PaymentPlan, User } from '@/types/auth'
 
 const apiHandler = createFetchUtil({
-  baseUrl: process.env.BASE_API_URL as string,
+  baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL as string,
 })
 
 export const delete_user_account = async (): Promise<
