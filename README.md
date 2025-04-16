@@ -99,5 +99,4 @@ reconcile-ai-fe/
 ## <span id="contributing"> 🤝 Contributing </span>
 
 Please see [CONTRIBUTING](CONTRIBUTING.md)
-main
 
