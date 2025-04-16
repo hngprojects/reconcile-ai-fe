@@ -6,12 +6,7 @@ import { useImageUpload } from '@/hooks/use-image-upload'
 import { Camera, UserRound, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 
-export const ProfileImage = ({
-  onUpload,
-}: {
-  defaultImage?: string
-  onUpload?: (file: File) => void
-}) => {
+export const ProfileImage = () => {
   const { data: session } = useSession()
   const {
     previewUrl,
@@ -20,9 +15,7 @@ export const ProfileImage = ({
     handleFileChange,
     handleRemove,
     fileName,
-  } = useImageUpload({
-    onUpload: (file) => onUpload?.(file),
-  })
+  } = useImageUpload()
 
   const userImage = session?.user.avatar
   const imageUrl = previewUrl || userImage

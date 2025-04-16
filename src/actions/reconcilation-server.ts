@@ -8,7 +8,7 @@ import { createFetchUtil, HttpError, withAuth } from '../lib/fetch-utils'
 import { UpdateResponseData } from '@/types/backendResponseTypes'
 
 const apiHandler = createFetchUtil({
-  baseUrl: process.env.NEXT_PUBLIC_BASE_API_URL as string,
+  baseUrl: process.env.BASE_API_URL as string,
 })
 
 export const get_reconcilations = async (): Promise<
