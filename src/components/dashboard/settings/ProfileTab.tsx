@@ -1,9 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-import { profileFormSchema, ProfileFormValues } from './settingsSchemas'
+import { profileFormSchema, type ProfileFormValues } from './settingsSchemas'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -26,46 +26,71 @@ import { useImageUpload } from '@/hooks/use-image-upload'
 import { useSession } from 'next-auth/react'
 import { ProfileImage } from './ProfileImage'
 import { update_user_profile } from '@/actions/settings'
-import { UserInfo } from '@/types/settings'
+import type { UserInfo } from '@/types/settings'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { User } from '@/types/auth'
+import type { User } from '@/types/auth'
 
 export function ProfileTab() {
   const [isPending, startTransition] = useTransition()
   const { data: session, update } = useSession()
-  const { handleRemove, photoFile, setPhotoFile } = useImageUpload()
+  const { handleRemove, photoFile, setPhotoFile, previewUrl } = useImageUpload()
   const user = session?.user
   const [resetKey, setResetKey] = useState(0)
+  const [formChanged, setFormChanged] = useState(false)
+
+  console.log(user?.avatar)
 
   const userFirstName = user?.name.split(' ')[0]
   const userLastName = user?.name.split(' ')[1]
   const userEmail = user?.email
-  const userPhone = user?.phone
+  const userPhone = user?.phone_number
   const userCountry = user?.country
   const userCity = user?.city
 
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
-    defaultValues: {
+  // Store original values for change detection using useMemo
+  const originalValues = useMemo(
+    () => ({
       firstName: userFirstName || '',
       lastName: userLastName || '',
       email: userEmail,
       phoneNumber: userPhone || undefined,
       country: userCountry || undefined,
       city: userCity || undefined,
-    },
+    }),
+    [userFirstName, userLastName, userEmail, userPhone, userCountry, userCity]
+  )
+
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileFormSchema),
+    defaultValues: originalValues,
   })
 
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      const hasFormValueChanged =
+        value.firstName !== originalValues.firstName ||
+        value.lastName !== originalValues.lastName ||
+        value.country !== originalValues.country ||
+        value.city !== originalValues.city ||
+        value.phoneNumber !== originalValues.phoneNumber
+
+      setFormChanged(
+        hasFormValueChanged || photoFile !== null || previewUrl !== null
+      )
+    })
+
+    return () => subscription.unsubscribe()
+  }, [form, originalValues, photoFile, previewUrl])
+
+  useEffect(() => {
+    if (photoFile !== null || previewUrl !== null) {
+      setFormChanged(true)
+    }
+  }, [photoFile, previewUrl])
+
   const onSubmit = (data: ProfileFormValues) => {
-    if (
-      data.firstName === userFirstName &&
-      data.lastName === userLastName &&
-      data.country === userCountry &&
-      data.city === userCity &&
-      data.phoneNumber === userEmail &&
-      !photoFile
-    ) {
+    if (!formChanged) {
       return
     }
 
@@ -86,10 +111,11 @@ export function ProfileTab() {
           await update({
             user: {
               ...user,
-              name: `${data.firstName} ${data.lastName}`,
-              country: updatedUserInfo.country,
-              city: updatedUserInfo.city,
-              phone: updatedUserInfo.phoneNumber,
+              name: res.data?.name,
+              country: res.data?.country,
+              city: res.data?.city,
+              phone_number: res.data?.phone_number,
+              avatar: res.data?.avatar,
             } as User,
           })
 
@@ -97,6 +123,9 @@ export function ProfileTab() {
           toast.success('Changes Saved Successfully', {
             description: res.message,
           })
+
+          setFormChanged(false)
+          handleRemove()
         } else {
           toast.error('Failed to update changes', {
             description: res.message,
@@ -107,12 +136,21 @@ export function ProfileTab() {
   }
 
   const handleReset = () => {
-    form.reset()
+    form.reset(originalValues)
     setPhotoFile(null)
     handleRemove()
-
+    setFormChanged(false)
     setResetKey((prevKey) => prevKey + 1)
   }
+
+  // Debug logging
+  useEffect(() => {
+    console.log('Current state:', {
+      photoFile,
+      previewUrl,
+      formChanged,
+    })
+  }, [photoFile, previewUrl, formChanged])
 
   return (
     <Form {...form}>
@@ -255,12 +293,16 @@ export function ProfileTab() {
             variant="outline"
             className="text-primary hover:text-primary"
             onClick={handleReset}
-            disabled={isPending}
+            disabled={isPending || !formChanged}
           >
             Reset
           </Button>
 
-          <Button type="submit" className="font-normal" disabled={isPending}>
+          <Button
+            type="submit"
+            className="font-normal"
+            disabled={isPending || !formChanged}
+          >
             {isPending ? (
               <>
                 <Loader2 className="animate-spin" /> Saving

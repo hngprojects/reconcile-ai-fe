@@ -68,7 +68,8 @@ export function useImageUpload() {
     resetState()
     previewRef.current = null
     resetFileInput()
-  }, [previewUrl, resetState, resetFileInput])
+    setPhotoFile(null)
+  }, [previewUrl, resetState, resetFileInput, setPhotoFile])
 
   return {
     previewUrl,
