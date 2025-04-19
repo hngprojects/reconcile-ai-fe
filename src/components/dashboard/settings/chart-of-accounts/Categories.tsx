@@ -21,7 +21,7 @@ export function ChartOfAccountsCategories() {
             <div>
               <p className="font-semibold">{item.category}</p>
               <p className="text-muted-foreground text-sm">
-                {item.description}
+                {item.short_description}
               </p>
             </div>
 

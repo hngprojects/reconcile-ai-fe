@@ -1,27 +1,42 @@
-export const chartOfAccountsCategories = [
+import { expenseAccountData, revenueAccountData } from '@/mocks/chartOfAccounts'
+import { AccountCategory } from '@/types/chartOfAccounts'
+
+export const chartOfAccountsCategories: AccountCategory[] = [
   {
     category: 'Revenue',
-    description: 'Track income from sales and services',
+    short_description: 'Track income from sales and services',
+    full_description:
+      'This account tracks all income and appears in the Revenue section of your P&L report.',
     isActive: true,
+    data: revenueAccountData,
   },
   {
     category: 'Expenses',
-    description: 'Costs of running your business',
+    short_description: 'Costs of running your business',
+    full_description:
+      'This account tracks all costs and appears in the Expenses section of your P&L report.',
     isActive: true,
+    data: expenseAccountData,
   },
   {
     category: 'Assets',
-    description: 'Things your business owns',
+    short_description: 'Things your business owns',
+    full_description: 'Things your business owns',
     isActive: false,
+    data: [],
   },
   {
     category: 'Liabilities',
-    description: 'Debts your business owes',
+    short_description: 'Debts your business owes',
+    full_description: 'Debts your business owes',
     isActive: false,
+    data: [],
   },
   {
     category: 'Equity',
-    description: "Owner's stake in the business",
+    short_description: "Owner's stake in the business",
+    full_description: "Owner's stake in the business",
     isActive: false,
+    data: [],
   },
 ]
