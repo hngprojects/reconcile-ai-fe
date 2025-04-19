@@ -25,7 +25,7 @@ export function AccountTable({ account }: { account: AccountCategory }) {
     pageSize: 10,
   })
 
-  const acountColumn: ColumnDef<AccountItem>[] = [
+  const accountColumn: ColumnDef<AccountItem>[] = [
     {
       accessorKey: 'amount',
       header: 'Amount',
@@ -58,7 +58,7 @@ export function AccountTable({ account }: { account: AccountCategory }) {
 
   const accountTable = useReactTable({
     data: account.data,
-    columns: acountColumn,
+    columns: accountColumn,
     state: { pagination },
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -67,7 +67,7 @@ export function AccountTable({ account }: { account: AccountCategory }) {
   })
 
   return (
-    <div key={account.category} className="rounded-md border">
+    <div key={account.category} className="overflow-hidden rounded-md border">
       <div className="px-5 pt-5 pb-4 md:p-4">
         <h2 className="font-semibold">{account.category} Accounts</h2>
         <p className="text-muted-foreground text-sm">
@@ -91,11 +91,7 @@ export function AccountTable({ account }: { account: AccountCategory }) {
                       key={header.id}
                       className={cn(
                         'h-12 bg-gray-100 px-6 text-center font-semibold text-gray-700 dark:text-white',
-                        index < array.length - 1 && 'border-r',
-                        {
-                          'max-w-[230px]':
-                            header.id === 'amount' || header.id === 'balance',
-                        }
+                        index < array.length - 1 && 'border-r'
                       )}
                     >
                       {header.isPlaceholder
@@ -110,24 +106,35 @@ export function AccountTable({ account }: { account: AccountCategory }) {
               ))}
             </TableHeader>
             <TableBody>
-              {accountTable.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className={cn('transition-colors')}>
-                  {row.getVisibleCells().map((cell, index, array) => (
-                    <TableCell
-                      key={cell.id}
-                      className={cn(
-                        'text-center',
-                        index < array.length - 1 && 'border-r'
-                      )}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
+              {accountTable.getRowModel().rows.length ? (
+                accountTable.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} className={cn('transition-colors')}>
+                    {row.getVisibleCells().map((cell, index, array) => (
+                      <TableCell
+                        key={cell.id}
+                        className={cn(
+                          'text-center',
+                          index < array.length - 1 && 'border-r'
+                        )}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={accountColumn.length}
+                    className="py-4 text-center"
+                  >
+                    No transaction has been added to this account yet.
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>

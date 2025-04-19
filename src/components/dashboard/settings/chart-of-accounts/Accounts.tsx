@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button'
-import { chartOfAccountsCategories } from '@/data/chartOfAccountsCategories'
+import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
 import { Plus } from 'lucide-react'
 import { AccountTable } from './AccountTable'
 
 export function Accounts() {
+  const { categories } = useChartOfAccountCategoriesStore()
+
   return (
     <div className="space-y-5">
       <div className="flex flex-row items-center justify-between gap-4">
@@ -20,10 +22,14 @@ export function Accounts() {
       </div>
 
       <div className="space-y-5">
-        {chartOfAccountsCategories.map((account) => {
+        {categories.map((account) => {
           const activeCategories = account.isActive
 
-          return activeCategories && <AccountTable account={account} />
+          return (
+            activeCategories && (
+              <AccountTable key={account.category} account={account} />
+            )
+          )
         })}
       </div>
     </div>
