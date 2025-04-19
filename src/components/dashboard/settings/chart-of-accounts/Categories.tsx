@@ -3,16 +3,16 @@ import { chartOfAccountsCategories } from '@/data/chartOfAccountsCategories'
 
 export function ChartOfAccountsCategories() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="space-y-1">
-        <h1 className="text-2xl font-semibold">Chart Of Accounts Categories</h1>
+        <h1 className="text-2xl font-semibold">Chart of Accounts Categories</h1>
         <p className="text-muted-foreground text-sm">
           Enable only the account categories your business needs. Revenue and
           Expenses are required.
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 rounded-md border px-5 py-6">
+      <div className="flex flex-col gap-6 rounded-md border px-5 py-6">
         {chartOfAccountsCategories.map((item) => (
           <div
             key={item.category}
