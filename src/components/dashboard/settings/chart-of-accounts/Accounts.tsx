@@ -1,7 +1,6 @@
-import { Button } from '@/components/ui/button'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
-import { Plus } from 'lucide-react'
 import { AccountTable } from './AccountTable'
+import { AddTransactionModal } from './AddTransactionModal'
 
 export function Accounts() {
   const { categories } = useChartOfAccountCategoriesStore()
@@ -16,9 +15,7 @@ export function Accounts() {
           </p>
         </div>
 
-        <Button>
-          <Plus /> Add Account
-        </Button>
+        <AddTransactionModal />
       </div>
 
       <div className="space-y-5">
