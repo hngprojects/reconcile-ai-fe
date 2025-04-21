@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus } from 'lucide-react'
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import type { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -99,7 +99,7 @@ export function AddAccountModal() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-h-[80vh] gap-0 overflow-hidden px-0 sm:max-w-[500px]">
+      <DialogContent className="flex h-[82vh] max-h-[600px] flex-col gap-0 overflow-hidden px-0 sm:max-w-[500px]">
         <DialogHeader className="px-6 pb-2 shadow-2xs">
           <div className="text-left">
             <DialogTitle>Add Account</DialogTitle>
@@ -110,9 +110,12 @@ export function AddAccountModal() {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="">
-            <ScrollArea className="h-full max-h-[60vh] px-5">
-              <div className="grid max-h-full gap-4 px-1 py-3">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex h-full flex-col"
+          >
+            <ScrollArea className="min-h-0 flex-1 px-5">
+              <div className="grid gap-4 px-1 py-3">
                 <FormField
                   control={form.control}
                   name="name"
@@ -225,7 +228,7 @@ export function AddAccountModal() {
               </div>
             </ScrollArea>
 
-            <div className="flex items-center justify-between gap-3 border-t bg-white px-6 pt-3">
+            <div className="mb-5 flex h-[80px] items-center justify-between gap-3 border-t bg-white px-6 py-5">
               <DialogClose asChild>
                 <Button
                   type="button"
