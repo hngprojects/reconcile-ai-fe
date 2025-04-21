@@ -1,6 +1,6 @@
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
 import { AccountTable } from './AccountTable'
-import { AddTransactionModal } from './AddTransactionModal'
+import { AddAccountModal } from './AddAccountModal'
 
 export function Accounts() {
   const { categories } = useChartOfAccountCategoriesStore()
@@ -15,7 +15,7 @@ export function Accounts() {
           </p>
         </div>
 
-        <AddTransactionModal />
+        <AddAccountModal />
       </div>
 
       <div className="space-y-5">
