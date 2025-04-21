@@ -13,14 +13,21 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useFormContext } from 'react-hook-form'
+import { FormErrors } from './UploadCard'
 
 export default function DateRange() {
-  const { setValue, watch } = useFormContext()
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext()
   const [isOpen, setIsOpen] = useState(false)
   const period = watch('period')
 
   const fromDate = period?.from ? new Date(period.from) : null
   const toDate = period?.to ? new Date(period.to) : null
+
+  const typedErrors = errors as FormErrors
 
   const applyFilter = () => setIsOpen(false)
 
@@ -40,7 +47,13 @@ export default function DateRange() {
           variant="outline"
           type="button"
           size="lg"
-          className="min-w-[104px] cursor-pointer border-black/20"
+          className={cn(
+            `w-full min-w-[104px] cursor-pointer justify-between border-black/20`,
+            (typedErrors.period?.from ||
+              typedErrors.period?.to ||
+              typedErrors.period?.message) &&
+              'border-[#C50700]'
+          )}
         >
           {fromDate && toDate ? (
             <span>{`${formatDisplay(fromDate)} - ${formatDisplay(toDate)}`}</span>

@@ -13,7 +13,7 @@ import { UploadBankStatementValues } from './UploadBankStatement'
 
 const MAX_FILE_SIZE = 2
 
-type FormErrors = {
+export type FormErrors = {
   bankAccount?: FieldError
   period?: {
     from?: FieldError

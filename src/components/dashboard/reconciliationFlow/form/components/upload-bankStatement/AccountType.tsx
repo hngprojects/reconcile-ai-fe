@@ -9,11 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 import { ChevronDown } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 
 const AccountType = () => {
-  const { setValue, watch } = useFormContext()
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = useFormContext()
   const bankAccount = watch('bankAccount')
 
   return (
@@ -25,7 +30,10 @@ const AccountType = () => {
     >
       <SelectTrigger
         hideIcon
-        className="group hover:bg-accent flex w-fit cursor-pointer items-center justify-between border-black/20 placeholder:text-sm placeholder:font-medium data-[placeholder]:text-black data-[size=default]:h-10 [&_[data-radix-select-chevron]]:hidden"
+        className={cn(
+          `group hover:bg-accent flex w-full cursor-pointer items-center justify-between border-black/20 placeholder:text-sm placeholder:font-medium data-[placeholder]:text-black data-[size=default]:h-10 [&_[data-radix-select-chevron]]:hidden`,
+          errors.bankAccount && 'border-[#C50700]'
+        )}
       >
         <SelectValue placeholder="Select Bank Account" />
         <ChevronDown className="size-4 text-black/60 transition-transform duration-300 ease-in-out group-data-[state=open]:rotate-180" />
