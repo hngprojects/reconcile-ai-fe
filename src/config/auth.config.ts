@@ -26,6 +26,7 @@ export const authConfig: NextAuthConfig = {
         if (!res.success) {
           return null
         }
+        console.dir({ res }, { depth: null })
         token.user = res?.data?.user
         token.access_token = res.access_token
         token.plan = res.data?.plan

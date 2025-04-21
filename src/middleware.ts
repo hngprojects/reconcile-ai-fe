@@ -1,22 +1,50 @@
 import { type NextRequest, NextResponse } from 'next/server'
 import { auth } from './auth'
-import { apiAuthPrefix, protectedRoutes } from './routes'
+import {
+  apiAuthPrefix,
+  DEFAULT_LOGIN_REDIRECT,
+  NEW_USERS_DEFAULT_LOGIN_REDIRECT,
+  protectedRoutes,
+} from './routes'
 
-export default async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Skip middleware for API auth routes
   if (pathname.startsWith(apiAuthPrefix)) {
-    return null
+    return NextResponse.next()
   }
-  const session = await auth()
-  const isLoggedIn = !!session
-  console.log('isLoggedIn', session)
-  const isProtectedRoute = protectedRoutes.some((route) =>
+
+  const isProtectedRoutes = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   )
-  if (!isLoggedIn && isProtectedRoute) {
-    return NextResponse.redirect(new URL('/', req.url))
+
+  // Get session
+  const session = await auth()
+  const isLoggedIn = !!session
+  const isNewUser = session?.user?.is_new_user
+
+  // Determine appropriate redirect path
+  const redirectPath = isNewUser
+    ? NEW_USERS_DEFAULT_LOGIN_REDIRECT
+    : DEFAULT_LOGIN_REDIRECT
+
+  // Case 1: User is not logged in and trying to access protected routes
+  if (!isLoggedIn && isProtectedRoutes) {
+    return NextResponse.redirect(new URL('/', request.url))
   }
-  return null
+
+  // Case 2: User is logged in, is a new user, and trying to access dashboard directly
+  if (isLoggedIn && isNewUser && pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL(redirectPath, request.url))
+  }
+
+  // Case 3: User is logged in, is NOT a new user, and trying to access onboarding
+  if (isLoggedIn && !isNewUser && pathname.startsWith('/onboarding')) {
+    return NextResponse.redirect(new URL(redirectPath, request.url))
+  }
+
+  return NextResponse.next()
 }
 
 export const config = {

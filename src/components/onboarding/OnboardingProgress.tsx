@@ -5,15 +5,8 @@ interface OnboardingProgressProps {
 export default function OnboardingProgress({
   currentStep,
 }: OnboardingProgressProps) {
-  const steps = [
-    { id: 1, name: 'Basics' },
-    { id: 2, name: 'Bank' },
-    { id: 3, name: 'Ledger' },
-    { id: 4, name: 'Finish' },
-  ]
-
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex w-full flex-col items-center justify-center">
       <div className="mb-4 flex items-center">
         <svg
           width="60"
@@ -36,29 +29,72 @@ export default function OnboardingProgress({
         Enter your business details to get started
       </p>
 
-      <div className="mx-auto flex w-full max-w-2xl items-center justify-center">
-        {steps.map((step, index) => (
-          <div key={step.id} className="flex items-center">
-            <div className="flex flex-col items-center">
-              <div
-                className={`flex h-10 w-10 items-center justify-center rounded-full border ${
-                  step.id < currentStep
-                    ? 'border-[#2E604A] bg-[#2E604A] text-white'
-                    : step.id === currentStep
-                      ? 'border-[#2E604A] bg-[#2E604A] text-white'
-                      : 'border-[#333333] bg-white text-[#333333]'
-                }`}
-              >
-                {step.id}
-              </div>
-              <span className="mt-2 text-sm font-medium">{step.name}</span>
-            </div>
-
-            {index < steps.length - 1 && (
-              <div className="mx-2 h-[1px] w-[30px] flex-1 border-t border-dashed border-[#3D3D3D] md:w-[117px]"></div>
-            )}
+      <div className="flex w-full items-center justify-between pt-3 sm:px-4 md:px-5">
+        <div className="flex flex-col items-center">
+          <div
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
+              1 < currentStep
+                ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                : 1 === currentStep
+                  ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                  : 'border-[#333333] bg-white text-[#333333]'
+            }`}
+          >
+            1
           </div>
-        ))}
+          <span className="mt-1 text-xs">Basics</span>
+        </div>
+
+        <div className="mx-2 h-[1px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+
+        <div className="flex flex-col items-center">
+          <div
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
+              2 < currentStep
+                ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                : 2 === currentStep
+                  ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                  : 'border-[#333333] bg-white text-[#333333]'
+            }`}
+          >
+            2
+          </div>
+          <span className="mt-1 text-xs">Bank</span>
+        </div>
+
+        <div className="mx-2 h-[1px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+
+        <div className="flex flex-col items-center">
+          <div
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
+              3 < currentStep
+                ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                : 3 === currentStep
+                  ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                  : 'border-[#333333] bg-white text-[#333333]'
+            }`}
+          >
+            3
+          </div>
+          <span className="mt-1 text-xs">Ledger</span>
+        </div>
+
+        <div className="mx-2 h-[1px] flex-1 border-t border-dashed border-[#3D3D3D]"></div>
+
+        <div className="flex flex-col items-center">
+          <div
+            className={`flex size-7 items-center justify-center rounded-full border text-sm sm:size-10 sm:text-base ${
+              4 < currentStep
+                ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                : 4 === currentStep
+                  ? 'border-[#2E604A] bg-[#2E604A] text-white'
+                  : 'border-[#333333] bg-white text-[#333333]'
+            }`}
+          >
+            4
+          </div>
+          <span className="mt-1 text-xs">Finish</span>
+        </div>
       </div>
     </div>
   )
