@@ -1,91 +1,76 @@
-import { useState, useCallback } from 'react'
+// UploadCard.tsx
+'use client'
+
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { UploadCardProps } from '@/types/uploadLedger'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import { FileUploadIcon } from '@/components/Icon/Icons'
-import { FileItem } from './FileItem'
+import { DeleteIcon, FileUploadIcon } from '@/components/Icon/Icons'
 import DateRange from './DateRange'
+import AccountType from './AccountType'
+import { FieldError, useFormContext } from 'react-hook-form'
+import { UploadBankStatementValues } from './UploadBankStatement'
 
 const MAX_FILE_SIZE = 2
 
-const UploadCard = ({
-  title,
-  files,
-  error,
-  onFilesSelect,
-  onFileDelete,
-  existingFiles = [],
-}: UploadCardProps) => {
-  const [internalError, setInternalError] = useState<string>('')
-  const [isDragging, setIsDragging] = useState(false)
+type FormErrors = {
+  bankAccount?: FieldError
+  period?: {
+    from?: FieldError
+    to?: FieldError
+  } & FieldError
+  file?: FieldError
+}
 
-  const handleFiles = useCallback(
-    (newFiles: File[]) => {
-      const validFiles: File[] = []
+const UploadCard = ({
+  file,
+  onFileSelect,
+  onFileDelete,
+}: {
+  file?: File
+  onFileSelect: (file: File) => void
+  onFileDelete: () => void
+}) => {
+  const [internalError, setInternalError] = useState('')
+  const [isDragging, setIsDragging] = useState(false)
+  const {
+    formState: { errors },
+  } = useFormContext<UploadBankStatementValues>()
+  const typedErrors = errors as FormErrors
+
+  const handleFile = useCallback(
+    (newFile: File) => {
       let currentError = ''
 
-      for (const file of newFiles) {
-        // Basic validations
-        if (!file.name.endsWith('.csv')) {
-          currentError = 'Only CSV files are supported'
-          continue
-        }
-
-        const fileSizeInMB = file.size / (1024 * 1024)
-        if (fileSizeInMB > MAX_FILE_SIZE) {
-          currentError = `File size must be less than ${MAX_FILE_SIZE}MB`
-          continue
-        }
-
-        // Check for duplicate file in the same card
-        if (files.some((existingFile) => existingFile.name === file.name)) {
-          currentError = 'Duplicate files detected'
-          continue
-        }
-
-        // Check for duplicate file in the other card
-        if (existingFiles.includes(file.name)) {
-          currentError = 'Some files are already used in the other section'
-          continue
-        }
-
-        validFiles.push(file)
+      if (!newFile.name.endsWith('.csv')) {
+        currentError = 'Only CSV files supported'
+      } else if (newFile.size / (1024 * 1024) > MAX_FILE_SIZE) {
+        currentError = `File must be < ${MAX_FILE_SIZE}MB`
       }
 
-      if (validFiles.length > 0) {
+      if (!currentError) {
         setInternalError('')
-        onFilesSelect([...files, ...validFiles])
-        toast.success(`Successfully uploaded ${validFiles.length} file(s)`)
-      }
-
-      if (currentError) {
+        onFileSelect(newFile)
+        toast.success(`Uploaded: ${newFile.name}`)
+      } else {
         setInternalError(currentError)
       }
     },
-    [existingFiles, files, onFilesSelect]
+    [onFileSelect]
   )
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       setIsDragging(false)
-      handleFiles(acceptedFiles)
+      if (acceptedFiles[0]) handleFile(acceptedFiles[0])
     },
-    [handleFiles]
-  )
-
-  // remove error when file is removed
-  const handleFileDelete = useCallback(
-    (fileName: string) => {
-      setInternalError('') // Clear any error message when a file is deleted
-      onFileDelete(fileName)
-    },
-    [onFileDelete]
+    [handleFile]
   )
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: { 'text/csv': ['.csv'] },
+    multiple: false,
     onDragEnter: () => setIsDragging(true),
     onDragLeave: () => setIsDragging(false),
   })
@@ -93,53 +78,80 @@ const UploadCard = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="relative h-fit w-full">
-        <div className={cn('mt-2 flex h-full flex-col gap-5')}>
-          <div className="flex items-center justify-between">
-            <h5 className="text-[#475467]">{title}</h5>
-            <DateRange />
+        <div className="mt-2 flex h-full flex-col gap-5">
+          <div className="flex items-start justify-between gap-4">
+            <h5 className="mt-2 text-[#475467]">Upload bank statement</h5>
+            <div className="flex items-start gap-3">
+              <div className="flex flex-col">
+                <AccountType />
+                {typedErrors.bankAccount?.message && (
+                  <span className="mt-1 text-xs text-red-600">
+                    {typedErrors.bankAccount.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col">
+                <DateRange />
+                {typedErrors.period && (
+                  <span className="mt-1 text-xs text-red-600">
+                    {typedErrors.period.from?.message ||
+                      typedErrors.period.to?.message ||
+                      typedErrors.period.message}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
 
-          <div
-            {...getRootProps()}
-            className={cn(
-              'flex h-[224px] w-full max-w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border-2 border-dashed border-[#33333350] transition-all duration-200 hover:bg-gray-100',
-              error || internalError
-                ? 'border-[#C50700]'
-                : isDragging
-                  ? 'border-[#2F855A] bg-[#2F855A]/5'
-                  : 'hover:bg-gray-100'
-            )}
-          >
-            <input {...getInputProps()} />
-            <FileUploadIcon className="h-8 w-8 text-[#678E82] sm:h-10 sm:w-10" />
-            <p className="px-4 text-center text-[#475569]">
-              <span className="mr-2 hidden md:inline">
-                Drag & Drop files here or
-              </span>
-              <span className="text-primary cursor-pointer font-semibold underline">
-                Choose file
-              </span>
-            </p>
-            <p className="text-sm font-light text-[#333]">
-              Supported format: CSV
-            </p>
-          </div>
+          {!file ? (
+            <div
+              {...getRootProps()}
+              className={cn(
+                'flex h-[224px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border-2 border-dashed transition-all',
+                errors.file || internalError
+                  ? 'border-[#C50700]'
+                  : isDragging
+                    ? 'border-[#2F855A] bg-[#2F855A]/5'
+                    : 'border-[#33333350] hover:bg-gray-100'
+              )}
+            >
+              <input {...getInputProps()} />
+              <FileUploadIcon className="h-10 w-10 text-[#678E82]" />
+              <p className="text-center text-[#475569]">
+                Drag & drop file or{' '}
+                <span className="text-primary font-semibold underline">
+                  choose file
+                </span>
+              </p>
+              <p className="text-sm font-light text-[#333]">
+                Supported format: CSV
+              </p>
+            </div>
+          ) : (
+            <div className="relative flex h-[224px] items-center justify-center rounded-[10px] border border-[#33333350] bg-white p-4">
+              <div className="flex flex-col items-center gap-2">
+                <FileUploadIcon className="h-10 w-10 text-[#678E82]" />
+                <span className="font-medium">{file.name}</span>
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onFileDelete()
+                }}
+                className="absolute top-3 right-3 cursor-pointer rounded-full p-2 hover:bg-red-50"
+              >
+                <DeleteIcon className="h-5 w-5 text-red-600" />
+              </button>
+            </div>
+          )}
         </div>
-
-        {(error || internalError) && (
-          <div className="text-xs text-[#C50700] sm:text-sm">
-            {error || internalError}
-          </div>
+        {(errors.file?.message || internalError) && (
+          <span className="text-sm text-red-600">
+            {(errors.file?.message as string) || internalError}
+          </span>
         )}
       </div>
-
-      {files.length > 0 && (
-        <div className="mt-8 flex flex-col gap-4">
-          {files.map((file) => (
-            <FileItem key={file.name} file={file} onDelete={handleFileDelete} />
-          ))}
-        </div>
-      )}
     </div>
   )
 }

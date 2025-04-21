@@ -12,11 +12,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useFormContext } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
+import { FormValues } from './AddNewStatement'
 
-export default function DateRange() {
-  const { setValue, watch } = useFormContext()
+interface DateRangeProps {
+  form: UseFormReturn<FormValues>
+}
+
+export default function DateRange({ form }: DateRangeProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const {
+    setValue,
+    watch,
+    formState: { errors },
+  } = form
   const period = watch('period')
 
   const fromDate = period?.from ? new Date(period.from) : null
@@ -40,7 +49,13 @@ export default function DateRange() {
           variant="outline"
           type="button"
           size="lg"
-          className="min-w-[104px] cursor-pointer border-black/20"
+          className={cn(
+            `w-full min-w-[104px] cursor-pointer justify-between border-black/20`,
+            (errors.period?.from ||
+              errors.period?.to ||
+              errors.period?.message) &&
+              'border-[#C50700]'
+          )}
         >
           {fromDate && toDate ? (
             <span>{`${formatDisplay(fromDate)} - ${formatDisplay(toDate)}`}</span>
@@ -59,7 +74,7 @@ export default function DateRange() {
 
       <PopoverContent
         sideOffset={8}
-        align="end"
+        align="start"
         className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
       >
         {/* Header */}
