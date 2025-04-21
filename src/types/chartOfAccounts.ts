@@ -8,15 +8,16 @@ export interface AccountItem {
 }
 
 export interface AccountCategory {
-  category: string
+  id: number
+  name: string
   short_description: string
   full_description: string
-  isActive: boolean
+  is_active: boolean
   data: AccountItem[]
 }
 
 export const addChartOfAccountFormSchema = z.object({
-  category: z
+  name: z
     .string({
       required_error: 'Please select an account category',
     })
@@ -34,8 +35,7 @@ export const addChartOfAccountFormSchema = z.object({
     .min(10, { message: 'Description must be atleast 10 characters' })
     .max(200, {
       message: 'Description must be less than 200 characters',
-    })
-    .optional(),
+    }),
   openingBalance: z.coerce
     .number()
     .min(1, { message: 'Opening balance must be a positive number' })

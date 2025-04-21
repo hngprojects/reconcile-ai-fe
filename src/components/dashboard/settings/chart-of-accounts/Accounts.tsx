@@ -19,12 +19,12 @@ export function Accounts() {
       </div>
 
       <div className="space-y-5">
-        {categories.map((account) => {
-          const activeCategories = account.isActive
+        {categories.map((category) => {
+          const activeCategories = category.is_active
 
           return (
             activeCategories && (
-              <AccountTable key={account.category} account={account} />
+              <AccountTable key={category.name} category={category} />
             )
           )
         })}

@@ -3,40 +3,45 @@ import { AccountCategory } from '@/types/chartOfAccounts'
 
 export const chartOfAccountsCategories: AccountCategory[] = [
   {
-    category: 'Revenue',
+    id: 1,
+    name: 'Revenue',
     short_description: 'Track income from sales and services',
     full_description:
       'This account tracks all income and appears in the Revenue section of your P&L report.',
-    isActive: true,
+    is_active: true,
     data: revenueAccountData,
   },
   {
-    category: 'Expenses',
+    id: 2,
+    name: 'Expenses',
     short_description: 'Costs of running your business',
     full_description:
       'This account tracks all costs and appears in the Expenses section of your P&L report.',
-    isActive: true,
+    is_active: true,
     data: expenseAccountData,
   },
   {
-    category: 'Assets',
+    id: 3,
+    name: 'Assets',
     short_description: 'Things your business owns',
     full_description: 'Things your business owns',
-    isActive: false,
+    is_active: false,
     data: [],
   },
   {
-    category: 'Liabilities',
+    id: 4,
+    name: 'Liabilities',
     short_description: 'Debts your business owes',
     full_description: 'Debts your business owes',
-    isActive: false,
+    is_active: false,
     data: [],
   },
   {
-    category: 'Equity',
+    id: 5,
+    name: 'Equity',
     short_description: "Owner's stake in the business",
     full_description: "Owner's stake in the business",
-    isActive: false,
+    is_active: false,
     data: [],
   },
 ]

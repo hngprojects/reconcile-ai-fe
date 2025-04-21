@@ -1,8 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus } from 'lucide-react'
-import { useState } from 'react'
+import { Loader2, Plus } from 'lucide-react'
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -36,20 +36,24 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
 import { addChartOfAccountFormSchema } from '@/types/chartOfAccounts'
+import { create_a_new_chart_account } from '@/actions/chartOfAccounts'
+import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
 
 type AccountFormValues = z.infer<typeof addChartOfAccountFormSchema>
 
 export function AddAccountModal() {
+  const { data: session } = useSession()
+  const [isCreatingAccount, startCreatingAccount] = useTransition()
   const [open, setOpen] = useState(false)
   const { categories } = useChartOfAccountCategoriesStore()
 
-  const activeCategories = categories.filter((category) => category.isActive)
+  const activeCategories = categories.filter((category) => category.is_active)
 
-  // Initialize the form with React Hook Form and Zod resolver
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(addChartOfAccountFormSchema),
     defaultValues: {
-      category: '',
+      name: '',
       accountNumber: '',
       accountName: '',
       description: '',
@@ -57,16 +61,38 @@ export function AddAccountModal() {
     },
   })
 
-  // Handle form submission
   function onSubmit(data: AccountFormValues) {
     console.log('Form submitted with data:', data)
-    // Process the form data here
-    setOpen(false)
-    form.reset()
+
+    startCreatingAccount(() => {
+      create_a_new_chart_account({
+        account_chart_category_id: data.name,
+        account_number: data.accountNumber,
+        account_name: data.accountName,
+        description: data.description,
+        balance: data.openingBalance,
+        user_id: session?.user.id.toString() as string,
+      }).then((res) => {
+        if (res.success) {
+          toast.success('Account created successfully!')
+
+          setOpen(false)
+          form.reset()
+        } else {
+          toast.error(res.message)
+        }
+      })
+    })
   }
 
   return (
-    <Dialog open={open} onOpenChange={(open) => setOpen(open)}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        setOpen(open)
+        form.reset()
+      }}
+    >
       <DialogTrigger asChild>
         <Button>
           <Plus /> Add Account
@@ -89,7 +115,7 @@ export function AddAccountModal() {
               <div className="grid max-h-full gap-4 px-1 py-3">
                 <FormField
                   control={form.control}
-                  name="category"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Account Category</FormLabel>
@@ -105,10 +131,10 @@ export function AddAccountModal() {
                         <SelectContent>
                           {activeCategories.map((category) => (
                             <SelectItem
-                              key={category.category}
-                              value={category.category}
+                              key={category.id}
+                              value={category.id.toString()}
                             >
-                              {category.category}
+                              {category.name}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -212,9 +238,13 @@ export function AddAccountModal() {
               <Button
                 type="submit"
                 className="bg-primary flex-1 hover:bg-[#235040]"
-                disabled={form.formState.isSubmitting}
+                disabled={form.formState.isSubmitting || isCreatingAccount}
               >
-                {form.formState.isSubmitting ? 'Adding...' : 'Add Account'}
+                {form.formState.isSubmitting || isCreatingAccount ? (
+                  <Loader2 className="animate-spin" />
+                ) : (
+                  'Add Account'
+                )}
               </Button>
             </div>
           </form>

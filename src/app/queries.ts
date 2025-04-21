@@ -1,3 +1,4 @@
+import { get_all_chart_account_categories } from '@/actions/chartOfAccounts'
 import {
   get_reconcilations,
   get_reconcilations_by_id,
@@ -19,6 +20,16 @@ export const useReconcilationsById = (id: string) => {
     queryKey: ['reconcilations_by_id'],
     queryFn: async () => {
       const response = await get_reconcilations_by_id(id)
+      return response.data
+    },
+  })
+}
+
+export const useChartOfAccountsCategories = () => {
+  return useQuery({
+    queryKey: ['chart_account_categories'],
+    queryFn: async () => {
+      const response = await get_all_chart_account_categories()
       return response.data
     },
   })

@@ -19,7 +19,7 @@ import {
 } from '@tanstack/react-table'
 import { useState } from 'react'
 
-export function AccountTable({ account }: { account: AccountCategory }) {
+export function AccountTable({ category }: { category: AccountCategory }) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -57,7 +57,7 @@ export function AccountTable({ account }: { account: AccountCategory }) {
   ]
 
   const accountTable = useReactTable({
-    data: account.data,
+    data: category.data,
     columns: accountColumn,
     state: { pagination },
     onPaginationChange: setPagination,
@@ -67,11 +67,11 @@ export function AccountTable({ account }: { account: AccountCategory }) {
   })
 
   return (
-    <div key={account.category} className="overflow-hidden rounded-md border">
+    <div key={category.id} className="overflow-hidden rounded-md border">
       <div className="px-5 pt-5 pb-4 md:p-4">
-        <h2 className="font-semibold">{account.category} Accounts</h2>
+        <h2 className="font-semibold">{category.name} Accounts</h2>
         <p className="text-muted-foreground text-sm">
-          {account.full_description}
+          {category.full_description}
         </p>
       </div>
 
@@ -79,7 +79,7 @@ export function AccountTable({ account }: { account: AccountCategory }) {
         <div
           className={cn(
             'grid overflow-hidden border-t',
-            account.data.length > 10 && 'border-b'
+            category.data.length > 10 && 'border-b'
           )}
         >
           <Table>
@@ -139,12 +139,12 @@ export function AccountTable({ account }: { account: AccountCategory }) {
           </Table>
         </div>
 
-        {account.data.length > 10 && (
+        {category.data.length > 10 && (
           <div className="px-4 lg:px-6">
             <PaginationControls
               pageIndex={accountTable.getState().pagination.pageIndex}
               pageSize={accountTable.getState().pagination.pageSize}
-              totalItems={account.data.length}
+              totalItems={category.data.length}
               onPreviousPage={() => accountTable.previousPage()}
               onNextPage={() => accountTable.nextPage()}
               canPreviousPage={accountTable.getCanPreviousPage()}

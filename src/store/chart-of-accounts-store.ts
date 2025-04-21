@@ -17,8 +17,8 @@ export const useChartOfAccountCategoriesStore =
 
       set((state) => ({
         categories: state.categories.map((item) =>
-          item.category === category
-            ? { ...item, isActive: !item.isActive }
+          item.name === category
+            ? { ...item, is_active: !item.is_active }
             : item
         ),
       }))

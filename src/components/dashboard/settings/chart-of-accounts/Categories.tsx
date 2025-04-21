@@ -1,9 +1,14 @@
+import { toggle_a_chart_account_category } from '@/actions/chartOfAccounts'
+import { useChartOfAccountsCategories } from '@/app/queries'
 import { Switch } from '@/components/ui/switch'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
 
 export function ChartOfAccountsCategories() {
+  const { isLoading, data, error } = useChartOfAccountsCategories()
   const { categories, toggleCategory, isDisabled } =
     useChartOfAccountCategoriesStore()
+
+  console.log({ isLoading, data, error })
 
   return (
     <div className="space-y-5">
@@ -16,22 +21,25 @@ export function ChartOfAccountsCategories() {
       </div>
 
       <div className="flex flex-col gap-6 rounded-md border px-5 py-6">
-        {categories.map((item) => (
+        {categories.map((category) => (
           <div
-            key={item.category}
+            key={category.id}
             className="flex flex-row items-center justify-between gap-4"
           >
             <div>
-              <p className="font-semibold">{item.category}</p>
+              <p className="font-semibold">{category.name}</p>
               <p className="text-muted-foreground text-sm">
-                {item.short_description}
+                {category.short_description}
               </p>
             </div>
 
             <Switch
-              checked={item.isActive}
-              disabled={isDisabled(item.category)}
-              onCheckedChange={() => toggleCategory(item.category)}
+              checked={category.is_active}
+              disabled={isDisabled(category.name)}
+              onCheckedChange={() => {
+                toggleCategory(category.name)
+                toggle_a_chart_account_category(category.id)
+              }}
             />
           </div>
         ))}
