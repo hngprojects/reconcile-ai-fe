@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </p>
               </div>
               <Button variant="outline" size="sm" asChild>
-                <Link href="#">Manage</Link>
+                <Link href="/dashboard/settings/chart-of-accounts">Manage</Link>
               </Button>
             </div>
           </CardContent>
