@@ -3,18 +3,19 @@
 import { auth } from '@/auth'
 import { createFetchUtil, HttpError, withAuth } from '../lib/fetch-utils'
 import { APIResponse } from '../types/global'
+import { AccountsCategoryResponse } from '@/types/chartOfAccounts'
 
 const apiHandler = createFetchUtil({
   baseUrl: process.env.BASE_API_URL as string,
 })
 
 export const get_all_chart_account_categories = async (): Promise<
-  APIResponse<unknown | null>
+  APIResponse<AccountsCategoryResponse[] | null>
 > => {
   const session = await auth()
 
   try {
-    const res = await apiHandler<APIResponse<unknown>>(
+    const res = await apiHandler<APIResponse<AccountsCategoryResponse[]>>(
       '/chart-account-categories',
       {
         method: 'GET',
@@ -23,7 +24,6 @@ export const get_all_chart_account_categories = async (): Promise<
         },
       }
     )
-    console.log({ res })
 
     return { ...res, success: true }
   } catch (error) {
@@ -45,7 +45,7 @@ export const get_all_chart_account_categories = async (): Promise<
 }
 
 export const toggle_a_chart_account_category = async (
-  categoryId: number
+  categoryId: string
 ): Promise<APIResponse<unknown | null>> => {
   const session = await auth()
 
@@ -62,6 +62,7 @@ export const toggle_a_chart_account_category = async (
 
     return { ...res, success: true }
   } catch (error) {
+    console.dir({ error }, { depth: null })
     if (error instanceof HttpError) {
       return {
         success: error.responseBody?.success || false,
@@ -84,7 +85,6 @@ export const create_a_new_chart_account = async (data: {
   account_name: string
   balance: number
   description: string
-  user_id: string
   account_chart_category_id: string
 }): Promise<APIResponse<unknown | null>> => {
   const session = await auth()
@@ -97,6 +97,7 @@ export const create_a_new_chart_account = async (data: {
       },
       body: data,
     })
+    console.dir({ res }, { depth: null })
 
     console.log({ res })
 

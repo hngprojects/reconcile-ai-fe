@@ -30,7 +30,7 @@ export const useChartOfAccountsCategories = () => {
     queryKey: ['chart_account_categories'],
     queryFn: async () => {
       const response = await get_all_chart_account_categories()
-      return response.data
+      return response
     },
   })
 }

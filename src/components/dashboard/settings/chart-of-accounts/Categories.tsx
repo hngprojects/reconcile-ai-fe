@@ -4,11 +4,15 @@ import { Switch } from '@/components/ui/switch'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
 
 export function ChartOfAccountsCategories() {
-  const { isLoading, data, error } = useChartOfAccountsCategories()
-  const { categories, toggleCategory, isDisabled } =
-    useChartOfAccountCategoriesStore()
+  const {
+    isLoading,
+    data: categories,
+    error,
+    refetch,
+  } = useChartOfAccountsCategories()
+  const { toggleCategory, isDisabled } = useChartOfAccountCategoriesStore()
 
-  console.log({ isLoading, data, error })
+  console.log({ isLoading, categories, error })
 
   return (
     <div className="space-y-5">
@@ -21,28 +25,66 @@ export function ChartOfAccountsCategories() {
       </div>
 
       <div className="flex flex-col gap-6 rounded-md border px-5 py-6">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="flex flex-row items-center justify-between gap-4"
-          >
-            <div>
-              <p className="font-semibold">{category.name}</p>
-              <p className="text-muted-foreground text-sm">
-                {category.short_description}
-              </p>
-            </div>
+        {isLoading && (
+          <div className="py-4 text-center">Loading categories...</div>
+        )}
 
-            <Switch
-              checked={category.is_active}
-              disabled={isDisabled(category.name)}
-              onCheckedChange={() => {
-                toggleCategory(category.name)
-                toggle_a_chart_account_category(category.id)
-              }}
-            />
+        {error && (
+          <div className="py-4 text-center text-red-500">
+            Error loading categories. Please try again.
           </div>
-        ))}
+        )}
+
+        {!isLoading &&
+          !error &&
+          categories?.data &&
+          categories.data.length > 0 && (
+            <>
+              {[...categories.data]
+                .sort((a, b) => {
+                  if (a.is_required !== b.is_required) {
+                    return a.is_required ? -1 : 1
+                  }
+
+                  if (a.is_active !== b.is_active) {
+                    return a.is_active ? -1 : 1
+                  }
+
+                  return 0
+                })
+                .map((category) => (
+                  <div
+                    key={category.id}
+                    className="flex flex-row items-center justify-between gap-4"
+                  >
+                    <div>
+                      <p className="font-semibold">{category.title}</p>
+                      <p className="text-muted-foreground text-sm">
+                        {category.description}
+                      </p>
+                    </div>
+
+                    <Switch
+                      checked={category.is_active}
+                      disabled={isDisabled(category.title)}
+                      onCheckedChange={async () => {
+                        await toggle_a_chart_account_category(category.id)
+                        refetch()
+                        toggleCategory(category.id)
+                      }}
+                    />
+                  </div>
+                ))}
+            </>
+          )}
+
+        {!isLoading &&
+          !error &&
+          (!categories?.data || categories.data.length === 0) && (
+            <div className="text-muted-foreground py-4 text-center">
+              No categories available.
+            </div>
+          )}
       </div>
     </div>
   )

@@ -4,7 +4,7 @@ import { AccountCategory } from '@/types/chartOfAccounts'
 export const chartOfAccountsCategories: AccountCategory[] = [
   {
     id: 1,
-    name: 'Revenue',
+    title: 'Revenue',
     short_description: 'Track income from sales and services',
     full_description:
       'This account tracks all income and appears in the Revenue section of your P&L report.',
@@ -13,7 +13,7 @@ export const chartOfAccountsCategories: AccountCategory[] = [
   },
   {
     id: 2,
-    name: 'Expenses',
+    title: 'Expenses',
     short_description: 'Costs of running your business',
     full_description:
       'This account tracks all costs and appears in the Expenses section of your P&L report.',
@@ -22,7 +22,7 @@ export const chartOfAccountsCategories: AccountCategory[] = [
   },
   {
     id: 3,
-    name: 'Assets',
+    title: 'Assets',
     short_description: 'Things your business owns',
     full_description: 'Things your business owns',
     is_active: false,
@@ -30,7 +30,7 @@ export const chartOfAccountsCategories: AccountCategory[] = [
   },
   {
     id: 4,
-    name: 'Liabilities',
+    title: 'Liabilities',
     short_description: 'Debts your business owes',
     full_description: 'Debts your business owes',
     is_active: false,
@@ -38,7 +38,7 @@ export const chartOfAccountsCategories: AccountCategory[] = [
   },
   {
     id: 5,
-    name: 'Equity',
+    title: 'Equity',
     short_description: "Owner's stake in the business",
     full_description: "Owner's stake in the business",
     is_active: false,
