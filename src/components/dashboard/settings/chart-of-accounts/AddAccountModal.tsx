@@ -228,7 +228,7 @@ export function AddAccountModal() {
               </div>
             </ScrollArea>
 
-            <div className="mb-5 flex h-[80px] items-center justify-between gap-3 border-t bg-white px-6 py-5">
+            <div className="mb-5 flex h-[80px] items-center justify-between gap-3 border-t px-6 py-5">
               <DialogClose asChild>
                 <Button
                   type="button"
@@ -240,7 +240,7 @@ export function AddAccountModal() {
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-primary flex-1 hover:bg-[#235040]"
+                className="bg-primary dark:hover:bg-muted-foreground flex-1 hover:bg-[#235040]"
                 disabled={form.formState.isSubmitting || isCreatingAccount}
               >
                 {form.formState.isSubmitting || isCreatingAccount ? (

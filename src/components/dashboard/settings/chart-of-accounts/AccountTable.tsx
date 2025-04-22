@@ -90,7 +90,7 @@ export function AccountTable({ category }: { category: AccountCategory }) {
                     <TableHead
                       key={header.id}
                       className={cn(
-                        'h-12 bg-gray-100 px-6 text-center font-semibold text-gray-700 dark:text-white',
+                        'dark:bg-muted/5 h-12 bg-gray-100 px-6 text-center font-semibold text-gray-700 dark:text-white',
                         index < array.length - 1 && 'border-r'
                       )}
                     >
