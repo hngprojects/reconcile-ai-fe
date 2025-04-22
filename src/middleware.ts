@@ -10,13 +10,6 @@ export default async function middleware(req: NextRequest) {
 
   // 1. Handle subdomain restrictions first
   const isWaitlistSubdomain = host === `waitlist.${ROOT_DOMAIN}`
-  const isOtherSubdomain =
-    host.endsWith(`.${ROOT_DOMAIN}`) && !isWaitlistSubdomain
-
-  // Block all other subdomains except waitlist
-  if (isOtherSubdomain) {
-    return new NextResponse('Access denied', { status: 403 })
-  }
 
   // Rewrite all waitlist subdomain requests to /coming-soon path
   if (isWaitlistSubdomain) {
