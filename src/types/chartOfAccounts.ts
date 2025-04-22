@@ -9,7 +9,7 @@ export interface AccountItem {
 
 export interface AccountCategory {
   id: number
-  name: string
+  title: string
   short_description: string
   full_description: string
   is_active: boolean
@@ -41,3 +41,14 @@ export const addChartOfAccountFormSchema = z.object({
     .min(1, { message: 'Opening balance must be a positive number' })
     .default(0),
 })
+
+export interface AccountsCategoryResponse {
+  id: string
+  title: string
+  description: string
+  created_at: string
+  updated_at: string
+  is_required: boolean
+  is_active: boolean
+  data: AccountItem[]
+}

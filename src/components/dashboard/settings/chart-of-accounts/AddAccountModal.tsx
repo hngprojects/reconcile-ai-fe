@@ -2,10 +2,11 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus } from 'lucide-react'
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import type { z } from 'zod'
 
+import { create_a_new_chart_account } from '@/actions/chartOfAccounts'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,17 +37,22 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
 import { addChartOfAccountFormSchema } from '@/types/chartOfAccounts'
-import { create_a_new_chart_account } from '@/actions/chartOfAccounts'
-import { useSession } from 'next-auth/react'
 import { toast } from 'sonner'
+import { useChartOfAccountsCategories } from '@/app/queries'
 
 type AccountFormValues = z.infer<typeof addChartOfAccountFormSchema>
 
 export function AddAccountModal() {
-  const { data: session } = useSession()
+  const { data } = useChartOfAccountsCategories()
   const [isCreatingAccount, startCreatingAccount] = useTransition()
   const [open, setOpen] = useState(false)
-  const { categories } = useChartOfAccountCategoriesStore()
+  const { setCategories, categories } = useChartOfAccountCategoriesStore()
+
+  useEffect(() => {
+    if (data?.data) {
+      setCategories(data?.data)
+    }
+  }, [setCategories, data?.data])
 
   const activeCategories = categories.filter((category) => category.is_active)
 
@@ -71,10 +77,10 @@ export function AddAccountModal() {
         account_name: data.accountName,
         description: data.description,
         balance: data.openingBalance,
-        user_id: session?.user.id.toString() as string,
       }).then((res) => {
         if (res.success) {
-          toast.success('Account created successfully!')
+          console.log({ res })
+          toast.success(res.message)
 
           setOpen(false)
           form.reset()
@@ -133,11 +139,8 @@ export function AddAccountModal() {
                         </FormControl>
                         <SelectContent>
                           {activeCategories.map((category) => (
-                            <SelectItem
-                              key={category.id}
-                              value={category.id.toString()}
-                            >
-                              {category.name}
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.title}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -228,7 +231,7 @@ export function AddAccountModal() {
               </div>
             </ScrollArea>
 
-            <div className="mb-5 flex h-[80px] items-center justify-between gap-3 border-t bg-white px-6 py-5">
+            <div className="mb-5 flex h-[80px] items-center justify-between gap-3 border-t px-6 py-5">
               <DialogClose asChild>
                 <Button
                   type="button"
@@ -240,7 +243,7 @@ export function AddAccountModal() {
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-primary flex-1 hover:bg-[#235040]"
+                className="bg-primary dark:hover:bg-muted-foreground flex-1 hover:bg-[#235040]"
                 disabled={form.formState.isSubmitting || isCreatingAccount}
               >
                 {form.formState.isSubmitting || isCreatingAccount ? (

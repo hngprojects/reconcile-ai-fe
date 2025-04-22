@@ -1,9 +1,9 @@
-import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
+import { chartOfAccountsCategories } from '@/data/chartOfAccountsCategories'
 import { AccountTable } from './AccountTable'
 import { AddAccountModal } from './AddAccountModal'
 
 export function Accounts() {
-  const { categories } = useChartOfAccountCategoriesStore()
+  const categories = chartOfAccountsCategories
 
   return (
     <div className="space-y-5">
@@ -24,7 +24,7 @@ export function Accounts() {
 
           return (
             activeCategories && (
-              <AccountTable key={category.name} category={category} />
+              <AccountTable key={category.id} category={category} />
             )
           )
         })}
