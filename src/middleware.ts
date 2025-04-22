@@ -9,6 +9,21 @@ import {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const ROOT_DOMAIN = 'reconxi.com'
+
+  // Extract subdomain (if any)
+  const host = request.headers.get('host')?.replace('www.', '') || ''
+  const subdomain =
+    host.replace(`.${ROOT_DOMAIN}`, '') !== host
+      ? host.replace(`.${ROOT_DOMAIN}`, '')
+      : null
+
+  // If on waitlist subdomain, rewrite all requests to /coming-soon
+  if (subdomain === 'waitlist') {
+    return NextResponse.rewrite(
+      new URL(`/coming-soon${pathname === '/' ? '' : pathname}`, request.url)
+    )
+  }
 
   // Skip middleware for API auth routes
   if (pathname.startsWith(apiAuthPrefix)) {
