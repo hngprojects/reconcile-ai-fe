@@ -1,10 +1,61 @@
+'use client'
 import SummaryCards from './SummaryCards'
-import ReconciliationTable from './ReconciliationTable'
 import { Plus } from 'lucide-react'
 
 import Link from 'next/link'
+import Header from './Header'
+import ProjectTabs from './ProjectTabs'
+import { ProjectData } from '@/types/recondashboard'
+import { useState } from 'react'
 
 export default function ReconDashboard() {
+  const [projects] = useState<ProjectData[]>([
+    {
+      id: '1',
+      title: 'Annual Audit Prep',
+      status: 'completed',
+      progress: 100,
+      steps: 6,
+      totalSteps: 6,
+      unreconciled: 22,
+      reconciled: 12,
+      lastUpdated: '3 days ago',
+    },
+    {
+      id: '2',
+      title: 'Annual Audit Prep',
+      status: 'in-progress',
+      progress: 65,
+      steps: 4,
+      totalSteps: 6,
+      unreconciled: 22,
+      reconciled: 12,
+      lastUpdated: '3 days ago',
+    },
+    {
+      id: '3',
+      title: 'Annual Audit Prep',
+      status: 'in-progress',
+      progress: 50,
+      steps: 3,
+      totalSteps: 6,
+      unreconciled: 22,
+      reconciled: 12,
+      lastUpdated: '3 days ago',
+    },
+    {
+      id: '4',
+      title: 'Annual Audit Prep',
+      status: 'completed',
+      progress: 100,
+      steps: 6,
+      totalSteps: 6,
+      unreconciled: 22,
+      reconciled: 12,
+      lastUpdated: '3 days ago',
+    },
+  ])
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex w-full flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -25,8 +76,8 @@ export default function ReconDashboard() {
         </Link>
       </div>
       <SummaryCards />
-
-      <ReconciliationTable />
+      <Header />
+      <ProjectTabs projects={projects} />
     </div>
   )
 }
