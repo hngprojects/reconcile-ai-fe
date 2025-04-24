@@ -1,3 +1,6 @@
+// UploadBankStatement.tsx
+'use client'
+
 import * as React from 'react'
 import { z } from 'zod'
 import { useFormContext } from 'react-hook-form'
@@ -5,44 +8,48 @@ import UploadCard from './UploadCard'
 import { CircleAlert } from 'lucide-react'
 
 export const UploadBankStatementSchema = z.object({
-  files: z
-    .array(z.instanceof(File))
-    .min(1, 'Please upload at least one statement')
-    .default([]),
+  file: z.instanceof(File, { message: 'Please upload a statement' }),
+  bankAccount: z.string().min(1, 'Please select a bank account').default(''),
+  period: z
+    .object({
+      from: z.string().min(1, 'Please select a Period').default(''),
+      to: z.string().min(1, 'End date is required').default(''),
+    })
+    .refine(
+      (data) => {
+        if (!data.from || !data.to) return true // Let base validation handle empty fields
+        return new Date(data.to) >= new Date(data.from)
+      },
+      {
+        message: 'End date must be after start date',
+        path: ['to'],
+      }
+    )
+    .default({}),
 })
 
-type UploadBankStatementValues = z.infer<typeof UploadBankStatementSchema>
+export type UploadBankStatementValues = z.infer<
+  typeof UploadBankStatementSchema
+>
 
 const UploadBankStatement = () => {
-  const {
-    setValue,
-    watch,
-    formState: { errors },
-  } = useFormContext<UploadBankStatementValues>()
+  const { setValue, watch } = useFormContext<UploadBankStatementValues>()
 
-  const files = watch('files') || []
+  const file = watch('file')
 
-  const handleFilesSelect = (newFiles: File[]) => {
-    setValue('files', [...files, ...newFiles], { shouldValidate: true })
+  const handleFileSelect = (newFile: File) => {
+    setValue('file', newFile, { shouldValidate: true })
   }
 
-  const handleFileDelete = (fileName: string) => {
-    setValue(
-      'files',
-      files.filter((file) => file.name !== fileName),
-      { shouldValidate: true }
-    )
+  const handleFileDelete = () => {
+    setValue('file', null as unknown as File, { shouldValidate: true })
   }
 
   return (
     <div className="flex flex-col gap-6 text-start">
-      {/* File Upload Section */}
       <UploadCard
-        type="bank"
-        title="Upload your bank statement to start the reconciliation process."
-        files={files}
-        error={errors.files?.message}
-        onFilesSelect={handleFilesSelect}
+        file={file}
+        onFileSelect={handleFileSelect}
         onFileDelete={handleFileDelete}
       />
 

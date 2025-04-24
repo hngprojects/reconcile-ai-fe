@@ -10,9 +10,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import SelectBankAccountForm, {
-  SelectBankAccountSchema,
-} from '../SelectBankAccountForm'
 import UploadBankStatementForm, {
   UploadBankStatementSchema,
 } from '../components/upload-bankStatement/UploadBankStatement'
@@ -21,15 +18,9 @@ import Complete from '../Complete'
 import MatchTransaction from '../MatchTransaction'
 import ConfirmMatch from '../ConfirmMatch'
 import { cn } from '@/lib/utils'
+import AddBankAccount from '../AddBankAccount'
 
-const {
-  StepperProvider,
-  StepperControls,
-  StepperNavigation,
-  StepperStep,
-  useStepper,
-  StepperTitle,
-} = defineStepper(
+const steps = [
   {
     id: 'step-1',
     title: 'Select Ledgers',
@@ -38,15 +29,15 @@ const {
   },
   {
     id: 'step-2',
-    title: 'Select Bank Accounts',
-    schema: SelectBankAccountSchema,
-    Component: SelectBankAccountForm,
-  },
-  {
-    id: 'step-3',
     title: 'Upload Bank Statement',
     schema: UploadBankStatementSchema,
     Component: UploadBankStatementForm,
+  },
+  {
+    id: 'step-3',
+    title: 'Add Bank Account',
+    schema: z.object({}),
+    Component: AddBankAccount,
   },
   {
     id: 'step-4',
@@ -65,8 +56,17 @@ const {
     title: 'Complete',
     schema: z.object({}),
     Component: Complete,
-  }
-)
+  },
+]
+
+const {
+  StepperProvider,
+  StepperControls,
+  StepperNavigation,
+  StepperStep,
+  useStepper,
+  StepperTitle,
+} = defineStepper(...steps)
 
 const StepperFormContent = () => {
   const router = useRouter()
@@ -106,14 +106,17 @@ const StepperFormContent = () => {
             <StepperTitle>{stepper.current.title}</StepperTitle>
           </StepperStep>
         </StepperNavigation>
-        {stepper.switch({
-          'step-1': ({ Component }) => <Component />,
-          'step-2': ({ Component }) => <Component />,
-          'step-3': ({ Component }) => <Component />,
-          'step-4': ({ Component }) => <Component />,
-          'step-5': ({ Component }) => <Component />,
-          'step-6': ({ Component }) => <Component />,
-        })}
+        {stepper.switch(
+          steps.reduce(
+            (acc, step) => ({
+              ...acc,
+              [step.id]: ({ Component }: { Component: React.ElementType }) => (
+                <Component />
+              ),
+            }),
+            {}
+          )
+        )}
         <StepperControls
           className={cn(
             `mt-7 flex items-center justify-between`,
