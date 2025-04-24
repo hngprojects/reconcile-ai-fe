@@ -53,3 +53,12 @@ export const TOKEN_VALIDATOR_URL = `${BASE_URL}/auth/check-token`
 
 // USER PROFILE UPDATE
 export const USER_PROFILE_UPDATE_API_URL = `${BASE_URL}/profile/update`
+
+// LEDGER ENTRY API
+export const LEDGER_ENTRY_API_URL = `${BASE_URL}/ledger-entries`
+
+// LEDGER ENTRIES
+export const LEDGER_ENTRIES_API_URL = `${BASE_URL}/ledger-entries`
+
+// BOOKKEEPING LEDGER
+export const BOOKKEEPING_LEDGER_API_URL = `${BASE_URL}/bookkeeping-ledgers`

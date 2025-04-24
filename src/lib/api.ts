@@ -11,6 +11,7 @@ import {
   TOKEN_VALIDATOR_URL,
   USER_PROFILE_UPDATE_API_URL,
   BILLING_HISTORY_API_URL,
+  LEDGER_ENTRY_API_URL,
 } from './apiEndpoints'
 import { ManualRequestBody } from '@/types/reconciliation'
 import { getSession } from 'next-auth/react'
@@ -58,6 +59,28 @@ interface PaymentPlanResponse {
     created_at: string
     updated_at: string
   } | null
+}
+
+interface LedgerUploadResponse {
+  status: string
+  message: string
+  data: Record<string, unknown>
+}
+
+interface LedgerEntryData {
+  ledgerCategory: string
+  transactionType: string
+  transactionDate: string
+  description: string
+  amount: string
+  paidStatus: string
+  dueDate: string
+  amountPaid: string
+  bankAccount: string
+  account: string
+  reference?: string
+  attachment?: File
+  mappings?: Record<string, string>
 }
 
 // Waitlist API
@@ -420,5 +443,156 @@ export const fetchReconciliationHistory = async () => {
       success: false,
       error: error instanceof Error ? error.message : 'An error occurred',
     }
+  }
+}
+
+export async function handleLedgerCSVUpload(
+  ledgerCategory: string,
+  file: File,
+  transactionType: string,
+  mappings?: Record<string, string>
+): Promise<LedgerUploadResponse> {
+  // Validate inputs before proceeding
+  if (!ledgerCategory) throw new Error('Ledger category is required')
+  if (!file) throw new Error('File is required')
+  if (!transactionType) throw new Error('Transaction type is required')
+
+  // Validate file size
+  const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error('File size exceeds the 10MB limit')
+  }
+
+  // Check file type more thoroughly
+  if (!file.type.includes('csv') && !file.name.endsWith('.csv')) {
+    throw new Error('Only CSV files are accepted')
+  }
+
+  const session = await getSession()
+  if (!session?.user?.access_token) {
+    throw new Error('Authentication required. Please log in again.')
+  }
+
+  const formData = new FormData()
+  formData.append('ledger', ledgerCategory)
+  formData.append('ledger_file', file)
+  formData.append('transaction_type', transactionType)
+
+  // Process mappings
+  if (mappings) {
+    const requiredFields = ['Date', 'Description', 'Amount']
+
+    // Check for required fields
+    const mappedFields = Object.values(mappings).filter(
+      (value) => value !== '' && value !== 'none'
+    )
+    const missingFields = requiredFields.filter(
+      (field) => !mappedFields.includes(field)
+    )
+
+    if (missingFields.length > 0) {
+      throw new Error(
+        `The following required fields are not mapped: ${missingFields.join(', ')}`
+      )
+    }
+
+    // Add mapper fields to FormData
+    Object.entries(mappings).forEach(([csvColumn, reconxiField]) => {
+      if (reconxiField && reconxiField !== '' && reconxiField !== 'none') {
+        formData.append(`mapper[${reconxiField.toLowerCase()}]`, csvColumn)
+      }
+    })
+  } else {
+    throw new Error('Mappings are required for CSV upload')
+  }
+
+  // Add timeout handling
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 60000) // 1 minute timeout
+
+  try {
+    const response = await fetch(`${LEDGER_ENTRY_API_URL}/upload`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${session.user.access_token}`,
+        Accept: 'application/json',
+      },
+      body: formData,
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeoutId)
+
+    // Check for network errors first
+    if (!response) {
+      throw new Error('Network error - unable to connect to server')
+    }
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      // Enhanced error handling with status code
+      const errorMessage =
+        data.message || `Upload failed with status: ${response.status}`
+      throw new Error(errorMessage)
+    }
+
+    return data
+  } catch (error) {
+    clearTimeout(timeoutId)
+    console.error('Ledger CSV upload error:', error)
+
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(
+        'Upload timed out. Please try again with a smaller file or better connection.'
+      )
+    }
+
+    // Add more context to the error for the user
+    throw new Error(
+      `Failed to upload: ${error instanceof Error ? error.message : 'Unknown error'}`
+    )
+  }
+}
+
+export async function submitLedgerEntry(data: LedgerEntryData) {
+  try {
+    const formData = new FormData()
+    formData.append('bookkeeping_ledger_id', data.ledgerCategory)
+    formData.append('transaction_type', data.transactionType)
+    formData.append('transaction_date', data.transactionDate)
+    formData.append('description', data.description)
+    formData.append('amount', data.amount)
+    formData.append('paid_status', data.paidStatus)
+    formData.append('due_date', data.dueDate)
+    formData.append('amount_paid', data.amountPaid)
+    formData.append('bank_account_id', data.bankAccount)
+    formData.append('account_chart_id', data.account)
+    if (data.reference) formData.append('reference', data.reference)
+
+    const session = await getSession()
+    if (!session?.user.access_token) {
+      throw new Error('User not authenticated')
+    }
+
+    const response = await fetch(`${LEDGER_ENTRY_API_URL}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${session.user.access_token}`,
+        Accept: 'application/json',
+      },
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const data = await response.json()
+      throw new Error(data.message || 'Failed to submit ledger entry')
+    }
+
+    return await response.json()
+  } catch (error) {
+    throw new Error(
+      error instanceof Error ? error.message : 'An unknown error occurred'
+    )
   }
 }
