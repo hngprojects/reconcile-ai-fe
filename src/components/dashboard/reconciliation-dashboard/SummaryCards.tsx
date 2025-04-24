@@ -3,9 +3,9 @@ import SummaryCard from './SummaryCard'
 export default function SummaryCards() {
   const cards = [
     {
-      title: 'Reconciled Banks',
-      value: '2/5',
-      description: 'Bank accounts reconciled this month',
+      title: 'Reconciled Projects',
+      value: '2/4',
+      description: 'Reconciled projects reconciled this month',
     },
     {
       title: 'Total Transactions',
@@ -13,9 +13,9 @@ export default function SummaryCards() {
       description: 'Reconciled in March 2025',
     },
     {
-      title: 'Pending Matches',
+      title: 'Pending Projects',
       value: '2',
-      description: 'Unmatched transactions remaining',
+      description: 'Unreconciled projects remaining',
     },
   ]
 
