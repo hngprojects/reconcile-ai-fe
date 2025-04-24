@@ -6,7 +6,7 @@ import { parse } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import FilterComponent from './LedgerFilter'
 import LedgerTable from './LedgerTable'
-import AddLedgerEntryModal from './modals/AddLedgerEntryModal'
+import { AddLedgerEntryModal } from './modals/AddLedgerEntryModal'
 import UploadLedgerCSVDialog from './modals/UploadLedgerCSVDialog'
 import { DateRange } from 'react-day-picker'
 import {
@@ -31,16 +31,6 @@ export function Ledger() {
     to: undefined,
   })
   const [selectedStatus, setSelectedStatus] = useState('all')
-
-  const handleUpload = (file: File) => {
-    console.log('CSV file uploaded:', file)
-    // Implement actual upload logic here
-  }
-
-  const handleSave = (data: unknown) => {
-    console.log('Ledger entry saved:', data)
-    // Implement actual save logic here
-  }
 
   const parseDate = (dateStr: string) => {
     try {
@@ -131,12 +121,10 @@ export function Ledger() {
       <AddLedgerEntryModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSave={handleSave}
       />
       <UploadLedgerCSVDialog
         isOpen={isUploadModalOpen}
         onClose={() => setIsUploadModalOpen(false)}
-        onUpload={handleUpload}
       />
     </div>
   )
