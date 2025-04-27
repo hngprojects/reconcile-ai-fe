@@ -78,6 +78,7 @@ const SelectLedgerForm = () => {
   } = useFormContext<SelectLedgerFormValues>()
 
   const { data: ledgersResponse, isLoading } = useBookkeepingLedgers()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const availableLedgers = ledgersResponse?.data || []
 
   // Initialize form values when ledgers are loaded

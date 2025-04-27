@@ -83,7 +83,7 @@ const UploadBankStatement = () => {
           <p className="dark:text-muted-foreground text-[#475467]">
             Upload your bank statement here. You can add additional bank
             statements in the next step. Once all statements are uploaded,
-            you'll be able to map their columns for reconciliation.
+            you&apos; ll be able to map their columns for reconciliation.
           </p>
         </div>
       </div>

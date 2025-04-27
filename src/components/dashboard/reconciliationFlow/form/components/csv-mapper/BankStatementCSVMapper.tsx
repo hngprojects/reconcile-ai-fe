@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, AlertCircle, HelpCircle } from 'lucide-react'
+import { ArrowRight, HelpCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { parseCSVHeaders } from '@/lib/utils'
 import {
@@ -39,6 +39,7 @@ export const BankStatementCSVMapper = ({
 }: BankStatementCSVMapperProps) => {
   const [csvHeaders, setCsvHeaders] = useState<string[]>([])
   const [mappings, setMappings] = useState<Record<string, string>>({})
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [error, setError] = useState<string>()
 
   useEffect(() => {
