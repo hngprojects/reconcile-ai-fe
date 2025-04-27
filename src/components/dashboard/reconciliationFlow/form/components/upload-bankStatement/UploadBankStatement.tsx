@@ -6,6 +6,9 @@ import { z } from 'zod'
 import { useFormContext } from 'react-hook-form'
 import UploadCard from './UploadCard'
 import { CircleAlert } from 'lucide-react'
+import { BankStatementCSVMapper } from '../csv-mapper/BankStatementCSVMapper'
+import { useState } from 'react'
+import { useReconciliationStore } from '@/store/reconciliation-store'
 
 export const UploadBankStatementSchema = z.object({
   file: z.instanceof(File, { message: 'Please upload a statement' }),
@@ -17,7 +20,7 @@ export const UploadBankStatementSchema = z.object({
     })
     .refine(
       (data) => {
-        if (!data.from || !data.to) return true // Let base validation handle empty fields
+        if (!data.from || !data.to) return true
         return new Date(data.to) >= new Date(data.from)
       },
       {
@@ -34,15 +37,31 @@ export type UploadBankStatementValues = z.infer<
 
 const UploadBankStatement = () => {
   const { setValue, watch } = useFormContext<UploadBankStatementValues>()
+  const [showMappingDialog, setShowMappingDialog] = useState(false)
+  const { addBankStatement } = useReconciliationStore()
 
   const file = watch('file')
+  const bankAccount = watch('bankAccount')
+  const period = watch('period')
 
   const handleFileSelect = (newFile: File) => {
     setValue('file', newFile, { shouldValidate: true })
+    setShowMappingDialog(true)
   }
 
   const handleFileDelete = () => {
     setValue('file', null as unknown as File, { shouldValidate: true })
+  }
+
+  const handleMappingSuccess = (mappings: Record<string, string>) => {
+    if (file && bankAccount && period) {
+      addBankStatement({
+        file,
+        bankAccount,
+        period,
+        mapper: mappings,
+      })
+    }
   }
 
   return (
@@ -53,19 +72,28 @@ const UploadBankStatement = () => {
         onFileDelete={handleFileDelete}
       />
 
-      <div className="flex items-center justify-center gap-3 rounded-xl border border-black/15 bg-[#F9FAFB] p-4">
-        <div className="h-fit w-fit shrink-0 rounded-full border border-black/15 p-2.5">
-          <CircleAlert className="size-5 rotate-180" />
+      <div className="dark:border-border dark:bg-accent flex items-center justify-center gap-3 rounded-xl border border-black/15 bg-[#F9FAFB] p-4">
+        <div className="dark:border-border h-fit w-fit shrink-0 rounded-full border border-black/15 p-2.5">
+          <CircleAlert className="dark:text-foreground size-5 rotate-180" />
         </div>
         <div className="space-y-1 text-sm">
-          <h5 className="font-semibold">AI Powered Matchmaking</h5>
-          <p className="text-[#475467]">
-            We will scan your bank statement and automatically suggest matches
-            with your ledger entries. Our AI will analyze transaction patterns
-            to provide the must accurate matches
+          <h5 className="dark:text-foreground font-semibold">
+            Single Bank Statement Upload
+          </h5>
+          <p className="dark:text-muted-foreground text-[#475467]">
+            Upload your bank statement here. You can add additional bank
+            statements in the next step. Once all statements are uploaded,
+            you&apos; ll be able to map their columns for reconciliation.
           </p>
         </div>
       </div>
+
+      <BankStatementCSVMapper
+        isOpen={showMappingDialog}
+        onClose={() => setShowMappingDialog(false)}
+        onSuccess={handleMappingSuccess}
+        file={file}
+      />
     </div>
   )
 }

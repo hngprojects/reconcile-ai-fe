@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -12,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { useReconciliationStore } from '@/store/reconciliation-store'
 
 export default function ReconciliationProcessingPage() {
   const router = useRouter()
@@ -21,19 +23,19 @@ export default function ReconciliationProcessingPage() {
   const [estimatedTimeRemaining, setEstimatedTimeRemaining] = useState(120)
   const [transactionsProcessed, setTransactionsProcessed] = useState(0)
   const [totalTransactions, setTotalTransactions] = useState(0)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string | null>(null)
+  const { formState, updateFormState } = useReconciliationStore()
 
-  // Mock data for demonstration
-  const totalTransactionsToProcess = 156
+  // Mock data for demonstration - in real app this would be calculated from bankStatements
+  const totalTransactionsToProcess = formState.bankStatements.length * 156
   const totalSteps = 5
 
   // Steps in the reconciliation process
   const steps = [
     {
       id: 1,
-      name: 'Parsing bank statement',
-      description: 'Extracting transactions from your uploaded statement',
+      name: 'Parsing bank statements',
+      description: 'Extracting transactions from your uploaded statements',
     },
     {
       id: 2,
@@ -86,8 +88,14 @@ export default function ReconciliationProcessingPage() {
 
         if (newProgress >= 100) {
           clearInterval(interval)
+          // Update store to mark processing as complete
+          updateFormState({
+            currentStep: 4,
+            processingComplete: true
+          })
+          // Redirect to step 4 after processing
           setTimeout(() => {
-            router.push('/dashboard/ledger')
+            router.push('/dashboard/reconciliation-flow?step=4')
           }, 1500)
           return 100
         }
@@ -97,7 +105,7 @@ export default function ReconciliationProcessingPage() {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [router, currentStep])
+  }, [router, currentStep, totalTransactionsToProcess, updateFormState])
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -112,7 +120,7 @@ export default function ReconciliationProcessingPage() {
           Processing Your Reconciliation
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base">
-          Please wait while we analyze your bank statement and find matches in
+          Please wait while we analyze your bank statements and find matches in
           your ledger
         </p>
       </div>
@@ -130,7 +138,7 @@ export default function ReconciliationProcessingPage() {
                 <div className="mt-4 flex gap-2">
                   <Button
                     variant="outline"
-                    onClick={() => router.push('/reconciliation')}
+                    onClick={() => router.push('/dashboard/reconciliation-flow')}
                   >
                     Return to Reconciliation
                   </Button>

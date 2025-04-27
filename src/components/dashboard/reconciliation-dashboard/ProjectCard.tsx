@@ -67,31 +67,31 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
         <div className="relative" ref={dropdownRef}>
           <button
-            className="rounded-full p-1 hover:bg-gray-100"
+            className="hover:bg-muted rounded-full p-1"
             onClick={() => setShowDropdown(!showDropdown)}
           >
-            <MoreVertical className="h-5 w-5 text-[#475467]" />
+            <MoreVertical className="text-muted-foreground h-5 w-5" />
           </button>
           {showDropdown && (
-            <div className="absolute top-8 right-0 z-10 w-[200px] rounded-md border border-gray-200 bg-white shadow-lg">
+            <div className="bg-background absolute top-8 right-0 z-10 w-[200px] rounded-md border shadow-lg">
               <div className="py-1">
-                <button className="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100">
-                  <Eye className="mr-2 h-4 w-4 text-[#475467]" />
+                <button className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm">
+                  <Eye className="text-muted-foreground mr-2 h-4 w-4" />
                   View details
                 </button>
                 {status === 'completed' ? (
-                  <button className="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100">
-                    <FileBarChart className="mr-2 h-4 w-4 text-[#475467]" />
+                  <button className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm">
+                    <FileBarChart className="text-muted-foreground mr-2 h-4 w-4" />
                     View summary
                   </button>
                 ) : (
-                  <button className="flex w-full items-center px-4 py-2 text-left text-sm hover:bg-gray-100">
-                    <ArrowRight className="mr-2 h-4 w-4 text-[#475467]" />
+                  <button className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm">
+                    <ArrowRight className="text-muted-foreground mr-2 h-4 w-4" />
                     Continue reconciliation
                   </button>
                 )}
-                <div className="my-1 border-t border-gray-200"></div>
-                <button className="flex w-full items-center px-4 py-2 text-left text-sm text-[#e63946] hover:bg-gray-100">
+                <div className="border-border my-1 border-t"></div>
+                <button className="text-destructive hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm">
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete Project
                 </button>
@@ -101,14 +101,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </div>
 
-      <h2 className="mb-4 text-xl font-semibold">{title}</h2>
+      <h2 className="text-foreground mb-4 text-xl font-semibold">{title}</h2>
 
       <div className="mb-4">
         <div className="mb-1 flex justify-between">
-          <span className="text-sm text-[#475467]">Progress</span>
-          {progress && <span className="text-sm font-medium">{progress}%</span>}
+          <span className="text-muted-foreground text-sm">Progress</span>
+          {progress && (
+            <span className="text-foreground text-sm font-medium">
+              {progress}%
+            </span>
+          )}
         </div>
-        <div className="h-2 w-full rounded-full bg-[#f5f5f5]">
+        <div className="bg-muted h-2 w-full rounded-full">
           <div
             className="h-2 rounded-full bg-[#2e604a]"
             style={{ width: `${progress}%` }}
@@ -118,25 +122,25 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
       <div className="mb-6 grid grid-cols-2 gap-4">
         <div>
-          <p className="mb-1 text-sm text-[#475467]">Steps</p>
-          <p className="font-medium">
+          <p className="text-muted-foreground mb-1 text-sm">Steps</p>
+          <p className="text-foreground font-medium">
             {steps}/{totalSteps}
           </p>
         </div>
         {reconciled ? (
           <div className="text-right">
-            <p className="mb-1 text-sm text-[#475467]">Reconciled</p>
-            <p className="font-medium">{reconciled}</p>
+            <p className="text-muted-foreground mb-1 text-sm">Reconciled</p>
+            <p className="text-foreground font-medium">{reconciled}</p>
           </div>
         ) : null}
         <div>
-          <p className="mb-1 text-sm text-[#475467]">Un-reconciled</p>
-          <p className="font-medium">{unreconciled}</p>
+          <p className="text-muted-foreground mb-1 text-sm">Un-reconciled</p>
+          <p className="text-foreground font-medium">{unreconciled}</p>
         </div>
         {lastUpdated ? (
           <div className="text-right">
-            <p className="mb-1 text-sm text-[#475467]">Last updated</p>
-            <p className="font-medium">{lastUpdated}</p>
+            <p className="text-muted-foreground mb-1 text-sm">Last updated</p>
+            <p className="text-foreground font-medium">{lastUpdated}</p>
           </div>
         ) : null}
       </div>
@@ -144,7 +148,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       {status === 'completed' ? (
         <Button
           variant="outline"
-          className="w-full cursor-pointer border-[#2e604a] text-[#2e604a] hover:bg-[#e4fff7] hover:text-[#2e604a]"
+          className="w-full border-[#2e604a] text-[#2e604a] hover:bg-[#e4fff7] dark:border-[#4aad82] dark:text-[#4aad82] dark:hover:bg-[#1a382c] dark:hover:text-[#4aad82] cursor-pointer"
           onClick={() => {
             router.push('/dashboard/reconciliation/summary')
           }}
@@ -153,7 +157,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </Button>
       ) : (
         <Button
-          className="w-full cursor-pointer bg-[#2e604a] text-white hover:bg-[#2e604a]/90"
+          className="w-full bg-[#2e604a] text-white hover:bg-[#2e604a]/90"
           onClick={() => {
             router.push('/dashboard/reconciliation-flow')
           }}

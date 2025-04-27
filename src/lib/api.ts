@@ -12,6 +12,8 @@ import {
   USER_PROFILE_UPDATE_API_URL,
   BILLING_HISTORY_API_URL,
   LEDGER_ENTRY_API_URL,
+  BOOKKEEPING_LEDGER_API_URL,
+  BANK_ACCOUNTS_API_URL,
 } from './apiEndpoints'
 import { ManualRequestBody } from '@/types/reconciliation'
 import { getSession } from 'next-auth/react'
@@ -594,5 +596,60 @@ export async function submitLedgerEntry(data: LedgerEntryData) {
     throw new Error(
       error instanceof Error ? error.message : 'An unknown error occurred'
     )
+  }
+}
+
+export const fetchBookkeepingLedgers = async () => {
+  const session = await getSession()
+
+  try {
+    const response = await fetch(BOOKKEEPING_LEDGER_API_URL, {
+      headers: {
+        Authorization: `Bearer ${session?.user.access_token}`,
+        Accept: 'application/json',
+      },
+    })
+
+    const data = await response.json()
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch bookkeeping ledgers')
+    }
+
+    return {
+      success: true,
+      data: data.data,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'An error occurred',
+    }
+  }
+}
+
+export async function fetchBankAccounts() {
+  try {
+    const session = await getSession()
+    if (!session?.user?.access_token) {
+      throw new Error('Authentication required')
+    }
+
+    const response = await fetch(BANK_ACCOUNTS_API_URL, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.user.access_token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to fetch bank accounts')
+    }
+
+    return response.json()
+  } catch (error) {
+    console.error('Error fetching bank accounts:', error)
+    throw error
   }
 }
