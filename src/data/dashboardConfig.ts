@@ -16,17 +16,17 @@ export const businessTypes = [
 ]
 
 export const availableCurrencies = [
-  { label: 'Nigerian Naira (₦)', value: 'ngn' },
+  { label: 'Nigerian Naira (₦)', value: 'NGN' },
   {
     label: 'US Dollar ($)',
-    value: 'usd',
+    value: 'USD',
   },
   {
     label: 'Euro (€)',
-    value: 'eur',
+    value: 'EUR',
   },
   {
     label: 'British Pound (£)',
-    value: 'gbp',
+    value: 'GBP',
   },
 ]

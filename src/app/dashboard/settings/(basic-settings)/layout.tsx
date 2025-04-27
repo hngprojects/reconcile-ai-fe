@@ -1,3 +1,4 @@
+import { auth } from '@/auth'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -6,10 +7,25 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { format, parseISO } from 'date-fns'
 import { CreditCard } from 'lucide-react'
 import Link from 'next/link'
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default async function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const session = await auth()
+  console.dir({ session }, { depth: null })
+  console.log(session?.plan?.plan.plan)
+
+  const userPlan = session?.plan?.plan.plan
+  const planPrice = session?.plan?.plan.amount
+  const planExpiryDate = parseISO(session?.plan?.expire_date as string)
+
+  const formattedDate = format(planExpiryDate, 'MMMM d, yyyy')
+
   return (
     <div>
       <div className="mb-4 flex flex-col items-start justify-between md:flex-row md:items-center">
@@ -60,10 +76,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="space-y-4">
               <div className="flex flex-col justify-between gap-4 rounded-md border p-4 min-[375px]:flex-row min-[375px]:items-center">
                 <div>
-                  <h3 className="font-medium">Current Plan: Starter</h3>
-                  <p className="mt-1 text-sm">Renews on April 30, 2025</p>
+                  <h3 className="font-medium">Current Plan: {userPlan}</h3>
+                  <p className="mt-1 text-sm">Renews on {formattedDate}</p>
                   <span className="text-muted-foreground text-sm">
-                    ₦15,000/month
+                    ${planPrice}/month
                   </span>
                 </div>
                 <Button variant="outline" size="sm" asChild>
