@@ -1,7 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { defineStepper } from '@/components/ui/stepper'
 import SelectLedgerForm, { SelectLedgerSchema } from '../SelectLedgerForm'
@@ -12,16 +13,13 @@ import { z } from 'zod'
 import UploadBankStatementForm, {
   UploadBankStatementSchema,
 } from '../components/upload-bankStatement/UploadBankStatement'
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Save } from 'lucide-react'
 import Complete from '../Complete'
 import MatchTransaction from '../MatchTransaction'
 import ConfirmMatch from '../ConfirmMatch'
 import { cn } from '@/lib/utils'
-import AddBankAccount from '../AddBankAccount'
-import {
-  useReconciliationStore,
-  type ReconciliationFormState,
-} from '@/store/reconciliation-store'
+import AddBankAccount from '../components/add-bank-account/AddBankAccountForm'
+import { useReconciliationStore } from '@/store/reconciliation-store'
 import { toast } from 'sonner'
 
 // Define step-specific form values types
@@ -90,97 +88,43 @@ type StepId = (typeof steps)[number]['id']
 
 const StepperFormContent = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const stepper = useStepper()
-  const { updateFormState, saveDraft, loadDraft } = useReconciliationStore()
-  const [isInitialized, setIsInitialized] = React.useState(false)
+  const { formState, updateFormState } = useReconciliationStore()
 
   const form = useForm<StepFormValues[StepId]>({
     resolver: zodResolver(stepper.current.schema),
     mode: 'all',
   })
 
-  // Load draft when component mounts
-  React.useEffect(() => {
-    if (!isInitialized) {
-      const draft = loadDraft()
-      if (draft) {
-        const stepId = stepper.current.id as StepId
-
-        // Map store data to form values
-        if (stepId === 'step-1' && draft.selectedLedgers) {
-          form.reset({
-            ledgers: draft.selectedLedgers,
-            saveAsDefault: draft.saveAsDefault,
-          } as StepFormValues[typeof stepId])
-        } else if (stepId === 'step-2' && draft.bankStatement) {
-          form.reset(draft.bankStatement as StepFormValues[typeof stepId])
-        }
-
-        setIsInitialized(true)
-      }
-    }
-  }, [form, loadDraft, isInitialized, stepper])
-
-  const handleSaveDraft = React.useCallback(() => {
-    try {
-      const currentValues = form.getValues()
-      const stepId = stepper.current.id as StepId
-
-      // Get numeric step number for store
-      const stepNumber = parseInt(stepId.split('-')[1])
-
-      // Map form values to store data structure
-      const updates = {
-        currentStep: stepNumber,
-      }
-
-      if (stepId === 'step-1') {
-        const values = currentValues as StepFormValues['step-1']
-        Object.assign(updates, {
-          selectedLedgers: values.ledgers,
-          saveAsDefault: values.saveAsDefault,
-        })
-      } else if (stepId === 'step-2') {
-        const values = currentValues as StepFormValues['step-2']
-        Object.assign(updates, {
-          bankStatement: values,
-        })
-      }
-
-      updateFormState(updates)
-      saveDraft()
-      toast.success('Progress saved successfully')
-    } catch (error) {
-      console.error('Error saving draft:', error)
-      toast.error('Failed to save progress')
-    }
-  }, [form, updateFormState, saveDraft, stepper])
-
   const onSubmit = async (values: StepFormValues[StepId]) => {
     try {
       const stepId = stepper.current.id as StepId
       const stepNumber = parseInt(stepId.split('-')[1])
 
-      // Map form values to store data structure
-      const updates: Partial<ReconciliationFormState> = {
-        currentStep: stepNumber,
-      }
-
       if (stepId === 'step-1') {
         const stepValues = values as StepFormValues['step-1']
-        updates.selectedLedgers = stepValues.ledgers
-        updates.saveAsDefault = stepValues.saveAsDefault
-      } else if (stepId === 'step-2') {
-        const stepValues = values as StepFormValues['step-2']
-        updates.bankStatement = stepValues
-      }
-
-      updateFormState(updates)
-
-      if (!stepper.isLast) {
+        updateFormState({
+          currentStep: stepNumber,
+          selectedLedgers: stepValues.ledgers,
+        })
         stepper.next()
-      } else {
-        router.push('/dashboard')
+      } else if (stepId === 'step-2') {
+        // Handle bank statement upload
+        if (formState.bankStatements.length === 0) {
+          toast.error('Please upload a bank statement')
+          return
+        }
+        updateFormState({ currentStep: stepNumber })
+        router.push('/dashboard/reconciliation-flow?step=3')
+      } else if (stepId === 'step-3') {
+        // Handle additional bank statements
+        if (formState.bankStatements.length === 0) {
+          toast.error('Please add at least one bank statement')
+          return
+        }
+        updateFormState({ currentStep: stepNumber })
+        router.push('/dashboard/recon-processing')
       }
     } catch (error) {
       toast.error('Failed to save form data')
@@ -192,11 +136,29 @@ const StepperFormContent = () => {
     if (stepper.isFirst) {
       router.back()
     } else {
-      // Save current progress before going back
-      handleSaveDraft()
-      stepper.prev()
+      const currentStepNumber = parseInt(stepper.current.id.split('-')[1])
+      updateFormState({ currentStep: currentStepNumber - 1 })
+      router.push(
+        `/dashboard/reconciliation-flow?step=${currentStepNumber - 1}`
+      )
     }
   }
+
+  const handleSaveDraft = async () => {
+    // Save draft logic will be implemented later
+    toast.success('Draft saving will be implemented later')
+  }
+
+  // Initialize stepper based on URL param
+  useEffect(() => {
+    const step = searchParams.get('step')
+    if (step) {
+      const stepNumber = parseInt(step)
+      if (stepNumber > 1 && stepNumber <= steps.length) {
+        stepper.goTo(`step-${stepNumber}` as StepId)
+      }
+    }
+  }, [searchParams, stepper])
 
   return (
     <Form {...form}>
@@ -230,8 +192,8 @@ const StepperFormContent = () => {
             stepper.isLast && 'justify-end'
           )}
         >
-          {!stepper.isLast && (
-            <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {!stepper.isLast && (
               <Button
                 type="button"
                 variant="outline"
@@ -241,19 +203,21 @@ const StepperFormContent = () => {
                 {!stepper.isFirst && <ArrowLeft className="mr-2 h-4 w-4" />}
                 <span>{stepper.isFirst ? 'Cancel' : 'Back'}</span>
               </Button>
+            )}
 
-              {!stepper.isFirst && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={handleSaveDraft}
-                  className="hover:bg-accent/50 dark:text-foreground dark:hover:bg-accent/50 cursor-pointer font-normal text-black"
-                >
-                  Save Draft
-                </Button>
-              )}
-            </div>
-          )}
+            {!stepper.isLast && !stepper.isFirst && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleSaveDraft}
+                className="dark:border-border dark:text-foreground cursor-pointer border-[0.5px] border-black/15"
+              >
+                <Save className="mr-2 h-4 w-4" />
+                Save Draft
+              </Button>
+            )}
+          </div>
+
           <Button
             type="submit"
             className="dark:text-primary-foreground cursor-pointer"

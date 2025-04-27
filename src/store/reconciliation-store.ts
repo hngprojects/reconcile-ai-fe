@@ -1,78 +1,70 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+
+interface BankStatementData {
+  file: File | null
+  bankAccount: string
+  period: {
+    from: string
+    to: string
+  }
+  mapper?: Record<string, string>
+}
 
 export interface ReconciliationFormState {
   currentStep: number
   selectedLedgers: Record<string, boolean>
-  bankStatement: {
-    file?: File | null
-    bankAccount: string
-    period: {
-      from: string
-      to: string
-    }
-  }
-  saveAsDefault: boolean
+  bankStatements: BankStatementData[]
+  processingComplete?: boolean
 }
 
 interface ReconciliationStore {
   formState: ReconciliationFormState
   updateFormState: (updates: Partial<ReconciliationFormState>) => void
-  saveDraft: () => void
-  loadDraft: () => ReconciliationFormState | null
-  clearDraft: () => void
+  addBankStatement: (statement: BankStatementData) => void
+  updateBankStatement: (index: number, statement: Partial<BankStatementData>) => void
+  removeBankStatement: (index: number) => void
 }
 
 const initialState: ReconciliationFormState = {
   currentStep: 1,
   selectedLedgers: {},
-  bankStatement: {
-    file: null,
-    bankAccount: '',
-    period: {
-      from: '',
-      to: '',
-    },
-  },
-  saveAsDefault: false,
+  bankStatements: [],
+  processingComplete: false,
 }
 
-export const useReconciliationStore = create<ReconciliationStore>()(
-  persist(
-    (set, get) => ({
-      formState: initialState,
+export const useReconciliationStore = create<ReconciliationStore>()((set) => ({
+  formState: initialState,
 
-      updateFormState: (updates) =>
-        set((state) => ({
-          formState: { ...state.formState, ...updates },
-        })),
+  updateFormState: (updates) =>
+    set((state) => ({
+      formState: { ...state.formState, ...updates },
+    })),
 
-      saveDraft: () => {
-        const currentState = get().formState
-        localStorage.setItem(
-          'reconciliationDraft',
-          JSON.stringify(currentState)
-        )
+  addBankStatement: (statement) =>
+    set((state) => ({
+      formState: {
+        ...state.formState,
+        bankStatements: [...state.formState.bankStatements, statement],
       },
+    })),
 
-      loadDraft: () => {
-        const savedDraft = localStorage.getItem('reconciliationDraft')
-        if (savedDraft) {
-          const draft = JSON.parse(savedDraft)
-          set({ formState: draft })
-          return draft
-        }
-        return null
+  updateBankStatement: (index, statement) =>
+    set((state) => ({
+      formState: {
+        ...state.formState,
+        bankStatements: state.formState.bankStatements.map((s, i) =>
+          i === index ? { ...s, ...statement } : s
+        ),
       },
+    })),
 
-      clearDraft: () => {
-        localStorage.removeItem('reconciliationDraft')
-        set({ formState: initialState })
+  removeBankStatement: (index) =>
+    set((state) => ({
+      formState: {
+        ...state.formState,
+        bankStatements: state.formState.bankStatements.filter(
+          (_, i) => i !== index
+        ),
       },
-    }),
-    {
-      name: 'reconciliation-draft',
-      skipHydration: true,
-    }
-  )
-)
+    })),
+}))
