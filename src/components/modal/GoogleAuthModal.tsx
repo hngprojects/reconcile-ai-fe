@@ -34,7 +34,7 @@ const GoogleAuthModal = ({
 
         <div className="flex flex-col items-center justify-center gap-6 px-4 py-8 md:px-6 md:py-[76px]">
           <div className="flex flex-col items-center gap-4">
-            <LogoIcon className="h-9 w-9 sm:h-12 sm:w-12" />
+            <LogoIcon className="h-9 w-9 sm:h-12 sm:w-12 text-[#2E604A]" />
             <h2
               id="auth-title"
               className="font-baloo -mt-4 text-2xl leading-none font-extrabold text-[#2E604A] md:text-[28px]"

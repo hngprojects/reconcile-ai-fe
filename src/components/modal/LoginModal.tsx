@@ -26,7 +26,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignup }: LoginModalProps) => {
 
         <div className="flex flex-col items-center justify-center gap-6 px-4 py-8 md:px-6 md:py-[76px]">
           <div className="flex flex-col items-center gap-4">
-            <LogoIcon className="h-9 w-9 sm:h-12 sm:w-12" />
+            <LogoIcon className="h-9 w-9 text-[#2E604A] sm:h-12 sm:w-12" />
             <h2 className="font-baloo -mt-4 text-2xl leading-none font-extrabold text-[#2E604A] md:text-[28px]">
               ReconXi
             </h2>

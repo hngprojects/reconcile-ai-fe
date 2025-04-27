@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
 import { DeleteIcon, FileUploadIcon } from '@/components/Icon/Icons'
 import DateRange from './DateRange'
-import AccountType from './AccountType'
+import BankAccountSelect from './BankAccountSelect'
 import { FieldError, useFormContext } from 'react-hook-form'
 import { UploadBankStatementValues } from './UploadBankStatement'
 
@@ -76,16 +76,18 @@ const UploadCard = ({
   })
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="dark:bg-background flex flex-col gap-4">
       <div className="relative h-fit w-full">
         <div className="mt-2 flex h-full flex-col gap-5">
           <div className="flex items-start justify-between gap-4">
-            <h5 className="mt-2 text-[#475467]">Upload bank statement</h5>
+            <h5 className="dark:text-foreground mt-2 text-[#475467]">
+              Upload bank statement
+            </h5>
             <div className="flex items-start gap-3">
               <div className="flex flex-col">
-                <AccountType />
+                <BankAccountSelect />
                 {typedErrors.bankAccount?.message && (
-                  <span className="mt-1 text-xs text-red-600">
+                  <span className="text-destructive dark:text-destructive-foreground mt-1 text-xs">
                     {typedErrors.bankAccount.message}
                   </span>
                 )}
@@ -94,7 +96,7 @@ const UploadCard = ({
               <div className="flex flex-col">
                 <DateRange />
                 {typedErrors.period && (
-                  <span className="mt-1 text-xs text-red-600">
+                  <span className="text-destructive dark:text-destructive-foreground mt-1 text-xs">
                     {typedErrors.period.from?.message ||
                       typedErrors.period.to?.message ||
                       typedErrors.period.message}
@@ -110,44 +112,52 @@ const UploadCard = ({
               className={cn(
                 'flex h-[224px] w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border-2 border-dashed transition-all',
                 errors.file || internalError
-                  ? 'border-[#C50700]'
+                  ? 'border-destructive dark:border-destructive'
                   : isDragging
-                    ? 'border-[#2F855A] bg-[#2F855A]/5'
-                    : 'border-[#33333350] hover:bg-gray-100'
+                    ? 'border-primary bg-primary/5 dark:border-primary dark:bg-primary/5'
+                    : 'hover:bg-accent dark:border-border dark:hover:bg-accent border-[#33333350]'
               )}
             >
               <input {...getInputProps()} />
-              <FileUploadIcon className="h-10 w-10 text-[#678E82]" />
-              <p className="text-center text-[#475569]">
-                Drag & drop file or{' '}
-                <span className="text-primary font-semibold underline">
-                  choose file
-                </span>
-              </p>
-              <p className="text-sm font-light text-[#333]">
-                Supported format: CSV
-              </p>
+              <FileUploadIcon className="dark:text-foreground/60 h-10 w-10 text-[#678E82]" />
+              <div className="text-center">
+                <p className="dark:text-foreground text-base font-semibold">
+                  Upload bank account statement
+                </p>
+                <p className="dark:text-muted-foreground text-sm text-[#475467]">
+                  Drop your file here or{' '}
+                  <span className="text-primary font-semibold underline">
+                    browse
+                  </span>
+                </p>
+                <p className="dark:text-muted-foreground text-sm text-[#475467]">
+                  CSV only (max 2mb)
+                </p>
+              </div>
             </div>
           ) : (
-            <div className="relative flex h-[224px] items-center justify-center rounded-[10px] border border-[#33333350] bg-white p-4">
+            <div className="bg-background dark:border-border dark:bg-background relative flex h-[224px] items-center justify-center rounded-[10px] border border-[#33333350] p-4">
               <div className="flex flex-col items-center gap-2">
-                <FileUploadIcon className="h-10 w-10 text-[#678E82]" />
-                <span className="font-medium">{file.name}</span>
+                <FileUploadIcon className="dark:text-foreground/60 h-10 w-10 text-[#678E82]" />
+                <span className="dark:text-foreground font-medium">
+                  {file.name}
+                </span>
               </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation()
                   onFileDelete()
                 }}
-                className="absolute top-3 right-3 cursor-pointer rounded-full p-2 hover:bg-red-50"
+                className="dark:hover:bg-destructive/10 absolute top-3 right-3 cursor-pointer rounded-full p-2 hover:bg-red-50"
               >
-                <DeleteIcon className="h-5 w-5 text-red-600" />
+                <DeleteIcon className="text-destructive dark:text-destructive-foreground h-5 w-5" />
               </button>
             </div>
           )}
         </div>
+
         {(errors.file?.message || internalError) && (
-          <span className="text-sm text-red-600">
+          <span className="text-destructive dark:text-destructive-foreground text-sm">
             {(errors.file?.message as string) || internalError}
           </span>
         )}

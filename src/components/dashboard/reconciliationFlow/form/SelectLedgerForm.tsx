@@ -2,34 +2,110 @@ import * as React from 'react'
 import { z } from 'zod'
 import { useFormContext, Controller } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'
+import { useBookkeepingLedgers } from '@/hooks/useBookkeepingLedgers'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { BookkeepingLedger } from '@/types/bookkeeping'
 
-export const SelectLedgerSchema = z.object({
-  ledgers: z
-    .object({
-      general: z.boolean().default(false),
-      vendor: z.boolean().default(false),
-      customer: z.boolean().default(false),
-    })
-    .refine(
-      (values) => Object.values(values).some((v) => v === true),
-      'At least one ledger type must be selected'
-    ),
-  saveAsDefault: z.boolean().default(false),
-})
+// Create a dynamic schema based on ledger names
+const createLedgerSchema = (ledgers: BookkeepingLedger[]) => {
+  const ledgerFields = ledgers.reduce(
+    (acc, ledger) => {
+      const fieldName = ledger.name.toLowerCase().replace(/\s+/g, '')
+      acc[fieldName] = z.boolean()
+      return acc
+    },
+    {} as Record<string, z.ZodBoolean>
+  )
+
+  return z.object({
+    ledgers: z
+      .object(ledgerFields)
+      .refine(
+        (values) => Object.values(values).some((v) => v === true),
+        'At least one ledger type must be selected'
+      ),
+    saveAsDefault: z.boolean().default(false),
+  })
+}
+
+const defaultLedgers: BookkeepingLedger[] = [
+  {
+    id: '1',
+    user_id: '0',
+    name: 'General Ledger',
+    description: 'Main accounting ledger',
+    categories: ['all'],
+    is_active: true,
+    is_default: true,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: '2',
+    user_id: '0',
+    name: 'Vendor Ledger',
+    description: 'Vendor transactions ledger',
+    categories: ['vendor'],
+    is_active: true,
+    is_default: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: '3',
+    user_id: '0',
+    name: 'Customer Ledger',
+    description: 'Customer transactions ledger',
+    categories: ['customer'],
+    is_active: true,
+    is_default: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+]
+
+export const SelectLedgerSchema = z.lazy(() =>
+  createLedgerSchema(defaultLedgers)
+)
 
 type SelectLedgerFormValues = z.infer<typeof SelectLedgerSchema>
-
-const LEDGER_OPTIONS = [
-  { id: 'general', label: 'General Ledger' },
-  { id: 'vendor', label: 'Vendor Ledger' },
-  { id: 'customer', label: 'Customer Ledger' },
-] as const
 
 const SelectLedgerForm = () => {
   const {
     control,
     formState: { errors },
+    setValue,
   } = useFormContext<SelectLedgerFormValues>()
+
+  const { data: ledgersResponse, isLoading } = useBookkeepingLedgers()
+  const availableLedgers = ledgersResponse?.data || []
+
+  // Initialize form values when ledgers are loaded
+  React.useEffect(() => {
+    if (availableLedgers.length > 0) {
+      const ledgerValues = {} as Record<string, boolean>
+
+      availableLedgers.forEach((ledger) => {
+        const fieldName = ledger.name.toLowerCase().replace(/\s+/g, '')
+        ledgerValues[fieldName] = false
+      })
+
+      setValue('ledgers', ledgerValues, { shouldValidate: true })
+    }
+  }, [availableLedgers, setValue])
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-4 w-3/4" />
+        <div className="space-y-4">
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-6 w-1/2" />
+          <Skeleton className="h-6 w-1/2" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4 text-start">
@@ -39,24 +115,33 @@ const SelectLedgerForm = () => {
       </h6>
 
       <div className="space-y-4">
-        {LEDGER_OPTIONS.map(({ id, label }) => (
+        {availableLedgers.map((ledger: BookkeepingLedger) => (
           <Controller
-            key={id}
-            name={`ledgers.${id}`}
+            key={ledger.id}
+            name={
+              `ledgers.${ledger.name.toLowerCase().replace(/\s+/g, '')}` as const
+            }
             control={control}
+            defaultValue={false}
             render={({ field }) => (
               <div className="items-top flex items-center gap-3">
                 <Checkbox
-                  id={`ledger-${id}`}
+                  id={`ledger-${ledger.id}`}
                   checked={field.value}
                   onCheckedChange={field.onChange}
+                  disabled={!ledger.is_active}
                   className="m-0 size-5 border-[#D0D5DD]"
                 />
                 <label
-                  htmlFor={`ledger-${id}`}
+                  htmlFor={`ledger-${ledger.id}`}
                   className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  {label}
+                  {ledger.name}
+                  {!ledger.is_active && (
+                    <span className="ml-2 text-sm text-gray-500">
+                      (Inactive)
+                    </span>
+                  )}
                 </label>
               </div>
             )}
@@ -65,7 +150,7 @@ const SelectLedgerForm = () => {
 
         {errors.ledgers && (
           <span className="text-destructive text-sm">
-            {errors.ledgers.message}
+            {errors.ledgers.message?.toString()}
           </span>
         )}
       </div>
@@ -73,6 +158,7 @@ const SelectLedgerForm = () => {
       <Controller
         name="saveAsDefault"
         control={control}
+        defaultValue={false}
         render={({ field }) => (
           <div className="items-top mt-8 flex items-center gap-3">
             <Checkbox

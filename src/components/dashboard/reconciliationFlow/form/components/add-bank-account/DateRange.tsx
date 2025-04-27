@@ -50,22 +50,24 @@ export default function DateRange({ form }: DateRangeProps) {
           type="button"
           size="lg"
           className={cn(
-            `w-full min-w-[104px] cursor-pointer justify-between border-black/20`,
+            `dark:border-border dark:bg-background dark:text-foreground w-full min-w-[104px] cursor-pointer justify-between border-black/20`,
             (errors.period?.from ||
               errors.period?.to ||
               errors.period?.message) &&
-              'border-[#C50700]'
+              'dark:border-destructive border-[#C50700]'
           )}
         >
           {fromDate && toDate ? (
-            <span>{`${formatDisplay(fromDate)} - ${formatDisplay(toDate)}`}</span>
+            <span className="dark:text-foreground">{`${formatDisplay(fromDate)} - ${formatDisplay(toDate)}`}</span>
           ) : (
-            <span className="text-sm font-medium">Period</span>
+            <span className="dark:text-muted-foreground text-sm font-medium">
+              Period
+            </span>
           )}
 
           <ChevronDownIcon
             className={cn(
-              'size-4 text-black/60 transition-transform duration-300 ease-in-out',
+              'dark:text-muted-foreground size-4 text-black/60 transition-transform duration-300 ease-in-out',
               isOpen && 'rotate-180'
             )}
           />
@@ -75,16 +77,18 @@ export default function DateRange({ form }: DateRangeProps) {
       <PopoverContent
         sideOffset={8}
         align="start"
-        className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
+        className="dark:border-border dark:bg-background w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)] dark:shadow-none"
       >
         {/* Header */}
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-[#00160A99]">Select period</span>
+          <span className="dark:text-muted-foreground text-[#00160A99]">
+            Select period
+          </span>
           <Button
             onClick={clear}
             type="button"
             variant="link"
-            className="text-primary cursor-pointer hover:no-underline"
+            className="text-primary dark:text-primary cursor-pointer hover:no-underline"
           >
             Clear
           </Button>
@@ -93,9 +97,14 @@ export default function DateRange({ form }: DateRangeProps) {
         {/* Date Pickers */}
         <div className="mb-4 flex items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="mb-1 text-sm text-[#333]">From</label>
-            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
-              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
+            <label className="dark:text-foreground mb-1 text-sm text-[#333]">
+              From
+            </label>
+            <div className="dark:border-border dark:bg-background flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <Calendar
+                strokeWidth={1}
+                className="dark:text-foreground size-7 text-[#222222]"
+              />
               <DatePicker
                 selected={fromDate}
                 onChange={(date) => {
@@ -111,16 +120,21 @@ export default function DateRange({ form }: DateRangeProps) {
                 endDate={toDate}
                 maxDate={toDate || undefined}
                 placeholderText="Select date"
-                className="w-full text-sm outline-none"
+                className="dark:bg-background dark:text-foreground dark:placeholder:text-muted-foreground w-full text-sm outline-none"
                 dateFormat="MMM dd, yyyy"
               />
             </div>
           </div>
 
           <div className="flex-1">
-            <label className="mb-1 text-sm text-[#333]">To</label>
-            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
-              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
+            <label className="dark:text-foreground mb-1 text-sm text-[#333]">
+              To
+            </label>
+            <div className="dark:border-border dark:bg-background flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <Calendar
+                strokeWidth={1}
+                className="dark:text-foreground size-7 text-[#222222]"
+              />
               <DatePicker
                 selected={toDate}
                 onChange={(date) =>
@@ -133,7 +147,7 @@ export default function DateRange({ form }: DateRangeProps) {
                 endDate={toDate}
                 minDate={fromDate || undefined}
                 placeholderText="Select date"
-                className="w-full text-sm outline-none"
+                className="dark:bg-background dark:text-foreground dark:placeholder:text-muted-foreground w-full text-sm outline-none"
                 dateFormat="MMM dd, yyyy"
               />
             </div>
@@ -149,14 +163,14 @@ export default function DateRange({ form }: DateRangeProps) {
             }}
             type="button"
             variant="outline"
-            className="cursor-pointer border-black/20"
+            className="dark:border-border dark:text-foreground cursor-pointer border-black/20"
           >
             Reset
           </Button>
           <Button
             onClick={applyFilter}
             type="button"
-            className="cursor-pointer"
+            className="dark:text-primary-foreground cursor-pointer"
           >
             Apply Now
           </Button>

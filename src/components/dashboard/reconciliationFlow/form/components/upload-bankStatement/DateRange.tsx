@@ -1,6 +1,6 @@
 'use client'
 
-import { Calendar, ChevronDownIcon } from 'lucide-react'
+import { Calendar as CalendarIcon } from 'lucide-react'
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -13,21 +13,20 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useFormContext } from 'react-hook-form'
-import { FormErrors } from './UploadCard'
+import { UploadBankStatementValues } from './UploadBankStatement'
 
 export default function DateRange() {
+  const [isOpen, setIsOpen] = useState(false)
   const {
     setValue,
     watch,
     formState: { errors },
-  } = useFormContext()
-  const [isOpen, setIsOpen] = useState(false)
+  } = useFormContext<UploadBankStatementValues>()
+
   const period = watch('period')
 
   const fromDate = period?.from ? new Date(period.from) : null
   const toDate = period?.to ? new Date(period.to) : null
-
-  const typedErrors = errors as FormErrors
 
   const applyFilter = () => setIsOpen(false)
 
@@ -46,54 +45,52 @@ export default function DateRange() {
         <Button
           variant="outline"
           type="button"
-          size="lg"
           className={cn(
-            `w-full min-w-[104px] cursor-pointer justify-between border-black/20`,
-            (typedErrors.period?.from ||
-              typedErrors.period?.to ||
-              typedErrors.period?.message) &&
-              'border-[#C50700]'
+            'group hover:bg-accent dark:border-border dark:bg-background dark:text-foreground flex h-10 w-full cursor-pointer items-center justify-between border-black/20',
+            (errors.period?.from ||
+              errors.period?.to ||
+              errors.period?.message) &&
+              'dark:border-destructive border-[#C50700]'
           )}
         >
           {fromDate && toDate ? (
-            <span>{`${formatDisplay(fromDate)} - ${formatDisplay(toDate)}`}</span>
+            <span className="dark:text-foreground text-sm">{`${formatDisplay(fromDate)} - ${formatDisplay(toDate)}`}</span>
           ) : (
-            <span className="text-sm font-medium">Period</span>
+            <span className="dark:text-muted-foreground text-sm font-medium">
+              Period
+            </span>
           )}
 
-          <ChevronDownIcon
-            className={cn(
-              'size-4 text-black/60 transition-transform duration-300 ease-in-out',
-              isOpen && 'rotate-180'
-            )}
-          />
+          <CalendarIcon className="dark:text-foreground/60 size-4 text-black/60" />
         </Button>
       </PopoverTrigger>
 
       <PopoverContent
         sideOffset={8}
         align="end"
-        className="w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)]"
+        className="dark:border-border dark:bg-background w-[335px] rounded-lg border border-[#EAECF0] bg-white p-4 shadow-[0px_12px_16px_-4px_rgba(16,24,40,0.08),0px_4px_6px_-2px_rgba(16,24,40,0.03)] dark:shadow-none"
       >
-        {/* Header */}
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-[#00160A99]">Select period</span>
+          <span className="dark:text-muted-foreground text-[#00160A99]">
+            Select period
+          </span>
           <Button
             onClick={clear}
             type="button"
             variant="link"
-            className="text-primary cursor-pointer hover:no-underline"
+            className="text-primary dark:text-primary cursor-pointer hover:no-underline"
           >
             Clear
           </Button>
         </div>
 
-        {/* Date Pickers */}
         <div className="mb-4 flex items-center justify-between gap-4">
           <div className="flex-1">
-            <label className="mb-1 text-sm text-[#333]">From</label>
-            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
-              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
+            <label className="dark:text-foreground mb-1 text-sm text-[#333]">
+              From
+            </label>
+            <div className="dark:border-border dark:bg-background flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <CalendarIcon className="dark:text-foreground/60 size-4 text-black/60" />
               <DatePicker
                 selected={fromDate}
                 onChange={(date) => {
@@ -109,16 +106,18 @@ export default function DateRange() {
                 endDate={toDate}
                 maxDate={toDate || undefined}
                 placeholderText="Select date"
-                className="w-full text-sm outline-none"
+                className="dark:bg-background dark:text-foreground dark:placeholder:text-muted-foreground w-full text-sm outline-none"
                 dateFormat="MMM dd, yyyy"
               />
             </div>
           </div>
 
           <div className="flex-1">
-            <label className="mb-1 text-sm text-[#333]">To</label>
-            <div className="flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
-              <Calendar strokeWidth={1} className="size-7 text-[#222222]" />
+            <label className="dark:text-foreground mb-1 text-sm text-[#333]">
+              To
+            </label>
+            <div className="dark:border-border dark:bg-background flex items-center gap-2 rounded-lg border border-black/20 bg-white px-2 py-2.5">
+              <CalendarIcon className="dark:text-foreground/60 size-4 text-black/60" />
               <DatePicker
                 selected={toDate}
                 onChange={(date) =>
@@ -131,14 +130,13 @@ export default function DateRange() {
                 endDate={toDate}
                 minDate={fromDate || undefined}
                 placeholderText="Select date"
-                className="w-full text-sm outline-none"
+                className="dark:bg-background dark:text-foreground dark:placeholder:text-muted-foreground w-full text-sm outline-none"
                 dateFormat="MMM dd, yyyy"
               />
             </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex justify-between">
           <Button
             onClick={() => {
@@ -147,14 +145,14 @@ export default function DateRange() {
             }}
             type="button"
             variant="outline"
-            className="cursor-pointer border-black/20"
+            className="dark:border-border dark:text-foreground cursor-pointer border-black/20"
           >
             Reset
           </Button>
           <Button
             onClick={applyFilter}
             type="button"
-            className="cursor-pointer"
+            className="dark:text-primary-foreground cursor-pointer"
           >
             Apply Now
           </Button>

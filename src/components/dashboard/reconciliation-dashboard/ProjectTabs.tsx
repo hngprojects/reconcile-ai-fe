@@ -16,22 +16,22 @@ export default function ProjectTabs({ projects }: ProjectTabsProps) {
 
   return (
     <Tabs defaultValue="all" className="w-full">
-      <TabsList className="mb-6 h-11 w-full items-start rounded-md bg-[#f5f5f5] p-1">
+      <TabsList className="mb-6 h-11 w-full items-start bg-muted p-1">
         <TabsTrigger
           value="all"
-          className="flex-1 rounded-lg py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border"
         >
           All Projects
         </TabsTrigger>
         <TabsTrigger
           value="in-progress"
-          className="flex-1 rounded-lg py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border"
         >
           In Progress
         </TabsTrigger>
         <TabsTrigger
           value="completed"
-          className="flex-1 rounded-lg py-3 data-[state=active]:bg-white data-[state=active]:shadow-sm"
+          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border"
         >
           Completed
         </TabsTrigger>

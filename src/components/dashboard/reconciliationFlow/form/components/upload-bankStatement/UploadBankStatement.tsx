@@ -53,13 +53,15 @@ const UploadBankStatement = () => {
         onFileDelete={handleFileDelete}
       />
 
-      <div className="flex items-center justify-center gap-3 rounded-xl border border-black/15 bg-[#F9FAFB] p-4">
-        <div className="h-fit w-fit shrink-0 rounded-full border border-black/15 p-2.5">
-          <CircleAlert className="size-5 rotate-180" />
+      <div className="dark:border-border dark:bg-accent flex items-center justify-center gap-3 rounded-xl border border-black/15 bg-[#F9FAFB] p-4">
+        <div className="dark:border-border h-fit w-fit shrink-0 rounded-full border border-black/15 p-2.5">
+          <CircleAlert className="dark:text-foreground size-5 rotate-180" />
         </div>
         <div className="space-y-1 text-sm">
-          <h5 className="font-semibold">AI Powered Matchmaking</h5>
-          <p className="text-[#475467]">
+          <h5 className="dark:text-foreground font-semibold">
+            AI Powered Matchmaking
+          </h5>
+          <p className="dark:text-muted-foreground text-[#475467]">
             We will scan your bank statement and automatically suggest matches
             with your ledger entries. Our AI will analyze transaction patterns
             to provide the must accurate matches

@@ -49,61 +49,73 @@ export function StatsCards() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
+    <div className="grid gap-4 [@media(min-width:1150px)]:grid-cols-3">
       {/* Key Financial Metrics */}
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Cash Position</CardTitle>
+          <CardTitle className="text-base [@media(min-width:1150px)]:text-lg">
+            Cash Position
+          </CardTitle>
           <CardDescription>Current cash and bank balances</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-3xl font-bold">₦2,350,000</p>
-              <div className="mt-1 flex items-center text-xs text-green-500">
+              <p className="text-2xl font-bold [@media(min-width:1150px)]:text-3xl">
+                ₦2,350,000
+              </p>
+              <div className="mt-1 flex items-center text-[11px] text-green-500 [@media(min-width:1150px)]:text-xs">
                 <TrendingUp className="mr-1 h-3 w-3" />
                 <span>+5.3% from last month</span>
               </div>
             </div>
-            <CreditCard className="text-muted-foreground h-8 w-8" />
+            <CreditCard className="text-muted-foreground h-6 w-6 [@media(min-width:1150px)]:h-8 [@media(min-width:1150px)]:w-8" />
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Monthly Revenue</CardTitle>
+          <CardTitle className="text-base [@media(min-width:1150px)]:text-lg">
+            Monthly Revenue
+          </CardTitle>
           <CardDescription>Current month sales</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-3xl font-bold text-green-600">₦1,245,000</p>
-              <div className="mt-1 flex items-center text-xs text-green-500">
+              <p className="text-2xl font-bold text-green-600 [@media(min-width:1150px)]:text-3xl">
+                ₦1,245,000
+              </p>
+              <div className="mt-1 flex items-center text-[11px] text-green-500 [@media(min-width:1150px)]:text-xs">
                 <TrendingUp className="mr-1 h-3 w-3" />
                 <span>+12.5% from last month</span>
               </div>
             </div>
-            <BarChart3 className="text-muted-foreground h-8 w-8" />
+            <BarChart3 className="text-muted-foreground h-6 w-6 [@media(min-width:1150px)]:h-8 [@media(min-width:1150px)]:w-8" />
           </div>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Monthly Expenses</CardTitle>
+          <CardTitle className="text-base [@media(min-width:1150px)]:text-lg">
+            Monthly Expenses
+          </CardTitle>
           <CardDescription>Current month expenses</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-3xl font-bold text-red-600">₦780,500</p>
-              <div className="mt-1 flex items-center text-xs text-red-500">
+              <p className="text-2xl font-bold text-red-600 [@media(min-width:1150px)]:text-3xl">
+                ₦780,500
+              </p>
+              <div className="mt-1 flex items-center text-[11px] text-red-500 [@media(min-width:1150px)]:text-xs">
                 <TrendingDown className="mr-1 h-3 w-3" />
                 <span>+8.2% from last month</span>
               </div>
             </div>
-            <Receipt className="text-muted-foreground h-8 w-8" />
+            <Receipt className="text-muted-foreground h-6 w-6 [@media(min-width:1150px)]:h-8 [@media(min-width:1150px)]:w-8" />
           </div>
         </CardContent>
       </Card>

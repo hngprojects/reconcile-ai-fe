@@ -12,15 +12,17 @@ export default function ReconciliationFlow() {
       <div className="space-y-8">
         <button
           onClick={() => router.back()}
-          className="flex w-fit cursor-pointer items-center gap-2"
+          className="text-foreground flex w-fit cursor-pointer items-center gap-2"
         >
           <ArrowLeft className="h-6 w-6" />
           <p>Back to reconciliation</p>
         </button>
 
         <div>
-          <h1 className="text-2xl font-semibold">Bank Reconciliation</h1>
-          <p className="font-light">
+          <h1 className="text-foreground text-2xl font-semibold">
+            Bank Reconciliation
+          </h1>
+          <p className="text-muted-foreground font-light">
             Match your bank transactions with your accounting record
           </p>
         </div>
