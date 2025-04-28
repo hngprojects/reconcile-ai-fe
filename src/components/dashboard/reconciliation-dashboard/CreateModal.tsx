@@ -9,7 +9,7 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const CreateProjectSchema = z.object({
+export const CreateProjectSchema = z.object({
     title: z.string().min(1, "Title is required"),
 });
 
@@ -22,7 +22,7 @@ export default function CreateModal({
 }: {
     open: boolean
     onClose: () => void
-    onCreate: (data: any) => void
+    onCreate: (data: z.infer<typeof CreateProjectSchema>) => void
 }) {
     const [isPending, startTransition] = useTransition()
 
@@ -33,7 +33,7 @@ export default function CreateModal({
         },
     })
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: z.infer<typeof CreateProjectSchema>) => {
         startTransition(() => {
             onCreate(data)
             form.reset()
@@ -97,5 +97,3 @@ export default function CreateModal({
         </Dialog>
     );
 }
-//
-// import { useForm } from 'react-hook-form'

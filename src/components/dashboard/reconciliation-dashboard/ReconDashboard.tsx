@@ -2,12 +2,13 @@
 import SummaryCards from './SummaryCards'
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
-import CreateModal from './CreateModal'
+import CreateModal, { CreateProjectSchema } from './CreateModal'
 import Header from './Header'
 import ProjectTabs from './ProjectTabs'
 import { ProjectData } from '@/types/recondashboard'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { useRouter } from 'next/navigation'
+import { z } from 'zod'
 
 export default function ReconDashboard() {
   const [projects] = useState<ProjectData[]>([
@@ -69,7 +70,7 @@ export default function ReconDashboard() {
     setIsCreateModalOpen(false)
   }
 
-  const handleCreate = (data: any) => {
+  const handleCreate = (data: z.infer<typeof CreateProjectSchema>) => {
     updateFormState({ title: data.title });
     console.log('Create project with data:', data)
     return router.push('/dashboard/reconcile');
