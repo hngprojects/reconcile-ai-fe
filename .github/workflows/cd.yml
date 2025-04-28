@@ -48,12 +48,30 @@ jobs:
           if [[ "$BRANCH_NAME" == "main" ]]; then
             export BASE_API_URL="https://api.reconxi.com/api/v1"
             export AUTH_URL="https://reconxi.com"
+            export REVERB_APP_ID=891545
+            export REVERB_APP_KEY=4bb0afzfzf4nmbstsjd4
+            export REVERB_APP_SECRET=fboszhrecdm2qvtyhawc
+            export REVERB_HOST="localhost"
+            export REVERB_PORT=6005
+            export REVERB_SCHEME=http
           elif [[ "$BRANCH_NAME" == "dev" ]]; then
             export BASE_API_URL="https://api-dev.reconxi.com/api/v1"
             export AUTH_URL="https://dev.reconxi.com"
+            export REVERB_APP_ID=681729
+            export REVERB_APP_KEY=gydjyldygl6c8yn5fb5t
+            export REVERB_APP_SECRET=cdxemfne0gqyvzbcfw09
+            export REVERB_HOST="localhost"
+            export REVERB_PORT=6006
+            export REVERB_SCHEME=http
           elif [[ "$BRANCH_NAME" == "staging" ]]; then
             export BASE_API_URL="https://staging.reconxi.com/api/v1"
             export AUTH_URL="https://stage.reconxi.com"
+            export REVERB_APP_ID=104086
+            export REVERB_APP_KEY=b6jeajexulljsjb3mtim
+            export REVERB_APP_SECRET=c6cchxbvn2o4m6ghxhec
+            export REVERB_HOST="localhost"
+            export REVERB_PORT=6007
+            export REVERB_SCHEME=http
           else
             echo "Unknown branch: $BRANCH_NAME"
             exit 1

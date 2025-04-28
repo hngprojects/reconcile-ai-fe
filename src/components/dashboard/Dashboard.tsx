@@ -22,7 +22,7 @@ export function Dashboard() {
           </p>
         </div>
         <Link
-          className="bg-primary hover:bg-primary/90 flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white"
+          className="bg-primary hover:bg-primary/90 flex h-9 items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-white dark:text-black"
           href="/dashboard/reconciliation-flow"
         >
           <Plus className="mr-2 size-4" />

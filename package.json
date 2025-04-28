@@ -7,9 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings=0",
-    "prepare": "husky",
-    "commitlint": "commitlint --edit",
-    "commit-check": "npx --no -- commitlint --edit"
+    "commit-check": "npx --no -- commitlint --edit",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
@@ -61,8 +60,6 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.0.17",
     "@types/node": "^22.13.14",
@@ -71,8 +68,6 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9.23.0",
     "eslint-config-next": "15.2.4",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.5.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
