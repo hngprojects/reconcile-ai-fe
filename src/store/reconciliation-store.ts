@@ -15,6 +15,7 @@ export interface ReconciliationFormState {
   selectedLedgers: Record<string, boolean>
   bankStatements: BankStatementData[]
   processingComplete?: boolean
+  title: string
 }
 
 interface ReconciliationStore {
@@ -30,6 +31,7 @@ const initialState: ReconciliationFormState = {
   selectedLedgers: {},
   bankStatements: [],
   processingComplete: false,
+  title: '',
 }
 
 export const useReconciliationStore = create<ReconciliationStore>()((set) => ({

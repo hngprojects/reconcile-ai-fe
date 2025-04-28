@@ -98,17 +98,19 @@ const StepperFormContent = () => {
   })
 
   const onSubmit = async (values: StepFormValues[StepId]) => {
+    console.log('onSubmit called with values:', values)
     try {
       const stepId = stepper.current.id as StepId
       const stepNumber = parseInt(stepId.split('-')[1])
 
       if (stepId === 'step-1') {
         const stepValues = values as StepFormValues['step-1']
+        console.log('Step 1 submission values:', stepValues)
         updateFormState({
           currentStep: stepNumber,
           selectedLedgers: stepValues.ledgers,
         })
-        stepper.next()
+        router.push('/dashboard/reconcile?step=2')
       } else if (stepId === 'step-2') {
         // Handle bank statement upload
         if (formState.bankStatements.length === 0) {
@@ -116,7 +118,7 @@ const StepperFormContent = () => {
           return
         }
         updateFormState({ currentStep: stepNumber })
-        router.push('/dashboard/reconciliation-flow?step=3')
+        router.push('/dashboard/reconcile?step=3')
       } else if (stepId === 'step-3') {
         // Handle additional bank statements
         if (formState.bankStatements.length === 0) {
@@ -139,7 +141,7 @@ const StepperFormContent = () => {
       const currentStepNumber = parseInt(stepper.current.id.split('-')[1])
       updateFormState({ currentStep: currentStepNumber - 1 })
       router.push(
-        `/dashboard/reconciliation-flow?step=${currentStepNumber - 1}`
+        `/dashboard/reconcile?step=${currentStepNumber - 1}`
       )
     }
   }

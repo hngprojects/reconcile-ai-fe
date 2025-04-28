@@ -120,14 +120,14 @@ export const createFetchUtil = (config: FetchConfig) => {
 
     const mergedHeaders = isFormData
       ? {
-          ...defaultHeaders,
-          ...headers,
-        }
+        ...defaultHeaders,
+        ...headers,
+      }
       : {
-          'Content-Type': 'application/json',
-          ...defaultHeaders,
-          ...headers,
-        }
+        'Content-Type': 'application/json',
+        ...defaultHeaders,
+        ...headers,
+      }
 
     const fetchOptions: RequestInit = {
       method,
@@ -144,7 +144,6 @@ export const createFetchUtil = (config: FetchConfig) => {
       }
     }
 
-    console.log(body)
     const response = await fetch(url.toString(), fetchOptions)
 
     let responseBody
