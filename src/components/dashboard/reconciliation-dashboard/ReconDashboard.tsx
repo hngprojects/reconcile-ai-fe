@@ -1,12 +1,13 @@
 'use client'
 import SummaryCards from './SummaryCards'
 import { Plus } from 'lucide-react'
-
-import Link from 'next/link'
+import { useState } from 'react'
+import CreateModal from './CreateModal'
 import Header from './Header'
 import ProjectTabs from './ProjectTabs'
 import { ProjectData } from '@/types/recondashboard'
-import { useState } from 'react'
+import { useReconciliationStore } from '@/store/reconciliation-store'
+import { useRouter } from 'next/navigation'
 
 export default function ReconDashboard() {
   const [projects] = useState<ProjectData[]>([
@@ -56,6 +57,24 @@ export default function ReconDashboard() {
     },
   ])
 
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const { updateFormState } = useReconciliationStore();
+  const router = useRouter()
+
+  const handleOpenCreateModal = () => {
+    setIsCreateModalOpen(true)
+  }
+
+  const handleCloseCreateModal = () => {
+    setIsCreateModalOpen(false)
+  }
+
+  const handleCreate = (data: any) => {
+    updateFormState({ title: data.title });
+    console.log('Create project with data:', data)
+    return router.push('/dashboard/reconcile');
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex w-full flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -68,16 +87,22 @@ export default function ReconDashboard() {
           </p>
         </div>
 
-        <Link
-          href="/dashboard/reconciliation-flow"
+        <button
+          onClick={handleOpenCreateModal}
           className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
         >
-          <Plus className="size-5" /> Start New Reconciliation
-        </Link>
+          <Plus className="size-5" /> Create New Reconciliation
+        </button>
       </div>
       <SummaryCards />
       <Header />
       <ProjectTabs projects={projects} />
+
+      <CreateModal
+        open={isCreateModalOpen}
+        onClose={handleCloseCreateModal}
+        onCreate={handleCreate}
+      />
     </div>
   )
 }
