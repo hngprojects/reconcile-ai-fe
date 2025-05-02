@@ -36,129 +36,125 @@ type StepFormValues = {
   'step-6': Record<string, never>
 }
 
-const steps = [
+// Define step type for better type safety
+type Step = {
+  id: 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5' | 'step-6'
+  title: string
+  schema: z.ZodSchema
+  Component: React.ComponentType
+}
+
+const steps: Step[] = [
   {
-    id: 'step-1' as const,
+    id: 'step-1',
     title: 'Select Ledgers',
     schema: SelectLedgerSchema,
     Component: SelectLedgerForm,
   },
   {
-    id: 'step-2' as const,
+    id: 'step-2',
     title: 'Upload Bank Statement',
     schema: UploadBankStatementSchema,
     Component: UploadBankStatementForm,
   },
   {
-    id: 'step-3' as const,
+    id: 'step-3',
     title: 'Add Bank Account',
     schema: z.object({}),
     Component: AddBankAccount,
   },
   {
-    id: 'step-4' as const,
+    id: 'step-4',
     title: 'Match Transactions',
     schema: z.object({}),
     Component: MatchTransaction,
   },
   {
-    id: 'step-5' as const,
+    id: 'step-5',
     title: 'Confirm Matches',
     schema: z.object({}),
     Component: ConfirmMatch,
   },
   {
-    id: 'step-6' as const,
+    id: 'step-6',
     title: 'Complete',
     schema: z.object({}),
     Component: Complete,
   },
-] as const
+]
 
-const {
-  StepperProvider,
-  StepperControls,
-  StepperNavigation,
-  StepperStep,
-  useStepper,
-  StepperTitle,
-} = defineStepper(...steps)
+const { StepperProvider, StepperControls, StepperNavigation, StepperStep, useStepper, StepperTitle } =
+  defineStepper(...steps)
 
 type StepId = (typeof steps)[number]['id']
 
 const StepperFormContent = () => {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const stepper = useStepper()
-  const { formState, updateFormState } = useReconciliationStore()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const stepper = useStepper();
+  const { formState, updateFormState } = useReconciliationStore();
 
   const form = useForm<StepFormValues[StepId]>({
     resolver: zodResolver(stepper.current.schema),
     mode: 'all',
-  })
+  });
 
   const onSubmit = async (values: StepFormValues[StepId]) => {
     try {
-      const stepId = stepper.current.id as StepId
-      const stepNumber = parseInt(stepId.split('-')[1])
+      const stepId = stepper.current.id as StepId;
+      const stepNumber = parseInt(stepId.split('-')[1]);
 
       if (stepId === 'step-1') {
-        const stepValues = values as StepFormValues['step-1']
+        const stepValues = values as StepFormValues['step-1'];
         updateFormState({
           currentStep: stepNumber,
           selectedLedgers: stepValues.ledgers,
-        })
-        stepper.next()
+        });
+        stepper.next();
       } else if (stepId === 'step-2') {
-        // Handle bank statement upload
-        if (formState.bankStatements.length === 0) {
-          toast.error('Please upload a bank statement')
-          return
-        }
-        updateFormState({ currentStep: stepNumber })
-        router.push('/dashboard/reconciliation-flow?step=3')
+        const stepValues = values as StepFormValues['step-2'];
+        // Update bankStatements with the uploaded data
+        updateFormState({
+          bankStatements: [...formState.bankStatements, stepValues],
+          currentStep: stepNumber,
+        });
+        router.push('/dashboard/reconciliation-flow?step=3');
       } else if (stepId === 'step-3') {
-        // Handle additional bank statements
-        if (formState.bankStatements.length === 0) {
-          toast.error('Please add at least one bank statement')
-          return
-        }
-        updateFormState({ currentStep: stepNumber })
-        router.push('/dashboard/recon-processing')
+        // Adjust logic if needed; currently assumes bank statements exist
+        updateFormState({ currentStep: stepNumber });
+        router.push('/dashboard/recon-processing');
       }
     } catch (error) {
-      toast.error('Failed to save form data')
-      console.error('Form submission error:', error)
+      toast.error('Failed to save form data');
+      console.error('Form submission error:', error);
     }
-  }
+  };
 
   const handlePrevBtn = () => {
     if (stepper.isFirst) {
-      router.back()
+      router.back();
     } else {
-      const currentStepNumber = parseInt(stepper.current.id.split('-')[1])
-      updateFormState({ currentStep: currentStepNumber - 1 })
+      const currentStepNumber = parseInt(stepper.current.id.split('-')[1]);
+      updateFormState({ currentStep: currentStepNumber - 1 });
       router.push(
         `/dashboard/reconciliation-flow?step=${currentStepNumber - 1}`
-      )
+      );
     }
-  }
+  };
 
   const handleSaveDraft = async () => {
-    // Save draft logic will be implemented later
-    toast.success('Draft saving will be implemented later')
-  }
+    toast.success('Draft saving will be implemented later');
+  };
 
-  // Initialize stepper based on URL param
   useEffect(() => {
-    const step = searchParams.get('step')
+    const step = searchParams.get('step');
     if (step) {
-      const stepNumber = parseInt(step)
+      const stepNumber = parseInt(step);
       if (stepNumber > 1 && stepNumber <= steps.length) {
-        stepper.goTo(`step-${stepNumber}` as StepId)
+        stepper.goTo(`step-${stepNumber}` as StepId);
       }
     }
-  }, [searchParams, stepper])
+  }, [searchParams, stepper]);
 
   return (
     <Form {...form}>
@@ -230,14 +226,17 @@ const StepperFormContent = () => {
         </StepperControls>
       </form>
     </Form>
-  )
-}
+  );
+};
+
+// Memoize the entire StepperFormContent to prevent unnecessary re-renders
+const MemoizedStepperFormContent = React.memo(StepperFormContent)
 
 const ReconciliationStepperForm = () => {
   return (
     <div className="flex w-full flex-col gap-8">
       <StepperProvider variant="progress">
-        <StepperFormContent />
+        <MemoizedStepperFormContent />
       </StepperProvider>
     </div>
   )
