@@ -1,3 +1,4 @@
+// components/SelectLedgerForm.tsx
 import * as React from 'react'
 import { z } from 'zod'
 import { useFormContext, Controller } from 'react-hook-form'
@@ -6,67 +7,14 @@ import { useBookkeepingLedgers } from '@/hooks/useBookkeepingLedgers'
 import { Skeleton } from '@/components/ui/skeleton'
 import type { BookkeepingLedger } from '@/types/bookkeeping'
 
-// Create a dynamic schema based on ledger names
-const createLedgerSchema = (ledgers: BookkeepingLedger[]) => {
-  const ledgerFields = ledgers.reduce(
-    (acc, ledger) => {
-      const fieldName = ledger.name.toLowerCase().replace(/\s+/g, '')
-      acc[fieldName] = z.boolean()
-      return acc
-    },
-    {} as Record<string, z.ZodBoolean>
-  )
-
-  return z.object({
-    ledgers: z
-      .object(ledgerFields)
-      .refine(
-        (values) => Object.values(values).some((v) => v === true),
-        'At least one ledger type must be selected'
-      ),
-    saveAsDefault: z.boolean().default(false),
-  })
-}
-
-const defaultLedgers: BookkeepingLedger[] = [
-  {
-    id: '1',
-    user_id: '0',
-    name: 'General Ledger',
-    description: 'Main accounting ledger',
-    categories: ['all'],
-    is_active: true,
-    is_default: true,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: '2',
-    user_id: '0',
-    name: 'Vendor Ledger',
-    description: 'Vendor transactions ledger',
-    categories: ['vendor'],
-    is_active: true,
-    is_default: false,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-  {
-    id: '3',
-    user_id: '0',
-    name: 'Customer Ledger',
-    description: 'Customer transactions ledger',
-    categories: ['customer'],
-    is_active: true,
-    is_default: false,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-  },
-]
-
-export const SelectLedgerSchema = z.lazy(() =>
-  createLedgerSchema(defaultLedgers)
-)
+// Define a dynamic schema
+export const SelectLedgerSchema = z.object({
+  ledgers: z.record(z.boolean()).refine(
+    (obj) => Object.values(obj).some((v) => v === true),
+    'At least one ledger type must be selected'
+  ),
+  saveAsDefault: z.boolean().default(false),
+})
 
 type SelectLedgerFormValues = z.infer<typeof SelectLedgerSchema>
 
@@ -78,19 +26,21 @@ const SelectLedgerForm = () => {
   } = useFormContext<SelectLedgerFormValues>()
 
   const { data: ledgersResponse, isLoading } = useBookkeepingLedgers()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const availableLedgers = ledgersResponse?.data || []
+
+  // Stabilize availableLedgers with useMemo to prevent unnecessary useEffect triggers
+  const availableLedgers = React.useMemo(
+    () => ledgersResponse?.data || [],
+    [ledgersResponse?.data]
+  )
 
   // Initialize form values when ledgers are loaded
   React.useEffect(() => {
     if (availableLedgers.length > 0) {
       const ledgerValues = {} as Record<string, boolean>
-
       availableLedgers.forEach((ledger) => {
         const fieldName = ledger.name.toLowerCase().replace(/\s+/g, '')
         ledgerValues[fieldName] = false
       })
-
       setValue('ledgers', ledgerValues, { shouldValidate: true })
     }
   }, [availableLedgers, setValue])
@@ -119,9 +69,7 @@ const SelectLedgerForm = () => {
         {availableLedgers.map((ledger: BookkeepingLedger) => (
           <Controller
             key={ledger.id}
-            name={
-              `ledgers.${ledger.name.toLowerCase().replace(/\s+/g, '')}` as const
-            }
+            name={`ledgers.${ledger.name.toLowerCase().replace(/\s+/g, '')}`}
             control={control}
             defaultValue={false}
             render={({ field }) => (
