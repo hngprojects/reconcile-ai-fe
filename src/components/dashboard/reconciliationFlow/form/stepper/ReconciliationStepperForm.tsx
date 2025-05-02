@@ -100,11 +100,13 @@ const StepperFormContent = () => {
   });
 
   const onSubmit = async (values: StepFormValues[StepId]) => {
+    console.log('onSubmit called with values:', values)
     try {
       const stepId = stepper.current.id as StepId;
       const stepNumber = parseInt(stepId.split('-')[1]);
 
       if (stepId === 'step-1') {
+
         const stepValues = values as StepFormValues['step-1'];
         updateFormState({
           currentStep: stepNumber,
@@ -119,6 +121,7 @@ const StepperFormContent = () => {
           currentStep: stepNumber,
         });
         router.push('/dashboard/reconciliation-flow?step=3');
+
       } else if (stepId === 'step-3') {
         // Adjust logic if needed; currently assumes bank statements exist
         updateFormState({ currentStep: stepNumber });
