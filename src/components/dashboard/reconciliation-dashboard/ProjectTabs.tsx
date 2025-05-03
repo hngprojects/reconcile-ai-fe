@@ -3,16 +3,37 @@ import ProjectList from './ProjectList'
 import type { ProjectData } from '@/types/recondashboard'
 
 interface ProjectTabsProps {
-  projects: ProjectData[]
+  projects: ProjectData[];
+  isLoading: boolean;
+  error: string | null;
 }
 
-export default function ProjectTabs({ projects }: ProjectTabsProps) {
+export default function ProjectTabs({ projects, isLoading, error }: ProjectTabsProps) {
   const inProgressProjects = projects.filter(
     (project) => project.status === 'in-progress'
   )
   const completedProjects = projects.filter(
     (project) => project.status === 'completed'
   )
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 p-4 rounded-md">
+        <p className="font-medium">Error loading projects</p>
+        <p className="text-sm">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <Tabs defaultValue="all" className="w-full">
@@ -38,15 +59,15 @@ export default function ProjectTabs({ projects }: ProjectTabsProps) {
       </TabsList>
 
       <TabsContent value="all" className="mt-0">
-        <ProjectList projects={projects} />
+        <ProjectList projects={projects} type="all" />
       </TabsContent>
 
       <TabsContent value="in-progress" className="mt-0">
-        <ProjectList projects={inProgressProjects} />
+        <ProjectList projects={inProgressProjects} type="in-progress" />
       </TabsContent>
 
       <TabsContent value="completed" className="mt-0">
-        <ProjectList projects={completedProjects} />
+        <ProjectList projects={completedProjects} type="completed" />
       </TabsContent>
     </Tabs>
   )
