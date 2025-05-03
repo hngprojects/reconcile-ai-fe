@@ -19,74 +19,17 @@ export default function ReconDashboard() {
   const { updateFormState } = useReconciliationStore()
   const router = useRouter()
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result: { status: string; data?: { projects: any[] }; message?: string } = await getReconciliationsProjects()
-  //       console.log('API result:', result.data) // Log the result from the API
-  //       if (typeof result === 'object' && result?.status === 'success' && result?.data) {
-  //         const transformed = transformData(result.data.projects)
-  //         setProjects(transformed)
-  //       } else {
-  //         setError(result.message || 'Failed to load reconciliations')
-  //       }
-  //     } catch (err: any) {
-  //       setError(err.message || 'An unexpected error occurred')
-  //     } finally {
-  //       setIsLoading(false)
-  //     }
-  //   }
-
-  //   fetchData()
-  // }, [])
-
-  // USE THIS TO TEST THE UI WITHOUT BACKEND
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Simulate network delay
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-
-        // Dummy data that matches the backend response structure
-        const dummyResult = {
-          status: 'success',
-          data: {
-            reconciliations: [
-              {
-                id: '1',
-                title: 'March Bank Reconciliation',
-                status: 'completed',
-                progress: 100,
-                steps: 10,
-                totalSteps: 10,
-                unreconciled: 0,
-                reconciled: 10,
-                lastUpdated: '2025-05-01',
-              },
-              {
-                id: '2',
-                title: 'April Bank Reconciliation',
-                status: 'in-progress',
-                progress: 30,
-                steps: 3,
-                totalSteps: 10,
-                unreconciled: 7,
-                reconciled: 3,
-                lastUpdated: '2025-05-02',
-              },
-            ],
-            summary: {
-              total: 2,
-              completed: 1,
-              pending: 1,
-              total_transactions: 20,
-            },
-          },
+        const result: { status: string; data?: { projects: any[] }; message?: string } = await getReconciliationsProjects()
+        console.log('API result:', result.data) // Log the result from the API
+        if (typeof result === 'object' && result?.status === 'success' && result?.data) {
+          const transformed = transformData(result.data.projects)
+          setProjects(transformed)
+        } else {
+          setError(result.message || 'Failed to load reconciliations')
         }
-
-        const transformed = transformData(dummyResult.data.reconciliations)
-        setProjects(transformed)
       } catch (err: any) {
         setError(err.message || 'An unexpected error occurred')
       } finally {
@@ -96,6 +39,63 @@ export default function ReconDashboard() {
 
     fetchData()
   }, [])
+
+  // USE THIS TO TEST THE UI WITHOUT BACKEND
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       // Simulate network delay
+  //       await new Promise((resolve) => setTimeout(resolve, 1000))
+
+  //       // Dummy data that matches the backend response structure
+  //       const dummyResult = {
+  //         status: 'success',
+  //         data: {
+  //           reconciliations: [
+  //             {
+  //               id: '1',
+  //               title: 'March Bank Reconciliation',
+  //               status: 'completed',
+  //               progress: 100,
+  //               steps: 10,
+  //               totalSteps: 10,
+  //               unreconciled: 0,
+  //               reconciled: 10,
+  //               lastUpdated: '2025-05-01',
+  //             },
+  //             {
+  //               id: '2',
+  //               title: 'April Bank Reconciliation',
+  //               status: 'in-progress',
+  //               progress: 30,
+  //               steps: 3,
+  //               totalSteps: 10,
+  //               unreconciled: 7,
+  //               reconciled: 3,
+  //               lastUpdated: '2025-05-02',
+  //             },
+  //           ],
+  //           summary: {
+  //             total: 2,
+  //             completed: 1,
+  //             pending: 1,
+  //             total_transactions: 20,
+  //           },
+  //         },
+  //       }
+
+  //       const transformed = transformData(dummyResult.data.reconciliations)
+  //       setProjects(transformed)
+  //     } catch (err: any) {
+  //       setError(err.message || 'An unexpected error occurred')
+  //     } finally {
+  //       setIsLoading(false)
+  //     }
+  //   }
+
+  //   fetchData()
+  // }, [])
 
   const handleOpenCreateModal = () => {
     setIsCreateModalOpen(true)
