@@ -1,4 +1,5 @@
 'use client'
+
 import SummaryCards from './SummaryCards'
 import { Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -22,16 +23,20 @@ export default function ReconDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result: { status: string; data?: { projects: any[] }; message?: string } = await getReconciliationsProjects()
-        console.log('API result:', result.data) // Log the result from the API
+        const result = await getReconciliationsProjects()
+        console.log('API result:', result.data)
         if (typeof result === 'object' && result?.status === 'success' && result?.data) {
           const transformed = transformData(result.data.projects)
           setProjects(transformed)
         } else {
           setError(result.message || 'Failed to load reconciliations')
         }
-      } catch (err: any) {
-        setError(err.message || 'An unexpected error occurred')
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message || 'An unexpected error occurred')
+        } else {
+          setError('An unexpected error occurred')
+        }
       } finally {
         setIsLoading(false)
       }
@@ -110,19 +115,30 @@ export default function ReconDashboard() {
     return router.push('/dashboard/reconcile')
   }
 
-  const transformData = (rawProjects: any[] | undefined): ProjectData[] => {
+  // Fixed the transformData function to properly filter out null values before returning
+  const transformData = (rawProjects: unknown[] | undefined): ProjectData[] => {
     if (!rawProjects) return []
-    return rawProjects.map((project) => ({
-      id: project.id,
-      title: project.title,
-      status: project.status as 'completed' | 'in-progress',
-      progress: project.progress || 0,
-      steps: project.steps || 0,
-      totalSteps: project.totalSteps || 0,
-      unreconciled: project.unreconciled || 0,
-      reconciled: project.reconciled || 0,
-      lastUpdated: project.lastUpdated || 'N/A',
-    }))
+    
+    // First filter out invalid projects, then map the valid ones to ProjectData
+    return rawProjects
+      .filter((project): project is Record<string, unknown> => 
+        typeof project === 'object' && 
+        project !== null && 
+        'id' in project && 
+        'title' in project && 
+        'status' in project
+      )
+      .map((project) => ({
+        id: String(project.id),
+        title: String(project.title),
+        status: String(project.status) as 'completed' | 'in-progress',
+        progress: typeof project.progress === 'number' ? project.progress : 0,
+        steps: typeof project.steps === 'number' ? project.steps : 0,
+        totalSteps: typeof project.totalSteps === 'number' ? project.totalSteps : 0,
+        unreconciled: typeof project.unreconciled === 'number' ? project.unreconciled : 0,
+        reconciled: typeof project.reconciled === 'number' ? project.reconciled : 0,
+        lastUpdated: typeof project.lastUpdated === 'string' ? project.lastUpdated : 'N/A',
+      }));
   }
 
   return (
