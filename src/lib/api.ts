@@ -14,6 +14,7 @@ import {
   LEDGER_ENTRY_API_URL,
   BOOKKEEPING_LEDGER_API_URL,
   BANK_ACCOUNTS_API_URL,
+  GET_RECONCILIATION_PROJECTS,
 } from './apiEndpoints'
 import { ManualRequestBody } from '@/types/reconciliation'
 import { getSession } from 'next-auth/react'
@@ -366,6 +367,21 @@ export const validateToken = async (accessToken: string) => {
   })
 
   return response.ok
+}
+
+export const getReconciliationsProjects = async () => {
+  const session = await getSession()
+  const accessToken = session?.user.access_token
+
+  const response = await fetch(GET_RECONCILIATION_PROJECTS, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
+
+  const data = await response.json()
+  return data
 }
 
 export async function updateProfile(formData: FormData) {
