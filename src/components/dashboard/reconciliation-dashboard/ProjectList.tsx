@@ -3,6 +3,7 @@ import type { ProjectData } from '@/types/recondashboard'
 
 interface ProjectListProps {
   projects: ProjectData[]
+  type: string;
 }
 
 export default function ProjectList({ projects }: ProjectListProps) {

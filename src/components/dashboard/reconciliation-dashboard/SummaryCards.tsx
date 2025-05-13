@@ -1,30 +1,41 @@
-import SummaryCard from './SummaryCard'
+import React from 'react';
+import SummaryCard from './SummaryCard';
 
-export default function SummaryCards() {
+interface SummaryCardsProps {
+  summary: {
+    total: number;
+    completed: number;
+    pending: number;
+    totalTransactions: number;
+  };
+}
+
+const SummaryCards: React.FC<SummaryCardsProps> = ({ summary }) => {
   const cards = [
     {
       title: 'Reconciled Projects',
-      value: '2/4',
+      value: `${summary.completed}/${summary.total}`,
       description: 'Reconciled projects reconciled this month',
     },
     {
       title: 'Total Transactions',
-      value: '₦4.2M',
-      description: 'Reconciled in March 2025',
+      value: `₦${summary.totalTransactions}`,
+      description: 'Reconciled in May 2025',
     },
     {
       title: 'Pending Projects',
-      value: '2',
+      value: `${summary.pending}`,
       description: 'Unreconciled projects remaining',
     },
-  ]
+  ];
 
   return (
-    // <div className="flex h-full flex-col flex-wrap gap-4 sm:flex-row sm:items-center">
     <div className="grid gap-4 sm:grid-cols-2 sm:items-center lg:grid-cols-3">
       {cards.map((card, index) => (
         <SummaryCard key={index} {...card} />
       ))}
     </div>
-  )
-}
+  );
+};
+
+export default SummaryCards;
