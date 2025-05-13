@@ -14,6 +14,11 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useReconciliationStore } from '@/store/reconciliation-store'
+import { useEcho, useEchoChannel } from '@/hooks/useEcho'
+import { getRowCount } from '@/lib/utils';
+import { useSession } from 'next-auth/react'
+import Echo from 'laravel-echo'
+import { get_reconcilation_results_by_id } from '@/actions/reconcilation-server'
 
 export default function ReconciliationProcessingPage() {
   const router = useRouter()
@@ -25,87 +30,117 @@ export default function ReconciliationProcessingPage() {
   const [totalTransactions, setTotalTransactions] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const { formState, updateFormState } = useReconciliationStore()
+  const { data: session } = useSession();
+  const echo = useEcho(session?.user.access_token);
 
-  // Mock data for demonstration - in real app this would be calculated from bankStatements
-  const totalTransactionsToProcess = formState.bankStatements.length * 156
-  const totalSteps = 5
+  useEchoChannel(
+    echo,
+    `reconciliation.${formState.reconciliation_id}`,
+    '.reconciliation-progress-updated',
+    (event: { step: number; message: string }) => {
+      console.log('Event received:', event);
+      if (event.message === "Reconciliation failed. Please try again!") {
+        setError(event.message);
+        return;
+      }
+      setCurrentStep(event.step);
+    },
+    currentStep
+  );
+
+  const totalSteps = 7;
 
   // Steps in the reconciliation process
   const steps = [
     {
       id: 1,
-      name: 'Parsing bank statements',
+      name: 'Structuring bank statements...',
       description: 'Extracting transactions from your uploaded statements',
     },
     {
       id: 2,
-      name: 'Analyzing transaction patterns',
-      description: 'Identifying recurring transactions and patterns',
+      name: 'Saving bank statements...',
+      description: 'Saving the transactions',
     },
     {
       id: 3,
-      name: 'Matching with ledger entries',
-      description: 'Finding potential matches in your accounting records',
+      name: 'Fetching ledger entries...',
+      description: 'Fetching entries in the specified ledgers',
     },
     {
       id: 4,
-      name: 'Applying AI-powered matching',
+      name: 'Preparation for AI matching...',
       description: 'Using machine learning to improve match accuracy',
     },
     {
       id: 5,
-      name: 'Finalizing reconciliation',
-      description: 'Preparing your reconciliation report',
+      name: 'AI matching in progress...',
+      description: 'Finding the best matches for the transactions',
+    },
+    {
+      id: 6,
+      name: 'Compiling response...',
+      description: 'Compiling the reconciliation results',
+    },
+    {
+      id: 7,
+      name: 'Reconciliation completed successfully!',
+      description: 'Your results are ready',
     },
   ]
 
+  const [totalTransactionsToProcess, setTotalTransactionsToProcess] = useState(0);
+
+  // Calculate total transactions asynchronously on mount or when formState.bankStatements changes
+  useEffect(() => {
+    const calculateTotalTransactions = async () => {
+      const counts = await Promise.all(
+        formState.bankStatements.map((stmt) => getRowCount(stmt.file as File, true) as Promise<number>)
+      );
+      const total = counts.reduce((acc, count) => acc + count, 0);
+      setTotalTransactionsToProcess(total);
+    };
+    calculateTotalTransactions();
+  }, [formState.bankStatements]);
+
   // Simulate the reconciliation process
   useEffect(() => {
-    setTotalTransactions(totalTransactionsToProcess)
+    const interval = setInterval(async () => {
+      const newProgress = (currentStep / totalSteps) * 100;
 
-    const interval = setInterval(() => {
-      setProgress((prevProgress) => {
-        const newProgress = prevProgress + 100 / (totalSteps * 20)
+      setProgress(newProgress);
+      setProcessingTime((prevTime) => prevTime + 1);
 
-        if (newProgress > 20 && currentStep === 1) setCurrentStep(2)
-        else if (newProgress > 40 && currentStep === 2) setCurrentStep(3)
-        else if (newProgress > 60 && currentStep === 3) setCurrentStep(4)
-        else if (newProgress > 80 && currentStep === 4) setCurrentStep(5)
+      const newEstimatedTime = Math.max(120 - Math.floor(newProgress * 1.2), 0);
+      setEstimatedTimeRemaining(newEstimatedTime);
 
-        const newTransactionsProcessed = Math.min(
-          Math.floor((newProgress / 100) * totalTransactionsToProcess),
-          totalTransactionsToProcess
-        )
-        setTransactionsProcessed(newTransactionsProcessed)
+      if (newProgress >= 100) {
+        clearInterval(interval);
+        const res = await get_reconcilation_results_by_id(formState.reconciliation_id as string);
+        // Update store to mark processing as complete
+        updateFormState({
+          currentStep: 4,
+          processingComplete: true,
+          results: {
+            matches: res.data?.matches,
+            unmatched_ledgers: res.data?.unmatched_ledgers,
+            unmatched_statements: res.data?.unmatched_statements
+          },
+          summary: res.data?.summary
+        });
+        // Redirect to step 4 after processing
+        router.push('/dashboard/reconcile?step=4');
+      }
 
-        setProcessingTime((prevTime) => prevTime + 1)
+      const newTransactionsProcessed = Math.min(
+        Math.floor((newProgress / 100) * totalTransactionsToProcess),
+        totalTransactionsToProcess
+      );
+      setTransactionsProcessed(newTransactionsProcessed);
+    }, 1000);
 
-        const newEstimatedTime = Math.max(
-          120 - Math.floor(newProgress * 1.2),
-          0
-        )
-        setEstimatedTimeRemaining(newEstimatedTime)
-
-        if (newProgress >= 100) {
-          clearInterval(interval)
-          // Update store to mark processing as complete
-          updateFormState({
-            currentStep: 4,
-            processingComplete: true
-          })
-          // Redirect to step 4 after processing
-          setTimeout(() => {
-            router.push('/dashboard/reconciliation-flow?step=4')
-          }, 1500)
-          return 100
-        }
-
-        return Math.min(newProgress, 100)
-      })
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [router, currentStep, totalTransactionsToProcess, updateFormState])
+    return () => clearInterval(interval);
+  }, [router, currentStep, totalTransactionsToProcess, updateFormState]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -138,7 +173,7 @@ export default function ReconciliationProcessingPage() {
                 <div className="mt-4 flex gap-2">
                   <Button
                     variant="outline"
-                    onClick={() => router.push('/dashboard/reconciliation-flow')}
+                    onClick={() => router.push('/dashboard/reconcile')}
                   >
                     Return to Reconciliation
                   </Button>
@@ -245,13 +280,12 @@ export default function ReconciliationProcessingPage() {
                 {steps.map((step) => (
                   <div key={step.id} className="flex items-start gap-3">
                     <div
-                      className={`rounded-full p-1 ${
-                        currentStep > step.id
-                          ? 'bg-green-100 text-green-600'
-                          : currentStep === step.id
-                            ? 'bg-primary/20 text-primary'
-                            : 'bg-muted text-muted-foreground'
-                      }`}
+                      className={`rounded-full p-1 ${currentStep > step.id
+                        ? 'bg-green-100 text-green-600'
+                        : currentStep === step.id
+                          ? 'bg-primary/20 text-primary'
+                          : 'bg-muted text-muted-foreground'
+                        }`}
                     >
                       {currentStep > step.id ? (
                         <CheckCircle2 className="h-5 w-5" />
@@ -264,13 +298,12 @@ export default function ReconciliationProcessingPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <p
-                          className={`text-sm font-medium sm:text-base ${
-                            currentStep > step.id
-                              ? 'text-green-600'
-                              : currentStep === step.id
-                                ? 'text-primary'
-                                : 'text-muted-foreground'
-                          }`}
+                          className={`text-sm font-medium sm:text-base ${currentStep > step.id
+                            ? 'text-green-600'
+                            : currentStep === step.id
+                              ? 'text-primary'
+                              : 'text-muted-foreground'
+                            }`}
                         >
                           {step.name}
                         </p>

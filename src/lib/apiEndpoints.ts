@@ -3,7 +3,7 @@ export const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_API_URL}`
 console.log('BASE_URL', BASE_URL)
 
 // RECONCILE
-export const RECONCILE_API_URL = `${BASE_URL}/reconcile-embeddings`
+export const RECONCILE_API_URL = `${BASE_URL}/reconcile`
 
 // WAITLIST
 export const WAITLIST_API_URL = `${BASE_URL}/wait-list`
@@ -40,6 +40,8 @@ export const CUSTOMER_FEEDBACK_API_URL = `${BASE_URL}/customer-feedback`
 
 // RECONCILIATION RESULT API
 export const RECONCILIATION_RESULT_API_URL = `${BASE_URL}/reconciliations/`
+
+export const RECONCILIATION_API_URL = `${BASE_URL}/reconciliations`
 
 // PAYMENT PLAN
 export const PAYMENT_PLAN_API_URL = `${BASE_URL}/payment-plan`
