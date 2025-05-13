@@ -1,6 +1,7 @@
+import { ReconciliationResultType, Summary } from '@/types/reconciliation'
 import { create } from 'zustand'
 
-interface BankStatementData {
+export interface BankStatementData {
   file: File | null
   bankAccount: string
   period: {
@@ -14,7 +15,10 @@ export interface ReconciliationFormState {
   currentStep: number
   selectedLedgers: Record<string, boolean>
   bankStatements: BankStatementData[]
-  processingComplete?: boolean
+  processingComplete?: boolean,
+  reconciliation_id: string | null,
+  summary: Summary | null,
+  results: ReconciliationResultType | null,
   title: string
 }
 
@@ -31,7 +35,10 @@ const initialState: ReconciliationFormState = {
   selectedLedgers: {},
   bankStatements: [],
   processingComplete: false,
+  reconciliation_id: null,
   title: '',
+  summary: null,
+  results: null
 }
 
 export const useReconciliationStore = create<ReconciliationStore>()((set) => ({

@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils'
 import AddBankAccount from '../components/add-bank-account/AddBankAccountForm'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { toast } from 'sonner'
+import { addLedgers, addStatements, createRecon, reconcileFiles, saveDraft } from '@/actions/reconcilation'
 
 // Define step-specific form values types
 type StepFormValues = {
@@ -28,7 +29,8 @@ type StepFormValues = {
   'step-2': {
     file: File
     bankAccount: string
-    period: { from: string; to: string }
+    period: { from: string; to: string },
+    mapper: Record<string, string>
   }
   'step-3': Record<string, never>
   'step-4': Record<string, never>
@@ -114,21 +116,25 @@ const StepperFormContent = () => {
         });
         stepper.next();
       } else if (stepId === 'step-2') {
-        const stepValues = values as StepFormValues['step-2'];
         // Update bankStatements with the uploaded data
         updateFormState({
-          bankStatements: [...formState.bankStatements, stepValues],
           currentStep: stepNumber,
         });
-        router.push('/dashboard/reconciliation-flow?step=3');
+        router.push('/dashboard/reconcile?step=3');
 
       } else if (stepId === 'step-3') {
         // Adjust logic if needed; currently assumes bank statements exist
-        updateFormState({ currentStep: stepNumber });
-        router.push('/dashboard/recon-processing');
+        const ledgIds = Object.keys(formState.selectedLedgers).filter((ledg) => formState.selectedLedgers[ledg]);
+        const { status, data } = await reconcileFiles(formState.bankStatements, ledgIds, formState.title);
+        if (status === 'success') {
+          updateFormState({ currentStep: stepNumber, reconciliation_id: data.data.reconciliation_id });
+          router.push('/dashboard/recon-processing');
+        } else {
+          throw new Error('Failed to initiate AI reconciliation')
+        }
       }
     } catch (error) {
-      toast.error('Failed to save form data');
+      toast.error(error.message);
       console.error('Form submission error:', error);
     }
   };
@@ -140,12 +146,54 @@ const StepperFormContent = () => {
       const currentStepNumber = parseInt(stepper.current.id.split('-')[1]);
       updateFormState({ currentStep: currentStepNumber - 1 });
       router.push(
-        `/dashboard/reconciliation-flow?step=${currentStepNumber - 1}`
+        `/dashboard/reconcile?step=${currentStepNumber - 1}`
       );
     }
   };
 
   const handleSaveDraft = async () => {
+    try {
+      if (formState.currentStep < 4 && !formState.reconciliation_id) {
+        // create recon
+        const { status, data } = await createRecon(formState.title);
+
+        if (status === 'success') {
+          updateFormState({ reconciliation_id: data.id });
+        } else {
+          throw new Error('Failed to initiate AI reconciliation')
+        }
+
+
+        // add ledgers
+        const ledgers = Object.keys(formState.selectedLedgers).filter((ledg) =>
+          formState.selectedLedgers[ledg] === true
+        );
+        const { status: addStatus } = await addLedgers(ledgers, data.id);
+        if (addStatus === 'success') {
+          // add statements
+          const { status: stmtStatus } = await addStatements(formState.bankStatements, data.id);
+
+          if (stmtStatus === 'success') {
+            toast.success('Draft saved successfully!')
+          } else {
+            throw new Error('Failed to add reconciliation\'s bank statements');
+          }
+        } else {
+          throw new Error('Failed to add reconciliation\'s ledgers');
+        }
+      } else {
+        const { status } = await saveDraft(formState.currentStep, formState.reconciliation_id as string);
+
+        if (status === 'success') {
+          toast.success('Draft saved successfully!')
+        } else {
+          throw new Error('Failed to save draft');
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to save draft');
+    }
     toast.success('Draft saving will be implemented later');
   };
 

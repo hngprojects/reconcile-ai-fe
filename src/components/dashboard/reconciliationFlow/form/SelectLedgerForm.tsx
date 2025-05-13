@@ -38,7 +38,7 @@ const SelectLedgerForm = () => {
     if (availableLedgers.length > 0) {
       const ledgerValues = {} as Record<string, boolean>
       availableLedgers.forEach((ledger) => {
-        const fieldName = ledger.name.toLowerCase().replace(/\s+/g, '')
+        const fieldName = ledger.id;
         ledgerValues[fieldName] = false
       })
       setValue('ledgers', ledgerValues, { shouldValidate: true })
@@ -69,7 +69,7 @@ const SelectLedgerForm = () => {
         {availableLedgers.map((ledger: BookkeepingLedger) => (
           <Controller
             key={ledger.id}
-            name={`ledgers.${ledger.name.toLowerCase().replace(/\s+/g, '')}`}
+            name={`ledgers.${ledger.id}`}
             control={control}
             defaultValue={false}
             render={({ field }) => (
