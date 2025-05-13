@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { SearchIcon } from '@/components/Icon/Icons'
+import { useReconciliationStore } from '@/store/reconciliation-store'
+import { TStatement } from '@/types/reconciliation'
 
 export type Transaction = {
   id: string
@@ -48,48 +50,6 @@ export type Transaction = {
   amount: number
 }
 
-const transactions: Transaction[] = [
-  {
-    id: '1',
-    date: 'Jan 25. 2025',
-    name: 'First Bank',
-    accountNumber: '123456789',
-    bal: '1,565,777.00',
-    type: 'savings',
-    description: {
-      title: 'TRF TO ABC PROPERTIES LTD',
-      text: 'TRF-20250315-001',
-    },
-    amount: -250000,
-  },
-  {
-    id: '2',
-    date: 'Feb 25. 2025',
-    name: 'Access Bank',
-    accountNumber: '987654321',
-    bal: '1,565.00',
-    type: 'current',
-    description: {
-      title: 'CASH DEPOSIT',
-      text: 'DEP-20250314-002',
-    },
-    amount: 345000,
-  },
-  {
-    id: '3',
-    date: 'Mar 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: {
-      title: 'TRF TO XYZ SUPPLIERS',
-      text: 'TRF-20250312-003',
-    },
-    amount: 345000,
-  },
-]
-
 const ConfirmUnmatchedTable = () => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -97,6 +57,26 @@ const ConfirmUnmatchedTable = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedAccount, setSelectedAccount] = useState('All Accounts')
   const [selectedLedger, setSelectedLedger] = useState('All Ledgers')
+
+  const { formState } = useReconciliationStore();
+
+  // Map matchedItems to table data
+  const transactions: Transaction[] = useMemo(() => {
+    return (formState.results?.unmatched_statements as TStatement[]).map((item) => ({
+      id: item.id,
+      date: item.Date,
+      name: '',
+      description: {
+        title: item.Description,
+        text: '',
+      },
+      accountNumber: `${item.accountNumber}`,
+      bal: `${item.Amount}`,
+      type: `Expense`,
+      amount: item.Amount,
+    }))
+  }, [formState.results?.matches]);
+
 
   const columns = useMemo<ColumnDef<Transaction>[]>(
     () => [
@@ -275,7 +255,7 @@ const ConfirmUnmatchedTable = () => {
                         className={cn(
                           `border-r px-4 py-3`,
                           cell.column.id === 'select' &&
-                            'p-4 [&:has([role=checkbox])]:p-4'
+                          'p-4 [&:has([role=checkbox])]:p-4'
                         )}
                       >
                         {flexRender(
@@ -336,7 +316,7 @@ const ConfirmUnmatchedTable = () => {
               -
               {Math.min(
                 (table.getState().pagination.pageIndex + 1) *
-                  table.getState().pagination.pageSize,
+                table.getState().pagination.pageSize,
                 table.getFilteredRowModel().rows.length
               )}{' '}
               of {table.getFilteredRowModel().rows.length} rows

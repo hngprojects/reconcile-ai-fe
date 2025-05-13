@@ -159,7 +159,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <Button
           className="w-full bg-[#2e604a] text-white hover:bg-[#2e604a]/90"
           onClick={() => {
-            router.push('/dashboard/reconciliation-flow')
+            router.push('/dashboard/reconcile')
           }}
         >
           Continue Reconciliation

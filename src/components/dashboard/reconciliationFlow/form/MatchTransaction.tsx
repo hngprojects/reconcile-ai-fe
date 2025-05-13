@@ -1,5 +1,5 @@
-import MatchTransactionSummaryCards from './components/match-transaction/MatchTransactionSummaryCards'
-import MatchTransactionTable from './components/match-transaction/MatchTransactionTable'
+import MatchTransactionSummaryCards from './components/match-transaction/MatchTransactionSummaryCards';
+import MatchTransactionTable from './components/match-transaction/MatchTransactionTable';
 
 const MatchTransaction = () => {
   return (
