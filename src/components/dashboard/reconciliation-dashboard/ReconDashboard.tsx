@@ -6,14 +6,21 @@ import { useEffect, useState } from 'react'
 import CreateModal, { CreateProjectSchema } from './CreateModal'
 import Header from './Header'
 import ProjectTabs from './ProjectTabs'
-import { ProjectData } from '@/types/recondashboard'
+import { GeneralSummary, ProjectData } from '@/types/recondashboard'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
 import { getReconciliationsProjects } from '@/lib/api'
+import { get_reconcilation_results_by_id } from '@/actions/reconcilation-server'
 
 export default function ReconDashboard() {
   const [projects, setProjects] = useState<ProjectData[]>([])
+  const [summary, setSummary] = useState<GeneralSummary>({
+    total: 0,
+    completed: 0,
+    pending: 0,
+    totalTransactions: 0,
+  } as GeneralSummary);
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -26,8 +33,13 @@ export default function ReconDashboard() {
         const result = await getReconciliationsProjects()
         console.log('API result:', result.data)
         if (typeof result === 'object' && result?.status === 'success' && result?.data) {
-          const transformed = transformData(result.data.projects)
+          const transformed = transformData(result.data.reconciliations)
+          console.log(transformed)
           setProjects(transformed)
+          setSummary({
+            ...result.data.summary,
+            totalTransactions: result.data.summary.total_transactions
+          })
         } else {
           setError(result.message || 'Failed to load reconciliations')
         }
@@ -45,63 +57,6 @@ export default function ReconDashboard() {
     fetchData()
   }, [])
 
-  // USE THIS TO TEST THE UI WITHOUT BACKEND
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // Simulate network delay
-  //       await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  //       // Dummy data that matches the backend response structure
-  //       const dummyResult = {
-  //         status: 'success',
-  //         data: {
-  //           reconciliations: [
-  //             {
-  //               id: '1',
-  //               title: 'March Bank Reconciliation',
-  //               status: 'completed',
-  //               progress: 100,
-  //               steps: 10,
-  //               totalSteps: 10,
-  //               unreconciled: 0,
-  //               reconciled: 10,
-  //               lastUpdated: '2025-05-01',
-  //             },
-  //             {
-  //               id: '2',
-  //               title: 'April Bank Reconciliation',
-  //               status: 'in-progress',
-  //               progress: 30,
-  //               steps: 3,
-  //               totalSteps: 10,
-  //               unreconciled: 7,
-  //               reconciled: 3,
-  //               lastUpdated: '2025-05-02',
-  //             },
-  //           ],
-  //           summary: {
-  //             total: 2,
-  //             completed: 1,
-  //             pending: 1,
-  //             total_transactions: 20,
-  //           },
-  //         },
-  //       }
-
-  //       const transformed = transformData(dummyResult.data.reconciliations)
-  //       setProjects(transformed)
-  //     } catch (err: any) {
-  //       setError(err.message || 'An unexpected error occurred')
-  //     } finally {
-  //       setIsLoading(false)
-  //     }
-  //   }
-
-  //   fetchData()
-  // }, [])
-
   const handleOpenCreateModal = () => {
     setIsCreateModalOpen(true)
   }
@@ -118,27 +73,62 @@ export default function ReconDashboard() {
   // Fixed the transformData function to properly filter out null values before returning
   const transformData = (rawProjects: unknown[] | undefined): ProjectData[] => {
     if (!rawProjects) return []
-    
+
     // First filter out invalid projects, then map the valid ones to ProjectData
     return rawProjects
-      .filter((project): project is Record<string, unknown> => 
-        typeof project === 'object' && 
-        project !== null && 
-        'id' in project && 
-        'title' in project && 
+      .filter((project): project is Record<string, unknown> =>
+        typeof project === 'object' &&
+        project !== null &&
+        'id' in project &&
+        'title' in project &&
         'status' in project
       )
       .map((project) => ({
         id: String(project.id),
         title: String(project.title),
         status: String(project.status) as 'completed' | 'in-progress',
-        progress: typeof project.progress === 'number' ? project.progress : 0,
-        steps: typeof project.steps === 'number' ? project.steps : 0,
-        totalSteps: typeof project.totalSteps === 'number' ? project.totalSteps : 0,
-        unreconciled: typeof project.unreconciled === 'number' ? project.unreconciled : 0,
-        reconciled: typeof project.reconciled === 'number' ? project.reconciled : 0,
-        lastUpdated: typeof project.lastUpdated === 'string' ? project.lastUpdated : 'N/A',
+        progress: Math.ceil((+(project.step as string) / 6) * 100),
+        steps: +(project.step as string),
+        totalSteps: 6,
+        unreconciled: +(project.unmatched as string),
+        reconciled: +(project.matches as string),
+        lastUpdated: new Date(project.updated_at as string),
       }));
+  }
+
+  const handleContinueReconciliation = async (project: ProjectData) => {
+    // Update the form state with the project data
+    let results = null;
+    if (project.steps > 3) {
+      results = await get_reconcilation_results_by_id(project.id);
+    }
+    updateFormState({
+      reconciliation_id: project.id,
+      title: project.title,
+      currentStep: project.steps,
+      processingComplete: true,
+      results: {
+        matches: results?.data?.matches,
+        unmatched_ledgers: results?.data?.unmatched_ledgers,
+        unmatched_statements: results?.data?.unmatched_statements
+      },
+      summary: results?.data?.summary
+    });
+
+    // Map project steps to navigation steps
+    let targetStep = project.steps;
+
+    if (project.steps == 1) {
+      targetStep = 2;
+    } else if (project.steps == 2 || project.steps == 3) {
+      targetStep = 3;
+    } else if (project.steps == 4 || project.steps == 7) {
+      targetStep = 4;
+    } else if (project.steps == 5) {
+      targetStep = 5;
+    }
+
+    router.push(`/dashboard/reconcile?step=${targetStep}`);
   }
 
   return (
@@ -153,21 +143,26 @@ export default function ReconDashboard() {
           </p>
         </div>
 
-        <button
-          onClick={handleOpenCreateModal}
-          className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
-        >
-          <Plus className="size-5" /> Create New Reconciliation
-        </button>
+        {projects && projects.length > 0 && (projects[0]['status'] == 'completed' || projects[0]['status'] == 'failed') ?
+          <button
+            onClick={handleOpenCreateModal}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+          >
+            <Plus className="size-5" /> Create New Reconciliation
+          </button>
+          :
+          <button
+            onClick={() => handleContinueReconciliation(projects[0])}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+          >
+            Continue Reconciliation
+          </button>
+
+        }
       </div>
 
       <SummaryCards
-        summary={{
-          total: projects.length,
-          completed: projects.filter((p) => p.status === 'completed').length,
-          pending: projects.filter((p) => p.status === 'in-progress').length,
-          totalTransactions: projects.reduce((sum, p) => sum + p.totalSteps, 0),
-        }}
+        summary={summary as GeneralSummary}
       />
 
       <Header />
@@ -188,7 +183,7 @@ export default function ReconDashboard() {
             No reconciliations found
           </h2>
           <p className="text-muted-foreground text-center text-sm">
-          Start a new project below to begin managing your financial data.
+            Start a new project below to begin managing your financial data.
           </p>
           <button
             onClick={handleOpenCreateModal}

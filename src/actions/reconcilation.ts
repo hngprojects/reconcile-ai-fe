@@ -189,7 +189,6 @@ export async function addStatements(bank_statements: BankStatementData[], reconc
   const sesh = await getSession()
   const token = sesh?.user.access_token
   const headers = {
-    'Content-Type': 'application/json',
     ...withAuth(token as string)
   }
   const formData = new FormData()
@@ -226,5 +225,38 @@ export async function addStatements(bank_statements: BankStatementData[], reconc
       code: 500,
       message: 'An unexpected error occurred',
     }
+  }
+}
+
+export async function startReconciliation(reconciliation_id: string) {
+  const sesh = await getSession();
+  const token = sesh?.user.access_token;
+  const headers = {
+    'Content-Type': 'application/json',
+    ...withAuth(token as string)
+  };
+
+  try {
+    const response = await fetch(`${RECONCILIATION_RESULT_API_URL}${reconciliation_id}/start`, {
+      method: 'POST',
+      headers,
+    });
+    const res = await response.json();
+
+    if (res.status === 'success') {
+      return {
+        status: 'success',
+        data: res.data,
+      };
+    } else {
+      throw new Error(res.message || 'Failed to start reconciliation');
+    }
+  } catch (error) {
+    console.error('Start reconciliation error:', error);
+    return {
+      status: 'error',
+      code: 500,
+      message: error instanceof Error ? error.message : 'An unexpected error occurred',
+    };
   }
 }

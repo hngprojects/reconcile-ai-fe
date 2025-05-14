@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils'
 import AddBankAccount from '../components/add-bank-account/AddBankAccountForm'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { toast } from 'sonner'
-import { addLedgers, addStatements, createRecon, reconcileFiles, saveDraft } from '@/actions/reconcilation'
+import { addLedgers, addStatements, createRecon, reconcileFiles, saveDraft, startReconciliation } from '@/actions/reconcilation'
 
 // Define step-specific form values types
 type StepFormValues = {
@@ -100,42 +100,104 @@ const StepperFormContent = () => {
     resolver: zodResolver(stepper.current.schema),
     mode: 'all',
   });
-
   const onSubmit = async (values: StepFormValues[StepId]) => {
-    console.log('onSubmit called with values:', values)
+    console.log('onSubmit called with values:', values);
     try {
       const stepId = stepper.current.id as StepId;
       const stepNumber = parseInt(stepId.split('-')[1]);
 
       if (stepId === 'step-1') {
-
         const stepValues = values as StepFormValues['step-1'];
         updateFormState({
           currentStep: stepNumber,
           selectedLedgers: stepValues.ledgers,
         });
         stepper.next();
-      } else if (stepId === 'step-2') {
-        // Update bankStatements with the uploaded data
+      }
+      else if (stepId === 'step-2') {
         updateFormState({
           currentStep: stepNumber,
         });
+        if (formState.reconciliation_id) {
+          const { status: stmtStatus } = await addStatements(
+            formState.bankStatements,
+            formState.reconciliation_id
+          );
+        }
         router.push('/dashboard/reconcile?step=3');
+      }
+      else if (stepId === 'step-3') {
+        const ledgIds = Object.keys(formState.selectedLedgers)
+          .filter((ledg) => formState.selectedLedgers[ledg]);
 
-      } else if (stepId === 'step-3') {
-        // Adjust logic if needed; currently assumes bank statements exist
-        const ledgIds = Object.keys(formState.selectedLedgers).filter((ledg) => formState.selectedLedgers[ledg]);
-        const { status, data } = await reconcileFiles(formState.bankStatements, ledgIds, formState.title);
-        if (status === 'success') {
-          updateFormState({ currentStep: stepNumber, reconciliation_id: data.data.reconciliation_id });
-          router.push('/dashboard/recon-processing');
+        // Check if this is a draft reconciliation (has reconciliation_id)
+        if (formState.reconciliation_id) {
+          // This is a draft - start the reconciliation process
+          const { status } = await startReconciliation(formState.reconciliation_id);
+
+          if (status === 'success') {
+            updateFormState({ currentStep: stepNumber });
+            router.push('/dashboard/recon-processing');
+          } else {
+            throw new Error('Failed to start AI reconciliation process');
+          }
         } else {
-          throw new Error('Failed to initiate AI reconciliation')
+          // This is a new reconciliation - create and reconcile
+          const { status, data } = await reconcileFiles(
+            formState.bankStatements,
+            ledgIds,
+            formState.title
+          );
+
+          if (status === 'success') {
+            updateFormState({
+              currentStep: stepNumber,
+              reconciliation_id: data.data.reconciliation_id
+            });
+            router.push('/dashboard/recon-processing');
+          } else {
+            throw new Error('Failed to initiate AI reconciliation');
+          }
         }
       }
-    } catch (error) {
+    } catch (err) {
+      const error = err as Error;
       toast.error(error.message);
       console.error('Form submission error:', error);
+    }
+  };
+
+  const handleSaveDraft = async () => {
+    try {
+      switch (formState.currentStep) {
+        case 1:
+          throw new Error('Save draft not available at this step');
+
+        case 2:
+          await handleStep2Submission();
+          break;
+
+        case 3:
+          await handleStep3Submission();
+          break;
+
+        case 4: // Processing
+        case 5: // AI Matching
+        case 6: // Confirming Results
+          await saveCurrentStep();
+          break;
+
+        default:
+          throw new Error('Invalid step for saving draft');
+      }
+
+      toast.success('Progress saved successfully!');
+      router.push('/dashboard/reconciliation');
+
+    } catch (err) {
+      const error = err as Error;
+      console.error('Save draft error:', error);
+      toast.error(error.message || 'Failed to save progress');
     }
   };
 
@@ -151,54 +213,73 @@ const StepperFormContent = () => {
     }
   };
 
-  const handleSaveDraft = async () => {
-    try {
-      if (formState.currentStep < 4 && !formState.reconciliation_id) {
-        // create recon
-        const { status, data } = await createRecon(formState.title);
-
-        if (status === 'success') {
-          updateFormState({ reconciliation_id: data.id });
-        } else {
-          throw new Error('Failed to initiate AI reconciliation')
-        }
-
-
-        // add ledgers
-        const ledgers = Object.keys(formState.selectedLedgers).filter((ledg) =>
-          formState.selectedLedgers[ledg] === true
-        );
-        const { status: addStatus } = await addLedgers(ledgers, data.id);
-        if (addStatus === 'success') {
-          // add statements
-          const { status: stmtStatus } = await addStatements(formState.bankStatements, data.id);
-
-          if (stmtStatus === 'success') {
-            toast.success('Draft saved successfully!')
-          } else {
-            throw new Error('Failed to add reconciliation\'s bank statements');
-          }
-        } else {
-          throw new Error('Failed to add reconciliation\'s ledgers');
-        }
-      } else {
-        const { status } = await saveDraft(formState.currentStep, formState.reconciliation_id as string);
-
-        if (status === 'success') {
-          toast.success('Draft saved successfully!')
-        } else {
-          throw new Error('Failed to save draft');
-        }
-      }
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to save draft');
+  // Step 2: Create reconciliation with ledgers (and statements if present)
+  const handleStep2Submission = async () => {
+    // Create reconciliation
+    const { status: createStatus, data } = await createRecon(formState.title);
+    if (createStatus !== 'success') {
+      throw new Error('Failed to create reconciliation');
     }
-    toast.success('Draft saving will be implemented later');
+
+    // Add ledgers
+    const ledgers = Object.keys(formState.selectedLedgers)
+      .filter(ledg => formState.selectedLedgers[ledg]);
+
+    const { status: ledgerStatus } = await addLedgers(ledgers, data.id);
+    if (ledgerStatus !== 'success') {
+      throw new Error('Failed to add ledgers to reconciliation');
+    }
+
+    updateFormState({ reconciliation_id: data.id });
+
+    if (formState.bankStatements.length > 0) {
+      const { status: stmtStatus } = await addStatements(
+        formState.bankStatements,
+        data.id
+      );
+
+      if (stmtStatus !== 'success') {
+        throw new Error('Failed to add initial statements');
+      }
+
+      updateFormState({ currentStep: 3 });
+    } else {
+      // Do not call saveDraft here; backend sets draft after ledgers
+      updateFormState({ currentStep: 3 });
+    }
+
+  };
+
+  // Step 3: Additional statements
+  const handleStep3Submission = async () => {
+    // Save statements
+    const { status: stmtStatus } = await addStatements(
+      formState.bankStatements,
+      formState.reconciliation_id as string
+    );
+
+    if (stmtStatus !== 'success') {
+      throw new Error('Failed to save statements');
+    }
+
+  };
+
+  // Steps 4-7: Save current progress
+  const saveCurrentStep = async () => {
+    const { status } = await saveDraft(
+      formState.currentStep,
+      formState.reconciliation_id as string
+    );
+
+    if (status !== 'success') {
+      throw new Error('Failed to save progress');
+    }
   };
 
   useEffect(() => {
-    const step = searchParams.get('step');
+    console.log(formState);
+
+    const step = searchParams.get('step') || formState.currentStep;
     if (step) {
       const stepNumber = parseInt(step);
       if (stepNumber > 1 && stepNumber <= steps.length) {
@@ -252,7 +333,7 @@ const StepperFormContent = () => {
               </Button>
             )}
 
-            {!stepper.isLast && !stepper.isFirst && (
+            {!stepper.isLast && !stepper.isFirst && Number(stepper.current.id.split('-')[1]) > 3 && (
               <Button
                 type="button"
                 variant="outline"

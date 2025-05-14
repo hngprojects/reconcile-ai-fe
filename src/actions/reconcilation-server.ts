@@ -158,3 +158,36 @@ export const save_reconcilation_id = async (id: string) => {
   })
   return id
 }
+
+export const delete_reconcilation = async (
+  id: string
+): Promise<APIResponse<null>> => {
+  const session = await auth()
+  try {
+    const res = await apiHandler<APIResponse<null>>(
+      `/reconciliations/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          ...withAuth(session?.user.access_token as string),
+        },
+      }
+    )
+    return res
+  } catch (error) {
+    if (error instanceof HttpError) {
+      return {
+        success: error.responseBody?.success || false,
+        message:
+          error.responseBody?.message || `Server error: ${error.message}`,
+        data: null,
+      }
+    } else {
+      return {
+        success: false,
+        message: 'An unexpected error occurred',
+        data: null,
+      }
+    }
+  }
+}

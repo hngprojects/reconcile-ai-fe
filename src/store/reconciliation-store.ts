@@ -1,5 +1,6 @@
 import { ReconciliationResultType, Summary } from '@/types/reconciliation'
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export interface BankStatementData {
   file: File | null
@@ -19,7 +20,7 @@ export interface ReconciliationFormState {
   reconciliation_id: string | null,
   summary: Summary | null,
   results: ReconciliationResultType | null,
-  title: string
+  title: string,
 }
 
 interface ReconciliationStore {
@@ -41,39 +42,46 @@ const initialState: ReconciliationFormState = {
   results: null
 }
 
-export const useReconciliationStore = create<ReconciliationStore>()((set) => ({
-  formState: initialState,
+export const useReconciliationStore = create<ReconciliationStore>()(
+  persist(
+    (set) => ({
+      formState: initialState,
 
-  updateFormState: (updates) =>
-    set((state) => ({
-      formState: { ...state.formState, ...updates },
-    })),
+      updateFormState: (updates) =>
+        set((state) => ({
+          formState: { ...state.formState, ...updates },
+        })),
 
-  addBankStatement: (statement) =>
-    set((state) => ({
-      formState: {
-        ...state.formState,
-        bankStatements: [...state.formState.bankStatements, statement],
-      },
-    })),
+      addBankStatement: (statement) =>
+        set((state) => ({
+          formState: {
+            ...state.formState,
+            bankStatements: [...state.formState.bankStatements, statement],
+          },
+        })),
 
-  updateBankStatement: (index, statement) =>
-    set((state) => ({
-      formState: {
-        ...state.formState,
-        bankStatements: state.formState.bankStatements.map((s, i) =>
-          i === index ? { ...s, ...statement } : s
-        ),
-      },
-    })),
+      updateBankStatement: (index, statement) =>
+        set((state) => ({
+          formState: {
+            ...state.formState,
+            bankStatements: state.formState.bankStatements.map((s, i) =>
+              i === index ? { ...s, ...statement } : s
+            ),
+          },
+        })),
 
-  removeBankStatement: (index) =>
-    set((state) => ({
-      formState: {
-        ...state.formState,
-        bankStatements: state.formState.bankStatements.filter(
-          (_, i) => i !== index
-        ),
-      },
-    })),
-}))
+      removeBankStatement: (index) =>
+        set((state) => ({
+          formState: {
+            ...state.formState,
+            bankStatements: state.formState.bankStatements.filter(
+              (_, i) => i !== index
+            ),
+          },
+        })),
+    }),
+    {
+      name: 'reconciliation-storage',
+    }
+  )
+)
