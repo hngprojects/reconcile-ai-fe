@@ -28,7 +28,9 @@ const AddBankAccountForm = () => {
     null
   )
   const { data: bankAccountsResponse } = useBankAccounts()
-  const { formState, addBankStatement } = useReconciliationStore()
+  const { formState, addBankStatement, removeBankStatement } = useReconciliationStore()
+
+  console.log(formState.bankStatements)
 
   // Initialize with bank statements from store
   useEffect(() => {
@@ -88,6 +90,7 @@ const AddBankAccountForm = () => {
   }
 
   const handleDelete = (id: string) => {
+    removeBankStatement(Number(id));
     setBankStatements((prev) => prev.filter((statement) => statement.id !== id))
   }
 

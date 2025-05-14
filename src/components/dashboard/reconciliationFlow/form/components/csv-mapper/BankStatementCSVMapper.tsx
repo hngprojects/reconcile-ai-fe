@@ -55,10 +55,10 @@ export const BankStatementCSVMapper = ({
           headers.forEach((header: string) => {
             const lowerHeader = header.toLowerCase()
             if (lowerHeader.includes('date') && !dateMapped) {
-              initialMappings[header] = 'Date'
+              initialMappings['date'] = header
               dateMapped = true
             } else if (lowerHeader.includes('desc') && !descMapped) {
-              initialMappings[header] = 'Description'
+              initialMappings['description'] = header
               descMapped = true
             } else if (
               (lowerHeader.includes('amount') ||
@@ -66,10 +66,8 @@ export const BankStatementCSVMapper = ({
                 lowerHeader.includes('total')) &&
               !amountMapped
             ) {
-              initialMappings[header] = 'Amount'
+              initialMappings['amount'] = header
               amountMapped = true
-            } else {
-              initialMappings[header] = ''
             }
           })
           setMappings(initialMappings)
@@ -94,16 +92,16 @@ export const BankStatementCSVMapper = ({
   const handleMappingChange = (csvColumn: string, reconxiColumn: string) => {
     setMappings((prev) => ({
       ...prev,
-      [csvColumn]: reconxiColumn === 'none' ? '' : reconxiColumn,
+      [reconxiColumn]: csvColumn === 'none' ? '' : csvColumn,
     }))
   }
 
   const handleSubmit = async () => {
     try {
       // Validate required fields are mapped
-      const requiredFields = ['Date', 'Description', 'Amount']
-      const mappedFields = Object.values(mappings).filter(
-        (value) => value !== '' && value !== 'none'
+      const requiredFields = ['date', 'description', 'amount']
+      const mappedFields = Object.keys(mappings).filter(
+        (value) => mappings[value] !== '' && mappings[value] !== 'none'
       )
       const missingFields = requiredFields.filter(
         (field) => !mappedFields.includes(field)
@@ -127,18 +125,18 @@ export const BankStatementCSVMapper = ({
 
   const getTooltipText = (field: string) => {
     switch (field) {
-      case 'Date':
+      case 'date':
         return 'The transaction date from your bank statement'
-      case 'Description':
+      case 'description':
         return 'The transaction description or reference'
-      case 'Amount':
+      case 'amount':
         return 'The transaction amount (positive for credits, negative for debits)'
       default:
         return ''
     }
   }
 
-  const reconxiColumns = ['Date', 'Description', 'Amount']
+  const reconxiColumns = ['date', 'description', 'amount']
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -182,9 +180,9 @@ export const BankStatementCSVMapper = ({
                   >
                     <Select
                       value={
-                        Object.entries(mappings).find(
-                          ([, value]) => value === reconxiColumn
-                        )?.[0] || 'none'
+                        Object.values(mappings).find(
+                          (value) => mappings[reconxiColumn] === value
+                        ) || 'none'
                       }
                       onValueChange={(csvColumn) =>
                         handleMappingChange(csvColumn, reconxiColumn)

@@ -4,28 +4,38 @@ import {
   FileChartIcon,
 } from '@/components/Icon/Icons'
 import SummaryCard from '../SummaryCard'
+import React, { useEffect, useState } from 'react'
+import { useReconciliationStore } from '@/store/reconciliation-store';
+import { SummaryCardData } from '../confirm-match/ConfirmMatchSummaryCards';
 
 export default function MatchTransactionSummaryCards() {
-  const cards = [
-    {
-      title: 'Total Transactions',
-      value: '6',
-      description: '',
-      icon: <FileChartIcon className="size-7" />,
-    },
-    {
-      title: 'Auto-Matched',
-      value: '0',
-      description: '0% of total',
-      icon: <CheckCircleIcon className="size-7" />,
-    },
-    {
-      title: 'Needs Review',
-      value: '6',
-      description: '100% of total',
-      icon: <AlertCircleIcon className="size-7" />,
-    },
-  ]
+  const [cards, setCards] = useState<SummaryCardData[]>([]);
+  const { formState } = useReconciliationStore();
+
+  useEffect(() => {
+    const cardsData: SummaryCardData[] = [
+      {
+        title: 'Total Transactions',
+        value: formState.summary?.total as number,
+        description: '',
+        icon: <FileChartIcon className="size-7" />
+      },
+      {
+        title: 'Auto-Matched',
+        value: formState.summary?.ai_matched as number,
+        description: `${Math.ceil((formState.summary?.ai_matched as number) / (formState.summary?.total as number) || 0) * 100}% of total`,
+        icon: <CheckCircleIcon className="size-7" />
+      },
+      {
+        title: 'Needs Review',
+        value: formState.summary?.totalUnmatched as number,
+        description: `${Math.ceil((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number) || 0) * 100}% of total`,
+        icon: <AlertCircleIcon className="size-7" />
+      }
+    ];
+
+    setCards(cardsData);
+  }, [formState.summary?.ai_matched, formState.summary?.totalUnmatched, formState.summary?.total])
 
   return (
     <div className="flex items-stretch gap-4">

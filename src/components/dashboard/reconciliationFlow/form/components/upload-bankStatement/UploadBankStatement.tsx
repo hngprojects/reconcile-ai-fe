@@ -9,6 +9,7 @@ import { CircleAlert } from 'lucide-react'
 import { BankStatementCSVMapper } from '../csv-mapper/BankStatementCSVMapper'
 import { useState } from 'react'
 import { useReconciliationStore } from '@/store/reconciliation-store'
+import { toast } from 'sonner'
 
 export const UploadBankStatementSchema = z.object({
   file: z.instanceof(File, { message: 'Please upload a statement' }),
@@ -54,14 +55,13 @@ const UploadBankStatement = () => {
   }
 
   const handleMappingSuccess = (mappings: Record<string, string>) => {
-    if (file && bankAccount && period) {
-      addBankStatement({
-        file,
-        bankAccount,
-        period,
-        mapper: mappings,
-      })
-    }
+    toast.success("Values successfully mapped!");
+    addBankStatement({
+      file,
+      bankAccount,
+      period,
+      mapper: mappings
+    });
   }
 
   return (
