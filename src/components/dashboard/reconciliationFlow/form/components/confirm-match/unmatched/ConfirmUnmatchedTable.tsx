@@ -75,7 +75,7 @@ const ConfirmUnmatchedTable = () => {
       type: `Expense`,
       amount: item.Amount,
     }))
-  }, [formState.results?.matches]);
+  }, [formState.results?.unmatched_statements]);
 
 
   const columns = useMemo<ColumnDef<Transaction>[]>(
@@ -175,7 +175,7 @@ const ConfirmUnmatchedTable = () => {
       // return matchesAccount && matchesLedger && matchesSearch
       return matchesAccount && matchesSearch
     })
-  }, [searchTerm, selectedAccount])
+  }, [searchTerm, selectedAccount, transactions])
 
   const table = useReactTable({
     data: filteredData,

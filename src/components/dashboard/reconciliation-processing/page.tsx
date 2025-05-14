@@ -140,7 +140,7 @@ export default function ReconciliationProcessingPage() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [router, currentStep, totalTransactionsToProcess, updateFormState]);
+  }, [router, currentStep, totalTransactionsToProcess, updateFormState, formState.reconciliation_id]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)

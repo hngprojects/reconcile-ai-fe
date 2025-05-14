@@ -18,7 +18,7 @@ export const useEcho = (accessToken?: string) => {
 }
 
 
-export const useEchoChannel = (echo: Echo<'reverb'> | null, channelName: string, event: string, callback: (data: any) => void, step: number) => {
+export const useEchoChannel = (echo: Echo<'reverb'> | null, channelName: string, event: string, callback: (data) => void, step: number) => {
     useEffect(() => {
         if (!echo) return;
 
@@ -31,31 +31,5 @@ export const useEchoChannel = (echo: Echo<'reverb'> | null, channelName: string,
                 echo.leave(channelName);
             }
         };
-    }, [echo, channelName, event, callback]);
+    }, [echo, channelName, event, callback, step]);
 }
-
-export const useManagedEchoChannel = () => {
-    const [channel, setChannel] = useState<null | any>(null);
-
-    const subscribe = (
-        echo: Echo<'reverb'>,
-        channelName: string,
-        event: string,
-        callback: (data: any) => void
-    ) => {
-        const chan = echo.private(channelName);
-        chan.listen(event, callback);
-        setChannel(chan);
-        return chan;
-    };
-
-    const unsubscribe = () => {
-        if (channel) {
-            channel.stopListening();
-            window.Echo?.leave(channel.name);
-            setChannel(null);
-        }
-    };
-
-    return { subscribe, unsubscribe };
-};

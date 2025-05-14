@@ -127,6 +127,7 @@ export const match_unmatch_transactions = async (
           Accept: 'application/json',
           ...withAuth(session?.user.access_token as string),
         },
+        body: JSON.stringify(data)
       }
     )
     return res

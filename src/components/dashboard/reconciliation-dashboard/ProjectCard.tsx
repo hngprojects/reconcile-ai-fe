@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/card'
 import type { ProjectData } from '@/types/recondashboard'
 import { useRouter } from 'next/navigation'
 import { get_reconcilation_results_by_id, delete_reconcilation } from '@/actions/reconcilation-server'
-import { matchedItem, Transaction, Summary } from '@/types/reconciliation'
+import { useReconciliationStore } from '@/store/reconciliation-store'
 
 interface ProjectCardProps {
   project: ProjectData
@@ -23,6 +23,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const router = useRouter()
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const { updateFormState } = useReconciliationStore();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -142,7 +143,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                       } else {
                         alert(`Failed to delete: ${res.message}`);
                       }
-                    } catch (error) {
+                    } catch {
                       alert('An error occurred while deleting the reconciliation');
                     }
                   }}
@@ -218,9 +219,5 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       )}
     </Card>
   )
-}
-
-function updateFormState(arg0: { reconciliation_id: string; title: string; currentStep: number; processingComplete: boolean; results: { matches: matchedItem[] | undefined; unmatched_ledgers: Transaction[] | undefined; unmatched_statements: Transaction[] | undefined }; summary: Summary | undefined }) {
-  throw new Error('Function not implemented.')
 }
 

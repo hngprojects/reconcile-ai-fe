@@ -199,7 +199,7 @@ const ConfirmMatchTable = () => {
 
       return matchesAccount && matchesLedger && matchesSearch
     })
-  }, [searchTerm, selectedAccount, selectedLedger])
+  }, [searchTerm, selectedAccount, selectedLedger, transactions])
 
   const table = useReactTable({
     data: filteredData,

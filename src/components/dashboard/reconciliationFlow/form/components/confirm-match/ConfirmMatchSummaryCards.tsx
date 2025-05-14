@@ -41,7 +41,7 @@ export default function ConfirmMatchSummaryCards() {
     ];
 
     setCards(cardsData);
-  }, [])
+  }, [formState.summary?.ai_matched, formState.summary?.totalUnmatched, formState.summary?.total])
 
   return (
     <div className="flex items-stretch gap-4">

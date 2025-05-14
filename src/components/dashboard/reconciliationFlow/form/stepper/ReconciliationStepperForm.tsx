@@ -114,12 +114,12 @@ const StepperFormContent = () => {
         });
         stepper.next();
       }
-      else if (stepId === 'step-2') {
+      if (stepId === 'step-2') {
         updateFormState({
           currentStep: stepNumber,
         });
         if (formState.reconciliation_id) {
-          const { status: stmtStatus } = await addStatements(
+          await addStatements(
             formState.bankStatements,
             formState.reconciliation_id
           );
@@ -277,16 +277,14 @@ const StepperFormContent = () => {
   };
 
   useEffect(() => {
-    console.log(formState);
-
     const step = searchParams.get('step') || formState.currentStep;
     if (step) {
-      const stepNumber = parseInt(step);
+      const stepNumber = typeof step === 'string' ? parseInt(step) : step;
       if (stepNumber > 1 && stepNumber <= steps.length) {
         stepper.goTo(`step-${stepNumber}` as StepId);
       }
     }
-  }, [searchParams, stepper]);
+  }, [searchParams, stepper, formState]);
 
   return (
     <Form {...form}>
