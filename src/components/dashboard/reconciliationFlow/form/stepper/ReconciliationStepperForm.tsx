@@ -115,8 +115,11 @@ const StepperFormContent = () => {
         stepper.next();
       }
       if (stepId === 'step-2') {
+        const stepValues = values as StepFormValues['step-2'];
+        console.log(stepValues)
         updateFormState({
           currentStep: stepNumber,
+          bankStatements: [stepValues]
         });
         if (formState.reconciliation_id) {
           await addStatements(

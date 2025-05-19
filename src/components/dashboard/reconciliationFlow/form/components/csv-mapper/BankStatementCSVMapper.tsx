@@ -24,10 +24,16 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
+interface IMapper {
+  date: string,
+  description: string,
+  amount: string,
+}
+
 interface BankStatementCSVMapperProps {
   isOpen: boolean
   onClose: () => void
-  onSuccess: (mappings: Record<string, string>) => void
+  onSuccess: (mappings: { date: string, description: string, amount: string }) => void
   file: File | null
 }
 
@@ -38,7 +44,7 @@ export const BankStatementCSVMapper = ({
   file,
 }: BankStatementCSVMapperProps) => {
   const [csvHeaders, setCsvHeaders] = useState<string[]>([])
-  const [mappings, setMappings] = useState<Record<string, string>>({})
+  const [mappings, setMappings] = useState<IMapper>({} as IMapper)
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [error, setError] = useState<string>()
 
@@ -47,7 +53,7 @@ export const BankStatementCSVMapper = ({
       parseCSVHeaders(file)
         .then((headers: string[]) => {
           setCsvHeaders(headers)
-          const initialMappings: Record<string, string> = {}
+          const initialMappings: IMapper = {} as IMapper
           let dateMapped = false
           let descMapped = false
           let amountMapped = false

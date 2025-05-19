@@ -29,6 +29,7 @@ interface ReconciliationStore {
   addBankStatement: (statement: BankStatementData) => void
   updateBankStatement: (index: number, statement: Partial<BankStatementData>) => void
   removeBankStatement: (index: number) => void
+  clearStore: () => void
 }
 
 const initialState: ReconciliationFormState = {
@@ -79,9 +80,11 @@ export const useReconciliationStore = create<ReconciliationStore>()(
             ),
           },
         })),
-    }),
-    {
-      name: 'reconciliation-storage',
-    }
+      clearStore: () =>
+        set(() => {
+          // Reset formState to initialState
+          return { formState: initialState }
+        }),
+    })
   )
 )
