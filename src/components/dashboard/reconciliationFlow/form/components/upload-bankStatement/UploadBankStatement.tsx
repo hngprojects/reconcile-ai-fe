@@ -8,7 +8,6 @@ import UploadCard from './UploadCard'
 import { CircleAlert } from 'lucide-react'
 import { BankStatementCSVMapper } from '../csv-mapper/BankStatementCSVMapper'
 import { useState } from 'react'
-import { useReconciliationStore } from '@/store/reconciliation-store'
 import { toast } from 'sonner'
 
 export const UploadBankStatementSchema = z.object({
@@ -46,8 +45,6 @@ const UploadBankStatement = () => {
   const [showMappingDialog, setShowMappingDialog] = useState(false)
 
   const file = watch('file')
-  const bankAccount = watch('bankAccount')
-  const period = watch('period')
 
   const handleFileSelect = (newFile: File) => {
     setValue('file', newFile, { shouldValidate: true })

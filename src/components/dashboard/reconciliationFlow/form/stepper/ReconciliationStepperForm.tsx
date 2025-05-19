@@ -94,7 +94,7 @@ const StepperFormContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const stepper = useStepper();
-  const { formState, updateFormState, clearStore } = useReconciliationStore();
+  const { formState, updateFormState } = useReconciliationStore();
 
   const form = useForm<StepFormValues[StepId]>({
     resolver: zodResolver(stepper.current.schema),
