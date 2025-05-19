@@ -24,7 +24,7 @@ export default function ReconDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const { updateFormState } = useReconciliationStore()
+  const { updateFormState, clearStore } = useReconciliationStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -34,7 +34,6 @@ export default function ReconDashboard() {
         console.log('API result:', result.data)
         if (typeof result === 'object' && result?.status === 'success' && result?.data) {
           const transformed = transformData(result.data.reconciliations)
-          console.log(transformed)
           setProjects(transformed)
           setSummary({
             ...result.data.summary,
@@ -66,6 +65,7 @@ export default function ReconDashboard() {
   }
 
   const handleCreate = (data: z.infer<typeof CreateProjectSchema>) => {
+    clearStore();
     updateFormState({ title: data.title })
     return router.push('/dashboard/reconcile')
   }
@@ -86,7 +86,7 @@ export default function ReconDashboard() {
       .map((project) => ({
         id: String(project.id),
         title: String(project.title),
-        status: String(project.status) as 'completed' | 'in-progress',
+        status: String(project.status) as 'completed' | 'in-progress' | 'draft' | 'pending' | 'failed',
         progress: Math.ceil((+(project.step as string) / 6) * 100),
         steps: +(project.step as string),
         totalSteps: 6,
@@ -143,21 +143,20 @@ export default function ReconDashboard() {
           </p>
         </div>
 
-        {projects && projects.length > 0 && (projects[0]['status'] == 'completed' || projects[0]['status'] == 'failed') ?
-          <button
-            onClick={handleOpenCreateModal}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
-          >
-            <Plus className="size-5" /> Create New Reconciliation
-          </button>
-          :
+        {projects && projects.length > 0 && (projects[0]['status'] != 'failed' as string || projects[0]['status'] != 'completed' as string) ?
           <button
             onClick={() => handleContinueReconciliation(projects[0])}
             className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
           >
             Continue Reconciliation
           </button>
-
+          :
+          <button
+            onClick={handleOpenCreateModal}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+          >
+            <Plus className="size-5" /> Create New Reconciliation
+          </button>
         }
       </div>
 

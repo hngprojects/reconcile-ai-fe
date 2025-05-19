@@ -94,7 +94,7 @@ const StepperFormContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const stepper = useStepper();
-  const { formState, updateFormState } = useReconciliationStore();
+  const { formState, updateFormState, clearStore } = useReconciliationStore();
 
   const form = useForm<StepFormValues[StepId]>({
     resolver: zodResolver(stepper.current.schema),
@@ -115,8 +115,11 @@ const StepperFormContent = () => {
         stepper.next();
       }
       if (stepId === 'step-2') {
+        const stepValues = values as StepFormValues['step-2'];
+        console.log(stepValues)
         updateFormState({
           currentStep: stepNumber,
+          bankStatements: [stepValues]
         });
         if (formState.reconciliation_id) {
           await addStatements(

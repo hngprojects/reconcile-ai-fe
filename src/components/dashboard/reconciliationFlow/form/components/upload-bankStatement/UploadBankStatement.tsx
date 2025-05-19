@@ -30,6 +30,11 @@ export const UploadBankStatementSchema = z.object({
       }
     )
     .default({}),
+  mapper: z.object({
+    date: z.string(),
+    description: z.string(),
+    amount: z.string()
+  })
 })
 
 export type UploadBankStatementValues = z.infer<
@@ -39,7 +44,6 @@ export type UploadBankStatementValues = z.infer<
 const UploadBankStatement = () => {
   const { setValue, watch } = useFormContext<UploadBankStatementValues>()
   const [showMappingDialog, setShowMappingDialog] = useState(false)
-  const { addBankStatement } = useReconciliationStore()
 
   const file = watch('file')
   const bankAccount = watch('bankAccount')
@@ -54,14 +58,9 @@ const UploadBankStatement = () => {
     setValue('file', null as unknown as File, { shouldValidate: true })
   }
 
-  const handleMappingSuccess = (mappings: Record<string, string>) => {
+  const handleMappingSuccess = (mappings: { date: string, description: string, amount: string }) => {
     toast.success("Values successfully mapped!");
-    addBankStatement({
-      file,
-      bankAccount,
-      period,
-      mapper: mappings
-    });
+    setValue('mapper', mappings, { shouldValidate: true })
   }
 
   return (
