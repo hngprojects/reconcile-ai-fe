@@ -54,7 +54,7 @@ jobs:
             export NEXT_PUBLIC_REVERB_HOST="localhost"
             export NEXT_PUBLIC_REVERB_PORT=6005
             export NEXT_PUBLIC_REVERB_SCHEME=http
-            export NEXT_PUBLIC_REVERB_URL=https://reconxi.com
+            export NEXT_PUBLIC_REVERB_URL=http://reconxi.com
           elif [[ "$BRANCH_NAME" == "dev" ]]; then
             export BASE_API_URL="https://api-dev.reconxi.com/api/v1"
             export AUTH_URL="https://dev.reconxi.com"
@@ -64,7 +64,7 @@ jobs:
             export NEXT_PUBLIC_REVERB_HOST="localhost"
             export NEXT_PUBLIC_REVERB_PORT=6006
             export NEXT_PUBLIC_REVERB_SCHEME=http
-            export NEXT_PUBLIC_REVERB_URL=https://dev.reconxi.com
+            export NEXT_PUBLIC_REVERB_URL=http://dev.reconxi.com
           elif [[ "$BRANCH_NAME" == "staging" ]]; then
             export BASE_API_URL="https://staging.reconxi.com/api/v1"
             export AUTH_URL="https://stage.reconxi.com"
@@ -74,7 +74,7 @@ jobs:
             export NEXT_PUBLIC_REVERB_HOST="localhost"
             export NEXT_PUBLIC_REVERB_PORT=6007
             export NEXT_PUBLIC_REVERB_SCHEME=http
-            export NEXT_PUBLIC_REVERB_URL=https://staging.reconxi.com
+            export NEXT_PUBLIC_REVERB_URL=http://staging.reconxi.com
           else
             echo "Unknown branch: $BRANCH_NAME"
             exit 1
