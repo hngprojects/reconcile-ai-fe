@@ -35,7 +35,7 @@ import { Input } from '@/components/ui/input'
 import { SearchIcon } from '@/components/Icon/Icons'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { TStatement } from '@/types/reconciliation'
-
+import { AddLedgerEntryModal } from "@/components/dashboard/ledgers/modals/AddLedgerEntryModal"
 export type Transaction = {
   id: string
   date: string
@@ -51,6 +51,7 @@ export type Transaction = {
 }
 
 const ConfirmUnmatchedTable = () => {
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -422,6 +423,10 @@ const ConfirmUnmatchedTable = () => {
           </div>
         </div>
       </div>
+      <AddLedgerEntryModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+      />
     </div>
   )
 }

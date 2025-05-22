@@ -99,6 +99,7 @@ interface LedgerEntryData {
 interface AddLedgerEntryProps {
   isOpen: boolean
   onClose: () => void
+  statementId?: string
 }
 
 // Form reducer actions
@@ -144,6 +145,7 @@ const formReducer = (
 export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
   isOpen,
   onClose,
+  statementId,
 }) => {
   const [state, dispatch] = useReducer(formReducer, initialState)
   const [currentStep, setCurrentStep] = useState<number>(1)
@@ -357,7 +359,9 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
       const dataToSubmit = {
         ...state,
         reference: state.reference || '',
+        ...(statementId ? {id: statementId} : {}),
       }
+
       await submitLedgerEntry(dataToSubmit)
       toast.success('Ledger entry saved successfully!')
       handleClose()
