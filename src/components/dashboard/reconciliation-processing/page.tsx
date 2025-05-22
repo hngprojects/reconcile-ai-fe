@@ -90,7 +90,7 @@ export default function ReconciliationProcessingPage() {
   ]
 
   const [totalTransactionsToProcess, setTotalTransactionsToProcess] = useState(0);
-
+  // console.log("error test", echo)
   // Calculate total transactions asynchronously on mount or when formState.bankStatements changes
   useEffect(() => {
     const calculateTotalTransactions = async () => {
