@@ -18,7 +18,7 @@ export const useEcho = (accessToken?: string) => {
 }
 
 
-export const useEchoChannel = (echo: Echo<'reverb'> | null, channelName: string, event: string, callback: (data) => void, step: number) => {
+export const useEchoChannel = (echo: Echo<'reverb'> | null, channelName: string, event: string, callback: (data: unknown) => void, step: number) => {
     useEffect(() => {
         if (!echo) return;
 

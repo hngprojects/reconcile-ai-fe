@@ -554,7 +554,7 @@ const UploadLedgerCSVDialog = ({
           <div className="flex w-full gap-2">
             <Button
               variant="outline"
-              className="text-primary flex-1 bg-white text-base"
+              className="text-primary flex-1 bg-white text-base dark:bg-gray-800"
               size="lg"
               onClick={currentStep === 1 ? handleClose : prevStep}
               disabled={isUploading}

@@ -118,21 +118,54 @@ export const match_unmatch_transactions = async (
   data: MatchRequestBody
 ): Promise<APIResponse<ReconResponseData | null>> => {
   const session = await auth()
+
+  // More detailed debugging
+  console.log('=== Match/Unmatch Transaction Debug ===')
+  console.log('1. Reconciliation ID:', id)
+  console.log('2. Raw Request Data:', data)
+  console.log('3. Matches Array:', data.matches)
+
+  // IMPORTANT: Only send the matches array as the request body
+  // The reconciliation ID is already included in the URL path
+  const matches = data.matches
+
+  console.log('4. Final Request Body:', { matches })
+  console.log('5. Stringified Body:', JSON.stringify({ matches }))
+  console.log(
+    '6. Session Token:',
+    session?.user.access_token ? 'Present' : 'Missing'
+  )
+
   try {
+
+    const parsedMatches = matches.map(match => ({
+      ...match,
+      score: parseInt(match.score, 10)
+    }));
+
     const res = await apiHandler<APIResponse<ReconResponseData>>(
       `/reconcile/${id}`,
       {
         method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           Accept: 'application/json',
           ...withAuth(session?.user.access_token as string),
         },
-        body: JSON.stringify(data)
+        body: { matches: parsedMatches },
       }
     )
+    console.log('8. API Response:', res)
     return res
   } catch (error) {
+    console.error('9. API Error Details:', {
+      name: error instanceof Error ? error.name : 'Unknown',
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
+    })
+
     if (error instanceof HttpError) {
+      console.error('10. HTTP Error Response:', error.responseBody)
       return {
         success: error.responseBody?.success || false,
         message:
@@ -165,15 +198,12 @@ export const delete_reconcilation = async (
 ): Promise<APIResponse<null>> => {
   const session = await auth()
   try {
-    const res = await apiHandler<APIResponse<null>>(
-      `/reconciliations/${id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          ...withAuth(session?.user.access_token as string),
-        },
-      }
-    )
+    const res = await apiHandler<APIResponse<null>>(`/reconciliations/${id}`, {
+      method: 'DELETE',
+      headers: {
+        ...withAuth(session?.user.access_token as string),
+      },
+    })
     return res
   } catch (error) {
     if (error instanceof HttpError) {

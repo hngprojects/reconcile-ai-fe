@@ -78,7 +78,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
                 ? 'border-[#C50700]'
                 : isDragging
                   ? 'border-[#2F855A] bg-[#2F855A]/5'
-                  : 'border-[#33333350] hover:bg-gray-100'
+                  : 'border-[#33333350] hover:bg-gray-100 dark:hover:bg-[#2F855A]/5'
             )}
           >
             <input {...getInputProps()} />
@@ -94,7 +94,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
             </p>
           </div>
         ) : (
-          <div className="relative flex h-[224px] items-center justify-center rounded-[10px] border border-[#33333350] bg-white p-4">
+          <div className="relative flex h-[224px] items-center justify-center rounded-[10px] border border-[#33333350] bg-white p-4 dark:bg-gray-900">
             <div className="flex flex-col items-center gap-2">
               <CSVIcon className="h-10 w-10 text-[#678E82]" />
               <span className="font-medium">{file.name}</span>

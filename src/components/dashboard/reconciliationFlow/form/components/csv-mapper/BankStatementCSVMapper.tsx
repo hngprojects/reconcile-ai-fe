@@ -90,7 +90,7 @@ export const BankStatementCSVMapper = ({
 
   const handleClose = () => {
     setCsvHeaders([])
-    setMappings({})
+    setMappings({} as IMapper)
     setError(undefined)
     onClose()
   }
@@ -105,8 +105,8 @@ export const BankStatementCSVMapper = ({
   const handleSubmit = async () => {
     try {
       // Validate required fields are mapped
-      const requiredFields = ['date', 'description', 'amount']
-      const mappedFields = Object.keys(mappings).filter(
+      const requiredFields = ['date', 'description', 'amount'] as const
+      const mappedFields = (Object.keys(mappings) as Array<keyof typeof mappings>).filter(
         (value) => mappings[value] !== '' && mappings[value] !== 'none'
       )
       const missingFields = requiredFields.filter(
@@ -187,7 +187,7 @@ export const BankStatementCSVMapper = ({
                     <Select
                       value={
                         Object.values(mappings).find(
-                          (value) => mappings[reconxiColumn] === value
+                          (value) => value === mappings[reconxiColumn as keyof IMapper]
                         ) || 'none'
                       }
                       onValueChange={(csvColumn) =>
