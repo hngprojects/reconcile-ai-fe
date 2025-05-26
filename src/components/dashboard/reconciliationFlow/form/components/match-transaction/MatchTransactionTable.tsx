@@ -232,6 +232,7 @@ const MatchTransactionTable = () => {
         ),
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [getConfidenceColor, isProcessing]
   )
 
@@ -291,7 +292,7 @@ const MatchTransactionTable = () => {
 
       // Create a proper MatchRequestBody object
       const matchRequestBody: MatchRequestBody = { matches }
-      
+
       const response = await match_unmatch_transactions(
         formState.reconciliation_id as string,
         matchRequestBody
@@ -414,16 +415,16 @@ const MatchTransactionTable = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <div className="overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
+        <div className="overflow-hidden rounded-xl border border-[#d9d9d9]">
           <Table>
-            <TableHeader className="bg-[#f9fafb]">
+            <TableHeader className="">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow className="h-[52px]" key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
                       className={cn(
-                        `border-r border-[#EAECF0] px-4 text-base font-bold text-[#333]`,
+                        `px-4 text-base font-bold`,
                         header.id === 'select' &&
                           'p-4 [&:has([role=checkbox])]:p-4'
                       )}
@@ -443,7 +444,7 @@ const MatchTransactionTable = () => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    className="border-t border-gray-100"
+                    className=""
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell

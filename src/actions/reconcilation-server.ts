@@ -124,7 +124,7 @@ export const match_unmatch_transactions = async (
   console.log('1. Reconciliation ID:', id)
   console.log('2. Raw Request Data:', data)
   console.log('3. Matches Array:', data.matches)
-  
+
   // IMPORTANT: Only send the matches array as the request body
   // The reconciliation ID is already included in the URL path
   const matches = data.matches
@@ -137,7 +137,12 @@ export const match_unmatch_transactions = async (
   )
 
   try {
-    console.log('7. Making API request to:', `/reconcile/${id}`)
+
+    const parsedMatches = matches.map(match => ({
+      ...match,
+      score: parseInt(match.score, 10)
+    }));
+
     const res = await apiHandler<APIResponse<ReconResponseData>>(
       `/reconcile/${id}`,
       {
@@ -147,7 +152,7 @@ export const match_unmatch_transactions = async (
           Accept: 'application/json',
           ...withAuth(session?.user.access_token as string),
         },
-        body: JSON.stringify({ matches }),
+        body: { matches: parsedMatches },
       }
     )
     console.log('8. API Response:', res)
