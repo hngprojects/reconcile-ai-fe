@@ -13,16 +13,16 @@ export interface ReconciliationItem {
 }
 
 export type TStatement = Transaction & {
-  bank: string,
-  accountNumber: number,
+  bank: string
+  accountNumber: number
   accountName: string
 }
 
 export type TLedger = Transaction & {
-  type: string,
-  status: string,
-  reconciled: boolean,
-  amount_paid: number,
+  type: string
+  status: string
+  reconciled: boolean
+  amount_paid: number
   reference: string
 }
 
@@ -95,19 +95,19 @@ export interface ReconciliationHistoryType {
 }
 
 export interface ReconciliationResultType {
-  matches?: matchedItem[],
-  unmatched_ledgers?: Transaction[],
+  matches?: matchedItem[]
+  unmatched_ledgers?: Transaction[]
   unmatched_statements?: Transaction[]
 }
 
 export type Summary = {
   totalMatched: number
   totalUnmatched: number
-  total: number,
-  ai_matched: number,
-  manual_matched: number,
-  duration: string,
-  status: string,
+  total: number
+  ai_matched: number
+  manual_matched: number
+  duration: string
+  status: string
   updated_at: Date
 }
 
@@ -119,12 +119,12 @@ export type ReconResponseData = {
   summary: Summary
 }
 
-type TMatch = {
-  ledger: string,
-  statement: string,
-  matched_by: string,
-  score: number,
-  action: string
+export type TMatch = {
+  ledger: string
+  statement: string
+  matched_by: 'manual' | 'AI'
+  score: string
+  action: 'match' | 'unmatch'
 }
 
 export interface MatchRequestBody {

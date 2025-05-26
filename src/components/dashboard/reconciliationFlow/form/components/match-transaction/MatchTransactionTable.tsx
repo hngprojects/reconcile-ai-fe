@@ -23,7 +23,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import Filters from './Filters'
-import { Check, Download } from 'lucide-react'
+import { Check, Download, Loader2 } from 'lucide-react'
 import { DotIcon } from '@/components/Icon/Icons'
 import { cn } from '@/lib/utils'
 import {
@@ -34,7 +34,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useReconciliationStore } from '@/store/reconciliation-store'
-import { matchedItem } from '@/types/reconciliation'
+import { matchedItem, MatchRequestBody, TMatch } from '@/types/reconciliation'
+import { match_unmatch_transactions } from '@/actions/reconcilation-server'
+import { toast } from 'sonner'
 
 export type Transaction = {
   id: string
@@ -45,6 +47,7 @@ export type Transaction = {
   }
   amount: number
   match: {
+    id: string
     title: string
     type: string
     amount: number
@@ -59,7 +62,8 @@ const MatchTransactionTable = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [confidenceThreshold, setConfidenceThreshold] =
     useState('High Confidence')
-  const { formState } = useReconciliationStore();
+  const [isProcessing, setIsProcessing] = useState(false)
+  const { formState, updateFormState } = useReconciliationStore()
 
   const parseConfidence = (option: string) => {
     if (option === 'High Confidence') return 90
@@ -89,13 +93,14 @@ const MatchTransactionTable = () => {
       },
       amount: item.statement.Amount,
       match: {
+        id: item.ledger.id,
         title: item.ledger.Description,
         type: item.matched_by,
         amount: item.ledger.Amount,
         percentage: item.score,
       },
     }))
-  }, [formState.results?.matches]);
+  }, [formState.results?.matches])
 
   const columns = useMemo<ColumnDef<Transaction>[]>(
     () => [
@@ -207,21 +212,27 @@ const MatchTransactionTable = () => {
       {
         id: 'actions',
         header: 'Actions',
-        cell: () => (
+        cell: ({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <Button
               variant="outline"
               type="button"
               size="sm"
               className="cursor-pointer text-black"
+              onClick={() => handleIndividualMatch(row.original)}
+              disabled={isProcessing}
             >
-              Match
+              {isProcessing ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                'Match'
+              )}
             </Button>
           </div>
         ),
       },
     ],
-    [getConfidenceColor]
+    [getConfidenceColor, isProcessing]
   )
 
   const table = useReactTable({
@@ -242,6 +253,72 @@ const MatchTransactionTable = () => {
     },
   })
 
+  const handleMatchTransactions = async (
+    selectedRows: Record<string, boolean>
+  ) => {
+    if (isProcessing) return
+
+    setIsProcessing(true)
+    try {
+      console.log('=== Match Transactions Debug ===')
+      console.log('1. Selected Rows:', selectedRows)
+
+      const matches: TMatch[] = table
+        .getRowModel()
+        .rows.filter((row) => selectedRows[row.id])
+        .map((row) => {
+          const transaction = row.original
+          const match: TMatch = {
+            ledger: transaction.match.id,
+            statement: transaction.id,
+            matched_by: 'manual' as const,
+            score: `${transaction.match.percentage}%`,
+            action: 'match' as const,
+          }
+          console.log('2. Created Match:', match)
+          return match
+        })
+
+      console.log('3. All Matches:', matches)
+
+      if (matches.length === 0) {
+        toast.error('No transactions selected')
+        return
+      }
+
+      console.log('4. Sending to API matches array:', matches)
+      console.log('4a. Full request body:', { matches })
+
+      // Create a proper MatchRequestBody object
+      const matchRequestBody: MatchRequestBody = { matches }
+      
+      const response = await match_unmatch_transactions(
+        formState.reconciliation_id as string,
+        matchRequestBody
+      )
+
+      console.log('5. API Response:', response)
+
+      if (response.success) {
+        updateFormState({
+          results: response.data!,
+          summary: response.data!.summary,
+        })
+        setRowSelection({})
+        toast.success('Transactions matched successfully')
+      } else {
+        throw new Error(response.message || 'Failed to match transactions')
+      }
+    } catch (error) {
+      console.error('6. Match Error:', error)
+      toast.error(
+        error instanceof Error ? error.message : 'Failed to match transactions'
+      )
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
   const handleAcceptHighConfidence = () => {
     const newSelection: Record<string, boolean> = {}
     table.getRowModel().rows.forEach((row) => {
@@ -251,6 +328,52 @@ const MatchTransactionTable = () => {
       }
     })
     setRowSelection(newSelection)
+  }
+
+  const handleIndividualMatch = async (transaction: Transaction) => {
+    if (isProcessing) return
+
+    setIsProcessing(true)
+    try {
+      console.log('=== Individual Match Debug ===')
+      console.log('1. Transaction:', transaction)
+
+      const match: TMatch = {
+        ledger: transaction.match.id,
+        statement: transaction.id,
+        matched_by: 'manual' as const,
+        score: `${transaction.match.percentage}%`,
+        action: 'match' as const,
+      }
+
+      console.log('2. Created Match:', match)
+      console.log('3. Sending to API match array:', [match])
+      console.log('3a. Full request body:', { matches: [match] })
+
+      const response = await match_unmatch_transactions(
+        formState.reconciliation_id as string,
+        { matches: [match] }
+      )
+
+      console.log('4. API Response:', response)
+
+      if (response.success) {
+        updateFormState({
+          results: response.data!,
+          summary: response.data!.summary,
+        })
+        toast.success('Transaction matched successfully')
+      } else {
+        throw new Error(response.message || 'Failed to match transaction')
+      }
+    } catch (error) {
+      console.error('5. Match Error:', error)
+      toast.error(
+        error instanceof Error ? error.message : 'Failed to match transaction'
+      )
+    } finally {
+      setIsProcessing(false)
+    }
   }
 
   return (
@@ -275,12 +398,17 @@ const MatchTransactionTable = () => {
             <span>Export</span>
           </Button>
           <Button
-            disabled={Object.keys(rowSelection).length === 0}
+            disabled={Object.keys(rowSelection).length === 0 || isProcessing}
             type="button"
             className="h-12 cursor-pointer"
+            onClick={() => handleMatchTransactions(rowSelection)}
           >
-            <Check className="size-5 text-white" />
-            <span>Accept Selected</span>
+            {isProcessing ? (
+              <Loader2 className="size-5 animate-spin text-white" />
+            ) : (
+              <Check className="size-5 text-white" />
+            )}
+            <span>{isProcessing ? 'Processing...' : 'Accept Selected'}</span>
           </Button>
         </div>
       </div>
@@ -297,7 +425,7 @@ const MatchTransactionTable = () => {
                       className={cn(
                         `border-r border-[#EAECF0] px-4 text-base font-bold text-[#333]`,
                         header.id === 'select' &&
-                        'p-4 [&:has([role=checkbox])]:p-4'
+                          'p-4 [&:has([role=checkbox])]:p-4'
                       )}
                     >
                       {flexRender(
@@ -323,7 +451,7 @@ const MatchTransactionTable = () => {
                         className={cn(
                           `border-r px-4 py-3`,
                           cell.column.id === 'select' &&
-                          'p-4 [&:has([role=checkbox])]:p-4'
+                            'p-4 [&:has([role=checkbox])]:p-4'
                         )}
                       >
                         {flexRender(
@@ -384,7 +512,7 @@ const MatchTransactionTable = () => {
               -
               {Math.min(
                 (table.getState().pagination.pageIndex + 1) *
-                table.getState().pagination.pageSize,
+                  table.getState().pagination.pageSize,
                 table.getFilteredRowModel().rows.length
               )}{' '}
               of {table.getFilteredRowModel().rows.length} rows
