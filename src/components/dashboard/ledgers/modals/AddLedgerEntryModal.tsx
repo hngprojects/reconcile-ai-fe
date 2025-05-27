@@ -32,6 +32,8 @@ import { CalendarIcon } from 'lucide-react'
 import FileUpload from '../FileUpload'
 import { getSession } from 'next-auth/react'
 import { submitLedgerEntry } from '@/lib/api'
+import { useReconciliationStore } from '@/store/reconciliation-store'
+import { get_reconcilation_results_by_id } from '@/actions/reconcilation-server'
 
 // Zod schema for form validation
 const ledgerEntrySchema = z.object({
@@ -169,6 +171,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
     transactionTypes: false,
     accountCategories: false,
   })
+  const { formState, updateFormState } = useReconciliationStore()
 
   const steps = [
     { step: 1, title: 'Basic Info' },
@@ -359,10 +362,24 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
       const dataToSubmit = {
         ...state,
         reference: state.reference || '',
-        ...(statementId ? {id: statementId} : {}),
+        ...(statementId ? { id: statementId } : {}),
       }
 
       await submitLedgerEntry(dataToSubmit)
+
+      // If this is part of reconciliation flow, fetch updated results
+      if (formState.reconciliation_id) {
+        const response = await get_reconcilation_results_by_id(
+          formState.reconciliation_id
+        )
+        if (response.success && response.data) {
+          updateFormState({
+            results: response.data,
+            summary: response.data.summary,
+          })
+        }
+      }
+
       toast.success('Ledger entry saved successfully!')
       handleClose()
     } catch (error) {
@@ -397,21 +414,21 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="rounded-lg p-6 sm:max-w-[550px]">
+      <DialogContent className="custom-scrollbar dark:border-primary/40 max-h-[85vh] overflow-y-auto rounded-lg p-6 sm:max-w-[550px] dark:bg-[#1A1A1A] dark:text-white">
         <DialogHeader>
-          <DialogTitle className="text-left text-xl font-semibold text-gray-800">
+          <DialogTitle className="text-left text-xl font-semibold text-gray-800 dark:text-white">
             Add Ledger Entry
           </DialogTitle>
         </DialogHeader>
 
         <div className="my-4">
-          <p className="mb-2 text-sm text-[#344054]">
+          <p className="mb-2 text-sm text-[#344054] dark:text-gray-300">
             Step {currentStep} of 3:{' '}
             {steps.find((s) => s.step === currentStep)?.title}
           </p>
-          <div className="h-2 w-full rounded-full bg-gray-200">
+          <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-[#262626]">
             <div
-              className="bg-primary h-2 rounded-full transition-all duration-300"
+              className="bg-primary h-2 rounded-full transition-all duration-300 dark:bg-white"
               style={{ width: `${(currentStep / 3) * 100}%` }}
             />
           </div>
@@ -421,7 +438,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
           {currentStep === 1 && (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
                   Ledger Category
                 </Label>
                 <Select
@@ -431,10 +448,10 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   }
                   disabled={isLoading.ledgers}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054]">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     {ledgers.length > 0 ? (
                       ledgers.map((ledger) => (
                         <SelectItem key={ledger.id} value={ledger.id}>
@@ -447,13 +464,15 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   </SelectContent>
                 </Select>
                 {errors.ledgerCategory && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-300">
                     {errors.ledgerCategory}
                   </span>
                 )}
               </div>
+
+              {/* Transaction Type */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
                   Transaction Type
                 </Label>
                 <Select
@@ -463,10 +482,10 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   }
                   disabled={isLoading.transactionTypes}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054]">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     {transactionTypes.length > 0 ? (
                       transactionTypes.map((transactionType) => (
                         <SelectItem
@@ -484,13 +503,15 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   </SelectContent>
                 </Select>
                 {errors.transactionType && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-300">
                     {errors.transactionType}
                   </span>
                 )}
               </div>
+
+              {/* Transaction Date */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
                   Transaction Date
                 </Label>
                 <Popover>
@@ -498,17 +519,18 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                     <Button
                       variant="outline"
                       className={cn(
-                        'w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054]',
-                        !state.transactionDate && 'text-gray-400'
+                        'dark:border-primary/40 w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:bg-[#1A1A1A] dark:text-gray-300',
+                        !state.transactionDate &&
+                          'text-gray-400 dark:text-gray-500'
                       )}
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4 text-[#344054]" />
+                      <CalendarIcon className="mr-2 h-4 w-4 text-[#344054] dark:text-gray-400" />
                       {state.transactionDate
                         ? format(new Date(state.transactionDate), 'PPP')
                         : 'Select date'}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="dark:border-primary/40 w-auto p-0 dark:bg-[#1A1A1A] dark:text-white">
                     <Calendar
                       mode="single"
                       selected={
@@ -527,81 +549,98 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   </PopoverContent>
                 </Popover>
                 {errors.transactionDate && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-400">
                     {errors.transactionDate}
                   </span>
                 )}
               </div>
+
+              {/* Description */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">Description</Label>
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
+                  Description
+                </Label>
                 <Input
                   placeholder="Short summary of transaction"
                   value={state.description}
                   onChange={(e) => handleChange('description', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
                 {errors.description && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-400">
                     {errors.description}
                   </span>
                 )}
               </div>
+
+              {/* Amount */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">Amount</Label>
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
+                  Amount
+                </Label>
                 <Input
                   placeholder="₦ 0.00"
                   value={state.amount}
                   onChange={(e) => handleChange('amount', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
                 {errors.amount && (
-                  <span className="text-sm text-red-500">{errors.amount}</span>
+                  <span className="text-sm text-red-500 dark:text-red-400">
+                    {errors.amount}
+                  </span>
                 )}
               </div>
             </div>
           )}
 
+          {/* Step 2 */}
           {currentStep === 2 && (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">Paid Status</Label>
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
+                  Paid Status
+                </Label>
                 <Select
                   value={state.paidStatus}
                   onValueChange={(value) => handleChange('paidStatus', value)}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054]">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     <SelectItem value="paid">Paid</SelectItem>
                     <SelectItem value="unpaid">Unpaid</SelectItem>
                     <SelectItem value="partial">Partial</SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.paidStatus && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-400">
                     {errors.paidStatus}
                   </span>
                 )}
               </div>
+
+              {/* Due Date */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">Due Date</Label>
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
+                  Due Date
+                </Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       className={cn(
-                        'w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054]',
-                        !state.dueDate && 'text-gray-400'
+                        'dark:border-primary/40 w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:bg-gray-800 dark:text-gray-300',
+                        !state.dueDate && 'text-gray-400 dark:text-gray-500'
                       )}
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4 text-[#344054]" />
+                      <CalendarIcon className="mr-2 h-4 w-4 text-[#344054] dark:text-gray-400" />
                       {state.dueDate
                         ? format(new Date(state.dueDate), 'PPP')
                         : 'Select date'}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="dark:border-primary/40 w-auto p-0 dark:bg-[#1A1A1A] dark:text-white">
                     <Calendar
                       mode="single"
                       selected={
@@ -613,39 +652,49 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                           date ? format(date, 'yyyy-MM-dd') : ''
                         )
                       }
-                      initialFocus
+                      autoFocus
                     />
                   </PopoverContent>
                 </Popover>
                 {errors.dueDate && (
-                  <span className="text-sm text-red-500">{errors.dueDate}</span>
+                  <span className="text-sm text-red-500 dark:text-red-400">
+                    {errors.dueDate}
+                  </span>
                 )}
               </div>
+
+              {/* Amount Paid */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">Amount Paid</Label>
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
+                  Amount Paid
+                </Label>
                 <Input
                   placeholder="₦ 0.00"
                   value={state.amountPaid}
                   onChange={(e) => handleChange('amountPaid', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
                 {errors.amountPaid && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-400">
                     {errors.amountPaid}
                   </span>
                 )}
               </div>
+
+              {/* Bank Account */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">Bank Account</Label>
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
+                  Bank Account
+                </Label>
                 <Select
                   value={state.bankAccount}
                   onValueChange={(value) => handleChange('bankAccount', value)}
                   disabled={isLoading.bankAccounts}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054]">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select bank account" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     {bankAccounts.length > 0 ? (
                       bankAccounts.map((account) => (
                         <SelectItem
@@ -663,7 +712,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   </SelectContent>
                 </Select>
                 {errors.bankAccount && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-red-500 dark:text-red-400">
                     {errors.bankAccount}
                   </span>
                 )}
@@ -671,10 +720,11 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
             </div>
           )}
 
+          {/* Step 3 */}
           {currentStep === 3 && (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
                   Account/Category
                 </Label>
                 <Select
@@ -682,10 +732,10 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   onValueChange={(value) => handleChange('account', value)}
                   disabled={isLoading.accountCategories}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054]">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select Account" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     {accountCategories.length > 0 ? (
                       accountCategories.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
@@ -693,27 +743,35 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                         </SelectItem>
                       ))
                     ) : (
-                      <div className="p-2 text-gray-500">No accounts found</div>
+                      <div className="p-2 text-gray-500 dark:text-gray-400">
+                        No accounts found
+                      </div>
                     )}
                   </SelectContent>
                 </Select>
                 {errors.account && (
-                  <span className="text-sm text-red-500">{errors.account}</span>
+                  <span className="text-sm text-red-500 dark:text-red-400">
+                    {errors.account}
+                  </span>
                 )}
               </div>
+
+              {/* Reference */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
                   Reference (Optional)
                 </Label>
                 <Input
                   placeholder="Reference number"
                   value={state.reference || ''}
                   onChange={(e) => handleChange('reference', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
               </div>
+
+              {/* Attachment */}
               <div className="flex flex-col gap-1">
-                <Label className="text-sm text-[#344054]">
+                <Label className="text-sm font-medium text-[#344054] dark:text-white">
                   Attachment (Optional)
                 </Label>
                 <FileUpload
@@ -723,22 +781,27 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   error={errors.attachment}
                   accept=".csv"
                 />
+                {errors.attachment && (
+                  <span className="text-sm text-red-500 dark:text-red-300">
+                    {errors.attachment}
+                  </span>
+                )}
               </div>
             </div>
           )}
         </div>
 
-        <DialogFooter className="flex w-full pt-6">
+        <DialogFooter className="dark:border-primary/40 flex w-full border-t border-gray-100 pt-6">
           <div className="flex w-full gap-3">
             <Button
               variant="outline"
-              className="h-12 flex-1 rounded-md border-gray-300 text-[#344054]"
+              className="dark:border-primary/40 h-12 flex-1 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white hover:dark:bg-[#262626]"
               onClick={currentStep === 1 ? handleClose : prevStep}
             >
               {currentStep === 1 ? 'Cancel' : 'Back'}
             </Button>
             <Button
-              className="bg-primary hover:bg-primary/90 h-12 flex-1 rounded-md text-white"
+              className="bg-primary hover:bg-primary/90 h-12 flex-1 rounded-md text-white dark:bg-[#138754] dark:text-white dark:hover:bg-[#138754]/90"
               onClick={currentStep === 3 ? handleSave : nextStep}
               disabled={isSubmitting}
             >

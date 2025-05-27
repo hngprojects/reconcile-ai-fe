@@ -1,6 +1,6 @@
 import { ReconciliationResultType, Summary } from '@/types/reconciliation'
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 export interface BankStatementData {
   file: File | null
@@ -16,18 +16,21 @@ export interface ReconciliationFormState {
   currentStep: number
   selectedLedgers: Record<string, boolean>
   bankStatements: BankStatementData[]
-  processingComplete?: boolean,
-  reconciliation_id: string | null,
-  summary: Summary | null,
-  results: ReconciliationResultType | null,
-  title: string,
+  processingComplete?: boolean
+  reconciliation_id: string | null
+  summary: Summary | null
+  results: ReconciliationResultType | null
+  title: string
 }
 
 interface ReconciliationStore {
   formState: ReconciliationFormState
   updateFormState: (updates: Partial<ReconciliationFormState>) => void
   addBankStatement: (statement: BankStatementData) => void
-  updateBankStatement: (index: number, statement: Partial<BankStatementData>) => void
+  updateBankStatement: (
+    index: number,
+    statement: Partial<BankStatementData>
+  ) => void
   removeBankStatement: (index: number) => void
   clearStore: () => void
 }
@@ -40,7 +43,7 @@ const initialState: ReconciliationFormState = {
   reconciliation_id: null,
   title: '',
   summary: null,
-  results: null
+  results: null,
 }
 
 export const useReconciliationStore = create<ReconciliationStore>()(
@@ -85,6 +88,10 @@ export const useReconciliationStore = create<ReconciliationStore>()(
           // Reset formState to initialState
           return { formState: initialState }
         }),
-    })
+    }),
+    {
+      name: 'reconciliation-store',
+      storage: createJSONStorage(() => localStorage),
+    }
   )
 )

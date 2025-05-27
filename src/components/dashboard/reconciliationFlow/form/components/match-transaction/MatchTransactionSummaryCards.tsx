@@ -5,12 +5,12 @@ import {
 } from '@/components/Icon/Icons'
 import SummaryCard from '../SummaryCard'
 import React, { useEffect, useState } from 'react'
-import { useReconciliationStore } from '@/store/reconciliation-store';
-import { SummaryCardData } from '../confirm-match/ConfirmMatchSummaryCards';
+import { useReconciliationStore } from '@/store/reconciliation-store'
+import { SummaryCardData } from '../confirm-match/ConfirmMatchSummaryCards'
 
 export default function MatchTransactionSummaryCards() {
-  const [cards, setCards] = useState<SummaryCardData[]>([]);
-  const { formState } = useReconciliationStore();
+  const [cards, setCards] = useState<SummaryCardData[]>([])
+  const { formState } = useReconciliationStore()
 
   useEffect(() => {
     const cardsData: SummaryCardData[] = [
@@ -18,24 +18,28 @@ export default function MatchTransactionSummaryCards() {
         title: 'Total Transactions',
         value: formState.summary?.total as number,
         description: '',
-        icon: <FileChartIcon className="size-7" />
+        icon: <FileChartIcon className="size-7 dark:text-white/80" />,
       },
       {
         title: 'Auto-Matched',
         value: formState.summary?.ai_matched as number,
         description: `${Math.ceil((formState.summary?.ai_matched as number) / (formState.summary?.total as number) || 0) * 100}% of total`,
-        icon: <CheckCircleIcon className="size-7" />
+        icon: <CheckCircleIcon className="size-7" />,
       },
       {
         title: 'Needs Review',
         value: formState.summary?.totalUnmatched as number,
         description: `${Math.ceil((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number) || 0) * 100}% of total`,
-        icon: <AlertCircleIcon className="size-7" />
-      }
-    ];
+        icon: <AlertCircleIcon className="size-7" />,
+      },
+    ]
 
-    setCards(cardsData);
-  }, [formState.summary?.ai_matched, formState.summary?.totalUnmatched, formState.summary?.total])
+    setCards(cardsData)
+  }, [
+    formState.summary?.ai_matched,
+    formState.summary?.totalUnmatched,
+    formState.summary?.total,
+  ])
 
   return (
     <div className="flex items-stretch gap-4">

@@ -355,21 +355,21 @@ const UploadLedgerCSVDialog = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="rounded-lg p-6 sm:max-w-[550px]">
+      <DialogContent className="max-h-[85vh] custom-scrollbar overflow-y-auto rounded-lg p-6 sm:max-w-[550px] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
         <DialogHeader>
-          <DialogTitle className="text-left text-xl font-semibold text-gray-800">
+          <DialogTitle className="text-left text-xl font-semibold text-gray-800 dark:text-white">
             Upload Ledger CSV
           </DialogTitle>
         </DialogHeader>
 
         <div className="my-4">
-          <p className="mb-2 text-sm text-[#344054]">
+          <p className="mb-2 text-sm text-[#344054] dark:text-gray-300">
             Step {currentStep} of 2:{' '}
             {steps.find((s) => s.step === currentStep)?.title}
           </p>
-          <div className="h-2 w-full rounded-full bg-gray-200">
+          <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-[#262626]">
             <div
-              className="bg-primary h-2 rounded-full transition-all duration-300"
+              className="h-2 rounded-full bg-primary transition-all duration-300 dark:bg-white"
               style={{ width: `${(currentStep / 2) * 100}%` }}
             />
           </div>
@@ -381,7 +381,7 @@ const UploadLedgerCSVDialog = ({
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="ledgerCategory"
-                  className="font-inter text-sm font-medium text-[#344054]"
+                  className="font-inter text-sm font-medium text-[#344054] dark:text-gray-300"
                 >
                   Ledger Category
                 </label>
@@ -392,11 +392,11 @@ const UploadLedgerCSVDialog = ({
                 >
                   <SelectTrigger
                     id="ledgerCategory"
-                    className="font-inter w-full rounded-md border-gray-300 text-sm text-[#344054]"
+                    className="font-inter w-full rounded-md border-gray-300 text-sm text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white"
                   >
                     <SelectValue placeholder="Select a ledger" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     {ledgers.length === 0 && isLoading ? (
                       <SelectItem value="loading" disabled>
                         Loading ledgers...
@@ -418,7 +418,7 @@ const UploadLedgerCSVDialog = ({
               <div className="flex flex-col gap-2">
                 <label
                   htmlFor="transactionType"
-                  className="font-inter text-sm font-medium text-[#344054]"
+                  className="font-inter text-sm font-medium text-[#344054] dark:text-gray-300"
                 >
                   Transaction Type
                 </label>
@@ -428,11 +428,11 @@ const UploadLedgerCSVDialog = ({
                 >
                   <SelectTrigger
                     id="transactionType"
-                    className="font-inter w-full rounded-md border-gray-300 text-sm text-[#344054]"
+                    className="font-inter w-full rounded-md border-gray-300 text-sm text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white"
                   >
-                    <SelectValue />
+                    <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                     <SelectItem value="Expense">Expense</SelectItem>
                     <SelectItem value="Income">Income</SelectItem>
                     <SelectItem value="Transfer">Transfer</SelectItem>
@@ -452,20 +452,19 @@ const UploadLedgerCSVDialog = ({
 
           {currentStep === 2 && (
             <div className="flex flex-col gap-4">
-              <p className="text-sm text-[#344054]">
+              <p className="text-sm text-[#344054] dark:text-gray-300">
                 Map your CSV columns to Reconxi fields. Select a CSV column for
                 each Reconxi field below.
               </p>
 
               <div className="grid grid-cols-2 gap-4">
-                {/* Left Column: CSV Header Dropdowns */}
                 <div className="flex flex-col gap-3">
-                  <div className="text-sm font-medium text-[#344054]">
+                  <div className="text-sm font-medium text-[#344054] dark:text-white">
                     Your CSV Data Columns
                   </div>
                   {!selectedFile || csvHeaders.length === 0 ? (
-                    <div className="flex h-10 items-center justify-center rounded-md border border-gray-300 bg-gray-50 px-3 py-2">
-                      <span className="text-[14px] text-gray-500">
+                    <div className="flex h-10 items-center justify-center rounded-md border border-gray-300 bg-gray-50 px-3 py-2 dark:border-primary/40 dark:bg-[#262626] dark:text-gray-400">
+                      <span className="text-[14px] text-gray-500 dark:text-gray-400">
                         No CSV found
                       </span>
                     </div>
@@ -485,10 +484,10 @@ const UploadLedgerCSVDialog = ({
                             handleMappingChange(csvColumn, reconxiColumn)
                           }
                         >
-                          <SelectTrigger className="h-10 w-full rounded-md border-gray-300 text-[#344054]">
+                          <SelectTrigger className="h-10 w-full rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
                             <SelectValue placeholder="Select CSV column" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
                             <SelectItem value="none">None</SelectItem>
                             {csvHeaders.map((header) => (
                               <SelectItem key={header} value={header}>
@@ -497,44 +496,53 @@ const UploadLedgerCSVDialog = ({
                             ))}
                           </SelectContent>
                         </Select>
-                        <ArrowRight className="text-[#667085]/80" size={20} />
+                        <ArrowRight className="text-[#667085]/80 dark:text-gray-400" size={20} />
                       </div>
-                    ))
-                  )}
+                    )))
+                  }
                 </div>
 
                 {/* Right Column: Fixed Reconxi Fields */}
                 <div className="flex flex-col gap-3">
-                  <div className="text-sm font-medium text-[#344054]">
+                  <div className="text-sm font-medium text-[#344054] dark:text-gray-300">
                     Reconxi Data Columns
                   </div>
                   {reconxiColumns.map((reconxiColumn) => (
                     <div
                       key={reconxiColumn}
-                      className="flex h-10 items-center justify-between rounded-md border border-gray-300 bg-gray-100 px-3 py-2"
+                      className="flex h-10 items-center justify-between rounded-md border border-gray-300 bg-gray-100 px-3 py-2 dark:border-primary/40 dark:bg-[#262626] dark:text-white"
                     >
-                      <span className="font-inter text-[14px] font-normal text-[#667085]">
+                      <span className="font-inter text-[14px] font-normal text-[#667085] dark:text-gray-300">
                         {reconxiColumn}
                       </span>
-                      <InfoIcon className="text-[#667085]/50" size={16} />
+                      <InfoIcon className="text-[#667085]/50 dark:text-gray-400" size={16} />
                     </div>
                   ))}
                 </div>
               </div>
 
               {error && (
-                <div className="flex items-center gap-2 rounded-md bg-red-50 p-3 text-sm text-red-700">
-                  <AlertCircle size={16} className="text-red-500" />
+                <div className="flex items-center gap-2 rounded-md bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+                  <AlertCircle size={16} className="text-red-500 dark:text-red-300" />
                   <span>{error}</span>
                 </div>
               )}
 
               {selectedFile && csvHeaders.length > 0 && (
-                <div className="mt-2 rounded-md bg-blue-50 p-3 text-sm text-blue-800">
-                  <p className="font-medium">CSV File Details:</p>
+                <div className="mt-2 rounded-md bg-blue-50 p-3 text-sm text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
+                  <p className="font-medium dark:text-blue-200">CSV File Details:</p>
                   <p className="mt-1">
                     Found {csvHeaders.length} columns: {csvHeaders.join(', ')}
                   </p>
+                </div>
+              )}
+
+              {isUploading && uploadProgress > 0 && (
+                <div className="mt-4">
+                  <p className="mb-2 text-sm text-[#344054] dark:text-gray-300">
+                    Upload Progress: {uploadProgress}%
+                  </p>
+                  <Progress value={uploadProgress} className="h-2 w-full dark:bg-[#262626]" />
                 </div>
               )}
             </div>
@@ -542,19 +550,19 @@ const UploadLedgerCSVDialog = ({
 
           {isUploading && uploadProgress > 0 && (
             <div className="mt-4">
-              <p className="mb-2 text-sm text-[#344054]">
+              <p className="mb-2 text-sm text-[#344054] dark:text-gray-300">
                 Upload Progress: {uploadProgress}%
               </p>
-              <Progress value={uploadProgress} className="h-2 w-full" />
+              <Progress value={uploadProgress} className="h-2 w-full dark:bg-[#262626]" />
             </div>
           )}
         </div>
 
-        <DialogFooter className="flex w-full border-t border-gray-100 pt-4">
+        <DialogFooter className="flex w-full border-t border-gray-100 pt-4 dark:border-gray-800">
           <div className="flex w-full gap-2">
             <Button
               variant="outline"
-              className="text-primary flex-1 bg-white text-base dark:bg-gray-800"
+              className="h-12 flex-1 rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white hover:dark:bg-[#262626]"
               size="lg"
               onClick={currentStep === 1 ? handleClose : prevStep}
               disabled={isUploading}
@@ -562,7 +570,7 @@ const UploadLedgerCSVDialog = ({
               {currentStep === 1 ? 'Cancel' : 'Back'}
             </Button>
             <Button
-              className="bg-primary hover:bg-primary/90 flex-1 text-base"
+              className="bg-primary hover:bg-primary/90 h-12 flex-1 rounded-md text-white dark:bg-[#138754] dark:text-white dark:hover:bg-[#138754]/90"
               size="lg"
               onClick={currentStep === 2 ? handleUpload : nextStep}
               disabled={

@@ -2,7 +2,7 @@ import React from 'react'
 
 const SiteLoader = () => {
   return (
-    <div className="fixed top-0 left-0 z-[99999999] flex h-dvh w-screen items-center justify-center overflow-hidden bg-white">
+    <div className="fixed top-0 left-0 z-[99999999] flex h-dvh w-screen items-center justify-center overflow-hidden bg-white transition-colors dark:bg-transparent">
       <div className="three-body">
         <div className="three-body__dot" />
         <div className="three-body__dot" />

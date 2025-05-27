@@ -35,7 +35,7 @@ import { Input } from '@/components/ui/input'
 import { SearchIcon } from '@/components/Icon/Icons'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { TStatement } from '@/types/reconciliation'
-import { AddLedgerEntryModal } from "@/components/dashboard/ledgers/modals/AddLedgerEntryModal"
+import { AddLedgerEntryModal } from '@/components/dashboard/ledgers/modals/AddLedgerEntryModal'
 export type Transaction = {
   id: string
   date: string
@@ -52,6 +52,9 @@ export type Transaction = {
 
 const ConfirmUnmatchedTable = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  const [selectedStatement, setSelectedStatement] = useState<TStatement | null>(
+    null
+  )
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
@@ -59,25 +62,36 @@ const ConfirmUnmatchedTable = () => {
   const [selectedAccount, setSelectedAccount] = useState('All Accounts')
   const [selectedLedger, setSelectedLedger] = useState('All Ledgers')
 
-  const { formState } = useReconciliationStore();
+  const { formState } = useReconciliationStore()
 
   // Map matchedItems to table data
   const transactions: Transaction[] = useMemo(() => {
-    return (formState.results?.unmatched_statements as TStatement[]).map((item) => ({
-      id: item.id,
-      date: item.Date,
-      name: '',
-      description: {
-        title: item.Description,
-        text: '',
-      },
-      accountNumber: `${item.accountNumber}`,
-      bal: `${item.Amount}`,
-      type: `Expense`,
-      amount: item.Amount,
-    }))
-  }, [formState.results?.unmatched_statements]);
+    return (formState.results?.unmatched_statements as TStatement[]).map(
+      (item) => ({
+        id: item.id,
+        date: item.Date,
+        name: '',
+        description: {
+          title: item.Description,
+          text: '',
+        },
+        accountNumber: `${item.accountNumber}`,
+        bal: `${item.Amount}`,
+        type: `Expense`,
+        amount: item.Amount,
+      })
+    )
+  }, [formState.results?.unmatched_statements])
 
+  const handleCreateEntry = (statement: TStatement) => {
+    setSelectedStatement(statement)
+    setIsAddModalOpen(true)
+  }
+
+  const handleModalClose = () => {
+    setIsAddModalOpen(false)
+    setSelectedStatement(null)
+  }
 
   const columns = useMemo<ColumnDef<Transaction>[]>(
     () => [
@@ -85,7 +99,9 @@ const ConfirmUnmatchedTable = () => {
         accessorKey: 'date',
         header: 'Date',
         cell: ({ row }) => (
-          <div className="text-sm text-[#333]">{row.getValue('date')}</div>
+          <div className="text-sm text-[#333] dark:text-white">
+            {row.getValue('date')}
+          </div>
         ),
       },
       {
@@ -97,8 +113,12 @@ const ConfirmUnmatchedTable = () => {
           ) as Transaction['description']
           return (
             <div className="flex flex-col gap-1">
-              <div className="text-sm text-[#333]">{description.title}</div>
-              <div className="text-xs text-[#475467]">{description.text}</div>
+              <div className="text-sm text-[#333] dark:text-white">
+                {description.title}
+              </div>
+              <div className="text-xs text-[#475467] dark:text-gray-400">
+                {description.text}
+              </div>
             </div>
           )
         },
@@ -116,7 +136,7 @@ const ConfirmUnmatchedTable = () => {
 
           return (
             <div
-              className={`min-w-24 text-sm ${amount < 0 ? 'text-[#E63946]' : 'text-[#4CAF50]'}`}
+              className={`min-w-24 text-sm ${amount < 0 ? 'text-[#E63946] dark:text-red-400' : 'text-[#4CAF50] dark:text-green-400'}`}
             >
               {formatted}
             </div>
@@ -128,10 +148,10 @@ const ConfirmUnmatchedTable = () => {
         header: 'Matched With',
         cell: () => (
           <div className="relative flex w-full items-center">
-            <SearchIcon className="absolute left-3 size-5" />
+            <SearchIcon className="absolute left-3 size-5 dark:text-white" />
             <Input
               placeholder="Find possible Match"
-              className="placeholder:text-muted-foreground/80 h-9 w-full flex-1 px-3 pl-9 outline-hidden placeholder:italic focus:outline-hidden disabled:cursor-not-allowed"
+              className="placeholder:text-muted-foreground/80 h-9 w-full flex-1 px-3 pl-9 outline-hidden placeholder:italic focus:outline-hidden disabled:cursor-not-allowed dark:text-white"
             />
           </div>
         ),
@@ -139,15 +159,18 @@ const ConfirmUnmatchedTable = () => {
       {
         id: 'actions',
         header: 'Actions',
-        cell: () => (
+        cell: ({ row }) => (
           <div className="flex items-center justify-center gap-2">
             <Button
               variant="outline"
               type="button"
               size="sm"
-              className="cursor-pointer text-black"
+              className="cursor-pointer text-black dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+              onClick={() =>
+                handleCreateEntry(row.original as unknown as TStatement)
+              }
             >
-              <Plus className="size-5 stroke-[1.5px] text-black/60" />
+              <Plus className="size-5 stroke-[1.5px] text-black/60 dark:text-white/60" />
               <span>Create entry</span>
             </Button>
           </div>
@@ -213,23 +236,26 @@ const ConfirmUnmatchedTable = () => {
             type="button"
             className="h-12 cursor-pointer"
           >
-            <Download className="size-5 text-black/60" />
+            <Download className="size-5 text-black/60 dark:text-white" />
             <span>Export</span>
           </Button>
         </div>
       </div>
 
       <div className="overflow-x-auto">
-        <div className="overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
+        <div className="overflow-hidden rounded-xl border border-[#d9d9d9] dark:border-white/20">
           <Table>
-            <TableHeader className="bg-[#f9fafb]">
+            <TableHeader className="dark:bg-card">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow className="h-[52px]" key={headerGroup.id}>
+                <TableRow
+                  className="h-[52px] dark:border-b dark:border-white/20"
+                  key={headerGroup.id}
+                >
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
                       className={cn(
-                        `border-r border-[#EAECF0] px-4 text-base font-bold text-[#333]`,
+                        `px-4 text-base font-bold dark:text-white`,
                         header.id === 'select' && 'p-4'
                       )}
                     >
@@ -248,15 +274,15 @@ const ConfirmUnmatchedTable = () => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    className="border-t border-gray-100"
+                    className="dark:border-b dark:border-white/20 dark:hover:bg-white/5"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
                         className={cn(
-                          `border-r px-4 py-3`,
+                          `border-r px-4 py-3 dark:border-white/20`,
                           cell.column.id === 'select' &&
-                          'p-4 [&:has([role=checkbox])]:p-4'
+                            'p-4 [&:has([role=checkbox])]:p-4'
                         )}
                       >
                         {flexRender(
@@ -271,7 +297,7 @@ const ConfirmUnmatchedTable = () => {
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 text-center dark:text-white"
                   >
                     No transactions found
                   </TableCell>
@@ -283,9 +309,8 @@ const ConfirmUnmatchedTable = () => {
 
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center gap-4">
-            {/* Rows per page selector */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#344054]">
+              <span className="text-sm font-medium text-[#344054] dark:text-white">
                 Rows per page
               </span>
               <div className="relative overflow-hidden">
@@ -293,14 +318,18 @@ const ConfirmUnmatchedTable = () => {
                   value={`${table.getState().pagination.pageSize}`}
                   onValueChange={(value) => table.setPageSize(Number(value))}
                 >
-                  <SelectTrigger className="h-8 w-[58px] p-2">
+                  <SelectTrigger className="h-8 w-[58px] p-2 dark:border-white/20 dark:bg-transparent dark:text-white">
                     <SelectValue
                       placeholder={table.getState().pagination.pageSize}
                     />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:bg-card dark:border-white/20">
                     {[10, 25, 50].map((size) => (
-                      <SelectItem key={size} value={`${size}`}>
+                      <SelectItem
+                        key={size}
+                        value={`${size}`}
+                        className="dark:text-white dark:focus:bg-white/10"
+                      >
                         {size}
                       </SelectItem>
                     ))}
@@ -309,22 +338,20 @@ const ConfirmUnmatchedTable = () => {
               </div>
             </div>
 
-            {/* Pagination details */}
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               {table.getState().pagination.pageIndex *
                 table.getState().pagination.pageSize +
                 1}
               -
               {Math.min(
                 (table.getState().pagination.pageIndex + 1) *
-                table.getState().pagination.pageSize,
+                  table.getState().pagination.pageSize,
                 table.getFilteredRowModel().rows.length
               )}{' '}
               of {table.getFilteredRowModel().rows.length} rows
             </div>
           </div>
 
-          {/* Pagination controls */}
           <div className="flex items-center gap-1">
             <Button
               variant="outline"
@@ -332,6 +359,7 @@ const ConfirmUnmatchedTable = () => {
               size="sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className="dark:border-white/20 dark:text-white dark:hover:bg-white/10"
             >
               Previous
             </Button>
@@ -342,36 +370,30 @@ const ConfirmUnmatchedTable = () => {
               const buttons = []
 
               if (pageCount <= 4) {
-                // If total pages are 4 or fewer, show all pages
                 for (let i = 1; i <= pageCount; i++) {
                   buttons.push(i)
                 }
               } else if (currentPage <= 2) {
-                // First two pages: Show 1 2 ... lastPage
                 buttons.push(1)
                 buttons.push(2)
                 buttons.push('...')
                 buttons.push(pageCount)
               } else if (currentPage >= pageCount - 1) {
-                // Last two pages: Show 1 ... secondLastPage lastPage
                 buttons.push(1)
                 buttons.push('...')
                 buttons.push(pageCount - 1)
                 buttons.push(pageCount)
               } else if (currentPage === 3) {
-                // Page 3: Show 1 2 3 lastPage
                 buttons.push(1)
                 buttons.push(2)
                 buttons.push(3)
                 buttons.push(pageCount)
               } else if (currentPage === pageCount - 2) {
-                // Third last page: Show 1 ... thirdLastPage secondLastPage
                 buttons.push(1)
                 buttons.push('...')
                 buttons.push(pageCount - 2)
                 buttons.push(pageCount - 1)
               } else {
-                // Middle pages: Show 1 ... currentPage lastPage
                 buttons.push(1)
                 buttons.push('...')
                 buttons.push(currentPage)
@@ -404,6 +426,11 @@ const ConfirmUnmatchedTable = () => {
                     variant={isActive ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => table.setPageIndex(page - 1)}
+                    className={
+                      !isActive
+                        ? 'dark:border-white/20 dark:text-white dark:hover:bg-white/10'
+                        : ''
+                    }
                   >
                     {page}
                   </Button>
@@ -417,6 +444,7 @@ const ConfirmUnmatchedTable = () => {
               size="sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className="dark:border-white/20 dark:text-white dark:hover:bg-white/10"
             >
               Next
             </Button>
@@ -425,7 +453,8 @@ const ConfirmUnmatchedTable = () => {
       </div>
       <AddLedgerEntryModal
         isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
+        onClose={handleModalClose}
+        statementId={selectedStatement?.id}
       />
     </div>
   )

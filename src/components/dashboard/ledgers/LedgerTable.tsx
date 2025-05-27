@@ -386,15 +386,15 @@ export function EnhancedLedgerTable({
             <DropdownMenuContent align="end">
               {item.reconciled ? (
                 <DropdownMenuItem className="gap-0.5">
-                  <CheckIcon className="h-7 w-7 text-[#333333]" />
-                  <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
+                  <CheckIcon className="h-7 w-7 text-[#333333] dark:text-white" />
+                  <span className="cursor-pointer text-sm text-nowrap text-[#333333] dark:text-white">
                     Unlink Matched
                   </span>
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem className="gap-0.5">
-                  <CheckIcon className="h-7 w-7 text-[#333333]" />
-                  <span className="cursor-pointer text-sm text-nowrap text-[#333333]">
+                  <CheckIcon className="h-7 w-7 text-[#333333] dark:text-white" />
+                  <span className="cursor-pointer text-sm text-nowrap text-[#333333] dark:text-white">
                     Find Possible Match
                   </span>
                 </DropdownMenuItem>
