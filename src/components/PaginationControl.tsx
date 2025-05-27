@@ -42,7 +42,7 @@ export function PaginationControls({
   return (
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center space-x-2">
-        <span className="text-xs text-gray-700 sm:text-sm">Rows per page</span>
+        <span className="text-xs text-gray-700 dark:text-gray-300 sm:text-sm">Rows per page</span>
         <Select
           value={pageSize.toString()}
           onValueChange={(value) => onRowsPerPageChange(Number(value))}
@@ -62,11 +62,11 @@ export function PaginationControls({
             ))}
           </SelectContent>
         </Select>
-        <span className="text-xs text-gray-700 sm:text-sm">
+        <span className="text-xs text-gray-700 dark:text-gray-300 sm:text-sm">
           {startItem} - {endItem} of {totalItems} rows
         </span>
       </div>
-      <p className="hidden text-xs font-medium text-[#344054] sm:text-sm">
+      <p className="hidden text-xs font-medium text-[#344054] dark:text-[#a8c2f9] sm:text-sm">
         Showing {endItem} out of {totalItems}
       </p>
       <div className="flex items-center space-x-2">

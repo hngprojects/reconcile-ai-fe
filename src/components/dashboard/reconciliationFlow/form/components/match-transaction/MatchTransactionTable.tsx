@@ -37,6 +37,8 @@ import { useReconciliationStore } from '@/store/reconciliation-store'
 import { matchedItem, MatchRequestBody, TMatch } from '@/types/reconciliation'
 import { match_unmatch_transactions } from '@/actions/reconcilation-server'
 import { toast } from 'sonner'
+import { SuccessToast } from '@/components/reconciliation/SuccessToast'
+import { ErrorToast } from '@/components/reconciliation/ErrorToast'
 
 export type Transaction = {
   id: string
@@ -135,7 +137,9 @@ const MatchTransactionTable = () => {
         accessorKey: 'date',
         header: 'Date',
         cell: ({ row }) => (
-          <div className="text-sm text-[#333]">{row.getValue('date')}</div>
+          <div className="text-sm text-[#333] dark:text-white">
+            {row.getValue('date')}
+          </div>
         ),
       },
       {
@@ -147,8 +151,12 @@ const MatchTransactionTable = () => {
           ) as Transaction['description']
           return (
             <div className="flex flex-col gap-1">
-              <div className="text-sm text-[#333]">{description.title}</div>
-              <div className="text-xs text-[#475467]">{description.text}</div>
+              <div className="text-sm text-[#333] dark:text-white">
+                {description.title}
+              </div>
+              <div className="text-xs text-[#475467] dark:text-gray-400">
+                {description.text}
+              </div>
             </div>
           )
         },
@@ -166,7 +174,7 @@ const MatchTransactionTable = () => {
 
           return (
             <div
-              className={`min-w-24 text-sm ${amount < 0 ? 'text-[#E63946]' : 'text-[#4CAF50]'}`}
+              className={`min-w-24 text-sm ${amount < 0 ? 'text-[#E63946] dark:text-red-400' : 'text-[#4CAF50] dark:text-green-400'}`}
             >
               {formatted}
             </div>
@@ -187,13 +195,15 @@ const MatchTransactionTable = () => {
           return (
             <div className="flex items-center justify-between gap-2">
               <div className="flex flex-col gap-1">
-                <div className="text-sm text-[#333]">{match.title}</div>
-                <div className="flex items-center justify-center gap-1 text-xs text-[#475467]">
+                <div className="text-sm text-[#333] dark:text-white">
+                  {match.title}
+                </div>
+                <div className="flex items-center justify-center gap-1 text-xs text-[#475467] dark:text-gray-400">
                   <span>{match.type}</span>
-                  <DotIcon className="size-1.5" />
+                  <DotIcon className="size-1.5 dark:text-gray-400" />
                   <span>
                     <div
-                      className={`${amount < 0 ? 'text-[#E63946]' : 'text-[#4CAF50]'}`}
+                      className={`${amount < 0 ? 'text-[#E63946] dark:text-red-400' : 'text-[#4CAF50] dark:text-green-400'}`}
                     >
                       {formatted}
                     </div>
@@ -201,7 +211,7 @@ const MatchTransactionTable = () => {
                 </div>
               </div>
               <div
-                className={`text-sm ${getConfidenceColor(match.percentage)} w-fit rounded-2xl px-2 py-0.5 font-medium`}
+                className={`text-sm ${getConfidenceColor(match.percentage)} dark:bg-opacity-20 w-fit rounded-2xl px-2 py-0.5 font-medium`}
               >
                 {match.percentage}%
               </div>
@@ -218,7 +228,7 @@ const MatchTransactionTable = () => {
               variant="outline"
               type="button"
               size="sm"
-              className="cursor-pointer text-black"
+              className="cursor-pointer text-black dark:border-white/20 dark:text-white dark:hover:bg-white/10"
               onClick={() => handleIndividualMatch(row.original)}
               disabled={isProcessing}
             >
@@ -281,9 +291,13 @@ const MatchTransactionTable = () => {
         })
 
       console.log('3. All Matches:', matches)
-
       if (matches.length === 0) {
-        toast.error('No transactions selected')
+        toast.custom((t) => (
+          <ErrorToast
+            message="No transactions selected"
+            onClose={() => toast.dismiss()}
+          />
+        ))
         return
       }
 
@@ -306,15 +320,27 @@ const MatchTransactionTable = () => {
           summary: response.data!.summary,
         })
         setRowSelection({})
-        toast.success('Transactions matched successfully')
+        toast.custom((t) => (
+          <SuccessToast
+            message="Transactions matched successfully"
+            onClose={() => toast.dismiss()}
+          />
+        ))
       } else {
         throw new Error(response.message || 'Failed to match transactions')
       }
     } catch (error) {
       console.error('6. Match Error:', error)
-      toast.error(
-        error instanceof Error ? error.message : 'Failed to match transactions'
-      )
+      toast.custom((t) => (
+        <ErrorToast
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Failed to match transactions'
+          }
+          onClose={() => toast.dismiss()}
+        />
+      ))
     } finally {
       setIsProcessing(false)
     }
@@ -363,15 +389,27 @@ const MatchTransactionTable = () => {
           results: response.data!,
           summary: response.data!.summary,
         })
-        toast.success('Transaction matched successfully')
+        toast.custom((t) => (
+          <SuccessToast
+            message="Transaction matched successfully"
+            onClose={() => toast.dismiss()}
+          />
+        ))
       } else {
         throw new Error(response.message || 'Failed to match transaction')
       }
     } catch (error) {
       console.error('5. Match Error:', error)
-      toast.error(
-        error instanceof Error ? error.message : 'Failed to match transaction'
-      )
+      toast.custom((t) => (
+        <ErrorToast
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Failed to match transaction'
+          }
+          onClose={() => toast.dismiss()}
+        />
+      ))
     } finally {
       setIsProcessing(false)
     }
@@ -388,14 +426,16 @@ const MatchTransactionTable = () => {
       />
 
       <div className="flex items-center justify-between">
-        <h6 className="text-xl font-medium">Transactions Needing Review</h6>
+        <h6 className="text-xl font-medium text-black dark:text-white">
+          Transactions Needing Review
+        </h6>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             type="button"
-            className="h-12 cursor-pointer"
+            className="h-12 cursor-pointer dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
-            <Download className="size-5 text-black/60" />
+            <Download className="size-5 text-black/60 dark:text-white/60" />
             <span>Export</span>
           </Button>
           <Button
@@ -405,9 +445,9 @@ const MatchTransactionTable = () => {
             onClick={() => handleMatchTransactions(rowSelection)}
           >
             {isProcessing ? (
-              <Loader2 className="size-5 animate-spin text-white" />
+              <Loader2 className="size-5 animate-spin text-white dark:text-black" />
             ) : (
-              <Check className="size-5 text-white" />
+              <Check className="da size-5 text-white dark:text-black" />
             )}
             <span>{isProcessing ? 'Processing...' : 'Accept Selected'}</span>
           </Button>
@@ -415,16 +455,19 @@ const MatchTransactionTable = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <div className="overflow-hidden rounded-xl border border-[#d9d9d9]">
+        <div className="overflow-hidden rounded-xl border border-[#d9d9d9] dark:border-white/20">
           <Table>
-            <TableHeader className="">
+            <TableHeader className="dark:bg-card">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow className="h-[52px]" key={headerGroup.id}>
+                <TableRow
+                  className="h-[52px] dark:border-b dark:border-white/20"
+                  key={headerGroup.id}
+                >
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
                       className={cn(
-                        `px-4 text-base font-bold`,
+                        `px-4 text-base font-bold dark:text-white`,
                         header.id === 'select' &&
                           'p-4 [&:has([role=checkbox])]:p-4'
                       )}
@@ -444,13 +487,13 @@ const MatchTransactionTable = () => {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && 'selected'}
-                    className=""
+                    className="dark:hover:bg-card/90 dark:border-b dark:border-white/20"
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
                         className={cn(
-                          `border-r px-4 py-3`,
+                          `border-r px-4 py-3 dark:border-white/20`,
                           cell.column.id === 'select' &&
                             'p-4 [&:has([role=checkbox])]:p-4'
                         )}
@@ -467,7 +510,7 @@ const MatchTransactionTable = () => {
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center"
+                    className="h-24 text-center dark:text-white"
                   >
                     No transactions found
                   </TableCell>
@@ -479,9 +522,8 @@ const MatchTransactionTable = () => {
 
         <div className="flex items-center justify-between py-4">
           <div className="flex items-center gap-4">
-            {/* Rows per page selector */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#344054]">
+              <span className="text-sm font-medium text-[#344054] dark:text-white">
                 Rows per page
               </span>
               <div className="relative overflow-hidden">
@@ -489,14 +531,18 @@ const MatchTransactionTable = () => {
                   value={`${table.getState().pagination.pageSize}`}
                   onValueChange={(value) => table.setPageSize(Number(value))}
                 >
-                  <SelectTrigger className="h-8 w-[58px] p-2">
+                  <SelectTrigger className="h-8 w-[58px] p-2 dark:border-white/20 dark:bg-transparent dark:text-white">
                     <SelectValue
                       placeholder={table.getState().pagination.pageSize}
                     />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="dark:bg-card dark:border-white/20">
                     {[10, 25, 50].map((size) => (
-                      <SelectItem key={size} value={`${size}`}>
+                      <SelectItem
+                        key={size}
+                        value={`${size}`}
+                        className="dark:text-white dark:focus:bg-white/10"
+                      >
                         {size}
                       </SelectItem>
                     ))}
@@ -505,8 +551,7 @@ const MatchTransactionTable = () => {
               </div>
             </div>
 
-            {/* Pagination details */}
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-gray-400">
               {table.getState().pagination.pageIndex *
                 table.getState().pagination.pageSize +
                 1}
@@ -520,7 +565,6 @@ const MatchTransactionTable = () => {
             </div>
           </div>
 
-          {/* Pagination controls */}
           <div className="flex items-center gap-1">
             <Button
               variant="outline"
@@ -528,6 +572,7 @@ const MatchTransactionTable = () => {
               size="sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className="dark:border-white/20 dark:text-white dark:hover:bg-white/10"
             >
               Previous
             </Button>
@@ -613,6 +658,7 @@ const MatchTransactionTable = () => {
               size="sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className="dark:border-white/20 dark:text-white dark:hover:bg-white/10"
             >
               Next
             </Button>
