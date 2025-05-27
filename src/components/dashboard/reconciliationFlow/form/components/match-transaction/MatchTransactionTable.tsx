@@ -314,7 +314,7 @@ const MatchTransactionTable = () => {
 
       console.log('5. API Response:', response)
 
-      if (response.success) {
+      if (response.status === 'success') {
         updateFormState({
           results: response.data!,
           summary: response.data!.summary,

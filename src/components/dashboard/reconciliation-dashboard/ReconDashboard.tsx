@@ -1,7 +1,7 @@
 'use client'
 
 import SummaryCards from './SummaryCards'
-import { Plus } from 'lucide-react'
+import { Plus, FileSpreadsheet } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import CreateModal, { CreateProjectSchema } from './CreateModal'
 import Header from './Header'
@@ -88,7 +88,7 @@ export default function ReconDashboard() {
         title: String(project.title),
         status: String(project.status) as 'completed' | 'in-progress' | 'draft' | 'pending' | 'failed',
         progress: Math.ceil(((project.step == 7 ? 4 : +(project.step as string)) / 6) * 100),
-        steps: project.step == 7 ? '4' : +(project.step as string),
+        steps: project.step == 7 ? 4 : +(project.step as string),
         totalSteps: 6,
         unreconciled: +(project.unmatched as string),
         reconciled: +(project.matches as string),
@@ -176,19 +176,21 @@ export default function ReconDashboard() {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-6 rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6">
-          {/* <img src="/empty-reconciliation-icon.svg" alt="No reconciliations" className="w-32 h-32" /> */}
-          <h2 className="text-muted-foreground text-lg font-semibold">
-            No reconciliations found
-          </h2>
-          <p className="text-muted-foreground text-center text-sm">
-            Start a new project below to begin managing your financial data.
-          </p>
+        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border bg-background/40 p-12">
+          <FileSpreadsheet className="size-16 text-muted-foreground" />
+          <div className="flex flex-col items-center gap-2">
+            <h2 className="text-xl font-semibold">
+              No reconciliations found
+            </h2>
+            <p className="text-muted-foreground text-center text-sm max-w-[400px]">
+              Start a new reconciliation project below to begin managing your financial data.
+            </p>
+          </div>
           <button
             onClick={handleOpenCreateModal}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-4 text-sm font-medium"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md px-4 text-sm font-medium"
           >
-            <Plus className="size-5" /> Create New Reconciliation
+            <Plus className="size-4" /> Create New Reconciliation
           </button>
         </div>
       ) : (

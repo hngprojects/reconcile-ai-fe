@@ -8,18 +8,34 @@ interface ErrorToastProps {
 
 export const ErrorToast = ({ message, onClose }: ErrorToastProps) => {
   return (
-    <div className="flex items-center gap-2 rounded-md border border-red-100 bg-red-50/80 p-3 shadow-sm dark:border-red-900 dark:bg-red-950/30">
-      {' '}
+    <div className="bg-card flex items-center justify-between gap-2 rounded-lg border border-red-200 p-4 shadow-lg dark:border-red-800">
       <div className="flex items-center gap-2">
-        <AlertCircle className="h-4 w-4 text-red-500" />
-        <p className="text-sm text-red-700 dark:text-red-300">{message}</p>
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
+          <AlertCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
+        </div>
+        <p className="text-sm font-medium text-red-800 dark:text-red-200">
+          {message}
+        </p>
       </div>
       <button
         type="button"
         onClick={onClose}
-        className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-400"
+        className="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-full p-1"
       >
-        ✕
+        <span className="sr-only">Close</span>
+        <svg
+          className="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
       </button>
     </div>
   )

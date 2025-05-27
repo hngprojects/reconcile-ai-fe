@@ -32,6 +32,8 @@ import { CalendarIcon } from 'lucide-react'
 import FileUpload from '../FileUpload'
 import { getSession } from 'next-auth/react'
 import { submitLedgerEntry } from '@/lib/api'
+import { useReconciliationStore } from '@/store/reconciliation-store'
+import { get_reconcilation_results_by_id } from '@/actions/reconcilation-server'
 
 // Zod schema for form validation
 const ledgerEntrySchema = z.object({
@@ -169,6 +171,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
     transactionTypes: false,
     accountCategories: false,
   })
+  const { formState, updateFormState } = useReconciliationStore()
 
   const steps = [
     { step: 1, title: 'Basic Info' },
@@ -359,10 +362,24 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
       const dataToSubmit = {
         ...state,
         reference: state.reference || '',
-        ...(statementId ? {id: statementId} : {}),
+        ...(statementId ? { id: statementId } : {}),
       }
 
       await submitLedgerEntry(dataToSubmit)
+
+      // If this is part of reconciliation flow, fetch updated results
+      if (formState.reconciliation_id) {
+        const response = await get_reconcilation_results_by_id(
+          formState.reconciliation_id
+        )
+        if (response.success && response.data) {
+          updateFormState({
+            results: response.data,
+            summary: response.data.summary,
+          })
+        }
+      }
+
       toast.success('Ledger entry saved successfully!')
       handleClose()
     } catch (error) {
@@ -397,7 +414,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-h-[85vh] custom-scrollbar overflow-y-auto rounded-lg p-6 sm:max-w-[550px] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+      <DialogContent className="custom-scrollbar dark:border-primary/40 max-h-[85vh] overflow-y-auto rounded-lg p-6 sm:max-w-[550px] dark:bg-[#1A1A1A] dark:text-white">
         <DialogHeader>
           <DialogTitle className="text-left text-xl font-semibold text-gray-800 dark:text-white">
             Add Ledger Entry
@@ -411,7 +428,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
           </p>
           <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-[#262626]">
             <div
-              className="h-2 rounded-full bg-primary transition-all duration-300 dark:bg-white"
+              className="bg-primary h-2 rounded-full transition-all duration-300 dark:bg-white"
               style={{ width: `${(currentStep / 3) * 100}%` }}
             />
           </div>
@@ -431,7 +448,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   }
                   disabled={isLoading.ledgers}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
@@ -465,7 +482,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   }
                   disabled={isLoading.transactionTypes}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select type" />
                   </SelectTrigger>
                   <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
@@ -502,8 +519,9 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                     <Button
                       variant="outline"
                       className={cn(
-                        'w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-gray-300',
-                        !state.transactionDate && 'text-gray-400 dark:text-gray-500'
+                        'dark:border-primary/40 w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:bg-[#1A1A1A] dark:text-gray-300',
+                        !state.transactionDate &&
+                          'text-gray-400 dark:text-gray-500'
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4 text-[#344054] dark:text-gray-400" />
@@ -512,7 +530,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                         : 'Select date'}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <PopoverContent className="dark:border-primary/40 w-auto p-0 dark:bg-[#1A1A1A] dark:text-white">
                     <Calendar
                       mode="single"
                       selected={
@@ -546,7 +564,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   placeholder="Short summary of transaction"
                   value={state.description}
                   onChange={(e) => handleChange('description', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
                 {errors.description && (
                   <span className="text-sm text-red-500 dark:text-red-400">
@@ -564,7 +582,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   placeholder="₦ 0.00"
                   value={state.amount}
                   onChange={(e) => handleChange('amount', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
                 {errors.amount && (
                   <span className="text-sm text-red-500 dark:text-red-400">
@@ -586,7 +604,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   value={state.paidStatus}
                   onValueChange={(value) => handleChange('paidStatus', value)}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
                   <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
@@ -612,7 +630,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                     <Button
                       variant="outline"
                       className={cn(
-                        'w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:border-primary/40 dark:bg-gray-800 dark:text-gray-300',
+                        'dark:border-primary/40 w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:bg-gray-800 dark:text-gray-300',
                         !state.dueDate && 'text-gray-400 dark:text-gray-500'
                       )}
                     >
@@ -622,12 +640,17 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                         : 'Select date'}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <PopoverContent className="dark:border-primary/40 w-auto p-0 dark:bg-[#1A1A1A] dark:text-white">
                     <Calendar
                       mode="single"
-                      selected={state.dueDate ? new Date(state.dueDate) : undefined}
+                      selected={
+                        state.dueDate ? new Date(state.dueDate) : undefined
+                      }
                       onSelect={(date) =>
-                        handleChange('dueDate', date ? format(date, 'yyyy-MM-dd') : '')
+                        handleChange(
+                          'dueDate',
+                          date ? format(date, 'yyyy-MM-dd') : ''
+                        )
                       }
                       autoFocus
                     />
@@ -649,7 +672,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   placeholder="₦ 0.00"
                   value={state.amountPaid}
                   onChange={(e) => handleChange('amountPaid', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
                 {errors.amountPaid && (
                   <span className="text-sm text-red-500 dark:text-red-400">
@@ -668,7 +691,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   onValueChange={(value) => handleChange('bankAccount', value)}
                   disabled={isLoading.bankAccounts}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select bank account" />
                   </SelectTrigger>
                   <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
@@ -709,7 +732,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   onValueChange={(value) => handleChange('account', value)}
                   disabled={isLoading.accountCategories}
                 >
-                  <SelectTrigger className="w-full rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white">
+                  <SelectTrigger className="dark:border-primary/40 w-full rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white">
                     <SelectValue placeholder="Select Account" />
                   </SelectTrigger>
                   <SelectContent className="dark:border-primary/40 dark:bg-[#1A1A1A]">
@@ -742,7 +765,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                   placeholder="Reference number"
                   value={state.reference || ''}
                   onChange={(e) => handleChange('reference', e.target.value)}
-                  className="rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
+                  className="dark:border-primary/40 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white dark:placeholder-gray-400"
                 />
               </div>
 
@@ -768,11 +791,11 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
           )}
         </div>
 
-        <DialogFooter className="flex w-full border-t border-gray-100 pt-6 dark:border-primary/40">
+        <DialogFooter className="dark:border-primary/40 flex w-full border-t border-gray-100 pt-6">
           <div className="flex w-full gap-3">
             <Button
               variant="outline"
-              className="h-12 flex-1 rounded-md border-gray-300 text-[#344054] dark:border-primary/40 dark:bg-[#1A1A1A] dark:text-white hover:dark:bg-[#262626]"
+              className="dark:border-primary/40 h-12 flex-1 rounded-md border-gray-300 text-[#344054] dark:bg-[#1A1A1A] dark:text-white hover:dark:bg-[#262626]"
               onClick={currentStep === 1 ? handleClose : prevStep}
             >
               {currentStep === 1 ? 'Cancel' : 'Back'}

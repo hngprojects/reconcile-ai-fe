@@ -13,7 +13,7 @@ const Complete = () => {
       </div>
       <div className="space-y-2 text-center">
         <h3 className="text-2xl font-semibold">Reconciliation Complete!</h3>
-        <p className="text-[#475467]">
+        <p className="text-[#475467] dark:text-white/80">
           You have successfully reconciled your bank transactions with your
           ledger entries
         </p>
@@ -26,11 +26,11 @@ const Complete = () => {
             type="button"
             className="h-12 cursor-pointer"
           >
-            <FileChartIcon className="size-5 text-black/60" />
+            <FileChartIcon className="size-5 text-black/60 dark:text-white" />
             <span>View in Ledger</span>
           </Button>
           <Button type="button" className="h-12 cursor-pointer">
-            <Download className="size-5 text-white" />
+            <Download className="size-5 text-white dark:text-[#138754]" />
             <span>Export Summary Report</span>
           </Button>
         </div>
