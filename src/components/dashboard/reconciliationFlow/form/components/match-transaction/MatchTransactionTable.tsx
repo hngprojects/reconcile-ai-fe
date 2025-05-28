@@ -37,9 +37,6 @@ import { useReconciliationStore } from '@/store/reconciliation-store'
 import { matchedItem, MatchRequestBody, TMatch } from '@/types/reconciliation'
 import { match_unmatch_transactions } from '@/actions/reconcilation-server'
 import { toast } from 'sonner'
-import { SuccessToast } from '@/components/reconciliation/SuccessToast'
-import { ErrorToast } from '@/components/reconciliation/ErrorToast'
-
 export type Transaction = {
   id: string
   date: string
@@ -292,12 +289,9 @@ const MatchTransactionTable = () => {
 
       console.log('3. All Matches:', matches)
       if (matches.length === 0) {
-        toast.custom((t) => (
-          <ErrorToast
-            message="No transactions selected"
-            onClose={() => toast.dismiss()}
-          />
-        ))
+        toast.warning('No transactions selected for matching', {
+          duration: 3000,
+        })
         return
       }
 
@@ -320,27 +314,13 @@ const MatchTransactionTable = () => {
           summary: response.data!.summary,
         })
         setRowSelection({})
-        toast.custom((t) => (
-          <SuccessToast
-            message="Transactions matched successfully"
-            onClose={() => toast.dismiss()}
-          />
-        ))
+        toast.success('Transactions matched successfully')
       } else {
         throw new Error(response.message || 'Failed to match transactions')
       }
     } catch (error) {
       console.error('6. Match Error:', error)
-      toast.custom((t) => (
-        <ErrorToast
-          message={
-            error instanceof Error
-              ? error.message
-              : 'Failed to match transactions'
-          }
-          onClose={() => toast.dismiss()}
-        />
-      ))
+      toast.error('Failed to match transactions')
     } finally {
       setIsProcessing(false)
     }
@@ -389,27 +369,13 @@ const MatchTransactionTable = () => {
           results: response.data!,
           summary: response.data!.summary,
         })
-        toast.custom((t) => (
-          <SuccessToast
-            message="Transaction matched successfully"
-            onClose={() => toast.dismiss()}
-          />
-        ))
+        toast.success('Transaction matched successfully')
       } else {
         throw new Error(response.message || 'Failed to match transaction')
       }
     } catch (error) {
       console.error('5. Match Error:', error)
-      toast.custom((t) => (
-        <ErrorToast
-          message={
-            error instanceof Error
-              ? error.message
-              : 'Failed to match transaction'
-          }
-          onClose={() => toast.dismiss()}
-        />
-      ))
+      toast.error('Failed to match transaction')
     } finally {
       setIsProcessing(false)
     }
