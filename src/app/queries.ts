@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 
 export const useReconcilations = () => {
   return useQuery({
-    queryKey: ['reconcilations'],
+    queryKey: ['reconciliations'],
     queryFn: async () => {
       const response = await get_reconcilations()
       return response.data?.reverse()

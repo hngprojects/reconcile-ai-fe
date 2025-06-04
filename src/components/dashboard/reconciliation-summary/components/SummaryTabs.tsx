@@ -1,12 +1,12 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+// import Attachments from './Attachments'
 import MatchTable from './MatchTable'
 import UnmatchedTable from './UnmatchedTable'
-import Attachments from './Attachments'
 
 const SummaryTabs = () => {
   return (
     <Tabs defaultValue="matched" className="w-full">
-      <TabsList className="grid h-full grid-cols-3">
+      <TabsList className="grid h-full grid-cols-2">
         <TabsTrigger
           className="cursor-pointer py-2 text-[#262626]"
           value="matched"
@@ -19,12 +19,12 @@ const SummaryTabs = () => {
         >
           Unmatched Transactions
         </TabsTrigger>
-        <TabsTrigger
+        {/* <TabsTrigger
           className="cursor-pointer py-2 text-[#262626]"
           value="attachments"
         >
           Attachments & Notes
-        </TabsTrigger>
+        </TabsTrigger> */}
       </TabsList>
       <TabsContent value="matched">
         <div className="mt-2 text-black">
@@ -45,9 +45,9 @@ const SummaryTabs = () => {
         </div>
         <UnmatchedTable />
       </TabsContent>
-      <TabsContent value="attachments">
+      {/* <TabsContent value="attachments">
         <Attachments />
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   )
 }
