@@ -8,7 +8,7 @@ import { Suspense } from 'react'
 export default async function ReconciliationPage() {
   const queryClient = getQueryClient()
   await queryClient.prefetchQuery({
-    queryKey: ['reconcilations'],
+    queryKey: ['reconciliations'],
     queryFn: get_reconcilations,
   })
 
