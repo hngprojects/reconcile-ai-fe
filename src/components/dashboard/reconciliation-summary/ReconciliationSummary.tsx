@@ -18,7 +18,7 @@ const ReconciliationSummary = () => {
 
   if (isLoading && !data) {
     return (
-      <div className="flex min-h-[80dvh] w-screen items-center justify-center overflow-hidden bg-white transition-colors dark:bg-transparent">
+      <div className="flex min-h-[80dvh] w-full items-center justify-center overflow-hidden bg-white transition-colors dark:bg-transparent">
         <div className="border-primary h-12 w-12 animate-spin rounded-full border-t-2 border-b-2"></div>
       </div>
     )
@@ -53,7 +53,7 @@ const ReconciliationSummary = () => {
         </div>
         <div className="flex items-end justify-between">
           <div className="flex flex-col justify-start gap-1.5">
-            <h3 className="text-2xl font-semibold text-black">
+            <h3 className="text-xl font-semibold text-black md:text-2xl">
               Reconciliation Summary
             </h3>
             <div className="flex w-fit items-center justify-center gap-1 font-light text-black">
@@ -68,7 +68,7 @@ const ReconciliationSummary = () => {
                 )}
               </span>
             </div>
-            <div className="flex items-center gap-2 font-light">
+            <div className="flex flex-col gap-2 font-light sm:flex-row sm:items-center">
               <div className="flex items-center gap-2">
                 Status:
                 <span
