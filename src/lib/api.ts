@@ -669,3 +669,30 @@ export async function fetchBankAccounts() {
     throw error
   }
 }
+
+// Ledger Entries API
+export async function fetchLedgerEntries() {
+  try {
+    const session = await getSession();
+    if (!session?.user?.access_token) {
+      throw new Error('Authentication required');
+    }
+
+    const response = await fetch(LEDGER_ENTRY_API_URL, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.user.access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to fetch ledger entries');
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching ledger entries:', error);
+    throw error;
+  }
+}
