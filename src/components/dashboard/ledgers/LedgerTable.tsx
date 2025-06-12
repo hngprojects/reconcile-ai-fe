@@ -71,8 +71,6 @@ export function EnhancedLedgerTable({
   vendorsData: VendorLedgerItem[]
   customersData: CustomerLedgerItem[]
 }) {
-  console.log(generalData);
-
   // const { status, data: session } = useSession()
   const { status } = useSession()
 
