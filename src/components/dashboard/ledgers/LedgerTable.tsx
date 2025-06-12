@@ -119,7 +119,7 @@ export function EnhancedLedgerTable({
       ),
     },
     {
-      accessorKey: 'description',
+      accessorKey: 'transaction_type',
       header: 'Description',
       cell: ({ getValue }) => (
         <div className="px-6 py-5">{getValue() as string}</div>
@@ -135,7 +135,7 @@ export function EnhancedLedgerTable({
       ),
     },
     {
-      accessorKey: 'paid',
+      accessorKey: 'amount_paid',
       header: 'Paid',
       cell: ({ getValue }) => (
         <div className="px-6 py-5 text-[#D92D20]">
@@ -144,7 +144,7 @@ export function EnhancedLedgerTable({
       ),
     },
     {
-      accessorKey: 'reconciled',
+      accessorKey: 'reconciliation_id',
       header: 'Reconciled',
       cell: ({ getValue }) => {
         const reconciled = getValue() as boolean
@@ -170,7 +170,7 @@ export function EnhancedLedgerTable({
       },
     },
     {
-      accessorKey: 'bankReference',
+      accessorKey: 'id',
       header: 'Bank Reference',
       cell: ({ getValue }) => (
         <div className="px-6 py-5">{getValue() as string}</div>
