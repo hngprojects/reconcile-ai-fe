@@ -17,6 +17,7 @@ import {
   delete_reconcilation,
 } from '@/actions/reconcilation-server'
 import { useReconciliationStore } from '@/store/reconciliation-store'
+import { toast } from 'sonner'
 
 interface ProjectCardProps {
   project: ProjectData
@@ -157,14 +158,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                       // Call delete API
                       const res = await delete_reconcilation(project.id)
                       if (res.status === 'success') {
-                        alert('Reconciliation deleted successfully')
+                        toast.success('Reconciliation deleted successfully')
                         // Optionally refresh or navigate away
                         router.refresh?.()
                       } else {
-                        alert(`Failed to delete: ${res.message}`)
+                        toast.error(`Failed to delete: ${res.message}`)
                       }
                     } catch {
-                      alert(
+                      toast.error(
                         'An error occurred while deleting the reconciliation'
                       )
                     }

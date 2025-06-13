@@ -9,7 +9,7 @@ import LedgerTable from './LedgerTable'
 import { AddLedgerEntryModal } from './modals/AddLedgerEntryModal'
 import UploadLedgerCSVDialog from './modals/UploadLedgerCSVDialog'
 import { DateRange } from 'react-day-picker'
-import { fetchLedgerEntries } from '@/lib/api' // ✅ your real API function
+import { fetchLedgerEntries } from '@/lib/api'
 import SiteLoader from '@/components/site-loader'
 
 interface LedgerEntry {
@@ -91,9 +91,11 @@ export function Ledger() {
     })
   }
 
+  console.log(ledgerEntries);
+
   const filteredData = filterData(ledgerEntries)
 
-  if (loading) return <SiteLoader/>
+  if (loading) return <SiteLoader />
   if (error) return <div className="p-4 text-red-500">Error: {error}</div>
 
   return (
