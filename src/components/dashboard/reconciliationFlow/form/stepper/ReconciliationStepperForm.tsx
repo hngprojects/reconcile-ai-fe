@@ -24,6 +24,7 @@ import { toast } from 'sonner'
 import {
   addLedgers,
   addStatements,
+  completeReconciliation,
   createRecon,
   reconcileFiles,
   saveDraft,
@@ -185,6 +186,14 @@ const StepperFormContent = () => {
           router.push('/dashboard/reconcile?step=5')
         } else {
           router.push('/dashboard/reconcile?step=6')
+        }
+      } else if (stepId === 'step-6') {
+        try {
+          await completeReconciliation(formState.reconciliation_id as string);
+          router.push('/dashboard/reconciliation')
+        } catch (e) {
+          console.error(e);
+          throw new Error('Failed to complete reconciliation')
         }
       }
     } catch (err) {

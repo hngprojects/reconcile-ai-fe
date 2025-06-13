@@ -157,9 +157,8 @@ export default function ReconDashboard() {
         </div>
 
         {projects &&
-        projects.length > 0 &&
-        (projects[0]['status'] != ('failed' as string) ||
-          projects[0]['status'] != ('completed' as string)) ? (
+          projects.length > 0 &&
+          (projects[0]['status'] != 'completed') ? (
           <button
             type="button"
             onClick={() => handleContinueReconciliation(projects[0])}
@@ -167,15 +166,26 @@ export default function ReconDashboard() {
           >
             Continue Reconciliation
           </button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleOpenCreateModal}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
-          >
-            <Plus className="size-5" /> Create New Reconciliation
-          </button>
-        )}
+        ) :
+          projects.length > 0 &&
+            (projects[0]['status'] != 'failed') ? (
+            <button
+              type="button"
+              onClick={() => handleContinueReconciliation(projects[0])}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+            >
+              Continue Reconciliation
+            </button>
+          ) :
+            (
+              <button
+                type="button"
+                onClick={handleOpenCreateModal}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+              >
+                <Plus className="size-5" /> Create New Reconciliation
+              </button>
+            )}
       </div>
 
       <SummaryCards summary={summary as GeneralSummary} />

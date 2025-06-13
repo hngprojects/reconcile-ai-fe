@@ -26,7 +26,7 @@ export function Dashboard() {
           href="/dashboard/reconciliation"
         >
           <Plus className="mr-2 size-4" />
-          Start Reconciliation
+          View Reconciliations
         </Link>
       </div>
 
