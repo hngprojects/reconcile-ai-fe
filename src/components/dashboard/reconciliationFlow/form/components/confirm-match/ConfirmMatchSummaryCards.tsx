@@ -29,13 +29,13 @@ export default function ConfirmMatchSummaryCards() {
       {
         title: 'Auto-Matched',
         value: formState.summary?.ai_matched as number,
-        description: `${((formState.summary?.ai_matched as number) / (formState.summary?.total as number)) * 100}% of total`,
+        description: `${Math.ceil(((formState.summary?.ai_matched as number) / (formState.summary?.total as number)) * 100)}% of total`,
         icon: <CheckCircleIcon className="size-7" />
       },
       {
         title: 'Needs Review',
         value: formState.summary?.totalUnmatched as number,
-        description: `${((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number)) * 100}% of total`,
+        description: `${Math.ceil(((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number)) * 100)}% of total`,
         icon: <AlertCircleIcon className="size-7" />
       }
     ];
