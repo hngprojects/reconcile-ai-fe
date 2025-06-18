@@ -71,6 +71,7 @@ const Footer = () => {
             >
               <Link
                 href="https://www.instagram.com/reconxihq"
+                target="_blank"
                 className="hover:text-primary flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2a5743] bg-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white"
                 aria-label="Instagram"
               >
@@ -78,13 +79,15 @@ const Footer = () => {
               </Link>
               <Link
                 href="https://www.fb.com/reconxihq"
+                target="_blank"
                 className="hover:text-primary flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2a5743] bg-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white"
                 aria-label="Facebook"
               >
                 <FacebookIcon className="h-5 w-5 text-inherit" />
               </Link>
               <Link
-                href="https://www.linkedin.com/in/the-reconxi"
+                href="https://www.linkedin.com/company/reconxihq"
+                target="_blank"
                 className="hover:text-primary flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2a5743] bg-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white"
                 aria-label="Linkedin"
               >
@@ -92,6 +95,7 @@ const Footer = () => {
               </Link>
               <Link
                 href="https://x.com/thereconxi"
+                target="_blank"
                 className="hover:text-primary flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2a5743] bg-[#2a5743] transition-all duration-500 hover:rotate-[360deg] hover:bg-white"
                 aria-label="Twitter"
               >
