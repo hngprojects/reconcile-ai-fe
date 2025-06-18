@@ -29,7 +29,13 @@ const demoFormSchema = z.object({
       /^[A-Za-z\s]+$/,
       'Full name should only contain alphabets and spaces'
     ),
-  businessName: z.string().min(1, 'Business name is required'),
+  businessName: z
+    .string()
+    .min(1, 'Business name is required')
+    .regex(
+      /^[A-Za-z\s']+$/,
+      'Business name should only contain alphabets and spaces'
+    ),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   phoneNumber: z
     .string()
@@ -70,13 +76,15 @@ export default function DemoForm({
         toast.success(
           "Demo request submitted successfully! We'll be in touch soon."
         )
+
+        form.clearErrors()
+
         form.reset({
           fullName: '',
           businessName: '',
           email: '',
           phoneNumber: '+44',
         })
-        form.clearErrors()
       } else {
         throw new Error(result.error)
       }
@@ -200,10 +208,10 @@ export default function DemoForm({
                 </Label>
                 <FormControl>
                   <PhoneNumberInput
+                    key={`${form.formState.submitCount}-${field.value}`}
                     field={field}
                     error={fieldState?.error}
                     name={field.name}
-                    key={form.formState.submitCount}
                   />
                 </FormControl>
                 {fieldState?.error && (
