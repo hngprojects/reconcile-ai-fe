@@ -33,8 +33,8 @@ const demoFormSchema = z.object({
     .string()
     .min(1, 'Business name is required')
     .regex(
-      /^[A-Za-z\s']+$/,
-      'Business name should only contain alphabets and spaces'
+      /^(?=(?:[^A-Za-z]*[A-Za-z]){6})[A-Za-z\s']+$/,
+      'Business name must contain at least 6 letters'
     ),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
   phoneNumber: z
