@@ -1,7 +1,7 @@
 'use client'
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +9,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useSession, signOut } from "next-auth/react"
-import { User, Settings, LogOut } from "lucide-react"
-import Link from "next/link"
+} from '@/components/ui/dropdown-menu'
+import { useSession, signOut } from 'next-auth/react'
+import { User, Settings, LogOut } from 'lucide-react'
+import Link from 'next/link'
 
 export function UserNav() {
   const { data: session } = useSession()
@@ -34,7 +34,7 @@ export function UserNav() {
         <DropdownMenuLabel>
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium">{user.name}</p>
-            <p className="text-xs text-muted-foreground">{user.email}</p>
+            <p className="text-muted-foreground text-xs">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -44,7 +44,7 @@ export function UserNav() {
             Profile
           </DropdownMenuItem>
         </Link>
-        <Link href="/settings">
+        <Link href="/dashboard/settings">
           <DropdownMenuItem>
             <Settings className="mr-2 h-4 w-4" />
             Settings
