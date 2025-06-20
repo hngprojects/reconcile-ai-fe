@@ -8,7 +8,7 @@ export interface AccountItem {
 }
 
 export interface AccountCategory {
-  id: number
+  id: string
   title: string
   short_description: string
   full_description: string
@@ -51,4 +51,22 @@ export interface AccountsCategoryResponse {
   is_required: boolean
   is_active: boolean
   data: AccountItem[]
+}
+
+export type Account = {
+  id: string
+  account_number: string
+  account_name: string
+  balance: number
+  description: string
+  amount: number
+  category: {
+    id: string
+    title: string
+    description: string
+    created_at: string
+    updated_at: string
+    is_required: boolean
+    is_active: boolean
+  }
 }

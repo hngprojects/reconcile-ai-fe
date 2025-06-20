@@ -42,7 +42,11 @@ import { useChartOfAccountsCategories } from '@/app/queries'
 
 type AccountFormValues = z.infer<typeof addChartOfAccountFormSchema>
 
-export function AddAccountModal() {
+export function AddAccountModal({
+  onAccountAdded,
+}: {
+  onAccountAdded: () => void
+}) {
   const { data } = useChartOfAccountsCategories()
   const [isCreatingAccount, startCreatingAccount] = useTransition()
   const [open, setOpen] = useState(false)
@@ -84,6 +88,8 @@ export function AddAccountModal() {
 
           setOpen(false)
           form.reset()
+
+          if (onAccountAdded) onAccountAdded()
         } else {
           toast.error(res.message)
         }
