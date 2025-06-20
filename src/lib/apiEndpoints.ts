@@ -69,3 +69,6 @@ export const LEDGER_ENTRIES_API_URL = `${BASE_URL}/ledger-entries`
 
 // BANK ACCOUNTS
 export const BANK_ACCOUNTS_API_URL = `${BASE_URL}/bank-accounts`
+
+// CHART OF ACCOUNTS
+export const CHART_OF_ACCOUNTS_API_URL = `${BASE_URL}/chart-accounts`

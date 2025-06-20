@@ -50,6 +50,7 @@
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.56.4",
+    "react-international-phone": "^4.5.0",
     "react-simple-typewriter": "^5.0.1",
     "react-use": "^17.6.0",
     "reconcile-fe": "file:",
