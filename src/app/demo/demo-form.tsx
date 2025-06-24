@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { handleMarketingDemo } from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -46,17 +47,21 @@ const demoFormSchema = z.object({
     ),
 })
 
+const defaultValues = {
+  fullName: '',
+  businessName: '',
+  email: '',
+  phoneNumber: '+44',
+}
+
 export default function DemoForm({
   buttonText = 'Get Your Free Demo Now',
 }: DemoFormProps) {
+  const [resetKey, setResetKey] = useState(0)
+
   const form = useForm<z.infer<typeof demoFormSchema>>({
     resolver: zodResolver(demoFormSchema),
-    defaultValues: {
-      fullName: '',
-      businessName: '',
-      email: '',
-      phoneNumber: '+44',
-    },
+    defaultValues,
   })
 
   const onSubmit = async (data: z.infer<typeof demoFormSchema>) => {
@@ -77,14 +82,18 @@ export default function DemoForm({
           "Demo request submitted successfully! We'll be in touch soon."
         )
 
-        form.clearErrors()
-
-        form.reset({
-          fullName: '',
-          businessName: '',
-          email: '',
-          phoneNumber: '+44',
+        // Complete form reset
+        form.reset(defaultValues, {
+          keepErrors: false,
+          keepDirty: false,
+          keepIsSubmitted: false,
+          keepTouched: false,
+          keepIsValid: false,
+          keepSubmitCount: false,
         })
+
+        // Force re-render of PhoneNumberInput
+        setResetKey((prev) => prev + 1)
       } else {
         throw new Error(result.error)
       }
@@ -208,7 +217,7 @@ export default function DemoForm({
                 </Label>
                 <FormControl>
                   <PhoneNumberInput
-                    key={`${form.formState.submitCount}-${field.value}`}
+                    key={`phone-${resetKey}`}
                     field={field}
                     error={fieldState?.error}
                     name={field.name}
