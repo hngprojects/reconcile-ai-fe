@@ -1,9 +1,12 @@
+"use client"
+import { useRouter } from 'next/navigation'
 import { CheckCircleIcon, FileChartIcon } from '@/components/Icon/Icons'
 import CompleteSummaryCards from './CompleteSummaryCards'
 import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
 
 const Complete = () => {
+  const router = useRouter()
   return (
     <div className="flex flex-col items-center justify-center gap-6">
       <div>
@@ -25,6 +28,7 @@ const Complete = () => {
             variant="outline"
             type="button"
             className="h-12 cursor-pointer"
+            onClick={() => router.push('/dashboard/ledger')}
           >
             <FileChartIcon className="size-5 text-black/60 dark:text-white" />
             <span>View in Ledger</span>
