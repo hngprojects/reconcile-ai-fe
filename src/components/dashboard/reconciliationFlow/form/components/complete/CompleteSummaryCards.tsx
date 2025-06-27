@@ -22,20 +22,20 @@ export default function CompleteSummaryCards() {
       },
       {
         title: 'Auto-Matched',
-        value: formState.summary?.ai_matched as number,
-        description: `${Math.ceil(((formState.summary?.ai_matched as number) / (formState.summary?.total as number)) * 100)}% of total`,
+        value: formState.summary?.totalMatched as number,
+        description: `${(((formState.summary?.totalMatched as number) / (formState.summary?.total as number)) * 100).toFixed(2)}% of total`,
         icon: <CheckCircleIcon className="size-7" />
       },
       {
         title: 'Needs Review',
         value: formState.summary?.totalUnmatched as number,
-        description: `${Math.ceil(((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number)) * 100)}% of total`,
+        description: `${(((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number)) * 100).toFixed(2)}% of total`,
         icon: <AlertCircleIcon className="size-7" />
       }
     ];
 
     setCards(cardsData);
-  }, [formState.summary?.ai_matched, formState.summary?.totalUnmatched, formState.summary?.total]);
+  }, [formState.summary?.totalMatched, formState.summary?.totalUnmatched, formState.summary?.total]);
 
   return (
     <div className="flex w-full items-stretch gap-4">
