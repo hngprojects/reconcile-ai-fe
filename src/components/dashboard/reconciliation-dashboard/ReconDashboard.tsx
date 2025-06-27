@@ -1,17 +1,17 @@
 'use client'
 
-import SummaryCards from './SummaryCards'
-import { Plus, FileSpreadsheet } from 'lucide-react'
+import { get_reconcilation_results_by_id } from '@/actions/reconcilation-server'
+import { getReconciliationsProjects } from '@/lib/api'
+import { useReconciliationStore } from '@/store/reconciliation-store'
+import { GeneralSummary, ProjectData } from '@/types/recondashboard'
+import { FileSpreadsheet, Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { z } from 'zod'
 import CreateModal, { CreateProjectSchema } from './CreateModal'
 import Header from './Header'
 import ProjectTabs from './ProjectTabs'
-import { GeneralSummary, ProjectData } from '@/types/recondashboard'
-import { useReconciliationStore } from '@/store/reconciliation-store'
-import { useRouter } from 'next/navigation'
-import { z } from 'zod'
-import { getReconciliationsProjects } from '@/lib/api'
-import { get_reconcilation_results_by_id } from '@/actions/reconcilation-server'
+import SummaryCards from './SummaryCards'
 
 export default function ReconDashboard() {
   const [projects, setProjects] = useState<ProjectData[]>([])
@@ -20,7 +20,7 @@ export default function ReconDashboard() {
     completed: 0,
     pending: 0,
     totalTransactions: 0,
-  } as GeneralSummary);
+  } as GeneralSummary)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -32,12 +32,17 @@ export default function ReconDashboard() {
       try {
         const result = await getReconciliationsProjects()
         console.log('API result:', result.data)
-        if (typeof result === 'object' && result?.status === 'success' && result?.data) {
+        console.log('API result:', result)
+        if (
+          typeof result === 'object' &&
+          result?.status === 'success' &&
+          result?.data
+        ) {
           const transformed = transformData(result.data.reconciliations)
           setProjects(transformed)
           setSummary({
             ...result.data.summary,
-            totalTransactions: result.data.summary.total_transactions
+            totalTransactions: result.data.summary.total_transactions,
           })
         } else {
           setError(result.message || 'Failed to load reconciliations')
@@ -65,7 +70,7 @@ export default function ReconDashboard() {
   }
 
   const handleCreate = (data: z.infer<typeof CreateProjectSchema>) => {
-    clearStore();
+    clearStore()
     updateFormState({ title: data.title })
     return router.push('/dashboard/reconcile')
   }
@@ -76,31 +81,39 @@ export default function ReconDashboard() {
 
     // First filter out invalid projects, then map the valid ones to ProjectData
     return rawProjects
-      .filter((project): project is Record<string, unknown> =>
-        typeof project === 'object' &&
-        project !== null &&
-        'id' in project &&
-        'title' in project &&
-        'status' in project
+      .filter(
+        (project): project is Record<string, unknown> =>
+          typeof project === 'object' &&
+          project !== null &&
+          'id' in project &&
+          'title' in project &&
+          'status' in project
       )
       .map((project) => ({
         id: String(project.id),
         title: String(project.title),
-        status: String(project.status) as 'completed' | 'in-progress' | 'draft' | 'pending' | 'failed',
-        progress: Math.ceil(((project.step == 7 ? 4 : +(project.step as string)) / 6) * 100),
+        status: String(project.status) as
+          | 'completed'
+          | 'in-progress'
+          | 'draft'
+          | 'pending'
+          | 'failed',
+        progress: Math.ceil(
+          ((project.step == 7 ? 4 : +(project.step as string)) / 6) * 100
+        ),
         steps: project.step == 7 ? 4 : +(project.step as string),
         totalSteps: 6,
         unreconciled: +(project.unmatched as string),
         reconciled: +(project.matches as string),
         lastUpdated: new Date(project.updated_at as string),
-      }));
+      }))
   }
 
   const handleContinueReconciliation = async (project: ProjectData) => {
     // Update the form state with the project data
-    let results = null;
+    let results = null
     if (project.steps > 3) {
-      results = await get_reconcilation_results_by_id(project.id);
+      results = await get_reconcilation_results_by_id(project.id)
     }
     updateFormState({
       reconciliation_id: project.id,
@@ -110,25 +123,25 @@ export default function ReconDashboard() {
       results: {
         matches: results?.data?.matches,
         unmatched_ledgers: results?.data?.unmatched_ledgers,
-        unmatched_statements: results?.data?.unmatched_statements
+        unmatched_statements: results?.data?.unmatched_statements,
       },
-      summary: results?.data?.summary
-    });
+      summary: results?.data?.summary,
+    })
 
     // Map project steps to navigation steps
-    let targetStep = project.steps;
+    let targetStep = project.steps
 
     if (project.steps == 1) {
-      targetStep = 2;
+      targetStep = 2
     } else if (project.steps == 2 || project.steps == 3) {
-      targetStep = 3;
+      targetStep = 3
     } else if (project.steps == 4 || project.steps == 7) {
-      targetStep = 4;
+      targetStep = 4
     } else if (project.steps == 5) {
-      targetStep = 5;
+      targetStep = 5
     }
 
-    router.push(`/dashboard/reconcile?step=${targetStep}`);
+    router.push(`/dashboard/reconcile?step=${targetStep}`)
   }
 
   return (
@@ -143,26 +156,39 @@ export default function ReconDashboard() {
           </p>
         </div>
 
-        {projects && projects.length > 0 && (projects[0]['status'] != 'failed' as string || projects[0]['status'] != 'completed' as string) ?
+        {projects &&
+          projects.length > 0 &&
+          (projects[0]['status'] != 'completed') ? (
           <button
+            type="button"
             onClick={() => handleContinueReconciliation(projects[0])}
             className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
           >
             Continue Reconciliation
           </button>
-          :
-          <button
-            onClick={handleOpenCreateModal}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
-          >
-            <Plus className="size-5" /> Create New Reconciliation
-          </button>
-        }
+        ) :
+          projects.length > 0 &&
+            (projects[0]['status'] != 'failed') ? (
+            <button
+              type="button"
+              onClick={() => handleContinueReconciliation(projects[0])}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+            >
+              Continue Reconciliation
+            </button>
+          ) :
+            (
+              <button
+                type="button"
+                onClick={handleOpenCreateModal}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-12 cursor-pointer items-center justify-center gap-2 rounded-md px-3 text-sm font-medium whitespace-nowrap"
+              >
+                <Plus className="size-5" /> Create New Reconciliation
+              </button>
+            )}
       </div>
 
-      <SummaryCards
-        summary={summary as GeneralSummary}
-      />
+      <SummaryCards summary={summary as GeneralSummary} />
 
       <Header />
 
@@ -176,17 +202,17 @@ export default function ReconDashboard() {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : projects.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed border-border bg-background/40 p-12">
-          <FileSpreadsheet className="size-16 text-muted-foreground" />
+        <div className="border-border bg-background/40 flex flex-col items-center justify-center gap-4 rounded-lg border border-dashed p-12">
+          <FileSpreadsheet className="text-muted-foreground size-16" />
           <div className="flex flex-col items-center gap-2">
-            <h2 className="text-xl font-semibold">
-              No reconciliations found
-            </h2>
-            <p className="text-muted-foreground text-center text-sm max-w-[400px]">
-              Start a new reconciliation project below to begin managing your financial data.
+            <h2 className="text-xl font-semibold">No reconciliations found</h2>
+            <p className="text-muted-foreground max-w-[400px] text-center text-sm">
+              Start a new reconciliation project below to begin managing your
+              financial data.
             </p>
           </div>
           <button
+            type="button"
             onClick={handleOpenCreateModal}
             className="bg-primary hover:bg-primary/90 text-primary-foreground flex h-10 cursor-pointer items-center justify-center gap-2 rounded-md px-4 text-sm font-medium"
           >

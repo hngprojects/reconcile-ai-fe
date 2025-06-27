@@ -15,6 +15,7 @@ import {
   BOOKKEEPING_LEDGER_API_URL,
   BANK_ACCOUNTS_API_URL,
   GET_RECONCILIATION_PROJECTS,
+  CHART_OF_ACCOUNTS_API_URL
 } from './apiEndpoints'
 import { ManualRequestBody } from '@/types/reconciliation'
 import { getSession } from 'next-auth/react'
@@ -669,3 +670,64 @@ export async function fetchBankAccounts() {
     throw error
   }
 }
+
+// Ledger Entries API
+export async function fetchLedgerEntries() {
+  try {
+    const session = await getSession();
+    if (!session?.user?.access_token) {
+      throw new Error('Authentication required');
+    }
+
+    const response = await fetch(LEDGER_ENTRY_API_URL, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.user.access_token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Failed to fetch ledger entries');
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error('Error fetching ledger entries:', error);
+    throw error;
+  }
+}
+
+// Chart of Accounts API
+export const fetchChartAccounts = async () => {
+  try {
+    const session = await getSession();
+    if (!session?.user?.access_token) {
+      throw new Error('Authentication required');
+    }
+
+    const response = await fetch(`${CHART_OF_ACCOUNTS_API_URL}`, {
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${session.user.access_token}`,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch chart accounts');
+    }
+
+    return {
+      success: true,
+      data: data.data, // Flat list of chart accounts
+    };
+  } catch (error) {
+    console.error('Error fetching chart accounts:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'An error occurred',
+    };
+  }
+};

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Download, Plus, Upload } from 'lucide-react'
 import { parse } from 'date-fns'
 import { Button } from '@/components/ui/button'
@@ -9,19 +9,18 @@ import LedgerTable from './LedgerTable'
 import { AddLedgerEntryModal } from './modals/AddLedgerEntryModal'
 import UploadLedgerCSVDialog from './modals/UploadLedgerCSVDialog'
 import { DateRange } from 'react-day-picker'
-import {
-  generalData as mockGeneralData,
-  vendorsData as mockVendorsData,
-  customersData as mockCustomersData,
-} from '@/mocks/mockdata' // Adjust import path as needed
+import { fetchLedgerEntries } from '@/lib/api'
+import SiteLoader from '@/components/site-loader'
 
 interface LedgerEntry {
   date: string
   description: string
   amount: number
+  paid: number
   reconciled: boolean
   bankReference: string
 }
+
 export function Ledger() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
@@ -32,12 +31,38 @@ export function Ledger() {
   })
   const [selectedStatus, setSelectedStatus] = useState('all')
 
+  const [ledgerEntries, setLedgerEntries] = useState<LedgerEntry[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const loadLedgerEntries = async () => {
+      try {
+        const res = await fetchLedgerEntries()
+        if (res.status_code === 200) {
+          setLedgerEntries(res.data)
+        } else {
+          setError(res.message || 'Failed to load data')
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('An error occurred')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadLedgerEntries()
+  }, [])
+
   const parseDate = (dateStr: string) => {
     try {
       return parse(dateStr, 'MMM d, yyyy', new Date())
     } catch {
-      console.error('Error parsing date:', dateStr)
-      return new Date(0) // Return epoch date as fallback
+      return new Date(0)
     }
   }
 
@@ -66,9 +91,12 @@ export function Ledger() {
     })
   }
 
-  const filteredGeneralData = filterData(mockGeneralData)
-  const filteredVendorsData = filterData(mockVendorsData)
-  const filteredCustomersData = filterData(mockCustomersData)
+  console.log(ledgerEntries);
+
+  const filteredData = filterData(ledgerEntries)
+
+  if (loading) return <SiteLoader />
+  if (error) return <div className="p-4 text-red-500">Error: {error}</div>
 
   return (
     <div className="flex flex-col gap-6">
@@ -85,7 +113,7 @@ export function Ledger() {
           <div className="flex justify-end gap-4">
             <Button
               variant="outline"
-              className="border-primary dark:border-primary/40 text-primary dark:text-primary flex flex-1 cursor-pointer gap-2 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium shadow-none"
+              className="border-primary text-primary flex gap-2 rounded-lg px-4 py-2 text-sm font-medium"
               onClick={() => setIsAddModalOpen(true)}
             >
               <Plus className="h-4 w-4" />
@@ -93,14 +121,14 @@ export function Ledger() {
             </Button>
             <Button
               variant="outline"
-              className="border-primary dark:border-primary/40 text-primary dark:text-primary flex flex-1 cursor-pointer gap-2 rounded-lg border bg-transparent px-4 py-2 text-sm font-medium shadow-none"
+              className="border-primary text-primary flex gap-2 rounded-lg px-4 py-2 text-sm font-medium"
               onClick={() => setIsUploadModalOpen(true)}
             >
               <Upload className="h-4 w-4" />
               Upload CSV
             </Button>
-            <Button className="bg-primary hover:bg-primary/90 flex-1 cursor-pointer text-white transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-green-800 dark:hover:bg-green-700">
-              <Download className="mr-2 h-4 w-4" />
+            <Button className="bg-primary text-white flex gap-2 rounded-lg px-4 py-2 text-sm">
+              <Download className="h-4 w-4" />
               Export
             </Button>
           </div>
@@ -113,9 +141,9 @@ export function Ledger() {
       </div>
       <div>
         <LedgerTable
-          generalData={filteredGeneralData}
-          vendorsData={filteredVendorsData}
-          customersData={filteredCustomersData}
+          generalData={filteredData}
+          vendorsData={[]} // optionally categorize if needed
+          customersData={[]} // optionally categorize if needed
         />
       </div>
       <AddLedgerEntryModal

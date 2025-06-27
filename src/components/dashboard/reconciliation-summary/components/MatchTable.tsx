@@ -1,6 +1,25 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import { DotIcon } from '@/components/Icon/Icons'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { formatDate } from '@/lib/formatters'
+import { cn } from '@/lib/utils'
+import { Matched } from '@/types/backendResponseTypes'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,197 +31,34 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { EllipsisVertical } from 'lucide-react'
-import { DotIcon } from '@/components/Icon/Icons'
-import { cn } from '@/lib/utils'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
+import { useMemo, useState } from 'react'
 
-export type Transaction = {
-  id: string
-  date: string
-  name: string
-  accountNumber: string
-  bal: string
-  type: string
-  description: string
-  amount: number
-  match: {
-    type: string
-    name: string
-    amount: number
-    percentage: number
-  }
-}
-
-const transactions: Transaction[] = [
-  {
-    id: '1',
-    date: 'Jan 25. 2025',
-    name: 'First Bank',
-    accountNumber: '123456789',
-    bal: '1,565,777.00',
-    type: 'savings',
-    description: 'PAYROLL TRANSFER',
-    amount: 100000,
-    match: {
-      type: 'Office Rent Payment',
-      name: 'Vendor name',
-      amount: -250000,
-      percentage: 95,
-    },
-  },
-  {
-    id: '2',
-    date: 'Feb 25. 2025',
-    name: 'Access Bank',
-    accountNumber: '987654321',
-    bal: '1,565.00',
-    type: 'current',
-    description: 'UTILITY BILL PAYMENT',
-    amount: -75000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 90,
-    },
-  },
-  {
-    id: '3',
-    date: 'Mar 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'TRF TO ENOCH',
-    amount: -100000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 85,
-    },
-  },
-  {
-    id: '4',
-    date: 'Apr 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'TRF TO NAZA',
-    amount: 75000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 85,
-    },
-  },
-  {
-    id: '5',
-    date: 'May 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'UTILITY BILL PAYMENT',
-    amount: 100000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 85,
-    },
-  },
-  {
-    id: '6',
-    date: 'Jun 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'UTILITY BILL PAYMENT',
-    amount: 75000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 85,
-    },
-  },
-  {
-    id: '7',
-    date: 'Jul 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'PAYROLL TRANSFER',
-    amount: -100000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 85,
-    },
-  },
-  {
-    id: '8',
-    date: 'Aug 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'UTILITY BILL PAYMENT',
-    amount: 75000,
-    match: {
-      type: 'Sales Revenue- Store',
-      name: 'Customer name',
-      amount: 345000,
-      percentage: 85,
-    },
-  },
-]
-
-const MatchTable = () => {
+const MatchTable = ({
+  matchedTransactions,
+}: {
+  matchedTransactions?: Matched[]
+}) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
 
-  const columns = useMemo<ColumnDef<Transaction>[]>(
+  const columns = useMemo<ColumnDef<Matched>[]>(
     () => [
       {
         accessorKey: 'date',
         header: 'Date',
-        cell: ({ row }) => (
-          <div className="text-center text-sm text-[#333]">
-            {row.getValue('date')}
-          </div>
-        ),
+        cell: ({ row }) => {
+          const date = formatDate(row.original.statement.Date)
+
+          return <div className="text-center text-sm text-[#333]">{date}</div>
+        },
       },
       {
         accessorKey: 'description',
         header: 'Bank Description',
         cell: ({ row }) => {
-          const description = row.getValue(
-            'description'
-          ) as Transaction['description']
+          const description = row.original.statement.Description
+
           return (
             <div className="text-center text-sm text-[#333]">{description}</div>
           )
@@ -212,7 +68,7 @@ const MatchTable = () => {
         accessorKey: 'amount',
         header: 'Amount',
         cell: ({ row }) => {
-          const amount = row.getValue('amount') as number
+          const amount = Number(row.original.statement.Amount)
           const formatted = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
@@ -232,13 +88,15 @@ const MatchTable = () => {
         accessorKey: 'match',
         header: 'Matched With',
         cell: ({ row }) => {
-          const match = row.getValue('match') as Transaction['match']
-          const amount = match.amount as number
+          const match = row.original.ledger
+
+          const amount = Number(match.Amount)
           const formatted = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
           }).format(amount)
+
           return (
             <div className="flex items-center justify-start gap-2">
               <div className="flex flex-col gap-1">
@@ -246,7 +104,7 @@ const MatchTable = () => {
                   {match.type}
                 </div>
                 <div className="flex items-center justify-center gap-1 text-xs text-[#475467]">
-                  <span>{match.name}</span>
+                  <span>{match.Description}</span>
                   <DotIcon className="size-1.5" />
                   <span
                     className={`${amount < 0 ? 'text-[#E63946]' : 'text-[#4CAF50]'}`}
@@ -259,28 +117,28 @@ const MatchTable = () => {
           )
         },
       },
-      {
-        id: 'actions',
-        header: 'Action',
-        cell: () => (
-          <div className="flex w-full items-center justify-center gap-2">
-            <Button
-              variant="ghost"
-              type="button"
-              size="sm"
-              className="cursor-pointer text-black"
-            >
-              <EllipsisVertical />
-            </Button>
-          </div>
-        ),
-      },
+      // {
+      //   id: 'actions',
+      //   header: 'Action',
+      //   cell: () => (
+      //     <div className="flex w-full items-center justify-center gap-2">
+      //       <Button
+      //         variant="ghost"
+      //         type="button"
+      //         size="sm"
+      //         className="cursor-pointer text-black"
+      //       >
+      //         <EllipsisVertical />
+      //       </Button>
+      //     </div>
+      //   ),
+      // },
     ],
     []
   )
 
   const table = useReactTable({
-    data: transactions,
+    data: matchedTransactions as Matched[],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -299,7 +157,7 @@ const MatchTable = () => {
   return (
     <div className="mt-6">
       <div className="overflow-x-auto">
-        <div className="overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
+        <div className="grid overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
           <Table>
             <TableHeader className="bg-[#f9fafb]">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -360,7 +218,7 @@ const MatchTable = () => {
           </Table>
         </div>
 
-        <div className="flex items-center justify-between py-4">
+        <div className="flex flex-col justify-between gap-y-3 py-4 max-sm:!text-xs sm:flex-row sm:items-center">
           <div className="flex items-center gap-4">
             {/* Rows per page selector */}
             <div className="flex items-center gap-2">

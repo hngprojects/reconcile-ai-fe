@@ -34,7 +34,6 @@ export default function ConfirmMatchSummaryCards() {
       },
       {
         title: 'Needs Review',
-        value: formState.summary?.totalUnmatched as number,
         description: `${(((formState.summary?.totalUnmatched as number) / (formState.summary?.total as number)) * 100).toFixed(2)}% of total`,
         icon: <AlertCircleIcon className="size-7" />
       }

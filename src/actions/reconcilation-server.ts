@@ -26,6 +26,8 @@ export const get_reconcilations = async (): Promise<
         },
       }
     )
+
+    console.log({ res })
     return res
   } catch (error) {
     if (error instanceof HttpError) {
@@ -137,11 +139,10 @@ export const match_unmatch_transactions = async (
   )
 
   try {
-
-    const parsedMatches = matches.map(match => ({
+    const parsedMatches = matches.map((match) => ({
       ...match,
-      score: parseInt(match.score, 10)
-    }));
+      score: parseInt(match.score, 10),
+    }))
 
     const res = await apiHandler<APIResponse<ReconResponseData>>(
       `/reconcile/${id}`,

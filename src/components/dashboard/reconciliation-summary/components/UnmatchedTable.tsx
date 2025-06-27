@@ -1,6 +1,24 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import { Button } from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { formatDate } from '@/lib/formatters'
+import { cn } from '@/lib/utils'
+import { StatementTransaction } from '@/types/backendResponseTypes'
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,144 +30,34 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Button } from '@/components/ui/button'
-import { EllipsisVertical } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { SearchIcon } from '@/components/Icon/Icons'
+import { useMemo, useState } from 'react'
 
-export type Transaction = {
-  id: string
-  date: string
-  name: string
-  accountNumber: string
-  bal: string
-  type: string
-  description: string
-  amount: number
-}
-
-const transactions: Transaction[] = [
-  {
-    id: '1',
-    date: 'Jan 25. 2025',
-    name: 'First Bank',
-    accountNumber: '123456789',
-    bal: '1,565,777.00',
-    type: 'savings',
-    description: 'PAYROLL TRANSFER',
-    amount: 100000,
-  },
-  {
-    id: '2',
-    date: 'Feb 25. 2025',
-    name: 'Access Bank',
-    accountNumber: '987654321',
-    bal: '1,565.00',
-    type: 'current',
-    description: 'UTILITY BILL PAYMENT',
-    amount: -75000,
-  },
-  {
-    id: '3',
-    date: 'Mar 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'TRF TO ENOCH',
-    amount: -100000,
-  },
-  {
-    id: '4',
-    date: 'Apr 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'TRF TO NAZA',
-    amount: 75000,
-  },
-  {
-    id: '5',
-    date: 'May 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'UTILITY BILL PAYMENT',
-    amount: 100000,
-  },
-  {
-    id: '6',
-    date: 'Jun 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'UTILITY BILL PAYMENT',
-    amount: 75000,
-  },
-  {
-    id: '7',
-    date: 'Jul 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'PAYROLL TRANSFER',
-    amount: -100000,
-  },
-  {
-    id: '8',
-    date: 'Aug 25. 2025',
-    name: 'Sterling Bank',
-    accountNumber: '456123789',
-    bal: '777.00',
-    type: 'savings',
-    description: 'UTILITY BILL PAYMENT',
-    amount: 75000,
-  },
-]
-
-const UnmatchedTable = () => {
+const UnmatchedTable = ({
+  unmatchedBankStatements,
+}: {
+  unmatchedBankStatements?: StatementTransaction[]
+}) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [rowSelection, setRowSelection] = useState({})
 
-  const columns = useMemo<ColumnDef<Transaction>[]>(
+  const columns = useMemo<ColumnDef<StatementTransaction>[]>(
     () => [
       {
         accessorKey: 'date',
         header: 'Date',
-        cell: ({ row }) => (
-          <div className="text-center text-sm text-[#333]">
-            {row.getValue('date')}
-          </div>
-        ),
+        cell: ({ row }) => {
+          const date = formatDate(row.original.Date)
+
+          return <div className="text-center text-sm text-[#333]">{date}</div>
+        },
       },
       {
         accessorKey: 'description',
         header: 'Bank Description',
         cell: ({ row }) => {
-          const description = row.getValue(
-            'description'
-          ) as Transaction['description']
+          const description = row.original.Description
+
           return (
             <div className="text-center text-sm text-[#333]">{description}</div>
           )
@@ -159,7 +67,7 @@ const UnmatchedTable = () => {
         accessorKey: 'amount',
         header: 'Amount',
         cell: ({ row }) => {
-          const amount = row.getValue('amount') as number
+          const amount = Number(row.original.Amount)
           const formatted = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
@@ -175,41 +83,41 @@ const UnmatchedTable = () => {
           )
         },
       },
-      {
-        accessorKey: 'match',
-        header: 'Matched With',
-        cell: () => (
-          <div className="relative flex w-full items-center">
-            <SearchIcon className="absolute left-3 size-5" />
-            <Input
-              placeholder="Find possible Match"
-              className="placeholder:text-muted-foreground/80 h-9 w-full flex-1 px-3 pl-9 outline-hidden placeholder:italic focus:outline-hidden disabled:cursor-not-allowed"
-            />
-          </div>
-        ),
-      },
-      {
-        id: 'actions',
-        header: 'Action',
-        cell: () => (
-          <div className="flex w-full items-center justify-center gap-2">
-            <Button
-              variant="ghost"
-              type="button"
-              size="sm"
-              className="cursor-pointer text-black"
-            >
-              <EllipsisVertical />
-            </Button>
-          </div>
-        ),
-      },
+      // {
+      //   accessorKey: 'match',
+      //   header: 'Matched With',
+      //   cell: () => (
+      //     <div className="relative flex w-full items-center">
+      //       <SearchIcon className="absolute left-3 size-5" />
+      //       <Input
+      //         placeholder="Find possible Match"
+      //         className="placeholder:text-muted-foreground/80 h-9 w-full flex-1 px-3 pl-9 outline-hidden placeholder:italic focus:outline-hidden disabled:cursor-not-allowed"
+      //       />
+      //     </div>
+      //   ),
+      // },
+      // {
+      //   id: 'actions',
+      //   header: 'Action',
+      //   cell: () => (
+      //     <div className="flex w-full items-center justify-center gap-2">
+      //       <Button
+      //         variant="ghost"
+      //         type="button"
+      //         size="sm"
+      //         className="cursor-pointer text-black"
+      //       >
+      //         <EllipsisVertical />
+      //       </Button>
+      //     </div>
+      //   ),
+      // },
     ],
     []
   )
 
   const table = useReactTable({
-    data: transactions,
+    data: unmatchedBankStatements as StatementTransaction[],
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -228,7 +136,7 @@ const UnmatchedTable = () => {
   return (
     <div className="mt-6">
       <div className="overflow-x-auto">
-        <div className="overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
+        <div className="grid overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
           <Table>
             <TableHeader className="bg-[#f9fafb]">
               {table.getHeaderGroups().map((headerGroup) => (
@@ -291,7 +199,7 @@ const UnmatchedTable = () => {
           </Table>
         </div>
 
-        <div className="flex items-center justify-between py-4">
+        <div className="flex flex-col justify-between gap-y-3 py-4 max-sm:!text-xs sm:flex-row sm:items-center">
           <div className="flex items-center gap-4">
             {/* Rows per page selector */}
             <div className="flex items-center gap-2">

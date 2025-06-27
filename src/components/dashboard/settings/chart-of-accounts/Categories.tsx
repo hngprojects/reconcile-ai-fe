@@ -2,6 +2,7 @@ import { toggle_a_chart_account_category } from '@/actions/chartOfAccounts'
 import { useChartOfAccountsCategories } from '@/app/queries'
 import { Switch } from '@/components/ui/switch'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
+import React, { useEffect, useState } from 'react'
 
 export function ChartOfAccountsCategories() {
   const {
@@ -11,6 +12,17 @@ export function ChartOfAccountsCategories() {
     refetch,
   } = useChartOfAccountsCategories()
   const { toggleCategory, isDisabled } = useChartOfAccountCategoriesStore()
+  const [checkedCategories, setCheckedCategories] = useState<Record<string, boolean>>({})
+
+  useEffect(() => {
+    const initialChecked: Record<string, boolean> = {}
+    if (categories?.data) {
+      categories.data.forEach((category) => {
+        initialChecked[category.id] = isDisabled(category.title) ? true : false
+      })
+    }
+    setCheckedCategories(initialChecked)
+  }, [categories, isDisabled])
 
   console.log({ isLoading, categories, error })
 
@@ -65,9 +77,13 @@ export function ChartOfAccountsCategories() {
                     </div>
 
                     <Switch
-                      checked={category.is_active}
+                      checked={!!checkedCategories[category.id]}
                       disabled={isDisabled(category.title)}
                       onCheckedChange={async () => {
+                        setCheckedCategories((prev) => ({
+                          ...prev,
+                          [category.id]: !prev[category.id],
+                        }))
                         await toggle_a_chart_account_category(category.id)
                         refetch()
                         toggleCategory(category.id)

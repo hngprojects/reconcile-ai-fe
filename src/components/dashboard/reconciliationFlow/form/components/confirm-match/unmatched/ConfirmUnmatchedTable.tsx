@@ -31,8 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { SearchIcon } from '@/components/Icon/Icons'
 import { useReconciliationStore } from '@/store/reconciliation-store'
 import { TStatement } from '@/types/reconciliation'
 import { AddLedgerEntryModal } from '@/components/dashboard/ledgers/modals/AddLedgerEntryModal'
@@ -142,19 +140,6 @@ const ConfirmUnmatchedTable = () => {
             </div>
           )
         },
-      },
-      {
-        accessorKey: 'match',
-        header: 'Matched With',
-        cell: () => (
-          <div className="relative flex w-full items-center">
-            <SearchIcon className="absolute left-3 size-5 dark:text-white" />
-            <Input
-              placeholder="Find possible Match"
-              className="placeholder:text-muted-foreground/80 h-9 w-full flex-1 px-3 pl-9 outline-hidden placeholder:italic focus:outline-hidden disabled:cursor-not-allowed dark:text-white"
-            />
-          </div>
-        ),
       },
       {
         id: 'actions',

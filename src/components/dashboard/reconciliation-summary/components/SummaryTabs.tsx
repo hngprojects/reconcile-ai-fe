@@ -1,12 +1,18 @@
+import { useReconcilationsById } from '@/app/queries'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useParams } from 'next/navigation'
+// import Attachments from './Attachments'
 import MatchTable from './MatchTable'
 import UnmatchedTable from './UnmatchedTable'
-import Attachments from './Attachments'
 
 const SummaryTabs = () => {
+  const params = useParams()
+  const reconciliationId = params.id as string
+  const { data } = useReconcilationsById(reconciliationId)
+
   return (
     <Tabs defaultValue="matched" className="w-full">
-      <TabsList className="grid h-full grid-cols-3">
+      <TabsList className="grid h-full grid-cols-2">
         <TabsTrigger
           className="cursor-pointer py-2 text-[#262626]"
           value="matched"
@@ -19,12 +25,12 @@ const SummaryTabs = () => {
         >
           Unmatched Transactions
         </TabsTrigger>
-        <TabsTrigger
+        {/* <TabsTrigger
           className="cursor-pointer py-2 text-[#262626]"
           value="attachments"
         >
           Attachments & Notes
-        </TabsTrigger>
+        </TabsTrigger> */}
       </TabsList>
       <TabsContent value="matched">
         <div className="mt-2 text-black">
@@ -34,7 +40,7 @@ const SummaryTabs = () => {
             reconciliation
           </p>
         </div>
-        <MatchTable />
+        <MatchTable matchedTransactions={data?.matches} />
       </TabsContent>
       <TabsContent value="unmatched">
         <div className="mt-2 text-black">
@@ -43,11 +49,11 @@ const SummaryTabs = () => {
             Transactions that could not be matched during reconciliation
           </p>
         </div>
-        <UnmatchedTable />
+        <UnmatchedTable unmatchedBankStatements={data?.unmatched_statements} />
       </TabsContent>
-      <TabsContent value="attachments">
+      {/* <TabsContent value="attachments">
         <Attachments />
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   )
 }

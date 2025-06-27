@@ -1,17 +1,7 @@
 'use client'
 
-import type React from 'react'
-import { useState, useEffect } from 'react'
+import { PhoneNumberInput } from '@/components/PhoneNumberInput'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { handleMarketingDemo } from '@/lib/api'
-import { toast } from 'sonner'
-import { fetchCountryCodes } from '@/lib/constants'
-import Image from 'next/image'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
 import {
   Form,
   FormControl,
@@ -19,19 +9,14 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-
-interface Country {
-  code: string
-  name: string
-  flag: string
-}
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { handleMarketingDemo } from '@/lib/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
 
 interface DemoFormProps {
   buttonText?: string
@@ -45,40 +30,38 @@ const demoFormSchema = z.object({
       /^[A-Za-z\s]+$/,
       'Full name should only contain alphabets and spaces'
     ),
-  businessName: z.string().min(1, 'Business name is required'),
+  businessName: z
+    .string()
+    .min(1, 'Business name is required')
+    .regex(
+      /^(?=(?:[^A-Za-z]*[A-Za-z]){6})[A-Za-z\s']+$/,
+      'Business name must contain at least 6 letters'
+    ),
   email: z.string().min(1, 'Email is required').email('Invalid email address'),
-  country_code: z.string().min(1, 'Country code is required'),
   phoneNumber: z
     .string()
     .min(1, 'Phone number is required')
     .regex(
-      /^[0-9]{10,15}$/,
+      /^\+?\d{10,15}$/,
       'Enter a valid phone number with 10 to 15 digits.'
     ),
 })
 
+const defaultValues = {
+  fullName: '',
+  businessName: '',
+  email: '',
+  phoneNumber: '+44',
+}
+
 export default function DemoForm({
   buttonText = 'Get Your Free Demo Now',
 }: DemoFormProps) {
-  const [countries, setCountries] = useState<Country[]>([])
-
-  useEffect(() => {
-    const loadCountries = async () => {
-      const countryData = await fetchCountryCodes()
-      setCountries(countryData as Country[])
-    }
-    loadCountries()
-  }, [])
+  const [resetKey, setResetKey] = useState(0)
 
   const form = useForm<z.infer<typeof demoFormSchema>>({
     resolver: zodResolver(demoFormSchema),
-    defaultValues: {
-      fullName: '',
-      businessName: '',
-      email: '',
-      country_code: '+234',
-      phoneNumber: '',
-    },
+    defaultValues,
   })
 
   const onSubmit = async (data: z.infer<typeof demoFormSchema>) => {
@@ -87,8 +70,10 @@ export default function DemoForm({
         full_name: data.fullName,
         business_name: data.businessName,
         email: data.email,
-        phone_number: `${data.country_code}${data.phoneNumber}`,
+        phone_number: data.phoneNumber,
       }
+
+      console.log({ formattedData })
 
       const result = await handleMarketingDemo(formattedData)
 
@@ -96,7 +81,19 @@ export default function DemoForm({
         toast.success(
           "Demo request submitted successfully! We'll be in touch soon."
         )
-        form.reset()
+
+        // Complete form reset
+        form.reset(defaultValues, {
+          keepErrors: false,
+          keepDirty: false,
+          keepIsSubmitted: false,
+          keepTouched: false,
+          keepIsValid: false,
+          keepSubmitCount: false,
+        })
+
+        // Force re-render of PhoneNumberInput
+        setResetKey((prev) => prev + 1)
       } else {
         throw new Error(result.error)
       }
@@ -218,58 +215,14 @@ export default function DemoForm({
                 <Label htmlFor="phoneNumber" className="text-sm text-[#717171]">
                   Phone Number
                 </Label>
-                <div className="flex gap-2">
-                  <FormField
-                    control={form.control}
-                    name="country_code"
-                    render={({ field }) => (
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <SelectTrigger
-                          className="border-input h-12 min-h-[48px] w-[120px] cursor-pointer border bg-white"
-                          id="country-code-select"
-                          aria-label="Select country code"
-                        >
-                          <SelectValue placeholder="+234" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <div role="listbox" id="country-code-list">
-                            {countries.map((country: Country) => (
-                              <SelectItem
-                                key={`${country.code}-${country.name}`}
-                                value={country.code}
-                                className="flex h-12 cursor-pointer items-center gap-2 px-3 py-2"
-                              >
-                                <Image
-                                  src={country.flag}
-                                  alt={country.name}
-                                  width={16}
-                                  height={16}
-                                  className="object-contain"
-                                />
-                                <span>{country.code}</span>
-                              </SelectItem>
-                            ))}
-                          </div>
-                        </SelectContent>
-                      </Select>
-                    )}
+                <FormControl>
+                  <PhoneNumberInput
+                    key={`phone-${resetKey}`}
+                    field={field}
+                    error={fieldState?.error}
+                    name={field.name}
                   />
-                  <FormControl>
-                    <Input
-                      id="phoneNumber"
-                      placeholder="Enter phone number"
-                      {...field}
-                      className="h-12 min-h-[48px] flex-1 bg-white !text-base"
-                      aria-invalid={!!fieldState?.error}
-                      aria-describedby={
-                        fieldState?.error ? `phoneNumber-error` : undefined
-                      }
-                    />
-                  </FormControl>
-                </div>
+                </FormControl>
                 {fieldState?.error && (
                   <FormMessage className="text-left" id="phoneNumber-error" />
                 )}

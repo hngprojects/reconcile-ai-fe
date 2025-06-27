@@ -13,8 +13,8 @@ export default function SummaryCard({ title, value, icon }: SummaryCardProps) {
         {icon}
       </div>
       <div className="flex w-full flex-col gap-0.5 text-[#333]">
-        <h5 className="text-lg font-medium">{title}</h5>
-        <p className="text-xl font-semibold">{value}</p>
+        <h5 className="font-medium md:text-lg">{title}</h5>
+        <p className="text-lg font-semibold md:text-xl">{value}</p>
       </div>
     </div>
   )

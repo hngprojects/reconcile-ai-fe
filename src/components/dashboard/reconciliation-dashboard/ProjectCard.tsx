@@ -12,8 +12,12 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import type { ProjectData } from '@/types/recondashboard'
 import { useRouter } from 'next/navigation'
-import { get_reconcilation_results_by_id, delete_reconcilation } from '@/actions/reconcilation-server'
+import {
+  get_reconcilation_results_by_id,
+  delete_reconcilation,
+} from '@/actions/reconcilation-server'
 import { useReconciliationStore } from '@/store/reconciliation-store'
+import { toast } from 'sonner'
 
 interface ProjectCardProps {
   project: ProjectData
@@ -23,7 +27,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const router = useRouter()
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
-  const { updateFormState } = useReconciliationStore();
+  const { updateFormState } = useReconciliationStore()
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -44,9 +48,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
   const handleContinueReconciliation = async (project: ProjectData) => {
     // Update the form state with the project data
-    let results = null;
+    let results = null
     if (project.steps > 3) {
-      results = await get_reconcilation_results_by_id(project.id);
+      results = await get_reconcilation_results_by_id(project.id)
     }
     updateFormState({
       reconciliation_id: project.id,
@@ -56,27 +60,30 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       results: {
         matches: results?.data?.matches,
         unmatched_ledgers: results?.data?.unmatched_ledgers,
-        unmatched_statements: results?.data?.unmatched_statements
+        unmatched_statements: results?.data?.unmatched_statements,
       },
-      summary: results?.data?.summary
-    });
+      summary: results?.data?.summary,
+    })
 
     // Map project steps to navigation steps
-    let targetStep = project.steps;
+    let targetStep = project.steps
 
     if (project.steps == 1) {
-      targetStep = 2;
+      targetStep = 2
     } else if (project.steps == 2 || project.steps == 3) {
-      targetStep = 3;
+      targetStep = 3
     } else if (project.steps == 4 || project.steps == 7) {
-      targetStep = 4;
+      targetStep = 4
     } else if (project.steps == 5) {
-      targetStep = 5;
+      targetStep = 5
     }
 
-    router.push(`/dashboard/reconcile?step=${targetStep}`);
+    router.push(`/dashboard/reconcile?step=${targetStep}`)
   }
 
+  const handleViewSummary = async () => {
+    router.push(`/dashboard/reconciliation/summary/${project.id}`)
+  }
 
   const {
     status,
@@ -106,6 +113,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
         <div className="relative" ref={dropdownRef}>
           <button
+            type="button"
+            title="More options"
             className="hover:bg-muted rounded-full p-1"
             onClick={() => setShowDropdown(!showDropdown)}
           >
@@ -114,37 +123,51 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {showDropdown && (
             <div className="bg-background absolute top-8 right-0 z-10 w-[200px] rounded-md border shadow-lg">
               <div className="py-1">
-                <button className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm">
+                <button
+                  type="button"
+                  className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm"
+                >
                   <Eye className="text-muted-foreground mr-2 h-4 w-4" />
                   View details
                 </button>
-                {status === 'completed' ? (
-                  <button className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm">
-                    <FileBarChart className="text-muted-foreground mr-2 h-4 w-4" />
-                    View summary
-                  </button>
-                ) : (
-                  <button className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm" onClick={() => handleContinueReconciliation(project)}>
-                    <ArrowRight className="text-muted-foreground mr-2 h-4 w-4" />
-                    Continue reconciliation
-                  </button>
-                )}
+                {/* {status === 'completed' ? ( */}
+                <button
+                  type="button"
+                  onClick={handleViewSummary}
+                  className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm"
+                >
+                  <FileBarChart className="text-muted-foreground mr-2 h-4 w-4" />
+                  View summary
+                </button>
+                {/* ) : ( */}
+                <button
+                  type="button"
+                  className="text-foreground hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm"
+                  onClick={() => handleContinueReconciliation(project)}
+                >
+                  <ArrowRight className="text-muted-foreground mr-2 h-4 w-4" />
+                  Continue reconciliation
+                </button>
+                {/* )} */}
                 <div className="border-border my-1 border-t"></div>
                 <button
+                  type="button"
                   className="text-destructive hover:bg-muted flex w-full items-center px-4 py-2 text-left text-sm"
                   onClick={async () => {
                     try {
                       // Call delete API
-                      const res = await delete_reconcilation(project.id);
+                      const res = await delete_reconcilation(project.id)
                       if (res.status === 'success') {
-                        alert('Reconciliation deleted successfully');
+                        toast.success('Reconciliation deleted successfully')
                         // Optionally refresh or navigate away
-                        router.refresh?.();
+                        router.refresh?.()
                       } else {
-                        alert(`Failed to delete: ${res.message}`);
+                        toast.error(`Failed to delete: ${res.message}`)
                       }
                     } catch {
-                      alert('An error occurred while deleting the reconciliation');
+                      toast.error(
+                        'An error occurred while deleting the reconciliation'
+                      )
                     }
                   }}
                 >
@@ -193,17 +216,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         </div>
         <div className="text-right">
           <p className="text-muted-foreground mb-1 text-sm">Last updated</p>
-          <p className="text-foreground font-medium">{lastUpdated?.toDateString()}</p>
+          <p className="text-foreground font-medium">
+            {lastUpdated?.toDateString()}
+          </p>
         </div>
       </div>
 
       {status === 'completed' ? (
         <Button
           variant="outline"
-          className="w-full border-[#2e604a] text-[#2e604a] hover:bg-[#e4fff7] dark:border-[#4aad82] dark:text-[#4aad82] dark:hover:bg-[#1a382c] dark:hover:text-[#4aad82] cursor-pointer"
-          onClick={() => {
-            router.push('/dashboard/reconciliation/summary')
-          }}
+          className="w-full cursor-pointer border-[#2e604a] text-[#2e604a] hover:bg-[#e4fff7] dark:border-[#4aad82] dark:text-[#4aad82] dark:hover:bg-[#1a382c] dark:hover:text-[#4aad82]"
+          onClick={handleViewSummary}
         >
           View Summary
         </Button>
@@ -220,4 +243,3 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     </Card>
   )
 }
-

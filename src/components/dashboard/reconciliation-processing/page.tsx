@@ -37,7 +37,8 @@ export default function ReconciliationProcessingPage() {
     echo,
     `reconciliation.${formState.reconciliation_id}`,
     '.reconciliation-progress-updated',
-    (event: { step: number; message: string }) => {
+    (data: unknown) => {
+      const event = data as { step: number; message: string };
       console.log('Event received:', event);
       if (event.message === "Reconciliation failed. Please try again!") {
         setError(event.message);

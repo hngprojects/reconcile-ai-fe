@@ -260,3 +260,35 @@ export async function startReconciliation(reconciliation_id: string) {
     };
   }
 }
+
+export async function completeReconciliation(reconciliation_id: string) {
+  const sesh = await getSession()
+  const token = sesh?.user.access_token
+  const headers = {
+    ...withAuth(token as string)
+  }
+
+  try {
+    const response = await fetch(`${RECONCILIATION_RESULT_API_URL}${reconciliation_id}/complete`, {
+      method: 'PUT',
+      headers,
+    });
+    const res = await response.json();
+
+    if (res.status == 'success') {
+      return {
+        status: 'success',
+        data: res.data,
+      }
+    } else {
+      throw new Error(res.message);
+    }
+  } catch (error) {
+    console.error('Reconciliation error:', error)
+    return {
+      status: 'error',
+      code: 500,
+      message: 'An unexpected error occurred',
+    }
+  }
+}

@@ -1,9 +1,9 @@
-import { expenseAccountData, revenueAccountData } from '@/mocks/chartOfAccounts'
+import { expenseAccountData, revenueAccountData, assetsAccountData } from '@/mocks/chartOfAccounts'
 import { AccountCategory } from '@/types/chartOfAccounts'
 
 export const chartOfAccountsCategories: AccountCategory[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Revenue',
     short_description: 'Track income from sales and services',
     full_description:
@@ -12,7 +12,7 @@ export const chartOfAccountsCategories: AccountCategory[] = [
     data: revenueAccountData,
   },
   {
-    id: 2,
+    id: '2',
     title: 'Expenses',
     short_description: 'Costs of running your business',
     full_description:
@@ -21,15 +21,15 @@ export const chartOfAccountsCategories: AccountCategory[] = [
     data: expenseAccountData,
   },
   {
-    id: 3,
+    id: '3',
     title: 'Assets',
     short_description: 'Things your business owns',
     full_description: 'Things your business owns',
-    is_active: false,
-    data: [],
+    is_active: true,
+    data: assetsAccountData,
   },
   {
-    id: 4,
+    id: '4',
     title: 'Liabilities',
     short_description: 'Debts your business owes',
     full_description: 'Debts your business owes',
@@ -37,7 +37,7 @@ export const chartOfAccountsCategories: AccountCategory[] = [
     data: [],
   },
   {
-    id: 5,
+    id: '5',
     title: 'Equity',
     short_description: "Owner's stake in the business",
     full_description: "Owner's stake in the business",
