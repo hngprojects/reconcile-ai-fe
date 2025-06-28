@@ -17,13 +17,13 @@ export function ConfirmMatchTabs() {
       <Tabs defaultValue="matched" className="w-full">
         <TabsList className="grid h-full w-full grid-cols-2">
           <TabsTrigger
-            className="cursor-pointer py-2 text-[#262626]"
+            className="cursor-pointer py-2 text-[#262626] dark:data-[state=active]:bg-[#000000] "
             value="matched"
           >
             Matched Transactions ({matchedCount})
           </TabsTrigger>
           <TabsTrigger
-            className="cursor-pointer py-2 text-[#262626]"
+            className="cursor-pointer py-2 text-[#262626] dark:data-[state=active]:bg-[#000000] "
             value="unmatched"
           >
             Unmatched Transactions ({unmatchedCount})
