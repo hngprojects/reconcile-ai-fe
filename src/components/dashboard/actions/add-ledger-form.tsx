@@ -55,7 +55,6 @@ export function AddLedgerForm({ onClose }: AddLedgerFormProps) {
   const [accountCategories, setAccountCategories] = useState<AccountCategory[]>(
     []
   )
-  const [selectedTransactionType, setSelectedTransactionType] = useState('')
   const [isLoading, setIsLoading] = useState(true)
 
   const form = useForm<z.infer<typeof formSchema>>({
