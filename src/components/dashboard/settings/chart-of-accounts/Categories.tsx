@@ -1,10 +1,14 @@
 import { toggle_a_chart_account_category } from '@/actions/chartOfAccounts'
 import { useChartOfAccountsCategories } from '@/app/queries'
 import { Switch } from '@/components/ui/switch'
+import { Button } from '@/components/ui/button'
 import { useChartOfAccountCategoriesStore } from '@/store/chart-of-accounts-store'
+import { ArrowLeft } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 export function ChartOfAccountsCategories() {
+  const router = useRouter()
   const {
     isLoading,
     data: categories,
@@ -12,7 +16,9 @@ export function ChartOfAccountsCategories() {
     refetch,
   } = useChartOfAccountsCategories()
   const { toggleCategory, isDisabled } = useChartOfAccountCategoriesStore()
-  const [checkedCategories, setCheckedCategories] = useState<Record<string, boolean>>({})
+  const [checkedCategories, setCheckedCategories] = useState<
+    Record<string, boolean>
+  >({})
 
   useEffect(() => {
     const initialChecked: Record<string, boolean> = {}
@@ -28,12 +34,28 @@ export function ChartOfAccountsCategories() {
 
   return (
     <div className="space-y-5">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold">Chart of Accounts Categories</h1>
-        <p className="text-muted-foreground text-sm">
-          Enable only the account categories your business needs. Revenue and
-          Expenses are required.
-        </p>
+      <div className="flex items-start justify-between">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold">
+            Chart of Accounts Categories
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Enable only the account categories your business needs. Revenue and
+            Expenses are required.
+          </p>
+        </div>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => router.push('/dashboard/settings')}
+          className="group hover:bg-primary hover:text-primary-foreground flex items-center gap-2 transition-all duration-200 hover:shadow-md cursor-pointer"
+        >
+          <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
+          <span className="transition-all duration-200 group-hover:font-medium">
+            Back to Settings
+          </span>
+        </Button>
       </div>
 
       <div className="flex flex-col gap-6 rounded-md border px-5 py-6">

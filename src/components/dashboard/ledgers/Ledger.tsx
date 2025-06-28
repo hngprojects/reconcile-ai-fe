@@ -113,7 +113,7 @@ export function Ledger() {
           <div className="flex justify-end gap-4">
             <Button
               variant="outline"
-              className="border-primary text-primary flex gap-2 rounded-lg px-4 py-2 text-sm font-medium"
+              className="border-primary text-primary flex gap-2 rounded-lg px-4 py-2 text-sm font-medium cursor-pointer"
               onClick={() => setIsAddModalOpen(true)}
             >
               <Plus className="h-4 w-4" />
@@ -121,13 +121,13 @@ export function Ledger() {
             </Button>
             <Button
               variant="outline"
-              className="border-primary text-primary flex gap-2 rounded-lg px-4 py-2 text-sm font-medium"
+              className="border-primary text-primary flex gap-2 rounded-lg px-4 py-2 text-sm font-medium cursor-pointer"
               onClick={() => setIsUploadModalOpen(true)}
             >
               <Upload className="h-4 w-4" />
               Upload CSV
             </Button>
-            <Button className="bg-primary text-white flex gap-2 rounded-lg px-4 py-2 text-sm">
+            <Button className="bg-primary text-white dark:text-black flex gap-2 rounded-lg px-4 py-2 text-sm cursor-pointer">
               <Download className="h-4 w-4" />
               Export
             </Button>

@@ -630,7 +630,7 @@ export const AddLedgerEntryModal: React.FC<AddLedgerEntryProps> = ({
                     <Button
                       variant="outline"
                       className={cn(
-                        'dark:border-primary/40 w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:bg-gray-800 dark:text-gray-300',
+                        'dark:border-primary/40 w-full justify-start rounded-md border-gray-300 text-left font-normal text-[#344054] dark:bg-transparent dark:text-gray-300',
                         !state.dueDate && 'text-gray-400 dark:text-gray-500'
                       )}
                     >

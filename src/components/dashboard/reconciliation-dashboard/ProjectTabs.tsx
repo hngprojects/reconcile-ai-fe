@@ -40,19 +40,19 @@ export default function ProjectTabs({ projects, isLoading, error }: ProjectTabsP
       <TabsList className="mb-6 h-11 w-full items-start bg-muted p-1">
         <TabsTrigger
           value="all"
-          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border"
+          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background dark:data-[state=active]:bg-[#000000] data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border cursor-pointer"
         >
           All Projects
         </TabsTrigger>
         <TabsTrigger
           value="in-progress"
-          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border"
+          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background dark:data-[state=active]:bg-[#000000] data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border cursor-pointer"
         >
           In Progress
         </TabsTrigger>
         <TabsTrigger
           value="completed"
-          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border"
+          className="flex-1 rounded-lg py-3 text-muted-foreground data-[state=active]:bg-background dark:data-[state=active]:bg-[#000000]  data-[state=active]:text-foreground dark:data-[state=active]:border dark:data-[state=active]:border-border cursor-pointerx  "
         >
           Completed
         </TabsTrigger>

@@ -547,7 +547,7 @@ export function EnhancedLedgerTable({
         <TabsList className="min-h-[44px] !rounded-[8px] bg-[#F5F5F5] p-[4px] dark:bg-[#1A1A1A]">
           <TabsTrigger
             value="general"
-            className={`font-[Open Sans] min-h-[36px] gap-[10px] rounded-[4px] pt-[4px] pr-[10px] pb-[4px] pl-[10px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${activeTab === 'general'
+            className={`font-[Open Sans] min-h-[36px] gap-[10px] rounded-[4px] pt-[4px] pr-[10px] pb-[4px] pl-[10px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white cursor-pointer ${activeTab === 'general'
               ? 'bg-white shadow-md dark:!bg-[#000000]'
               : ''
               } `}
@@ -556,7 +556,7 @@ export function EnhancedLedgerTable({
           </TabsTrigger>
           <TabsTrigger
             value="vendors"
-            className={`font-[Open Sans] min-h-[36px] gap-[10px] rounded-[4px] pt-[4px] pr-[10px] pb-[4px] pl-[10px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${activeTab === 'vendors'
+            className={`font-[Open Sans] min-h-[36px] gap-[10px] rounded-[4px] pt-[4px] pr-[10px] pb-[4px] pl-[10px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white cursor-pointer ${activeTab === 'vendors'
               ? 'bg-white shadow-md dark:!bg-[#000000]'
               : ''
               } `}
@@ -565,7 +565,7 @@ export function EnhancedLedgerTable({
           </TabsTrigger>
           <TabsTrigger
             value="customers"
-            className={`font-[Open Sans] min-h-[36px] gap-[10px] rounded-[4px] pt-[4px] pr-[10px] pb-[4px] pl-[10px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white ${activeTab === 'customers'
+            className={`font-[Open Sans] min-h-[36px] gap-[10px] rounded-[4px] pt-[4px] pr-[10px] pb-[4px] pl-[10px] text-[14px] leading-[20px] font-semibold tracking-[0.1%] !text-[#262626] dark:!text-white cursor-pointer ${activeTab === 'customers'
               ? 'bg-white shadow-md dark:!bg-[#000000]'
               : ''
               } `}

@@ -689,7 +689,7 @@ export const ExportIcon = ({ className = defaultSize }: IconClassProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={cn('aspect-auto text-[#fff]', className)}
+      className={cn('aspect-auto text-[#fff] dark:text-black', className)}
       viewBox="0 0 21 20"
       fill="none"
     >

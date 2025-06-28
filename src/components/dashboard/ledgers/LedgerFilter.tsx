@@ -54,7 +54,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
           <PopoverTrigger asChild>
             <Button
               variant="outline"
-              className="flex h-10 min-h-11 items-center justify-start gap-2 text-left text-sm font-medium max-sm:flex-none sm:min-h-11 sm:min-w-[150px] sm:flex-1"
+              className="flex h-10 min-h-11 items-center justify-start gap-2 text-left text-sm font-medium max-sm:flex-none sm:min-h-11 sm:min-w-[150px] sm:flex-1 cursor-pointer"
             >
               <CalendarIcon size={16} />
               {dateRange?.from ? (
@@ -82,7 +82,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
         </Popover>
 
         <Select onValueChange={(value) => onStatusChange(value)}>
-          <SelectTrigger className="font-inter min-h-11 flex-1 gap-2 rounded-lg border-[0.5px] text-sm font-medium lg:max-w-[201px]">
+          <SelectTrigger className="font-inter min-h-11 flex-1 gap-2 rounded-lg border-[0.5px] text-sm font-medium lg:max-w-[201px] cursor-pointer">
             <SelectValue placeholder="Reconciliation Status" />
           </SelectTrigger>
           <SelectContent>
@@ -95,7 +95,7 @@ const FilterComponent: React.FC<FilterComponentProps> = ({
 
         <Button
           variant="outline"
-          className="font-inter h-10 min-h-11 px-4 text-sm font-medium"
+          className="font-inter h-10 min-h-11 px-4 text-sm font-medium cursor-pointer"
         >
           <ListFilter />
           <span className="max-sm:hidden">More Filter</span>

@@ -43,20 +43,23 @@ const ReconciliationSummary = () => {
       <div className="flex flex-col gap-7">
         <div>
           <Button
-            type="button"
+            variant="outline"
+            size="sm"
             onClick={() => router.back()}
-            variant="link"
-            className="cursor-pointer p-0 text-black hover:no-underline has-[>svg]:px-0"
+            className="group hover:bg-primary hover:text-primary-foreground flex cursor-pointer items-center gap-2 transition-all duration-200 hover:shadow-md"
           >
-            <ArrowLeft className="size-6" />
+            <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
+            <span className="transition-all duration-200 group-hover:font-medium">
+              Back to Dashboard
+            </span>
           </Button>
         </div>
         <div className="flex items-end justify-between">
           <div className="flex flex-col justify-start gap-1.5">
-            <h3 className="text-xl font-semibold text-black md:text-2xl">
+            <h3 className="text-xl font-semibold text-black dark:text-white md:text-2xl">
               Reconciliation Summary
             </h3>
-            <div className="flex w-fit items-center justify-center gap-1 font-light text-black">
+            <div className="flex w-fit items-center justify-center gap-1 font-light text-black dark:text-white">
               <span className="font-medium">
                 {data?.summary.project_name || 'Business'}
               </span>
@@ -100,7 +103,7 @@ const ReconciliationSummary = () => {
               </div>
             </div>
           </div>
-          <Button size="lg" className="cursor-pointer">
+          <Button size="lg" className="cursor-pointer dark:text-black">
             <ExportIcon />
             <span>Export</span>
           </Button>

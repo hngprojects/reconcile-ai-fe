@@ -49,7 +49,7 @@ const UnmatchedTable = ({
         cell: ({ row }) => {
           const date = formatDate(row.original.Date)
 
-          return <div className="text-center text-sm text-[#333]">{date}</div>
+          return <div className="text-center text-sm text-[#333] dark:text-white">{date}</div>
         },
       },
       {
@@ -59,7 +59,7 @@ const UnmatchedTable = ({
           const description = row.original.Description
 
           return (
-            <div className="text-center text-sm text-[#333]">{description}</div>
+            <div className="text-center text-sm text-[#333] dark:text-white">{description}</div>
           )
         },
       },
@@ -136,16 +136,16 @@ const UnmatchedTable = ({
   return (
     <div className="mt-6">
       <div className="overflow-x-auto">
-        <div className="grid overflow-hidden rounded-xl border border-[#d9d9d9] bg-white">
+        <div className="grid overflow-hidden rounded-xl border border-[#d9d9d9] dark:border-white/20">
           <Table>
-            <TableHeader className="bg-[#f9fafb]">
+            <TableHeader className="bg-[#f9fafb] dark:bg-card">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow className="h-[52px]" key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <TableHead
                       key={header.id}
                       className={cn(
-                        `border-r border-[#EAECF0] px-4 text-center text-base font-semibold text-[#333]`,
+                        `border-r border-[#EAECF0] dark:border-white/20 px-4 text-center text-base font-semibold text-[#333] dark:text-white`,
                         header.id === 'match' && 'text-start',
                         header.id === 'actions' && 'w-[72px]'
                       )}
@@ -203,7 +203,7 @@ const UnmatchedTable = ({
           <div className="flex items-center gap-4">
             {/* Rows per page selector */}
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#344054]">
+              <span className="text-sm font-medium text-[#344054] dark:text-white">
                 Rows per page
               </span>
               <div className="relative overflow-hidden">
@@ -228,7 +228,7 @@ const UnmatchedTable = ({
             </div>
 
             {/* Pagination details */}
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 dark:text-white">
               {table.getState().pagination.pageIndex *
                 table.getState().pagination.pageSize +
                 1}
