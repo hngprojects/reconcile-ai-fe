@@ -52,7 +52,11 @@ export const authConfig: NextAuthConfig = {
       }
       if (token.user) {
         // @ts-expect-error next line
-        session.user = { ...token.user, emailVerified: null } as User & {
+        session.user = {
+          ...token.user,
+          emailVerified: null,
+          access_token: token.access_token,
+        } as User & {
           emailVerified: null
         }
         session.plan = token.plan as PaymentPlan
