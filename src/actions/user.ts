@@ -3,7 +3,7 @@
 import { APIResponse } from '../types/global'
 import { createFetchUtil, HttpError, withAuth } from '../lib/fetch-utils'
 import { auth } from '@/auth'
-import { PaymentPlan, User } from '@/types/auth'
+import { PaymentPlan, TAnalytics, User } from '@/types/auth'
 
 const apiHandler = createFetchUtil({
   baseUrl: process.env.BASE_API_URL as string,
@@ -122,6 +122,45 @@ export const get_current_user = async (): Promise<
     const res = await apiHandler<
       APIResponse<{ user: User; plan: PaymentPlan }>
     >('/user', {
+      method: 'GET',
+      headers: {
+        ...withAuth(session?.user.access_token as string),
+      },
+    })
+
+    return { ...res, success: true }
+  } catch (error) {
+    if (error instanceof HttpError) {
+      return {
+        success: error.responseBody?.success || false,
+        message:
+          error.responseBody?.message || `Server error: ${error.message}`,
+        data: null,
+      }
+    } else {
+      return {
+        success: false,
+        message: 'An unexpected error occurred',
+        data: null,
+      }
+    }
+  }
+}
+
+
+export const get_dashboard_analytics = async (): Promise<
+  APIResponse<{
+    bank_balance: TAnalytics,
+    expense: TAnalytics,
+    income: TAnalytics
+  } | null>
+> => {
+  const session = await auth()
+
+  try {
+    const res = await apiHandler<
+      APIResponse<{ user: User; plan: PaymentPlan }>
+    >('/dashboard', {
       method: 'GET',
       headers: {
         ...withAuth(session?.user.access_token as string),

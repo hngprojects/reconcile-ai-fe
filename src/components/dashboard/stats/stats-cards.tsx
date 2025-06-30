@@ -1,5 +1,6 @@
 'use client'
 
+import { get_dashboard_analytics } from '@/actions/user'
 import {
   Card,
   CardContent,
@@ -8,6 +9,7 @@ import {
   CardDescription,
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useQuery } from '@tanstack/react-query'
 import {
   TrendingUp,
   TrendingDown,
@@ -15,19 +17,15 @@ import {
   BarChart3,
   Receipt,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
 
 export function StatsCards() {
-  const [isLoading, setIsLoading] = useState(true)
+  const { data, isLoading } = useQuery({
+    queryKey: ['analytics'],
+    queryFn: get_dashboard_analytics,
+  });
 
-  useEffect(() => {
-    // Simulate loading delay
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
+  const NairaFormat = new Intl.NumberFormat('en-us')
 
-    return () => clearTimeout(timer)
-  }, [])
 
   if (isLoading) {
     return (
@@ -61,12 +59,12 @@ export function StatsCards() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-2xl font-bold [@media(min-width:1150px)]:text-3xl">
-                ₦2,350,000
+              <p className="text-xl font-bold [@media(min-width:1150px)]:text-3xl">
+                ₦{NairaFormat.format(data?.data?.bank_balance?.total as number)}
               </p>
               <div className="mt-1 flex items-center text-[11px] text-green-500 [@media(min-width:1150px)]:text-xs">
                 <TrendingUp className="mr-1 h-3 w-3" />
-                <span>+5.3% from last month</span>
+                <span>{data?.data?.bank_balance.increased ? '+' : data?.data?.bank_balance.decreased ? '-' : ''}{data?.data?.bank_balance.difference_percent}% from last month</span>
               </div>
             </div>
             <CreditCard className="text-muted-foreground h-6 w-6 [@media(min-width:1150px)]:h-8 [@media(min-width:1150px)]:w-8" />
@@ -84,12 +82,12 @@ export function StatsCards() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-2xl font-bold text-green-600 [@media(min-width:1150px)]:text-3xl">
-                ₦1,245,000
+              <p className="text-xl font-bold text-green-600 [@media(min-width:1150px)]:text-3xl">
+                ₦{NairaFormat.format(data?.data?.income.this_month as number)}
               </p>
               <div className="mt-1 flex items-center text-[11px] text-green-500 [@media(min-width:1150px)]:text-xs">
                 <TrendingUp className="mr-1 h-3 w-3" />
-                <span>+12.5% from last month</span>
+                <span>{data?.data?.income.increased ? '+' : data?.data?.income.decreased ? '-' : ''}{data?.data?.income.difference_percent}% from last month</span>
               </div>
             </div>
             <BarChart3 className="text-muted-foreground h-6 w-6 [@media(min-width:1150px)]:h-8 [@media(min-width:1150px)]:w-8" />
@@ -107,12 +105,12 @@ export function StatsCards() {
         <CardContent>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-2xl font-bold text-red-600 [@media(min-width:1150px)]:text-3xl">
-                ₦780,500
+              <p className="text-xl font-bold text-red-600 [@media(min-width:1150px)]:text-3xl">
+                ₦{NairaFormat.format(data?.data?.expense.this_month as number)}
               </p>
               <div className="mt-1 flex items-center text-[11px] text-red-500 [@media(min-width:1150px)]:text-xs">
                 <TrendingDown className="mr-1 h-3 w-3" />
-                <span>+8.2% from last month</span>
+                <span>{data?.data?.expense.increased ? '+' : data?.data?.expense.decreased ? '-' : ''}{data?.data?.expense.difference_percent}% from last month</span>
               </div>
             </div>
             <Receipt className="text-muted-foreground h-6 w-6 [@media(min-width:1150px)]:h-8 [@media(min-width:1150px)]:w-8" />
