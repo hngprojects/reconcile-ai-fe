@@ -71,3 +71,13 @@ export interface GoogleUserInfo {
   picture: string
   locale: string
 }
+
+export interface TAnalytics {
+  total?: number,
+  this_month: number,
+  last_month: number,
+  difference_value: number,
+  difference_percent: number,
+  increased: boolean,
+  decreased: boolean
+}
