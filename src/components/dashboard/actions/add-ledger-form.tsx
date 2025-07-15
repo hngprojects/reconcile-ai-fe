@@ -300,7 +300,7 @@ export function AddLedgerForm({ onClose }: AddLedgerFormProps) {
           <span className="absolute top-1/2 left-3 -translate-y-1/2">₦</span>
           <input
             {...form.register('amount')}
-            placeholder="0.00"
+            placeholder="0"
             type="number"
             step="0.01"
             min="0"
