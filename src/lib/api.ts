@@ -576,6 +576,23 @@ export async function handleLedgerCSVUpload(
 
 export async function submitLedgerEntry(data: LedgerEntryData) {
   try {
+    const session = await getSession()
+
+    // Enhanced debugging
+    console.log('=== Submit Ledger Entry Debug ===')
+    console.log('1. Session exists:', !!session)
+    console.log('2. User exists:', !!session?.user)
+    console.log('3. Access token exists:', !!session?.user?.access_token)
+    console.log(
+      '4. Access token preview:',
+      session?.user?.access_token?.substring(0, 20) + '...'
+    )
+    console.log('5. Form data:', data)
+
+    if (!session?.user?.access_token) {
+      throw new Error('User not authenticated - no access token found')
+    }
+
     const formData = new FormData()
     formData.append('bookkeeping_ledger_id', data.ledgerCategory)
     formData.append('transaction_type', data.transactionType)
@@ -589,27 +606,37 @@ export async function submitLedgerEntry(data: LedgerEntryData) {
     formData.append('account_chart_id', data.account)
     if (data.reference) formData.append('reference', data.reference)
 
-    const session = await getSession()
-    if (!session?.user.access_token) {
-      throw new Error('User not authenticated')
+    // Log the headers being sent
+    const headers = {
+      Authorization: `Bearer ${session.user.access_token}`,
+      Accept: 'application/json',
     }
+    console.log('6. Request headers:', headers)
+    console.log('7. API URL:', LEDGER_ENTRY_API_URL)
 
     const response = await fetch(`${LEDGER_ENTRY_API_URL}`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${session.user.access_token}`,
-        Accept: 'application/json',
-      },
+      headers,
       body: formData,
     })
 
+    console.log('8. Response status:', response.status)
+    console.log('9. Response ok:', response.ok)
+
     if (!response.ok) {
-      const data = await response.json()
-      throw new Error(data.message || 'Failed to submit ledger entry')
+      const errorData = await response.json()
+      console.log('10. Error response data:', errorData)
+      throw new Error(
+        errorData.message ||
+          `HTTP ${response.status}: Failed to submit ledger entry`
+      )
     }
 
-    return await response.json()
+    const responseData = await response.json()
+    console.log('11. Success response data:', responseData)
+    return responseData
   } catch (error) {
+    console.error('12. Submit ledger entry error:', error)
     throw new Error(
       error instanceof Error ? error.message : 'An unknown error occurred'
     )
