@@ -1,5 +1,5 @@
 'use server'
-import { PaymentPlan, User } from '../types/auth'
+import { PaymentPlan, TBusinessInfo, User } from '../types/auth'
 import { APIResponse } from '../types/global'
 import { createFetchUtil, HttpError, withAuth } from '../lib/fetch-utils'
 
@@ -9,7 +9,7 @@ const apiHandler = createFetchUtil({
 
 export const google_login = async (
   id_token: string
-): Promise<APIResponse<{ user: User; plan: PaymentPlan } | null>> => {
+): Promise<APIResponse<{ user: User; plan: PaymentPlan, onboarded: boolean, businessInfo: TBusinessInfo } | null>> => {
   try {
     const res = await apiHandler<
       APIResponse<{ user: User; plan: PaymentPlan }>
@@ -18,7 +18,7 @@ export const google_login = async (
       body: { id_token },
     })
     const res2 = await apiHandler<
-      APIResponse<{ user: User; plan: PaymentPlan }>
+      APIResponse<{ user: User; plan: PaymentPlan, onboarded: boolean, business_info: TBusinessInfo }>
     >('/user', {
       method: 'GET',
       headers: {
@@ -34,6 +34,8 @@ export const google_login = async (
           access_token: res.access_token as string,
         },
         plan: res2.data.plan,
+        onboarded: res2.data.onboarded,
+        businessInfo: res2.data.business_info
       },
       message: res.message,
     }
