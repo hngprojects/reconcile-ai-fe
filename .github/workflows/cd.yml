@@ -21,29 +21,29 @@ jobs:
 
       - name: Deploy to Server
         run: |
+          BRANCH_NAME="${GITHUB_REF##*/}"
+          
           sshpass -p "${{ secrets.EC2_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
 
             echo "Connected to remote server."
+            echo "Deploying branch: ${BRANCH_NAME}"
 
-            BRANCH=$(basename "${GITHUB_REF}")
-
-            if [[ "$BRANCH" == "main" ]]; then
+            if [[ "${BRANCH_NAME}" == "main" ]]; then
               APP_PATH="/home/ubuntu/reconcile-ai-fe"
-            elif [[ "$BRANCH" == "staging" ]]; then
+            elif [[ "${BRANCH_NAME}" == "staging" ]]; then
               APP_PATH="/home/ubuntu/stage"
             else
-              echo "Unsupported branch: $BRANCH"
+              echo "Unsupported branch: ${BRANCH_NAME}"
               exit 1
             fi
 
-            echo "Switching to $APP_PATH"
             cd "$APP_PATH" || { echo "Failed to change directory"; exit 1; }
 
             echo "Fetching latest code..."
             git fetch origin
-            git reset --hard origin/$BRANCH
-            git pull origin $BRANCH
+            git reset --hard origin/${BRANCH_NAME}
+            git pull origin ${BRANCH_NAME}
 
             echo "Stopping existing containers..."
             docker compose down
@@ -51,5 +51,5 @@ jobs:
             echo "Rebuilding and starting containers..."
             docker compose up -d --build
 
-            echo "✅ Deployment successful for branch: $BRANCH"
+            echo "✅ Deployment successful for branch: ${BRANCH_NAME}"
           EOF
