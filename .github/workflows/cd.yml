@@ -16,63 +16,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Generate .env file from example
-        run: |
-          echo "Generating .env based on branch"
-
-          BRANCH_NAME="${GITHUB_REF##*/}"
-
-          if [[ "$BRANCH_NAME" == "main" ]]; then
-            export BASE_API_URL="https://api.reconxi.com/api/v1"
-            export AUTH_URL="https://reconxi.com"
-            export NEXT_PUBLIC_REVERB_APP_ID=891545
-            export NEXT_PUBLIC_REVERB_APP_KEY=4bb0afzfzf4nmbstsjd4
-            export NEXT_PUBLIC_REVERB_APP_SECRET=fboszhrecdm2qvtyhawc
-            export NEXT_PUBLIC_REVERB_HOST="localhost"
-            export NEXT_PUBLIC_REVERB_PORT=6005
-            export NEXT_PUBLIC_REVERB_SCHEME=http
-            export NEXT_PUBLIC_REVERB_URL=https://reconxi.com
-          elif [[ "$BRANCH_NAME" == "dev" ]]; then
-            export BASE_API_URL="https://api-dev.reconxi.com/api/v1"
-            export AUTH_URL="https://dev.reconxi.com"
-            export NEXT_PUBLIC_REVERB_APP_ID=681729
-            export NEXT_PUBLIC_REVERB_APP_KEY=gydjyldygl6c8yn5fb5t
-            export NEXT_PUBLIC_REVERB_APP_SECRET=cdxemfne0gqyvzbcfw09
-            export NEXT_PUBLIC_REVERB_HOST="localhost"
-            export NEXT_PUBLIC_REVERB_PORT=6006
-            export NEXT_PUBLIC_REVERB_SCHEME=http
-            export NEXT_PUBLIC_REVERB_URL=https://dev.reconxi.com
-          elif [[ "$BRANCH_NAME" == "staging" ]]; then
-            export BASE_API_URL="https://staging.reconxi.com/api/v1"
-            export AUTH_URL="https://stage.reconxi.com"
-            export NEXT_PUBLIC_REVERB_APP_ID=104086
-            export NEXT_PUBLIC_REVERB_APP_KEY=b6jeajexulljsjb3mtim
-            export NEXT_PUBLIC_REVERB_APP_SECRET=c6cchxbvn2o4m6ghxhec
-            export NEXT_PUBLIC_REVERB_HOST="reverb.reconxi.com"
-            export NEXT_PUBLIC_REVERB_PORT=443
-            export NEXT_PUBLIC_REVERB_SCHEME=https
-            export NEXT_PUBLIC_REVERB_URL=https://staging.reconxi.com
-          else
-            echo "Unknown branch: $BRANCH_NAME"
-            exit 1
-          fi
-
-          export NEXT_PUBLIC_BASE_API_URL="$BASE_API_URL"
-          export GA_ID="${{ secrets.GA_ID }}"
-          export AUTH_GOOGLE_ID="${{ secrets.AUTH_GOOGLE_ID }}"
-          export AUTH_GOOGLE_SECRET="${{ secrets.AUTH_GOOGLE_SECRET }}"
-          export AUTH_SECRET="${{ secrets.AUTH_SECRET }}"
-
-          envsubst < .env.example > .env
-        shell: bash
+      - name: Install SSH Client
+        run: sudo apt-get update && sudo apt-get install -y sshpass
 
       - name: Deploy to Server
         run: |
@@ -81,25 +26,30 @@ jobs:
 
             echo "Connected to remote server."
 
-            BRANCH=$(basename "${{ github.ref }}")
+            BRANCH=$(basename "${GITHUB_REF}")
+
             if [[ "$BRANCH" == "main" ]]; then
-              CONTAINER="reconxi-fe"
-            elif [[ "$BRANCH" == "dev" ]]; then
-              CONTAINER="reconxi-fe-dev"
+              APP_PATH="/home/ubuntu/reconcile-ai-fe"
+            elif [[ "$BRANCH" == "staging" ]]; then
+              APP_PATH="/home/ubuntu/stage"
             else
-              CONTAINER="reconxi-fe-staging"
+              echo "Unsupported branch: $BRANCH"
+              exit 1
             fi
 
-            echo "Using container: $CONTAINER"
+            echo "Switching to $APP_PATH"
+            cd "$APP_PATH" || { echo "Failed to change directory"; exit 1; }
 
-            # Pull latest code inside container
-            docker exec -i $CONTAINER sh -c "
-              cd /app &&
-              git fetch origin &&
-              git reset --hard origin/$BRANCH &&
-              npm install &&
-              npm run build
-            "
+            echo "Fetching latest code..."
+            git fetch origin
+            git reset --hard origin/$BRANCH
+            git pull origin $BRANCH
 
-            echo "✅ Deployment completed inside container."
+            echo "Stopping existing containers..."
+            docker compose down
+
+            echo "Rebuilding and starting containers..."
+            docker compose up -d --build
+
+            echo "✅ Deployment successful for branch: $BRANCH"
           EOF
