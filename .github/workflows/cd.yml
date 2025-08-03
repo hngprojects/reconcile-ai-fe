@@ -21,7 +21,10 @@ jobs:
         with:
           node-version: '23'
 
-      - name: Clear npm Cache and Dependencies
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Clear pnpm Cache and Dependencies
         run: pnpm store prune
 
       - name: Install Dependencies
@@ -77,23 +80,25 @@ jobs:
           envsubst < .env.example > .env
         shell: bash
 
-      - name: Archive the project
-        run: tar -cvf build-artifact.tar .
+      - name: Build Next.js App
+        run: pnpm run build
 
-      - name: Copy build artifact to server
+      - name: Archive the build folder
+        run: tar -cvf build-artifact.tar .next
+
+      - name: Copy the build artifact to the server
         run: |
           sshpass -p "${{ secrets.EC2_PASSWORD }}" scp -o StrictHostKeyChecking=no \
-            build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact.tar
+            build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
 
-      - name: Deploy inside Docker
+      - name: Update Deployment inside Docker
         run: |
           sshpass -p "${{ secrets.EC2_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
             ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
 
             echo "Connected to remote server."
 
-            BRANCH=$(basename "${GITHUB_REF}")
-
+            BRANCH=$(basename "${{ github.ref }}")
             if [[ "$BRANCH" == "main" ]]; then
               CONTAINER="reconxi-fe"
             elif [[ "$BRANCH" == "dev" ]]; then
@@ -104,16 +109,5 @@ jobs:
 
             echo "Using container: $CONTAINER"
 
-            docker cp ~/build-artifact.tar $CONTAINER:/app/
-
-            docker exec -i $CONTAINER bash -c "
-              cd /app &&
-              tar -xvf build-artifact.tar &&
-              rm -f build-artifact.tar &&
-              git pull &&
-              npm install &&
-              npm run build
-            "
-
-            echo "✅ Deployment complete for $CONTAINER"
-          EOF
+            # Go inside container
+            docker exec -i $CONTA
