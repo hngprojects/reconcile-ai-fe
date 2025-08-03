@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - dev
       - staging
 
 jobs:
@@ -38,18 +37,21 @@ jobs:
               exit 1
             fi
 
-            cd "$APP_PATH" || { echo "Failed to change directory"; exit 1; }
+            cd "\$APP_PATH" || { echo "Failed to change directory"; exit 1; }
 
             echo "Fetching latest code..."
             git fetch origin
             git reset --hard origin/${BRANCH_NAME}
-            git pull origin ${BRANCH_NAME}
 
             echo "Stopping existing containers..."
-            docker compose down
-
-            echo "Rebuilding and starting containers..."
-            docker compose up -d --build
+            if [ -f "docker-compose.yml" ] || [ -f "docker-compose.yaml" ]; then
+              docker compose down || true
+              echo "Rebuilding and starting containers..."
+              docker compose up -d --build
+            else
+              echo "⚠️ No docker-compose file found in \$APP_PATH"
+              exit 1
+            fi
 
             echo "✅ Deployment successful for branch: ${BRANCH_NAME}"
           EOF
