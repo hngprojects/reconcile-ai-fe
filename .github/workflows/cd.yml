@@ -4,147 +4,54 @@ on:
   push:
     branches:
       - main
-      - dev
       - staging
 
 jobs:
   deploy:
-    runs-on: hng12interns
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
+      - name: Install SSH Client
+        run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: Remove GitHub Actions Cache
+      - name: Deploy to Server
         run: |
-          rm -rf /home/runner/.npm
-          rm -rf /home/runner/.cache
-          rm -rf /home/runner/_work/_tool/node
-
-      - name: Setup Node.js (Again)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
-
-      - name: Clear npm Cache and Dependencies
-        run: |
-          pnpm store prune
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: Generate .env file from example
-        run: |
-          echo "Generating .env based on branch"
-      
           BRANCH_NAME="${GITHUB_REF##*/}"
-      
-          if [[ "$BRANCH_NAME" == "main" ]]; then
-            export BASE_API_URL="https://api.reconxi.com/api/v1"
-            export AUTH_URL="https://reconxi.com"
-            export REVERB_APP_ID=891545
-            export REVERB_APP_KEY=4bb0afzfzf4nmbstsjd4
-            export REVERB_APP_SECRET=fboszhrecdm2qvtyhawc
-            export REVERB_HOST="localhost"
-            export REVERB_PORT=6005
-            export REVERB_SCHEME=http
-          elif [[ "$BRANCH_NAME" == "dev" ]]; then
-            export BASE_API_URL="https://api-dev.reconxi.com/api/v1"
-            export AUTH_URL="https://dev.reconxi.com"
-            export REVERB_APP_ID=681729
-            export REVERB_APP_KEY=gydjyldygl6c8yn5fb5t
-            export REVERB_APP_SECRET=cdxemfne0gqyvzbcfw09
-            export REVERB_HOST="localhost"
-            export REVERB_PORT=6006
-            export REVERB_SCHEME=http
-          elif [[ "$BRANCH_NAME" == "staging" ]]; then
-            export BASE_API_URL="https://staging.reconxi.com/api/v1"
-            export AUTH_URL="https://stage.reconxi.com"
-            export REVERB_APP_ID=104086
-            export REVERB_APP_KEY=b6jeajexulljsjb3mtim
-            export REVERB_APP_SECRET=c6cchxbvn2o4m6ghxhec
-            export REVERB_HOST="localhost"
-            export REVERB_PORT=6007
-            export REVERB_SCHEME=http
-          else
-            echo "Unknown branch: $BRANCH_NAME"
-            exit 1
-          fi
-      
-          export NEXT_PUBLIC_BASE_API_URL="$BASE_API_URL"
-          export GA_ID="${{ secrets.GA_ID }}"
-          export AUTH_GOOGLE_ID="${{ secrets.AUTH_GOOGLE_ID }}"
-          export AUTH_GOOGLE_SECRET="${{ secrets.AUTH_GOOGLE_SECRET }}"
-          export AUTH_SECRET="${{ secrets.AUTH_SECRET }}"
-      
-          # Generate .env from .env.example using envsubst
-          envsubst < .env.example > .env
-        shell: bash
-      
-
-      - name: Build Next.js App
-        run: pnpm run build
-
-      - name: Archive the build folder
-        run: tar -cvf build-artifact.tar .next
-
-      - name: Copy the build artifact to the server
-        run: |
-          sshpass -p "${{ secrets.EC2_PASSWORD }}" scp -o StrictHostKeyChecking=no \
-            build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
-
-      - name: Update Deployment
-        run: |
+          
           sshpass -p "${{ secrets.EC2_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
-            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
+            ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << EOF
 
             echo "Connected to remote server."
+            echo "Deploying branch: ${BRANCH_NAME}"
 
-            BRANCH=$(basename "${{ github.ref }}")
-            if [[ "$BRANCH" == "main" ]]; then
-              FE_PATH="/home/reconxi/frontend/main"
-              PORT=3005
-              PM2_NAME="reconcile-fe"
-            elif [[ "$BRANCH" == "dev" ]]; then
-              FE_PATH="/home/reconxi/frontend/staging"
-              PORT=3006
-              PM2_NAME="reconcile-fe-dev"
+            if [[ "${BRANCH_NAME}" == "main" ]]; then
+              APP_PATH="/home/ubuntu/reconcile-ai-fe"
+            elif [[ "${BRANCH_NAME}" == "staging" ]]; then
+              APP_PATH="/home/ubuntu/stage"
             else
-              FE_PATH="/home/reconxi/frontend/stagingnew"
-              PORT=3007
-              PM2_NAME="fe-staging"
+              echo "Unsupported branch: ${BRANCH_NAME}"
+              exit 1
             fi
 
-            cd "$FE_PATH" || { echo "Failed to change directory!"; exit 1; }
+            cd "\$APP_PATH" || { echo "Failed to change directory"; exit 1; }
 
             echo "Fetching latest code..."
             git fetch origin
-            git reset --hard HEAD
-            git checkout "$BRANCH"
-            git reset --hard origin/"$BRANCH"
-            git pull --rebase --no-edit || { echo "Git pull failed!"; exit 1; }
+            git reset --hard origin/${BRANCH_NAME}
 
-            echo "Extracting build artifact..."
-            cp ~/build-artifact/build-artifact.tar .
-            tar -xvf build-artifact.tar
-            rm -f build-artifact.tar
-
-            echo "Installing dependencies..."
-            npm ci
-
-            echo "Restarting PM2 service..."
-            if pm2 list | grep -q "$PM2_NAME"; then
-              pm2 restart "$PM2_NAME" --update-env
+            echo "Stopping existing containers..."
+            if [ -f "docker-compose.yml" ] || [ -f "docker-compose.yaml" ]; then
+              docker compose down || true
+              echo "Rebuilding and starting containers..."
+              docker compose up -d --build
             else
-              PORT=$PORT pm2 start pnpm --name "$PM2_NAME" -- run start
+              echo "⚠️ No docker-compose file found in \$APP_PATH"
+              exit 1
             fi
 
-            echo "Saving PM2 state..."
-            pm2 save
+            echo "✅ Deployment successful for branch: ${BRANCH_NAME}"
           EOF
