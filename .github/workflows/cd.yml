@@ -24,12 +24,6 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
-      - name: Clear pnpm Cache and Dependencies
-        run: pnpm store prune
-
-      - name: Install Dependencies
-        run: pnpm install
-
       - name: Generate .env file from example
         run: |
           echo "Generating .env based on branch"
@@ -80,18 +74,7 @@ jobs:
           envsubst < .env.example > .env
         shell: bash
 
-      - name: Build Next.js App
-        run: pnpm run build
-
-      - name: Archive the build folder
-        run: tar -cvf build-artifact.tar .next
-
-      - name: Copy the build artifact to the server
-        run: |
-          sshpass -p "${{ secrets.EC2_PASSWORD }}" scp -o StrictHostKeyChecking=no \
-            build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
-
-      - name: Update Deployment inside Docker
+      - name: Deploy to Server
         run: |
           sshpass -p "${{ secrets.EC2_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
             ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
@@ -109,5 +92,14 @@ jobs:
 
             echo "Using container: $CONTAINER"
 
-            # Go inside container
-            docker exec -i $CONTA
+            # Pull latest code inside container
+            docker exec -i $CONTAINER sh -c "
+              cd /app &&
+              git fetch origin &&
+              git reset --hard origin/$BRANCH &&
+              npm install &&
+              npm run build
+            "
+
+            echo "✅ Deployment completed inside container."
+          EOF
