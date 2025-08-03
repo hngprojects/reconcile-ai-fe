@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: hng12interns
+    runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
@@ -21,20 +21,8 @@ jobs:
         with:
           node-version: '23'
 
-      - name: Remove GitHub Actions Cache
-        run: |
-          rm -rf /home/runner/.npm
-          rm -rf /home/runner/.cache
-          rm -rf /home/runner/_work/_tool/node
-
-      - name: Setup Node.js (Again)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '23'
-
       - name: Clear npm Cache and Dependencies
-        run: |
-          pnpm store prune
+        run: pnpm store prune
 
       - name: Install Dependencies
         run: pnpm install
@@ -42,9 +30,9 @@ jobs:
       - name: Generate .env file from example
         run: |
           echo "Generating .env based on branch"
-      
+
           BRANCH_NAME="${GITHUB_REF##*/}"
-      
+
           if [[ "$BRANCH_NAME" == "main" ]]; then
             export BASE_API_URL="https://api.reconxi.com/api/v1"
             export AUTH_URL="https://reconxi.com"
@@ -79,75 +67,53 @@ jobs:
             echo "Unknown branch: $BRANCH_NAME"
             exit 1
           fi
-      
+
           export NEXT_PUBLIC_BASE_API_URL="$BASE_API_URL"
           export GA_ID="${{ secrets.GA_ID }}"
           export AUTH_GOOGLE_ID="${{ secrets.AUTH_GOOGLE_ID }}"
           export AUTH_GOOGLE_SECRET="${{ secrets.AUTH_GOOGLE_SECRET }}"
           export AUTH_SECRET="${{ secrets.AUTH_SECRET }}"
-      
-          # Generate .env from .env.example using envsubst
+
           envsubst < .env.example > .env
         shell: bash
-      
 
-      - name: Build Next.js App
-        run: pnpm run build
+      - name: Archive the project
+        run: tar -cvf build-artifact.tar .
 
-      - name: Archive the build folder
-        run: tar -cvf build-artifact.tar .next
-
-      - name: Copy the build artifact to the server
+      - name: Copy build artifact to server
         run: |
           sshpass -p "${{ secrets.EC2_PASSWORD }}" scp -o StrictHostKeyChecking=no \
-            build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact
+            build-artifact.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:~/build-artifact.tar
 
-      - name: Update Deployment
+      - name: Deploy inside Docker
         run: |
           sshpass -p "${{ secrets.EC2_PASSWORD }}" ssh -o StrictHostKeyChecking=no \
             ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} << 'EOF'
 
             echo "Connected to remote server."
 
-            BRANCH=$(basename "${{ github.ref }}")
+            BRANCH=$(basename "${GITHUB_REF}")
+
             if [[ "$BRANCH" == "main" ]]; then
-              FE_PATH="/home/reconxi/frontend/main"
-              PORT=3005
-              PM2_NAME="reconcile-fe"
+              CONTAINER="reconxi-fe"
             elif [[ "$BRANCH" == "dev" ]]; then
-              FE_PATH="/home/reconxi/frontend/staging"
-              PORT=3006
-              PM2_NAME="reconcile-fe-dev"
+              CONTAINER="reconxi-fe-dev"
             else
-              FE_PATH="/home/reconxi/frontend/stagingnew"
-              PORT=3007
-              PM2_NAME="fe-staging"
+              CONTAINER="reconxi-fe-staging"
             fi
 
-            cd "$FE_PATH" || { echo "Failed to change directory!"; exit 1; }
+            echo "Using container: $CONTAINER"
 
-            echo "Fetching latest code..."
-            git fetch origin
-            git reset --hard HEAD
-            git checkout "$BRANCH"
-            git reset --hard origin/"$BRANCH"
-            git pull --rebase --no-edit || { echo "Git pull failed!"; exit 1; }
+            docker cp ~/build-artifact.tar $CONTAINER:/app/
 
-            echo "Extracting build artifact..."
-            cp ~/build-artifact/build-artifact.tar .
-            tar -xvf build-artifact.tar
-            rm -f build-artifact.tar
+            docker exec -i $CONTAINER bash -c "
+              cd /app &&
+              tar -xvf build-artifact.tar &&
+              rm -f build-artifact.tar &&
+              git pull &&
+              npm install &&
+              npm run build
+            "
 
-            echo "Installing dependencies..."
-            npm ci
-
-            echo "Restarting PM2 service..."
-            if pm2 list | grep -q "$PM2_NAME"; then
-              pm2 restart "$PM2_NAME" --update-env
-            else
-              PORT=$PORT pm2 start pnpm --name "$PM2_NAME" -- run start
-            fi
-
-            echo "Saving PM2 state..."
-            pm2 save
+            echo "✅ Deployment complete for $CONTAINER"
           EOF
