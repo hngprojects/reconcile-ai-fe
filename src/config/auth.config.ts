@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from 'next-auth'
 import Google from 'next-auth/providers/google'
 import { google_login } from '../actions/auth'
-import { PaymentPlan, User } from '../types/auth'
+import { PaymentPlan, TBusinessInfo, User } from '../types/auth'
 import { inDevEnvironment } from '../lib/utils'
 
 export const authConfig: NextAuthConfig = {
@@ -30,6 +30,8 @@ export const authConfig: NextAuthConfig = {
         token.user = res?.data?.user
         token.access_token = res.access_token
         token.plan = res.data?.plan
+        token.onboarded = res.data?.onboarded
+        token.businessInfo = res.data?.businessInfo
       }
 
       if (trigger === 'update') {
@@ -42,6 +44,14 @@ export const authConfig: NextAuthConfig = {
 
         if (session.plan) {
           token.plan = session.plan
+        }
+
+        if (session.onboarded) {
+          token.onboarded = session.onboarded
+        }
+
+        if (session.businessInfo) {
+          token.businessInfo = session.businessInfo
         }
       }
       return token
@@ -60,6 +70,8 @@ export const authConfig: NextAuthConfig = {
           emailVerified: null
         }
         session.plan = token.plan as PaymentPlan
+        session.onboarded = token.onboarded as boolean
+        session.businessInfo = token.businessInfo as TBusinessInfo
       }
 
       return session

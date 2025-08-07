@@ -81,3 +81,14 @@ export interface TAnalytics {
   increased: boolean,
   decreased: boolean
 }
+
+export interface TBusinessInfo {
+  id: string,
+  name: string,
+  type: string,
+  reporting_year: string,
+  currency: string,
+  user_id: number,
+  created_at: string,
+  updated_at: string
+}
