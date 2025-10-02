@@ -1,7 +1,8 @@
 import { Dialog, DialogContent } from '@/components/ui/dialog'
-import { X } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { GoogleIcon, LogoIcon } from '../Icon/Icons'
 import { signIn } from 'next-auth/react'
+import { useState } from 'react'
 
 interface GoogleAuthModalProps {
   isOpen: boolean
@@ -15,6 +16,17 @@ const GoogleAuthModal = ({
   onClose,
   onSwitchToLogin,
 }: GoogleAuthModalProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleGoogleSignUp = async () => {
+    setIsLoading(true)
+    try {
+      await signIn('google', { callbackUrl: '/onboarding' })
+    } catch (error) {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -51,13 +63,18 @@ const GoogleAuthModal = ({
 
           <button
             type="button"
-            onClick={() => signIn('google', { callbackUrl: '/onboarding' })}
-            className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#CBD5E1] px-4 py-2 transition-colors hover:bg-gray-50 disabled:opacity-50 md:h-[64px] md:w-[487px]"
+            onClick={handleGoogleSignUp}
+            disabled={isLoading}
+            className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#CBD5E1] px-4 py-2 transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed md:h-[64px] md:w-[487px]"
             aria-label="Continue with Google"
           >
-            <GoogleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin sm:h-6 sm:w-6" />
+            ) : (
+              <GoogleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            )}
             <span className="text-sm font-medium text-[#475569] md:text-base">
-              Continue with Google
+              {isLoading ? 'Signing up...' : 'Continue with Google'}
             </span>
           </button>
 
