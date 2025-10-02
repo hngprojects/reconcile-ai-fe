@@ -113,7 +113,7 @@ export default async function RootLayout({
 }>) {
   const session = await auth()
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={cn('antialiased', inter.variable, balooPaaji2.variable)}>
         <SessionProvider session={session}>
           <Providers>
