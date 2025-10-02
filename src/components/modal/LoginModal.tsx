@@ -1,7 +1,8 @@
 import { Dialog, DialogContent, DialogDescription } from '@/components/ui/dialog'
-import { X } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { GoogleIcon, LogoIcon } from '../Icon/Icons'
 import { signIn } from 'next-auth/react'
+import { useState } from 'react'
 
 interface LoginModalProps {
   isOpen: boolean
@@ -10,6 +11,17 @@ interface LoginModalProps {
 }
 
 const LoginModal = ({ isOpen, onClose, onSwitchToSignup }: LoginModalProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true)
+    try {
+      await signIn('google', { redirectTo: '/dashboard' })
+    } catch (error) {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -43,12 +55,17 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignup }: LoginModalProps) => {
           </div>
 
           <button
-            onClick={() => signIn('google', { redirectTo: '/dashboard' })}
-            className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#CBD5E1] px-4 py-2 transition-colors hover:bg-gray-50 disabled:opacity-50 md:h-[64px] md:w-[487px]"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+            className="flex h-[48px] w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border border-[#CBD5E1] px-4 py-2 transition-colors hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed md:h-[64px] md:w-[487px]"
           >
-            <GoogleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            {isLoading ? (
+              <Loader2 className="h-5 w-5 animate-spin sm:h-6 sm:w-6" />
+            ) : (
+              <GoogleIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            )}
             <span className="text-sm font-medium text-[#475569] md:text-base">
-              Login with Google
+              {isLoading ? 'Signing in...' : 'Login with Google'}
             </span>
           </button>
 
