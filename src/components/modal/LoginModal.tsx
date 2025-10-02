@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription } from '@/components/ui/dialog'
 import { X } from 'lucide-react'
 import { GoogleIcon, LogoIcon } from '../Icon/Icons'
 import { signIn } from 'next-auth/react'
@@ -16,6 +16,9 @@ const LoginModal = ({ isOpen, onClose, onSwitchToSignup }: LoginModalProps) => {
         closeButton={false}
         className="mx-auto h-auto w-[90%] rounded-[12px] border-none bg-white p-0 md:!max-w-[535px]"
       >
+        <DialogDescription className="sr-only">
+          Login to your ReconXi account to access financial reconciliation tools
+        </DialogDescription>
         <button
           title="close modal"
           onClick={onClose}
