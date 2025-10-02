@@ -8,6 +8,7 @@
     "start": "next start",
     "turbo": "next dev --turbo",
     "lint": "next lint --max-warnings=0",
+    "test": "echo \"No tests specified\" && exit 0",
     "commit-check": "npx --no -- commitlint --edit",
     "format": "prettier --write ."
   },
